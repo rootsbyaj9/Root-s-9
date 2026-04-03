@@ -30,7 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
 
 # vercel
@@ -40,9 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# ── Deployment-only repo rules ─────────────────────────────
-# Only src/, public/, config files belong in git.
-# Everything below is local-only.
+# ── Deployment-only repo ───────────────────────────────────
+# Only src/, public/, and config files belong in git.
 
 # AI / editor context docs
 CLAUDE.md
@@ -50,25 +49,13 @@ AGENTS.md
 .vscode/
 .gemini/
 
-# Temp / scratch files
-temp_*.txt
-temp_*.md
+# Docs & scratch (root-level)
+*.md
+*.txt
 *.html
 
-# Raw design assets & working files (not needed for deployment)
-*.svg
-*.ps1
-bento.json
-hero*.json
-pageloading*.json
-page-loading.json
-"hero loading.json"
-"no bg*.svg"
-"black bg.svg"
-"white bg.svg"
-logo.svg
-crop-svgs.ps1
-roots_animation_motion_map.html
-
-# README is local context, not for deployment
-README.md
+# Raw design assets & working files (root-level only)
+# /*.pattern = root-level only; src/ and public/ assets are still tracked
+/*.svg
+/*.json
+/*.ps1

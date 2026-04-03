@@ -24,10 +24,10 @@ import { gsap } from "gsap";
 
 // ── Stat data ──────────────────────────────────────────────────────────────
 const STATS = [
-  { id: "years",           target: 15,  display: "15+",   suffix: "+",  label: "Years of Mastery",    decimals: 0 },
-  { id: "rating",          target: 4.9, display: "4.9/5", suffix: "/5", label: "Google Average",       decimals: 1 },
-  { id: "locations",       target: 3,   display: "3",     suffix: "",   label: "Premium Locations",    decimals: 0 },
-  { id: "transformations", target: 20,  display: "20k+",  suffix: "k+", label: "Transformations",      decimals: 0 },
+  { id: "years",           target: 8,   display: "8+",    suffix: "+",  label: "Years of Mastery",    decimals: 0 },
+  { id: "rating",          target: 4.8, display: "4.8/5", suffix: "/5", label: "Google Rating",       decimals: 1 },
+  { id: "locations",       target: 2,   display: "2",     suffix: "",   label: "Premium Locations",    decimals: 0 },
+  { id: "reviews",         target: 1.6, display: "1.6k+", suffix: "k+", label: "Google Reviews",       decimals: 1 },
 ] as const;
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -43,8 +43,8 @@ export default function TrustStrip() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
-          stagger: 0.1,
+          duration: 1.2,
+          stagger: 0.15,
           ease: "power2.out",
           scrollTrigger: {
             trigger: sectionRef.current,

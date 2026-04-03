@@ -9,22 +9,21 @@
  *   - HIDE on scroll-down (translateY -100%), SHOW on scroll-up — 350ms ease
  *   - Never hides at the top of the page (scrollY < 80)
  *   - Never hides while the mobile menu is open
- *
- * Mobile:
- *   - Hamburger → X on toggle (pure CSS transform, no GSAP)
- *   - Full-screen parchment overlay with centered links
+ *   - SERVICES Mega Menu on desktop, Slide-in on mobile
  *
  * CLAUDE.md rules applied:
  *   - 'use client' (scroll + state)
- *   - CSS transitions via className (not GSAP — that's scroll-reveal only)
+ *   - CSS transitions via className
  *   - usePathname for active link state
  *   - React 19: no forwardRef, ref as regular prop
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 
 // ── Site navigation links ─────────────────────────────────────────────────────
 const PRIMARY_LINKS = [
@@ -40,75 +39,190 @@ const PRIMARY_LINKS = [
 const SECONDARY_LINKS = [{ label: "Franchise", href: "/franchise" }];
 
 const WHATSAPP_NUMBER = "919550071714";
+
+const SERVICES_SECTIONS = [
+  { label: "Women's Menu", href: "/services?tab=womens" },
+  { label: "Men's Menu", href: "/services?tab=mens" },
+  { label: "Bridal Studio", href: "/services?tab=bridal" },
+  { label: "Tattoo Artistry", href: "/services?tab=tattoo" }
+];
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false); // past 80px threshold
+  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  // Mega menu states
+  const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
+  
   const pathname = usePathname();
+  const desktopDropdownRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  // ── Scroll detection — only for bg/text colour, not for hide/show ────────
-  // Hide/show is handled by <Header> which wraps this component.
+  // ── Scroll & Keyboard event listeners ──────────────────────────────────────
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 80);
+      /* Close desktop menu on scroll for UX */
+      if (window.scrollY > 150) setDesktopServicesOpen(false);
+    };
     onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);;
 
-  // ── Close menu on route change ────────────────────────────────────────────
+    const handleClickOutside = (e: MouseEvent) => {
+      if (desktopDropdownRef.current && !desktopDropdownRef.current.contains(e.target as Node)) {
+        setDesktopServicesOpen(false);
+      }
+    };
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setDesktopServicesOpen(false);
+        setMobileServicesOpen(false);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEsc);
+    
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
+
+  // ── Close menus on route change ───────────────────────────────────────────
   useEffect(() => {
     setMenuOpen(false);
+    setMobileServicesOpen(false);
+    setDesktopServicesOpen(false);
   }, [pathname]);
 
-  // ── Lock body scroll when mobile menu is open ─────────────────────────────
+  // ── Lock body scroll when any mobile menu is open ────────────────────────
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    document.body.style.overflow = (menuOpen || mobileServicesOpen) ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [menuOpen]);
+  }, [menuOpen, mobileServicesOpen]);
 
-  // Only the homepage has a dark full-screen hero behind the navbar.
-  // Every other page has a light background, so we must ALWAYS show
-  // the solid/dark navbar from the very top on inner pages.
+  // ── GSAP mobile menu reveal ────────────────────────────────────────────────
+  useGSAP(() => {
+    if (menuOpen && !mobileServicesOpen) {
+      gsap.fromTo(
+        ".mobile-nav-link",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, ease: "power2.out" }
+      );
+    }
+  }, { dependencies: [menuOpen], scope: menuRef });
+
   const isHomePage = pathname === "/";
-
-  // isLight drives text colour: dark obsidian text when true, parchment when false
-  // → Always solid on inner pages, OR when scrolled, OR mobile menu is open
-  const isLight = !isHomePage || scrolled || menuOpen;
+  const isLight = !isHomePage || scrolled || menuOpen || desktopServicesOpen;
 
   return (
     <>
       {/* ── Main nav bar ───────────────────────────────────────────────────── */}
       <nav
         className={cn(
-          "w-full transition-all duration-300 ease-out",
-          // Solid bg: always on inner pages, or when scrolled, or when mobile menu is open
-          !isHomePage || scrolled || menuOpen
-            ? "bg-parchment/95 backdrop-blur-md border-b border-obsidian/[0.06]"
+          "w-full transition-all duration-300 ease-out relative z-50",
+          (!isHomePage || scrolled || menuOpen || desktopServicesOpen)
+            ? "bg-[#FEFCF8]/95 backdrop-blur-md border-b border-[#1A1008]/[0.06]"
             : "bg-transparent"
         )}
         aria-label="Main navigation"
       >
-        <div className="flex items-center justify-between px-6 md:px-12 py-5">
+        <div className="flex items-center justify-between px-6 md:px-12 h-[72px]">
 
-          {/* Logo wordmark — replace with SVG when asset arrives */}
+          {/* Logo */}
           <Link
             href="/"
-            className={cn(
-              "font-serif text-xl md:text-2xl tracking-[0.2em] transition-colors duration-300 hover:opacity-70 whitespace-nowrap",
-              isLight ? "text-obsidian" : "text-parchment"
-            )}
+            className="relative flex items-center transition-all duration-500 hover:opacity-85 z-50 group"
             aria-label="Root's — Home"
           >
-            R O O T&apos;S
+            <img
+              src="/logo-nobg1.svg"
+              alt="Root's Family Salon"
+              className={cn(
+                "h-10 md:h-12 w-auto object-contain transition-opacity duration-500 ease-out",
+                isLight ? "opacity-100" : "opacity-0 absolute inset-0"
+              )}
+            />
+            <img
+              src="/logo-nobg2.svg"
+              alt="Root's Family Salon"
+              className={cn(
+                "h-10 md:h-12 w-auto object-contain transition-opacity duration-500 ease-out",
+                !isLight ? "opacity-100" : "opacity-0 absolute inset-0"
+              )}
+            />
           </Link>
 
           {/* ── Desktop links ─────────────────────────────────────────────── */}
-          <div className="hidden lg:flex items-center gap-5 xl:gap-7">
+          <div className="hidden lg:flex items-center gap-5 xl:gap-7 h-full">
             {PRIMARY_LINKS.map((link) => {
               const isActive = pathname === link.href || (link.href === "/" && pathname === "/");
+
+              if (link.label === "Services") {
+                return (
+                  <div 
+                    key={link.href} 
+                    ref={desktopDropdownRef}
+                    className="flex flex-col items-center justify-center h-full relative"
+                    onMouseEnter={() => setDesktopServicesOpen(true)}
+                    onMouseLeave={() => setDesktopServicesOpen(false)}
+                  >
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative flex items-center justify-center gap-1",
+                        (isActive || desktopServicesOpen)
+                          ? "text-[#E87722]"
+                          : isLight
+                          ? "text-[#1A1008] hover:text-[#E87722]"
+                          : "text-[#FEFCF8] hover:text-[#E87722]"
+                      )}
+                    >
+                      {link.label}
+                      <span className={cn(
+                        "text-[8px] opacity-70 transition-transform duration-200", 
+                        desktopServicesOpen ? "rotate-180" : "translate-y-[1px]"
+                      )}>▼</span>
+                      <span
+                        className={cn(
+                          "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-[#E87722] transition-all duration-200",
+                          isActive ? "w-full" : "w-0" // Using custom state for logic
+                        )}
+                      />
+                    </Link>
+
+                    {/* Simple Dropdown */}
+                    <div 
+                      className={cn(
+                        "absolute top-[72px] bg-[#FEFCF8] border-t-2 border-[#E87722] border-x border-b border-[#1A1008]/10 shadow-lg z-40 transition-all duration-200 ease-out w-48 flex flex-col p-2",
+                        desktopServicesOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-2"
+                      )}
+                    >
+                      <ul className="flex flex-col w-full">
+                        {SERVICES_SECTIONS.map((sub, j) => (
+                          <li key={j} className="w-full">
+                            <Link 
+                              href={sub.href} 
+                              className="font-sans text-[11px] uppercase tracking-widest text-[#1A1008] hover:text-[#E87722] transition-colors duration-150 py-3 px-4 block w-full text-left"
+                            >
+                              {sub.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={link.href}
@@ -116,17 +230,16 @@ export default function Navbar() {
                   className={cn(
                     "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative group",
                     isActive
-                      ? "text-roots-orange"
+                      ? "text-[#E87722]"
                       : isLight
-                      ? "text-obsidian hover:text-roots-orange"
-                      : "text-parchment hover:text-roots-orange"
+                      ? "text-[#1A1008] hover:text-[#E87722]"
+                      : "text-[#FEFCF8] hover:text-[#E87722]"
                   )}
                 >
                   {link.label}
-                  {/* Underline grows from center on hover */}
                   <span
                     className={cn(
-                      "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-roots-orange transition-all duration-200",
+                      "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-[#E87722] transition-all duration-200",
                       isActive ? "w-full" : "w-0 group-hover:w-full"
                     )}
                   />
@@ -138,7 +251,7 @@ export default function Navbar() {
             <span
               className={cn(
                 "transition-colors duration-300 select-none",
-                isLight ? "text-obsidian/20" : "text-parchment/25"
+                isLight ? "text-[#1A1008]/20" : "text-[#FEFCF8]/25"
               )}
             >
               |
@@ -149,19 +262,25 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200",
+                  "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative group",
                   pathname === link.href
-                    ? "text-roots-orange"
+                    ? "text-[#E87722]"
                     : isLight
-                    ? "text-obsidian hover:text-roots-orange"
-                    : "text-parchment hover:text-roots-orange"
+                    ? "text-[#1A1008] hover:text-[#E87722]"
+                    : "text-[#FEFCF8] hover:text-[#E87722]"
                 )}
               >
                 {link.label}
+                <span
+                  className={cn(
+                    "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-[#E87722] transition-all duration-200",
+                    pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
+                  )}
+                />
               </Link>
             ))}
 
-            {/* Book CTA — always roots-orange */}
+            {/* Book CTA */}
             <a
               href={`https://wa.me/${WHATSAPP_NUMBER}`}
               target="_blank"
@@ -176,42 +295,39 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            className="lg:hidden flex flex-col gap-[5px] w-6 py-1 hover:opacity-70 transition-opacity focus-visible:outline-roots-orange"
+            aria-expanded={menuOpen || mobileServicesOpen}
+            className="lg:hidden flex flex-col gap-[5px] w-6 py-1 hover:opacity-70 transition-opacity focus-visible:outline-[#E87722] z-50"
           >
             <span
               className={cn(
                 "block w-full h-px transition-all duration-300 origin-center",
-                isLight ? "bg-obsidian" : "bg-parchment",
-                menuOpen && "rotate-45 translate-y-[8.5px]"
+                isLight ? "bg-[#1A1008]" : "bg-[#FEFCF8]",
+                (menuOpen || mobileServicesOpen) && "rotate-45 translate-y-[8.5px]"
               )}
             />
             <span
               className={cn(
                 "block w-full h-px transition-all duration-200",
-                isLight ? "bg-obsidian" : "bg-parchment",
-                menuOpen && "opacity-0"
+                isLight ? "bg-[#1A1008]" : "bg-[#FEFCF8]",
+                (menuOpen || mobileServicesOpen) && "opacity-0"
               )}
             />
             <span
               className={cn(
                 "block w-full h-px transition-all duration-300 origin-center",
-                isLight ? "bg-obsidian" : "bg-parchment",
-                menuOpen && "-rotate-45 -translate-y-[8.5px]"
+                isLight ? "bg-[#1A1008]" : "bg-[#FEFCF8]",
+                (menuOpen || mobileServicesOpen) && "-rotate-45 -translate-y-[8.5px]"
               )}
             />
           </button>
         </div>
       </nav>
 
-      {/* ── Mobile menu full-screen overlay ────────────────────────────────── */}
-      {/*
-       * CSS-only open/close transition — GSAP stagger added in Phase 9.
-       * pointer-events-none when closed prevents any accidental clicks.
-       */}
+      {/* ── Mobile main slide-in overlay ────────────────────────────────── */}
       <div
+        ref={menuRef}
         className={cn(
-          "lg:hidden fixed inset-0 z-40 bg-parchment flex flex-col items-center justify-center gap-8 transition-all duration-300",
+          "lg:hidden fixed inset-0 z-40 bg-[#FEFCF8] flex flex-col items-center justify-center transition-all duration-300",
           menuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -219,29 +335,56 @@ export default function Navbar() {
         aria-hidden={!menuOpen}
         id="mobile-menu"
       >
-        {[...PRIMARY_LINKS, ...SECONDARY_LINKS].map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={cn(
-              "mobile-nav-link font-serif text-4xl text-obsidian hover:text-roots-orange transition-colors duration-200",
-              pathname === link.href && "text-roots-orange"
-            )}
+        <div className="flex flex-col items-center justify-center gap-8 w-full max-h-[80vh] overflow-y-auto">
+          {[...PRIMARY_LINKS, ...SECONDARY_LINKS].map((link) => {
+            if (link.label === "Services") {
+              return (
+                <div key="services" className="mobile-nav-link flex flex-col items-center w-full">
+                  <div className="font-serif text-4xl text-[#1A1008] mb-4">
+                    {link.label}
+                  </div>
+                  <div className="flex flex-col items-center gap-3">
+                    {SERVICES_SECTIONS.map((sub, j) => (
+                      <Link
+                        key={j}
+                        href={sub.href}
+                        onClick={() => setMenuOpen(false)}
+                        className="font-sans text-[13px] uppercase tracking-widest text-[#1A1008]/80 hover:text-[#E87722] transition-colors"
+                        tabIndex={menuOpen ? 0 : -1}
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={cn(
+                  "mobile-nav-link font-serif text-4xl text-[#1A1008] hover:text-[#E87722] transition-colors duration-200",
+                  pathname === link.href && "text-[#E87722]"
+                )}
+                tabIndex={menuOpen ? 0 : -1}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mobile-nav-link btn-primary mt-4"
             tabIndex={menuOpen ? 0 : -1}
           >
-            {link.label}
-          </Link>
-        ))}
-
-        <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mobile-nav-link btn-primary mt-4"
-          tabIndex={menuOpen ? 0 : -1}
-        >
-          Book via WhatsApp
-        </a>
+            Book via WhatsApp
+          </a>
+        </div>
       </div>
     </>
   );

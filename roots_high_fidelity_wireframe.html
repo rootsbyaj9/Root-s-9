@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Root's Salon - UI Contract Wireframe</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        parchment: '#FEFCF8',
+                        linen: '#F5EDE0',
+                        obsidian: '#1A1008',
+                        rootsOrange: '#E87722',
+                    },
+                    fontFamily: {
+                        sans: ['"DM Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    spacing: {
+                        'section': '120px',
+                        'section-md': '80px',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #FEFCF8; 
+            color: #1A1008; 
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .page-separator {
+            width: 100%;
+            height: 2px;
+            background: repeating-linear-gradient(90deg, #E87722 0, #E87722 10px, transparent 10px, transparent 20px);
+            margin: 160px 0;
+            position: relative;
+        }
+        
+        .page-separator::before {
+            content: attr(data-page-name);
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FEFCF8;
+            padding: 0 32px;
+            color: #E87722;
+            font-family: "DM Sans", sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.875rem;
+        }
+        
+        /* Wireframe Image Placeholders */
+        .img-placeholder {
+            background-color: #F5EDE0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1A1008;
+            font-family: "DM Sans", sans-serif;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+            border: 1px solid rgba(26, 16, 8, 0.1);
+        }
+        
+        .img-placeholder-dark {
+            background-color: #1A1008;
+            color: #FEFCF8;
+        }
+
+        /* Essential components */
+        .btn-primary {
+            background-color: #E87722;
+            color: #FEFCF8;
+            padding: 16px 32px;
+            font-family: "DM Sans", sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(232, 119, 34, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .btn-outline {
+            border: 1px solid #1A1008;
+            color: #1A1008;
+            padding: 16px 32px;
+            font-family: "DM Sans", sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+        }
+
+        .hairline-divider {
+            height: 1px;
+            background-color: rgba(26, 16, 8, 0.15);
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="selection:bg-rootsOrange selection:text-parchment overflow-x-hidden">
+
+<!-- Smart Navbar -->
+<nav id="smart-navbar" class="fixed top-0 w-full z-50 flex items-center justify-between px-6 md:px-12 py-6 text-parchment border-b border-parchment/20 bg-gradient-to-b from-obsidian/60 to-transparent transition-all duration-300">
+    <!-- Logo -->
+    <a href="#home" class="text-3xl font-serif tracking-[0.2em] hover:opacity-80 transition-opacity whitespace-nowrap">R O O T ' S</a>
+    
+    <!-- Desktop Links -->
+    <div class="hidden lg:flex items-center gap-6 xl:gap-8 font-sans text-[11px] xl:text-xs uppercase tracking-widest">
+        <a href="#about" class="hover:text-rootsOrange transition-colors">About</a>
+        <a href="#services" class="hover:text-rootsOrange transition-colors">Services</a>
+        <a href="#transformations" class="hover:text-rootsOrange transition-colors">Transformations</a>
+        <a href="#locations" class="hover:text-rootsOrange transition-colors flex items-center gap-1.5">Locations <span class="text-[8px] opacity-70">▼</span></a>
+        <a href="#reviews" class="hover:text-rootsOrange transition-colors">Reviews</a>
+        <a href="#blog" class="hover:text-rootsOrange transition-colors">Blog</a>
+        <span class="text-parchment/30 nav-separator transition-colors duration-300">|</span>
+        <a href="#franchise" class="hover:text-rootsOrange transition-colors">Franchise</a>
+        <a href="#book" class="hover:text-rootsOrange transition-colors flex items-center gap-1.5">Book Appointment <span class="text-[8px] opacity-70">▼</span></a>
+    </div>
+
+    <!-- Mobile Hamburger -->
+    <button class="lg:hidden flex flex-col gap-1.5 w-6 hover:opacity-80 transition-opacity" aria-label="Open Menu">
+        <span class="w-full h-px bg-current"></span>
+        <span class="w-full h-px bg-current"></span>
+        <span class="w-full h-px bg-current"></span>
+    </button>
+</nav>
+
+<!-- Main Mockup Container -->
+<div>
+
+    <!-- ==========================================
+         PAGE: HOME
+    =========================================== -->
+    <main id="home">
+
+        <!-- Home: Cinematic Hero (Lakme Style) -->
+        <section class="relative w-full min-h-screen img-placeholder flex-col justify-end pb-24 items-center">
+            <!-- Background Image Placeholder -->
+            <div class="absolute inset-0 img-placeholder-dark z-0 opacity-10">
+                Hero Image Placeholder (Soft lighting, high texture, premium salon interior or model)
+            </div>
+            
+            <div class="relative z-10 text-center max-w-4xl px-4 flex flex-col items-center">
+                <span class="font-sans text-rootsOrange uppercase tracking-[0.2em] text-sm mb-6 block">The Premium Experience</span>
+                <h1 class="font-serif text-6xl md:text-8xl text-obsidian leading-[1.1] mb-8">
+                    Your Canvas.<br>
+                    <span class="italic text-obsidian/80">Our Masterpiece.</span>
+                </h1>
+                <a href="#" class="btn-primary">Reserve Your Time</a>
+            </div>
+        </section>
+
+        <!-- Home: Trust Strip -->
+        <section class="py-16 border-b border-black/10 bg-parchment">
+            <div class="container mx-auto px-8 md:px-16 flex flex-wrap justify-between items-center font-sans text-sm uppercase tracking-widest text-obsidian/70">
+                <div class="w-1/2 md:w-auto text-center md:text-left mb-6 md:mb-0">
+                    <span class="block font-serif text-3xl text-obsidian mb-1">15+</span>
+                    Years of Mastery
+                </div>
+                <div class="w-1/2 md:w-auto text-center md:text-left mb-6 md:mb-0">
+                    <span class="block font-serif text-3xl text-obsidian mb-1">4.9/5</span>
+                    Google Average
+                </div>
+                <div class="w-1/2 md:w-auto text-center md:text-left">
+                    <span class="block font-serif text-3xl text-obsidian mb-1">3</span>
+                    Premium Locations
+                </div>
+                <div class="w-1/2 md:w-auto text-center md:text-left">
+                    <span class="block font-serif text-3xl text-obsidian mb-1">20k+</span>
+                    Transformations
+                </div>
+            </div>
+        </section>
+
+        <!-- Home: Services (Expanding Columns concept) -->
+        <section class="py-section bg-linen">
+            <div class="container mx-auto px-8 md:px-16">
+                <!-- Section Header -->
+                <div class="flex justify-between items-end mb-16">
+                    <div>
+                        <span class="font-sans text-rootsOrange uppercase tracking-[0.15em] text-xs font-semibold mb-2 block">Our Expertise</span>
+                        <h2 class="font-serif text-4xl md:text-5xl text-obsidian">Curated Services</h2>
+                    </div>
+                    <a href="#" class="font-sans uppercase text-sm tracking-widest text-obsidian border-b border-obsidian pb-1 hover:text-rootsOrange hover:border-rootsOrange transition-colors hidden md:block">View All Services</a>
+                </div>
+
+                <!-- Service Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 h-[600px]">
+                    <!-- Service Card 1 -->
+                    <div class="group relative overflow-hidden bg-parchment col-span-1 border border-obsidian/5">
+                        <div class="absolute inset-0 img-placeholder opacity-50 transition-opacity duration-500 group-hover:opacity-70">Hair Model</div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/20 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-8 w-full">
+                            <span class="font-sans text-parchment/60 text-xs uppercase tracking-widest block mb-2">01</span>
+                            <h3 class="font-serif text-3xl text-parchment mb-4">Hair</h3>
+                            <div class="h-0 overflow-hidden group-hover:h-12 transition-all duration-300">
+                                <a href="#" class="text-rootsOrange uppercase text-xs tracking-widest font-sans flex items-center gap-2">Discover <span class="text-lg">→</span></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Service Card 2 -->
+                    <div class="group relative overflow-hidden bg-parchment col-span-1 md:col-span-2 border border-obsidian/5">
+                        <div class="absolute inset-0 img-placeholder opacity-50 transition-opacity duration-500 group-hover:opacity-70">Bridal & Makeup Content</div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/20 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-8 w-full">
+                            <span class="font-sans text-parchment/60 text-xs uppercase tracking-widest block mb-2">02</span>
+                            <h3 class="font-serif text-4xl text-parchment mb-4">Bridal & Special Occasion</h3>
+                            <div class="h-0 overflow-hidden group-hover:h-12 transition-all duration-300">
+                                <a href="#" class="text-rootsOrange uppercase text-xs tracking-widest font-sans flex items-center gap-2">Discover <span class="text-lg">→</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 3 -->
+                    <div class="flex flex-col gap-6 col-span-1">
+                        <div class="group relative overflow-hidden bg-parchment flex-1 border border-obsidian/5">
+                            <div class="absolute inset-0 img-placeholder opacity-50 transition-opacity duration-500 group-hover:opacity-70">Skin Model</div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/20 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <span class="font-sans text-parchment/60 text-xs uppercase tracking-widest block mb-2">03</span>
+                                <h3 class="font-serif text-2xl text-parchment mb-2">Skin</h3>
+                                <div class="h-0 overflow-hidden group-hover:h-8 transition-all duration-300">
+                                    <a href="#" class="text-rootsOrange uppercase text-[10px] tracking-widest font-sans">Discover →</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group relative overflow-hidden bg-parchment flex-1 border border-obsidian/5">
+                            <div class="absolute inset-0 img-placeholder opacity-50 transition-opacity duration-500 group-hover:opacity-70">Tattoo Work</div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/20 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-6 w-full">
+                                <span class="font-sans text-parchment/60 text-xs uppercase tracking-widest block mb-2">04</span>
+                                <h3 class="font-serif text-2xl text-parchment mb-2">Tattoo</h3>
+                                <div class="h-0 overflow-hidden group-hover:h-8 transition-all duration-300">
+                                    <a href="#" class="text-rootsOrange uppercase text-[10px] tracking-widest font-sans">Discover →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Home: Before / After Highlight (Full width slider concept) -->
+        <section class="py-section bg-parchment">
+            <div class="container mx-auto px-8 md:px-16 text-center max-w-3xl mb-16">
+                <span class="font-sans text-rootsOrange uppercase tracking-[0.15em] text-xs font-semibold mb-2 block">The Root's Difference</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-obsidian mb-6">Visible Transformations</h2>
+                <p class="font-sans text-obsidian/70 leading-relaxed">We don't just change your hair. We elevate your entire presence. Slide to reveal the mastery behind our signature transformations.</p>
+            </div>
+
+            <!-- Slider interface placeholder -->
+            <div class="w-full h-[60vh] max-w-7xl mx-auto px-4 md:px-16 relative">
+                <div class="w-full h-full relative overflow-hidden bg-obsidian border-4 border-parchment shadow-xl">
+                    <div class="absolute inset-0 img-placeholder-dark bg-obsidian">
+                        AFTER IMAGE
+                    </div>
+                    <!-- Draggable overlay -->
+                    <div class="absolute inset-0 w-1/2 overflow-hidden border-r-2 border-rootsOrange">
+                        <div class="absolute inset-0 w-[200%] img-placeholder bg-linen text-obsidian">
+                            BEFORE IMAGE
+                        </div>
+                    </div>
+                    <!-- Drag handle -->
+                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-rootsOrange flex items-center justify-center text-white shadow-lg cursor-ew-resize">
+                        <span class="text-xs">↔</span>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12">
+                    <a href="#" class="btn-outline">View Transformation Gallery</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Home: Bottom CTA -->
+        <section class="py-24 bg-obsidian text-parchment text-center px-4">
+            <div class="max-w-2xl mx-auto flex flex-col items-center">
+                <h2 class="font-serif text-4xl md:text-5xl mb-6">Ready for your transformation?</h2>
+                <p class="font-sans text-parchment/70 mb-10">Step into the premier salon experience in Hyderabad. Let our experts craft your signature look.</p>
+                <a href="#" class="btn-primary">Book Consultation via WhatsApp</a>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="page-separator" data-page-name="PAGE: SERVICES"></div>
+
+    <!-- ==========================================
+         PAGE: SERVICES
+    =========================================== -->
+    <main id="services">
+        <!-- Services Hero -->
+        <section class="pt-32 pb-16 bg-parchment border-b border-obsidian/10">
+            <div class="container mx-auto px-8 md:px-16">
+                <span class="font-sans text-rootsOrange uppercase tracking-[0.15em] text-xs font-semibold mb-4 block">Menu</span>
+                <h1 class="font-serif text-6xl md:text-7xl text-obsidian mb-6">Our Services.</h1>
+                <p class="font-sans text-obsidian/70 max-w-xl text-lg">Curated treatments and expert styling designed to elevate your aesthetic.</p>
+            </div>
+        </section>
+
+        <!-- Services Menu Grid -->
+        <section class="py-section bg-linen">
+            <div class="container mx-auto px-8 md:px-16">
+                
+                <!-- Category 1 -->
+                <div class="mb-24">
+                    <div class="flex items-end mb-12">
+                        <span class="font-sans text-obsidian/40 text-4xl font-light mr-6">01</span>
+                        <h2 class="font-serif text-4xl text-obsidian">Hair Masterclass</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="aspect-[4/3] img-placeholder w-full">Featured Hair Image</div>
+                        <div class="flex flex-col justify-center">
+                            <ul class="space-y-6">
+                                <li class="border-b border-obsidian/10 pb-4">
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <h3 class="font-serif text-xl">Bespoke Haircut & Styling</h3>
+                                        <span class="font-sans font-medium text-sm">From ₹999</span>
+                                    </div>
+                                    <p class="font-sans text-obsidian/60 text-sm">Consultation, signature wash, precision cut, and professional blow-dry.</p>
+                                </li>
+                                <li class="border-b border-obsidian/10 pb-4">
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <h3 class="font-serif text-xl">Global Color & Balayage</h3>
+                                        <span class="font-sans font-medium text-sm">From ₹4,500</span>
+                                    </div>
+                                    <p class="font-sans text-obsidian/60 text-sm">Custom color mixing, application, and post-color hair care treatment.</p>
+                                </li>
+                                <li class="border-b border-obsidian/10 pb-4">
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <h3 class="font-serif text-xl">Keratin Reconstruction</h3>
+                                        <span class="font-sans font-medium text-sm">From ₹6,000</span>
+                                    </div>
+                                    <p class="font-sans text-obsidian/60 text-sm">Frizz-elimination and intensive protein therapy for glass-like shine.</p>
+                                </li>
+                            </ul>
+                            <a href="#" class="mt-8 font-sans uppercase text-xs tracking-widest text-rootsOrange self-start border-b border-rootsOrange pb-1">View Full Hair Menu</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="mb-24">
+                    <div class="flex items-end mb-12">
+                        <span class="font-sans text-obsidian/40 text-4xl font-light mr-6">02</span>
+                        <h2 class="font-serif text-4xl text-obsidian">Skin Rituals</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="flex flex-col justify-center order-2 md:order-1">
+                            <ul class="space-y-6">
+                                <li class="border-b border-obsidian/10 pb-4">
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <h3 class="font-serif text-xl">Signature Radiance Facial</h3>
+                                        <span class="font-sans font-medium text-sm">From ₹2,499</span>
+                                    </div>
+                                    <p class="font-sans text-obsidian/60 text-sm">Deep cleansing, exfoliation, massage, and customized masque.</p>
+                                </li>
+                                <li class="border-b border-obsidian/10 pb-4">
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <h3 class="font-serif text-xl">Advanced HydraTherapy</h3>
+                                        <span class="font-sans font-medium text-sm">From ₹3,999</span>
+                                    </div>
+                                    <p class="font-sans text-obsidian/60 text-sm">Machine-assisted deep hydration and pore refining treatment.</p>
+                                </li>
+                            </ul>
+                            <a href="#" class="mt-8 font-sans uppercase text-xs tracking-widest text-rootsOrange self-start border-b border-rootsOrange pb-1">View Full Skin Menu</a>
+                        </div>
+                        <div class="aspect-[4/3] img-placeholder w-full order-1 md:order-2">Featured Skin Image</div>
+                    </div>
+                </div>
+
+                <!-- The rest of the categories follow this alternating pattern -->
+
+            </div>
+        </section>
+    </main>
+
+    <div class="page-separator" data-page-name="PAGE: TRANSFORMATIONS"></div>
+
+    <!-- ==========================================
+         PAGE: TRANSFORMATIONS
+    =========================================== -->
+    <main id="transformations">
+        <!-- Header -->
+        <section class="pt-32 pb-16 bg-parchment text-center">
+            <div class="container mx-auto px-4 max-w-4xl">
+                <span class="font-sans text-rootsOrange uppercase tracking-[0.15em] text-xs font-semibold mb-4 block">Our Portfolio</span>
+                <h1 class="font-serif text-5xl md:text-6xl text-obsidian mb-6">Real Results.</h1>
+                <p class="font-sans text-obsidian/70 text-lg">Browse our gallery of stunning client transformations.</p>
+            </div>
+        </section>
+
+        <!-- Filter Bar -->
+        <div class="w-full border-y border-obsidian/10 flex justify-center py-4 bg-linen sticky top-0 z-30">
+            <div class="flex space-x-6 md:space-x-8 font-sans uppercase text-[10px] md:text-xs tracking-widest flex-wrap justify-center gap-y-4 px-4">
+                <button class="text-rootsOrange font-semibold">All</button>
+                <div class="h-4 w-px bg-obsidian/20 hidden md:block"></div>
+                
+                <!-- Hair Categories -->
+                <button class="text-obsidian/60 hover:text-obsidian transition-colors">Hair Color</button>
+                <button class="text-obsidian/60 hover:text-obsidian transition-colors">Balayage</button>
+                <button class="text-obsidian/60 hover:text-obsidian transition-colors">Cut & Style</button>
+                <div class="h-4 w-px bg-obsidian/20 hidden md:block"></div>
+                
+                <!-- Skin Categories -->
+                <button class="text-obsidian/60 hover:text-obsidian transition-colors">Skin Therapy</button>
+                <button class="text-obsidian/60 hover:text-obsidian transition-colors">HydraFacial</button>
+                <button class="text-obsidian/60 hover:text-obsidian transition-colors">Bridal Makeover</button>
+            </div>
+        </div>
+
+        <!-- Masonry Grid -->
+        <section class="py-8 bg-parchment">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Column 1 -->
+                    <div class="flex flex-col gap-4">
+                        <div class="img-placeholder h-[400px] w-full">Skin Transformation Before/After</div>
+                        <div class="img-placeholder h-[300px] w-full">Image</div>
+                        <div class="img-placeholder h-[500px] w-full">Image</div>
+                    </div>
+                    <!-- Column 2 -->
+                    <div class="flex flex-col gap-4">
+                        <div class="img-placeholder h-[300px] w-full">Image</div>
+                        <div class="img-placeholder h-[600px] w-full">Image</div>
+                        <div class="img-placeholder h-[350px] w-full">Image</div>
+                    </div>
+                    <!-- Column 3 -->
+                    <div class="flex flex-col gap-4">
+                        <div class="img-placeholder h-[500px] w-full">Image</div>
+                        <div class="img-placeholder h-[300px] w-full">Image</div>
+                        <div class="img-placeholder h-[400px] w-full">Image</div>
+                    </div>
+                </div>
+                <div class="flex justify-center mt-16">
+                    <button class="btn-outline">Load More Inspiration</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="page-separator" data-page-name="PAGE: LOCATIONS"></div>
+
+    <!-- ==========================================
+         PAGE: LOCATIONS
+    =========================================== -->
+    <main id="locations">
+        <section class="py-section bg-linen flex flex-col md:flex-row min-h-screen">
+            <!-- Left: Location List -->
+            <div class="w-full md:w-5/12 bg-parchment p-8 md:p-16 overflow-y-auto border-r border-obsidian/10">
+                <span class="font-sans text-rootsOrange uppercase tracking-[0.15em] text-xs font-semibold mb-4 block">Visit Us</span>
+                <h1 class="font-serif text-5xl text-obsidian mb-12">Our Salons</h1>
+                
+                <div class="space-y-8">
+                    <!-- Location Card 1 -->
+                    <div class="border border-rootsOrange p-6 bg-parchment relative shadow-sm">
+                        <div class="absolute top-0 right-0 bg-rootsOrange text-white text-[10px] uppercase tracking-widest px-3 py-1 font-sans">Flagship</div>
+                        <h3 class="font-serif text-2xl text-obsidian mb-2">Banjara Hills</h3>
+                        <p class="font-sans text-sm text-obsidian/70 mb-4 line-clamp-2">Road No. 12, NBT Nagar, Banjara Hills, Hyderabad, Telangana 500034</p>
+                        <div class="flex gap-4">
+                            <a href="#" class="font-sans text-xs uppercase tracking-widest text-rootsOrange border-b border-rootsOrange pb-0.5">Directions</a>
+                            <a href="#" class="font-sans text-xs uppercase tracking-widest text-obsidian border-b border-obsidian pb-0.5">Call Salon</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Location Card 2 -->
+                    <div class="border border-obsidian/10 hover:border-obsidian/30 transition-colors p-6 bg-parchment cursor-pointer">
+                        <h3 class="font-serif text-2xl text-obsidian mb-2">Jubilee Hills</h3>
+                        <p class="font-sans text-sm text-obsidian/70 mb-4 line-clamp-2">Plot No. 123, Road No. 36, Jubilee Hills, Hyderabad, Telangana 500033</p>
+                        <div class="flex gap-4">
+                            <a href="#" class="font-sans text-xs uppercase tracking-widest text-obsidian/50">Select branch</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right: Map Placeholder -->
+            <div class="w-full md:w-7/12 img-placeholder min-h-[50vh] md:min-h-0 bg-[#E0E0E0]">
+                Interactive Map embed (Google Maps API)
+            </div>
+        </section>
+    </main>
+
+    <div class="page-separator" data-page-name="PAGE: REVIEWS"></div>
+
+    <!-- ==========================================
+         PAGE: REVIEWS
+    =========================================== -->
+    <main id="reviews">
+        <section class="py-section bg-parchment">
+            <div class="container mx-auto px-8 md:px-16 text-center max-w-4xl mx-auto mb-20">
+                <span class="font-sans text-rootsOrange uppercase tracking-[0.15em] text-xs font-semibold mb-4 block">Client Love</span>
+                <h1 class="font-serif text-5xl md:text-6xl text-obsidian mb-8">Words From Our Guests</h1>
+                <div class="flex justify-center items-center gap-4">
+                    <span class="text-rootsOrange text-2xl">★★★★★</span>
+                    <span class="font-serif text-xl">4.9/5 Average Rating</span>
+                </div>
+            </div>
+
+            <!-- Review Cards Grid -->
+            <div class="container mx-auto px-8 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-linen p-8 border border-obsidian/5">
+                    <div class="text-rootsOrange mb-4">★★★★★</div>
+                    <p class="font-serif text-lg leading-relaxed text-obsidian mb-6">"Absolutely phenomenal experience. The stylists took their time to understand exactly what I wanted. My balayage is flawless."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-obsidian text-parchment flex items-center justify-center font-sans text-sm">S</div>
+                        <div>
+                            <p class="font-sans font-semibold text-sm">Sarah V.</p>
+                            <p class="font-sans text-xs text-obsidian/50">Banjara Hills • Hair Color</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="bg-linen p-8 border border-obsidian/5">
+                    <div class="text-rootsOrange mb-4">★★★★★</div>
+                    <p class="font-serif text-lg leading-relaxed text-obsidian mb-6">"The only salon I trust with my skin. The HydraTherapy facial completely transformed my skin texture before my wedding."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-obsidian text-parchment flex items-center justify-center font-sans text-sm">M</div>
+                        <div>
+                            <p class="font-sans font-semibold text-sm">Meghana K.</p>
+                            <p class="font-sans text-xs text-obsidian/50">Jubilee Hills • Skin Care</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-linen p-8 border border-obsidian/5">
+                    <div class="text-rootsOrange mb-4">★★★★★</div>
+                    <p class="font-serif text-lg leading-relaxed text-obsidian mb-6">"Super clean, professional, and luxurious. Felt pampered from the moment I walked in. Highly recommend booking completely in advance."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-obsidian text-parchment flex items-center justify-center font-sans text-sm">R</div>
+                        <div>
+                            <p class="font-sans font-semibold text-sm">Rahul S.</p>
+                            <p class="font-sans text-xs text-obsidian/50">Banjara Hills • Haircut</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <a href="#" class="btn-primary">Leave a Review</a>
+            </div>
+        </section>
+    </main>
+
+    <div class="page-separator" data-page-name="PAGE: BLOG"></div>
+
+    <!-- ==========================================
+         PAGE: BLOG (Listing)
+    =========================================== -->
+    <main id="blog">
+        <section class="py-section bg-linen">
+            <div class="container mx-auto px-8 md:px-16">
+                <h1 class="font-serif text-5xl md:text-6xl text-obsidian mb-12">The Editorial.</h1>
+                
+                <!-- Featured Article -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20 bg-parchment">
+                    <div class="aspect-video md:aspect-auto img-placeholder">Featured Blog Image</div>
+                    <div class="p-8 md:p-12 flex flex-col justify-center">
+                        <span class="font-sans text-rootsOrange uppercase tracking-widest text-[10px] mb-4">Hair Care • Trending</span>
+                        <h2 class="font-serif text-3xl md:text-4xl text-obsidian mb-4">The Complete Guide to Maintaining Your Balayage Through the Indian Summer</h2>
+                        <p class="font-sans text-obsidian/70 mb-8 line-clamp-3">Discover the professional secrets to keeping your highlights bright and your hair healthy when temperatures rise.</p>
+                        <a href="#" class="font-sans uppercase text-xs tracking-widest text-obsidian border-b border-obsidian pb-1 self-start hover:text-rootsOrange hover:border-rootsOrange">Read Article</a>
+                    </div>
+                </div>
+
+                <!-- Article Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Standard Post -->
+                    <div class="group cursor-pointer">
+                        <div class="w-full aspect-[4/3] img-placeholder mb-6 overflow-hidden">
+                            <div class="w-full h-full transform transition-transform duration-500 group-hover:scale-105">Grid Image</div>
+                        </div>
+                        <span class="font-sans text-rootsOrange uppercase tracking-widest text-[10px] mb-2 block">Skin Rituals</span>
+                        <h3 class="font-serif text-xl border-b border-transparent group-hover:border-obsidian inline-block transition-colors pb-1">Why HydraTherapy is the Pre-Bridal Secret</h3>
+                    </div>
+                    <!-- Standard Post -->
+                    <div class="group cursor-pointer">
+                        <div class="w-full aspect-[4/3] img-placeholder mb-6 overflow-hidden">
+                            <div class="w-full h-full transform transition-transform duration-500 group-hover:scale-105">Grid Image</div>
+                        </div>
+                        <span class="font-sans text-rootsOrange uppercase tracking-widest text-[10px] mb-2 block">Trends</span>
+                        <h3 class="font-serif text-xl border-b border-transparent group-hover:border-obsidian inline-block transition-colors pb-1">5 Trending Haircuts for 2026</h3>
+                    </div>
+                    <!-- Standard Post -->
+                    <div class="group cursor-pointer">
+                        <div class="w-full aspect-[4/3] img-placeholder mb-6 overflow-hidden">
+                            <div class="w-full h-full transform transition-transform duration-500 group-hover:scale-105">Grid Image</div>
+                        </div>
+                        <span class="font-sans text-rootsOrange uppercase tracking-widest text-[10px] mb-2 block">At-Home</span>
+                        <h3 class="font-serif text-xl border-b border-transparent group-hover:border-obsidian inline-block transition-colors pb-1">Choosing the Right Sulfates-Free Shampoo</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="page-separator" data-page-name="PAGE: ABOUT"></div>
+
+    <!-- ==========================================
+         PAGE: ABOUT
+    =========================================== -->
+    <main id="about">
+        <!-- Hero -->
+        <section class="h-[60vh] img-placeholder relative flex items-center justify-center">
+            <div class="absolute inset-0 bg-obsidian/40"></div>
+            <h1 class="relative z-10 font-serif text-6xl md:text-8xl text-parchment text-center">
+                Our Story
+            </h1>
+        </section>
+
+        <!-- Founder / Intro -->
+        <section class="py-section bg-parchment">
+            <div class="container mx-auto px-8 md:px-16 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div class="order-2 md:order-1">
+                    <span class="font-sans text-rootsOrange uppercase tracking-[0.15em] text-xs font-semibold mb-6 block">The Vision</span>
+                    <h2 class="font-serif text-4xl text-obsidian mb-6">Born from a passion for precision.</h2>
+                    <div class="font-sans text-obsidian/80 space-y-4 leading-relaxed text-sm md:text-base">
+                        <p>We started Root's with a singular mission: to bring international styling standards to Hyderabad. We believed that a salon visit shouldn't just be a transaction—it should be an experience.</p>
+                        <p>Over the past decade, we have assembled a team of true artists. Specialists who don't just follow trends, but engineer looks tailored to your distinct facial structure, lifestyle, and personality.</p>
+                    </div>
+                    <!-- Signature Image/Text -->
+                    <div class="mt-8 font-serif text-2xl italic text-obsidian/60">Ajay Kumar</div>
+                    <div class="text-xs uppercase tracking-widest text-rootsOrange mt-1 font-sans">Founder & Master Stylist</div>
+                </div>
+                <!-- Image -->
+                <div class="order-1 md:order-2 aspect-[3/4] img-placeholder">
+                    Founder Portrait Placeholder
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="page-separator" data-page-name="PAGE: FRANCHISE"></div>
+
+    <!-- ==========================================
+         PAGE: FRANCHISE
+    =========================================== -->
+    <main id="franchise">
+        <section class="py-section bg-obsidian text-parchment">
+            <div class="container mx-auto px-8 md:px-16">
+                <!-- Header -->
+                <div class="text-center max-w-3xl mx-auto mb-20">
+                    <span class="font-sans text-rootsOrange uppercase tracking-[0.15em] text-xs font-semibold mb-4 block">Partner With Excellence</span>
+                    <h1 class="font-serif text-5xl md:text-6xl mb-6">Own a Root's Franchise</h1>
+                    <p class="font-sans text-parchment/70 text-lg">Join one of India's fastest-growing luxury salon brands. We provide the blueprint for profitability.</p>
+                </div>
+
+                <!-- 2-Col Data -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
+                    <div>
+                        <h3 class="font-serif text-3xl mb-8 border-b border-parchment/20 pb-4">Why Partner With Us?</h3>
+                        <ul class="space-y-6 font-sans text-parchment/80">
+                            <li class="flex gap-4"><span class="text-rootsOrange">✓</span> Comprehensive staff training at the Root's Academy</li>
+                            <li class="flex gap-4"><span class="text-rootsOrange">✓</span> Proven operational SOPs reducing wastage by 30%</li>
+                            <li class="flex gap-4"><span class="text-rootsOrange">✓</span> Turnkey architectural interior design support</li>
+                            <li class="flex gap-4"><span class="text-rootsOrange">✓</span> Brand-level digital marketing and localized SEO</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-3xl mb-8 border-b border-parchment/20 pb-4">Investment Snapshot</h3>
+                        <ul class="space-y-6 font-sans text-parchment/80">
+                            <li class="flex justify-between border-b border-parchment/10 pb-2">
+                                <span>Area Required</span>
+                                <span class="font-semibold text-parchment">1500 - 2000 Sq.Ft</span>
+                            </li>
+                            <li class="flex justify-between border-b border-parchment/10 pb-2">
+                                <span>Initial Investment</span>
+                                <span class="font-semibold text-parchment">₹50L - ₹80L</span>
+                            </li>
+                            <li class="flex justify-between border-b border-parchment/10 pb-2">
+                                <span>Estimated Break-even</span>
+                                <span class="font-semibold text-parchment">12 - 18 Months</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Enquiry Section -->
+                <div class="bg-parchment text-obsidian p-8 md:p-16 max-w-4xl mx-auto shadow-2xl">
+                    <h2 class="font-serif text-4xl mb-8 text-center">Express Interest</h2>
+                    <form class="space-y-6 font-sans">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest text-obsidian/60 mb-2">Full Name</label>
+                                <input type="text" class="w-full border-b border-obsidian/20 bg-transparent py-2 px-0 focus:outline-none focus:border-rootsOrange transition-colors" placeholder="John Doe">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-widest text-obsidian/60 mb-2">Phone Number</label>
+                                <input type="tel" class="w-full border-b border-obsidian/20 bg-transparent py-2 px-0 focus:outline-none focus:border-rootsOrange transition-colors" placeholder="+91 00000 00000">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest text-obsidian/60 mb-2">City of Interest</label>
+                            <input type="text" class="w-full border-b border-obsidian/20 bg-transparent py-2 px-0 focus:outline-none focus:border-rootsOrange transition-colors" placeholder="E.g. Bangalore">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest text-obsidian/60 mb-2">Message (Optional)</label>
+                            <textarea class="w-full border-b border-obsidian/20 bg-transparent py-2 px-0 focus:outline-none focus:border-rootsOrange transition-colors min-h-[100px]" placeholder="Tell us a bit about your background..."></textarea>
+                        </div>
+                        <div class="pt-6 text-center">
+                            <button type="submit" class="btn-primary w-full md:w-auto">Submit Proposal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="bg-obsidian text-parchment pt-20 pb-10">
+        <div class="container mx-auto px-8 md:px-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="text-4xl font-serif font-semibold tracking-wide mb-6">ROOT'S</div>
+                    <p class="font-sans text-sm text-parchment/60 max-w-sm leading-relaxed mb-8">
+                        The ultimate luxury family salon experience in South India. Master stylists, premium products, and impeccable service.
+                    </p>
+                    <div class="flex space-x-4">
+                        <!-- Social Icons Placeholders -->
+                        <div class="w-10 h-10 border border-parchment/20 rounded-full flex items-center justify-center hover:bg-rootsOrange hover:border-rootsOrange transition-colors cursor-pointer">IN</div>
+                        <div class="w-10 h-10 border border-parchment/20 rounded-full flex items-center justify-center hover:bg-rootsOrange hover:border-rootsOrange transition-colors cursor-pointer">FB</div>
+                        <div class="w-10 h-10 border border-parchment/20 rounded-full flex items-center justify-center hover:bg-rootsOrange hover:border-rootsOrange transition-colors cursor-pointer">YT</div>
+                    </div>
+                </div>
+                
+                <!-- Links -->
+                <div>
+                    <h4 class="font-sans text-rootsOrange uppercase tracking-widest text-xs font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-3 font-sans text-sm text-parchment/70">
+                        <li><a href="#services" class="hover:text-parchment transition-colors">Services Directory</a></li>
+                        <li><a href="#transformations" class="hover:text-parchment transition-colors">Transformations</a></li>
+                        <li><a href="#locations" class="hover:text-parchment transition-colors">Locations</a></li>
+                        <li><a href="#franchise" class="hover:text-parchment transition-colors">Partner With Us</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Minimal -->
+                <div>
+                    <h4 class="font-sans text-rootsOrange uppercase tracking-widest text-xs font-semibold mb-6">Connect</h4>
+                    <ul class="space-y-3 font-sans text-sm text-parchment/70">
+                        <li>hello@rootssalon.in</li>
+                        <li>+91 99999 99999</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-parchment/10 pt-8 flex flex-col md:flex-row justify-between items-center font-sans text-xs text-parchment/40 gap-y-4">
+                <p>&copy; 2026 Root's Family Salon. All rights reserved.</p>
+                <p class="text-parchment/60 flex items-center justify-center gap-1.5 group">
+                    Made with <svg class="w-3.5 h-3.5 text-rootsOrange fill-current transition-transform group-hover:scale-110" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> by <a href="https://www.skarcreation.in/" target="_blank" rel="noopener noreferrer" class="text-parchment hover:text-rootsOrange transition-colors border-b border-parchment/30 hover:border-rootsOrange pb-[1px] ml-0.5 font-medium tracking-wide">skar</a>
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-parchment transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-parchment transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+<!-- Sticky WhatsApp Button -->
+<a href="https://wa.me/919700744357" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp"
+   class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-3.5 flex items-center justify-center rounded-full shadow-[0_4px_14px_rgba(37,211,102,0.4)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.6)] hover:-translate-y-1 transition-all duration-300 group">
+    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+    </svg>
+</a>
+<script>
+    const navbar = document.getElementById('smart-navbar');
+    const navSeparator = document.querySelector('.nav-separator');
+    const scrollThreshold = 80;
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        // Color transition logic (turn color according to palette)
+        if (currentScrollY > scrollThreshold) {
+            navbar.classList.remove('text-parchment', 'border-parchment/20', 'bg-gradient-to-b', 'from-obsidian/60', 'to-transparent');
+            navbar.classList.add('bg-parchment', 'text-obsidian', 'shadow-md', 'border-obsidian/10');
+            if(navSeparator) {
+                navSeparator.classList.remove('text-parchment/30');
+                navSeparator.classList.add('text-obsidian/30');
+            }
+            
+            // Interaction: not visible while scrolling down, visible scrolling up
+            if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold + 50) {
+                // Scrolling down -> Not Visible
+                navbar.style.transform = 'translateY(-100%)';
+            } else if (currentScrollY < lastScrollY) {
+                // Scrolling up -> Visible
+                navbar.style.transform = 'translateY(0)';
+            }
+        } else {
+            // At top (transparent hero overlaid)
+            navbar.classList.add('text-parchment', 'border-parchment/20', 'bg-gradient-to-b', 'from-obsidian/60', 'to-transparent');
+            navbar.classList.remove('bg-parchment', 'text-obsidian', 'shadow-md', 'border-obsidian/10');
+            if(navSeparator) {
+                navSeparator.classList.remove('text-obsidian/30');
+                navSeparator.classList.add('text-parchment/30');
+            }
+            navbar.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollY = currentScrollY;
+    }, { passive: true });
+</script>
+</body>
+</html>

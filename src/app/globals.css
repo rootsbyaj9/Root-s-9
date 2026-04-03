@@ -1,0 +1,208 @@
+/* ═══════════════════════════════════════════════════════════
+   TAILWIND CSS v4 ENTRY POINT
+   @import "tailwindcss" MUST be first — initializes the engine.
+   Everything else follows in order.
+═══════════════════════════════════════════════════════════ */
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — @theme block
+   Generates BOTH simultaneously:
+     1. Tailwind utility classes  → bg-parchment, text-obsidian, etc.
+     2. CSS custom properties     → var(--color-parchment), etc.
+
+   Naming follows Tailwind v4 namespace conventions:
+     --color-*      → color utilities (bg-, text-, border-, etc.)
+     --font-*       → font-family utilities (font-sans, font-serif)
+     --radius-*     → border-radius utilities (rounded-md)
+     --shadow-*     → box-shadow utilities (shadow-soft)
+     --spacing-*    → all spacing utilities (p-, m-, gap-, w-, h-)
+═══════════════════════════════════════════════════════════ */
+@theme {
+  /* Brand Colors */
+  --color-parchment: #FEFCF8;      /* Primary bg — NOT pure white */
+  --color-linen: #F5EDE0;          /* Section alternates, cards */
+  --color-obsidian: #1A1008;       /* Primary text — NOT pure black */
+  --color-roots-orange: #E87722;   /* CTAs, logo, active states ONLY */
+  --color-blush: #FFF0E6;          /* Badge tints, offer tags */
+  --color-warm-gray: #6B5E53;      /* Secondary text, captions */
+
+  /* Typography
+     --font-dm-sans and --font-playfair are injected by next/font
+     as CSS vars on the <html> element at runtime. Referencing them
+     here lets Tailwind's font-sans / font-serif utilities resolve
+     correctly through the CSS custom property chain. */
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-playfair);
+
+  /* Border Radius */
+  --radius-md: 12px;
+
+  /* Shadows — warm-tinted, never cool grey */
+  --shadow-soft: 0 20px 40px rgba(26, 16, 8, 0.06);
+
+  /* Section Spacing
+     Usage: py-section, px-section, py-section-md */
+  --spacing-section: 120px;
+  --spacing-section-md: 80px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE STYLES
+   Applied globally via Tailwind's @layer base (lowest specificity).
+═══════════════════════════════════════════════════════════ */
+@layer base {
+  body {
+    background-color: var(--color-parchment);
+    color: var(--color-obsidian);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── BORDER RULE ──────────────────────────────────────────
+     Suppresses default browser borders globally.
+     :not(:focus-visible) preserves focus rings on keyboard nav.
+     This is a WCAG requirement — do not widen to * without this guard.
+  ─────────────────────────────────────────────────────────── */
+  *:not(:focus-visible) {
+    border-color: transparent;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY CLASSES (CLAUDE.md approved)
+   Use .ghost-border ONLY when background separation is insufficient.
+   Never use 1px full borders — this is a 0.5px ghost only.
+═══════════════════════════════════════════════════════════ */
+.ghost-border {
+  border: 0.5px solid rgba(26, 16, 8, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GLOBAL OVERFLOW — prevents horizontal scroll on all pages
+═══════════════════════════════════════════════════════════ */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TEXT SELECTION — brand orange tint
+═══════════════════════════════════════════════════════════ */
+::selection {
+  background-color: var(--color-roots-orange);
+  color: var(--color-parchment);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPONENT CLASSES
+   @layer components: above base, below utilities.
+   Define once — use everywhere without Tailwind class soup.
+═══════════════════════════════════════════════════════════ */
+@layer components {
+
+  /* Primary CTA button — roots-orange, always parchment text */
+  .btn-primary {
+    display: inline-block;
+    background-color: var(--color-roots-orange);
+    color: var(--color-parchment);
+    border-radius: 6px;
+    padding: 16px 40px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(232, 119, 34, 0.35);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(232, 119, 34, 0.2);
+    }
+  }
+
+  /* Outline button — obsidian border, transparent bg */
+  .btn-outline {
+    display: inline-block;
+    border: 1px solid var(--color-obsidian);
+    color: var(--color-obsidian);
+    border-radius: 6px;
+    padding: 16px 40px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: var(--color-obsidian);
+      color: var(--color-parchment);
+    }
+  }
+
+  /* Outline button — light variant for dark section backgrounds */
+  .btn-outline-light {
+    display: inline-block;
+    border: 1px solid var(--color-parchment);
+    color: var(--color-parchment);
+    border-radius: 6px;
+    padding: 16px 40px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: var(--color-parchment);
+      color: var(--color-obsidian);
+    }
+  }
+
+  /* Eyebrow label — used above every section heading */
+  .eyebrow {
+    display: block;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-roots-orange);
+    margin-bottom: 0.5rem;
+  }
+
+  /* Hairline rule — 0.5px, warm-tinted */
+  .hairline {
+    width: 100%;
+    height: 0.5px;
+    background-color: rgba(26, 16, 8, 0.15);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   KEYFRAMES
+═══════════════════════════════════════════════════════════ */
+@keyframes slow-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  70%, 100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}

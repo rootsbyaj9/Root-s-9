@@ -1,0 +1,27 @@
+/*
+  ⚠️  TOKENS HAVE MOVED — DO NOT ADD VARIABLES HERE
+
+  All design tokens are now defined in:
+    src/app/globals.css  →  @theme { ... }
+
+  Why: Tailwind v4's @theme block simultaneously generates:
+    — Tailwind utility classes  (bg-parchment, text-obsidian, shadow-soft, etc.)
+    — CSS custom properties     (var(--color-parchment), etc.)
+
+  Using a separate :root {} file would only give you the CSS vars
+  but NOT the utility classes, breaking the wireframe's Tailwind usage.
+
+  Token Reference (defined in globals.css):
+    --color-parchment     #FEFCF8   Primary background
+    --color-linen         #F5EDE0   Section alternates
+    --color-obsidian      #1A1008   Primary text
+    --color-roots-orange  #E87722   CTAs / logo only
+    --color-blush         #FFF0E6   Badge tints
+    --color-warm-gray     #6B5E53   Secondary text
+    --font-sans           DM Sans   (via next/font var)
+    --font-serif          Playfair  (via next/font var)
+    --radius-md           12px
+    --shadow-soft         warm-tinted shadow
+    --spacing-section     120px
+    --spacing-section-md  80px
+*/

@@ -1,0 +1,53 @@
+/**
+ * page.tsx — Homepage
+ *
+ * Section build order (per implementation plan §Phase 1):
+ *   1. Hero        — cinematic full-screen, transparent navbar overlay
+ *   2. TrustStrip  — animated stat counters (GSAP count-up on scroll)
+ *   3. ServicesGrid — 4-column bento grid with hover reveals
+ *   4. BeforeAfter — interactive drag-to-compare slider
+ *   5. CTASection  — shared dark obsidian CTA (WhatsApp conversion)
+ *
+ * SEO: metadata exported at this level for homepage-specific title/description.
+ * Fonts and global layout are in layout.tsx.
+ */
+
+import type { Metadata } from "next";
+import Hero from "@/components/sections/home/Hero";
+import TrustStrip from "@/components/sections/home/TrustStrip";
+import ServicesGrid from "@/components/sections/home/ServicesGrid";
+import BeforeAfter from "@/components/sections/home/BeforeAfter";
+import CTASection from "@/components/sections/shared/CTASection";
+
+export const metadata: Metadata = {
+  title: "Root's The Family Salon | Premium Salon in Hyderabad",
+  description:
+    "Root's Family Salon — premium hair, skin, bridal, and tattoo services in Hyderabad. Real transformations. Expert stylists. Book via WhatsApp.",
+  openGraph: {
+    title: "Root's The Family Salon",
+    description:
+      "Premium hair, skin, bridal, and tattoo services in Hyderabad. Book via WhatsApp.",
+    type: "website",
+  },
+};
+
+export default function HomePage() {
+  return (
+    <>
+      {/* 1 — Cinematic hero (full-screen, transparent navbar overlays this) */}
+      <Hero />
+
+      {/* 2 — Trust strip (stat counters count-up on scroll entry) */}
+      <TrustStrip />
+
+      {/* 3 — Services bento grid (Hair · Bridal · Skin · Tattoo) */}
+      <ServicesGrid />
+
+      {/* 4 — Before/After drag slider */}
+      <BeforeAfter />
+
+      {/* 5 — Dark CTA (shared component, ends every page) */}
+      <CTASection />
+    </>
+  );
+}

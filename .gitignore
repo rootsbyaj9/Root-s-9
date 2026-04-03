@@ -40,11 +40,35 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# User provided files & local testing
-*.html
+# ── Deployment-only repo rules ─────────────────────────────
+# Only src/, public/, config files belong in git.
+# Everything below is local-only.
+
+# AI / editor context docs
 CLAUDE.md
 AGENTS.md
 .vscode/
-
-# Ignore Gemini / AI specific folders
 .gemini/
+
+# Temp / scratch files
+temp_*.txt
+temp_*.md
+*.html
+
+# Raw design assets & working files (not needed for deployment)
+*.svg
+*.ps1
+bento.json
+hero*.json
+pageloading*.json
+page-loading.json
+"hero loading.json"
+"no bg*.svg"
+"black bg.svg"
+"white bg.svg"
+logo.svg
+crop-svgs.ps1
+roots_animation_motion_map.html
+
+# README is local context, not for deployment
+README.md

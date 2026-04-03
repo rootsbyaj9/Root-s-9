@@ -18,7 +18,7 @@ interface CTASectionProps {
 }
 
 export default function CTASection({
-  heading = "Ready for your transformation?",
+  heading = "Ready for your Look?",
   subtext = "Step into the premier salon experience in Hyderabad. Let our experts craft your signature look.",
   ctaLabel = "Book Consultation via WhatsApp",
 }: CTASectionProps) {

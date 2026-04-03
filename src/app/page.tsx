@@ -17,6 +17,7 @@ import Hero from "@/components/sections/home/Hero";
 import TrustStrip from "@/components/sections/home/TrustStrip";
 import ServicesGrid from "@/components/sections/home/ServicesGrid";
 import BeforeAfter from "@/components/sections/home/BeforeAfter";
+import ReviewsPreview from "@/components/sections/home/ReviewsPreview";
 import CTASection from "@/components/sections/shared/CTASection";
 
 export const metadata: Metadata = {
@@ -45,6 +46,9 @@ export default function HomePage() {
 
       {/* 4 — Before/After drag slider */}
       <BeforeAfter />
+
+      {/* 4.5 — Reviews Preview (3-card grid) */}
+      <ReviewsPreview />
 
       {/* 5 — Dark CTA (shared component, ends every page) */}
       <CTASection />

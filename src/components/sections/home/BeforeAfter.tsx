@@ -31,11 +31,11 @@ export default function BeforeAfter() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.9,
+          duration: 1.2,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 75%",
+            trigger: sliderRef.current,
+            start: "top 85%",
             toggleActions: "play none none none",
           },
         }
@@ -98,7 +98,6 @@ export default function BeforeAfter() {
           eyebrow="The Root's Difference"
           heading="Visible"
           headingEmphasis="Transformations"
-          subheading="We don't just change your hair or skin. We elevate your entire presence. Drag to reveal the mastery behind our signature transformations."
           align="center"
         />
       </div>

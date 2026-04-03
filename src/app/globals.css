@@ -45,6 +45,10 @@
      Usage: py-section, px-section, py-section-md */
   --spacing-section: 120px;
   --spacing-section-md: 80px;
+
+  /* Custom Animations */
+  --animate-infinite-scroll-up: infinite-scroll-up 40s linear infinite;
+  --animate-infinite-scroll-down: infinite-scroll-down 40s linear infinite;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -191,6 +195,12 @@ body {
     height: 0.5px;
     background-color: rgba(26, 16, 8, 0.15);
   }
+  
+  /* Infinite Scroll Pausing */
+  .pause-on-hover:hover .scroll-content,
+  .pause-on-hover:hover .scroll-content-reverse {
+    animation-play-state: paused;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -204,5 +214,23 @@ body {
   70%, 100% {
     transform: scale(1.8);
     opacity: 0;
+  }
+}
+
+@keyframes infinite-scroll-up {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%); /* Scroll up by half the total height to loop perfectly */
+  }
+}
+
+@keyframes infinite-scroll-down {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0%);
   }
 }

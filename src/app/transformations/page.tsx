@@ -11,7 +11,7 @@
  */
 
 import type { Metadata } from 'next';
-import TransformationsClient from '@/components/sections/transformations/TransformationsClient';
+import InfiniteBentoScroll from '@/components/sections/transformations/InfiniteBentoScroll';
 import CTASection from '@/components/sections/shared/CTASection';
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 export default function TransformationsPage() {
   return (
     <>
-      <TransformationsClient />
+      <InfiniteBentoScroll />
       <CTASection
         heading="See yourself transformed."
         subtext="Book a consultation and step into your best version. All it takes is one appointment."

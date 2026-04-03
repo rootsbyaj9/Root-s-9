@@ -1,18 +1,13 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { Star } from "lucide-react";
+
 /**
  * OfferStrip.tsx
  *
  * Dismissible orange bar pinned at the very top of the page.
- * State is managed by Header.tsx (parent).
- *
- * Rules:
- *   - bg-roots-orange, text-parchment
- *   - Height: exactly 40px (h-10) — Navbar uses this to offset correctly
- *   - Dismiss persists in localStorage (handled by Header.tsx)
- *
- * Content is hardcoded here for now.
- * CMS-ready: replace string with a prop from Sanity (Milestone 3).
+ * Features an infinite scrolling marquee.
  */
 
 const WHATSAPP_NUMBER = "919550071714";
@@ -22,32 +17,48 @@ interface OfferStripProps {
 }
 
 export default function OfferStrip({ onDismiss }: OfferStripProps) {
+  // We duplicate the offer multiple times so it fills wide screens
+  // and allows a mathematically perfect seamless scroll.
+  const OFFER_ITEMS = Array.from({ length: 6 }).map((_, i) => (
+    <div key={i} className="flex items-center gap-6 shrink-0 pr-6">
+      <Star className="w-3 h-3 fill-current text-parchment/80" />
+      <span>20% OFF ON THE NEW BRANCH AND 10% AT CURRENT BRANCHES.</span>
+      <a
+        href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Root%27s!%20I%20would%20like%20to%20book%20an%20appointment.`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 font-bold hover:text-parchment transition-colors"
+      >
+        BOOK NOW →
+      </a>
+    </div>
+  ));
+
   return (
     <div
-      className="w-full h-10 bg-roots-orange flex items-center justify-center relative px-12"
+      className="w-full h-10 bg-roots-orange relative flex items-center overflow-hidden"
       role="banner"
       aria-label="Current promotion"
     >
-      <p className="font-sans text-parchment text-[11px] uppercase tracking-[0.12em] text-center leading-none">
-        🎉 New Branch Now Open — 20% off all services &nbsp;·&nbsp;
-        10% off at Kondapur &amp; Manikonda branches.{" "}
-        <a
-          href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Root%27s!%20I%20saw%20the%20opening%20offer%20and%20want%20to%20book.`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline underline-offset-2 font-semibold hover:text-parchment/80 transition-colors"
+      <div className="flex whitespace-nowrap overflow-hidden items-center">
+        {/* Seamless marquee: animate from 0% to exactly half its width (-50%) */}
+        <motion.div
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
+          className="font-sans text-parchment text-[11px] uppercase tracking-[0.12em] font-medium flex items-center w-max"
         >
-          Book Now →
-        </a>
-      </p>
+          {OFFER_ITEMS}
+          {OFFER_ITEMS}
+        </motion.div>
+      </div>
 
-      {/* Dismiss button */}
+      {/* Dismiss button - positioned absolutely on top of the scrolling text */}
       <button
         onClick={onDismiss}
         aria-label="Dismiss promotion"
-        className="absolute right-4 text-parchment/70 hover:text-parchment transition-colors text-xl leading-none flex items-center justify-center w-6 h-6"
+        className="absolute right-0 top-0 bottom-0 px-4 bg-gradient-to-l from-roots-orange via-roots-orange to-transparent text-parchment/70 hover:text-parchment transition-colors text-xl leading-none flex items-center justify-center pointer-events-auto z-10"
       >
-        ×
+        <span className="bg-roots-orange pl-2 drop-shadow-md">×</span>
       </button>
     </div>
   );

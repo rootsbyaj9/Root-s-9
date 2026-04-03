@@ -75,10 +75,14 @@ export default function Footer() {
 
           {/* Brand — spans 2 columns on desktop */}
           <div className="sm:col-span-2">
-            {/* Logo wordmark — replace with SVG asset when available */}
-            <p className="font-serif text-3xl font-semibold tracking-[0.15em] text-parchment mb-5">
-              ROOT&apos;S
-            </p>
+            {/* Full brand logo — light variant for dark background */}
+            <div className="mb-5">
+              <img
+                src="/logo-nobg2.svg"
+                alt="Root's Family Salon"
+                className="h-16 md:h-20 lg:h-[100px] w-auto object-contain drop-shadow-[0_2px_8px_rgba(232,119,34,0.15)]"
+              />
+            </div>
             <p className="font-sans text-sm text-parchment/60 max-w-xs leading-relaxed mb-8">
               Hyderabad&apos;s family salon — premium hair, skin, and beauty
               services across 3 branches. Crafted for every generation.

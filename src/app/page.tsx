@@ -35,9 +35,9 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const homePageData = await client.fetch(getHomePageQuery).catch(() => ({}));
-  const servicesData = await client.fetch(getServiceCategoriesQuery).catch(() => []);
-  const reviewsData = await client.fetch(getReviewsQuery).catch(() => []);
+  const homePageData = await client?.fetch(getHomePageQuery).catch(() => ({})) ?? {};
+  const servicesData = await client?.fetch(getServiceCategoriesQuery).catch(() => []) ?? [];
+  const reviewsData = await client?.fetch(getReviewsQuery).catch(() => []) ?? [];
 
   return (
     <>

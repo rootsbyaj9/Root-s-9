@@ -6,7 +6,7 @@ import CTASection from "@/components/sections/shared/CTASection";
 export const revalidate = 60; // Revalidate every minute
 
 export default async function FranchisePage() {
-  const data = await client.fetch(getFranchisePageQuery) || {};
+  const data = await client?.fetch(getFranchisePageQuery).catch(() => ({})) ?? {};
 
   return (
     <main className="min-h-screen bg-parchment pt-32 pb-20">

@@ -2,83 +2,125 @@ import { defineField, defineType } from "sanity";
 
 export const location = defineType({
   name: "location",
-  title: "Branch Location",
+  title: "📍 Branch Locations",
   type: "document",
+  groups: [
+    { name: "contact",  title: "📞 Contact & Address", default: true },
+    { name: "hours",    title: "🕐 Hours & Map"                      },
+    { name: "photo",    title: "📸 Branch Photo"                      },
+    { name: "settings", title: "⚙️ Settings"                          },
+  ],
   fields: [
+    // ── CONTACT & ADDRESS ─────────────────────────────────────────────────
     defineField({
       name: "name",
       title: "Branch Name",
       type: "string",
-      description: 'e.g. "Root\'s The Family Salon - Uppal"',
-      validation: (Rule) => Rule.required(),
+      group: "contact",
+      description: 'Full name of this branch. e.g. "Root\'s The Family Salon - Uppal"',
+      validation: (Rule) => Rule.required().error("Branch name is required."),
     }),
     defineField({
       name: "address",
-      title: "Full Address",
+      title: "Full Street Address",
       type: "text",
       rows: 3,
+      group: "contact",
+      description: "Paste the complete address as it should appear on the website and Google.",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "phone",
-      title: "Phone (with country code)",
+      title: "Phone Number (with + country code)",
       type: "string",
-      description: 'e.g. "+919700744357"',
+      group: "contact",
+      description: 'Include the country code. e.g. "+919700744357"',
       initialValue: "+919700744357",
     }),
     defineField({
       name: "whatsappNumber",
-      title: "WhatsApp Number (digits only, no +)",
+      title: "WhatsApp Number (digits only, no + sign)",
       type: "string",
-      description: 'e.g. "919700744357"',
+      group: "contact",
+      description: 'Write only digits — no spaces, no plus. e.g. "919700744357". This is used for the WhatsApp chat button.',
       initialValue: "919700744357",
-    }),
-    defineField({
-      name: "googleMapsUrl",
-      title: "Google Maps URL",
-      type: "url",
-    }),
-    defineField({
-      name: "embedUrl",
-      title: "Google Maps Embed URL",
-      type: "url",
-      description: "The embed URL for the iframe map",
-    }),
-    defineField({
-      name: "hours",
-      title: "Opening Hours",
-      type: "string",
-      description: 'e.g. "Mon–Sun: 10 AM – 9 PM"',
-      initialValue: "Mon–Sun: 10 AM – 9 PM",
     }),
     defineField({
       name: "description",
       title: "Branch Description",
       type: "text",
       rows: 2,
+      group: "contact",
+      description: "Optional one or two sentences describing this branch. e.g. its specialty or notable features.",
     }),
+
+    // ── HOURS & MAP ──────────────────────────────────────────────────────
+    defineField({
+      name: "hours",
+      title: "Opening Hours",
+      type: "string",
+      group: "hours",
+      description: 'How hours appear on the site. e.g. "Mon–Sun: 10 AM – 9 PM"',
+      initialValue: "Mon–Sun: 10 AM – 9 PM",
+    }),
+    defineField({
+      name: "googleMapsUrl",
+      title: "Google Maps Link",
+      type: "url",
+      group: "hours",
+      description: '🗺️ Open Google Maps, find your branch, click "Share" → "Copy Link". Paste that full link here. Used for the "Get Directions" button.',
+    }),
+    defineField({
+      name: "embedUrl",
+      title: "Google Maps Embed URL",
+      type: "url",
+      group: "hours",
+      description: '🗺️ To get this: open Google Maps → your location → Share → Embed a map → copy just the URL from inside src="...". Paste it here to show an interactive map on the page.',
+    }),
+
+    // ── PHOTO ─────────────────────────────────────────────────────────────
     defineField({
       name: "photo",
       title: "Branch Photo",
       type: "image",
+      group: "photo",
       options: { hotspot: true },
-      fields: [defineField({ name: "alt", title: "Alt Text", type: "string" })],
+      description: "📸 This photo appears on the Locations page for this branch. Use a clear exterior or interior shot of the salon. Recommended: landscape (1200×800px).",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Image Description (for accessibility)",
+          type: "string",
+          description: 'e.g. "Root\'s Salon Uppal branch exterior on main road"',
+        }),
+      ],
     }),
+
+    // ── SETTINGS ─────────────────────────────────────────────────────────
     defineField({
       name: "isActive",
-      title: "Active (show on site)",
+      title: "Show this branch on the website?",
       type: "boolean",
+      group: "settings",
+      description: "Turn OFF to temporarily hide a branch (e.g. if it's under renovation). Turning it back ON shows it again immediately.",
       initialValue: true,
     }),
     defineField({
       name: "displayOrder",
-      title: "Display Order",
+      title: "Sort Order",
       type: "number",
+      group: "settings",
+      description: "The branch with 1 appears first on the page, 2 second, etc.",
       initialValue: 1,
     }),
   ],
-  orderings: [{ title: "Display Order", name: "orderAsc", by: [{ field: "displayOrder", direction: "asc" }] }],
+  orderings: [
+    { title: "Sort Order", name: "orderAsc", by: [{ field: "displayOrder", direction: "asc" }] },
+  ],
   preview: {
-    select: { title: "name", subtitle: "address" },
+    select: { title: "name", subtitle: "address", media: "photo" },
+    prepare({ title, subtitle, media }) {
+      return { title: title || "Unnamed Branch", subtitle: (subtitle || "").split("\n")[0], media };
+    },
   },
 });

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function ServicesPage() {
-  const categories = await client.fetch(getServiceCategoriesQuery) || [];
+  const categories = await client?.fetch(getServiceCategoriesQuery).catch(() => []) ?? [];
 
   return (
     <>

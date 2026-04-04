@@ -31,8 +31,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ReviewsPage() {
-  const reviewsData = await client.fetch(getReviewsQuery).catch(() => []);
-  const siteSettings = await client.fetch(getSiteSettingsQuery).catch(() => ({}));
+  const reviewsData = await client?.fetch(getReviewsQuery).catch(() => []) ?? [];
+  const siteSettings = await client?.fetch(getSiteSettingsQuery).catch(() => ({})) ?? {};
   
   return <ReviewsClient reviews={reviewsData} settings={siteSettings} />;
 }

@@ -16,15 +16,13 @@ export default defineConfig({
   basePath: "/studio",
   projectId,
   dataset,
-  title: "Root's Salon CMS",
+  title: "Root's Salon — Content Manager",
   schema: {
     types: [
-      // ── Page / singleton content ───────────────────────────
       siteSettings,
       aboutPage,
       homePage,
       franchisePage,
-      // ── Repeatable content ─────────────────────────────────
       serviceCategory,
       post,
       location,
@@ -34,30 +32,101 @@ export default defineConfig({
   },
   plugins: [
     structureTool({
+      title: "📂 Content",
       structure: (S) =>
         S.list()
-          .title("Content")
+          .title("What would you like to update?")
           .items([
-            // Singletons — only one document each
+
+            // ── SERVICES MENU ─────────────────────────────────────────────
             S.listItem()
-              .title("Site Settings")
-              .child(S.document().schemaType("siteSettings").documentId("siteSettings")),
+              .title("✂️ Services Menu")
+              .icon(() => "✂️")
+              .child(
+                S.documentTypeList("serviceCategory")
+                  .title("Select a category to edit")
+                  .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
+              ),
+
+            // ── BLOG POSTS ────────────────────────────────────────────────
             S.listItem()
-              .title("About Page")
-              .child(S.document().schemaType("aboutPage").documentId("aboutPage")),
+              .title("📝 Blog Posts")
+              .icon(() => "📝")
+              .child(
+                S.documentTypeList("post")
+                  .title("Blog Posts")
+                  .defaultOrdering([{ field: "publishedAt", direction: "desc" }])
+              ),
+
+            // ── CLIENT REVIEWS ────────────────────────────────────────────
             S.listItem()
-              .title("Home Page")
-              .child(S.document().schemaType("homePage").documentId("homePage")),
+              .title("⭐ Client Reviews")
+              .icon(() => "⭐")
+              .child(
+                S.documentTypeList("review")
+                  .title("Client Reviews")
+              ),
+
+            // ── TRANSFORMATIONS ───────────────────────────────────────────
             S.listItem()
-              .title("Franchise Page")
-              .child(S.document().schemaType("franchisePage").documentId("franchisePage")),
+              .title("🪞 Transformations Gallery")
+              .icon(() => "🪞")
+              .child(
+                S.documentTypeList("transformation")
+                  .title("Transformation Photos")
+              ),
+
             S.divider(),
-            // Collections
-            S.documentTypeListItem("serviceCategory").title("Service Categories"),
-            S.documentTypeListItem("post").title("Blog Posts"),
-            S.documentTypeListItem("location").title("Branch Locations"),
-            S.documentTypeListItem("review").title("Reviews"),
-            S.documentTypeListItem("transformation").title("Transformations Gallery"),
+
+            // ── PAGE CONTENT ──────────────────────────────────────────────
+            S.listItem()
+              .title("🏠 Home Page — Edit Text & Photos")
+              .icon(() => "🏠")
+              .child(
+                S.document()
+                  .schemaType("homePage")
+                  .documentId("homePage")
+                  .title("Home Page")
+              ),
+            S.listItem()
+              .title("ℹ️ About Page — Edit Text & Photos")
+              .icon(() => "ℹ️")
+              .child(
+                S.document()
+                  .schemaType("aboutPage")
+                  .documentId("aboutPage")
+                  .title("About Page")
+              ),
+            S.listItem()
+              .title("🤝 Franchise Page — Edit Text & Photos")
+              .icon(() => "🤝")
+              .child(
+                S.document()
+                  .schemaType("franchisePage")
+                  .documentId("franchisePage")
+                  .title("Franchise Page")
+              ),
+
+            S.divider(),
+
+            // ── LOCATIONS & GLOBAL ────────────────────────────────────────
+            S.listItem()
+              .title("📍 Branch Locations — Addresses & Hours")
+              .icon(() => "📍")
+              .child(
+                S.documentTypeList("location")
+                  .title("Branch Locations")
+                  .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
+              ),
+            S.listItem()
+              .title("⚙️ Site Settings — Contact, Banner & Social Links")
+              .icon(() => "⚙️")
+              .child(
+                S.document()
+                  .schemaType("siteSettings")
+                  .documentId("siteSettings")
+                  .title("Site Settings")
+              ),
           ]),
     }),
     visionTool(),

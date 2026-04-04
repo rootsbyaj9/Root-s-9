@@ -34,6 +34,6 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function LocationsPage() {
-  const locations = await client.fetch(getLocationsQuery) || [];
+  const locations = await client?.fetch(getLocationsQuery).catch(() => []) ?? [];
   return <LocationsClient locationsData={locations} />;
 }

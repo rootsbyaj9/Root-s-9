@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 export default async function TransformationsPage() {
-  const transformations = await client.fetch(getTransformationsQuery).catch(() => []);
+  const transformations = await client?.fetch(getTransformationsQuery).catch(() => []) ?? [];
   
   return (
     <>

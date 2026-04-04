@@ -137,7 +137,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await client.fetch(getSiteSettingsQuery).catch(() => null);
+  const settings = await client?.fetch(getSiteSettingsQuery).catch(() => null) ?? null;
 
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>

@@ -33,8 +33,8 @@ export default async function AboutPage() {
   // Fetch CMS singleton — .catch() ensures static fallback if Sanity isn't configured yet
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const about: any = await client
-    .fetch(getAboutPageQuery)
-    .catch(() => null);
+    ?.fetch(getAboutPageQuery)
+    .catch(() => null) ?? null;
 
   return (
     <>

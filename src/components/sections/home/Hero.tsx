@@ -22,7 +22,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const WHATSAPP_NUMBER = "919700744357";
 
-export default function Hero() {
+type HeroProps = {
+  homePageData?: any;
+};
+
+export default function Hero({ homePageData = {} }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   // Layers
@@ -121,7 +125,7 @@ export default function Hero() {
       {/* ── Salon Interior (Single full-bleed background) ──────────── */}
       <div ref={imageRef} className="absolute inset-0 z-0 will-change-transform">
         <img
-          src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=2000&auto=format&fit=crop"
+          src={homePageData?.heroImageUrl || "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=2000&auto=format&fit=crop"}
           alt="Luxury salon interior"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />

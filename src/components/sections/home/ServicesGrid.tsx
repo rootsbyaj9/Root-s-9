@@ -64,11 +64,29 @@ const SERVICES = [
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function ServicesGrid() {
+type ServicesGridProps = {
+  cmsServices?: any[];
+  cmsImages?: any;
+};
+
+export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: ServicesGridProps) {
   const sectionRef = useRef<HTMLElement>(null);
   
+  const mergedServices = SERVICES.map((base) => {
+    const cmsMatch = cmsServices.find((s) => s.slug === base.id);
+    const title = cmsMatch?.title || base.title;
+
+    let cmsImageUrl;
+    if (base.id === "hair") cmsImageUrl = cmsImages?.hairImageUrl;
+    else if (base.id === "bridal") cmsImageUrl = cmsImages?.bridalImageUrl;
+    else if (base.id === "skin") cmsImageUrl = cmsImages?.skinImageUrl;
+    else if (base.id === "tattoo") cmsImageUrl = cmsImages?.tattooImageUrl;
+
+    return { ...base, title, cmsImageUrl };
+  });
+
   // Track which accordion panel is active. Default to the first one.
-  const [activeId, setActiveId] = useState<string>(SERVICES[0].id);
+  const [activeId, setActiveId] = useState<string>(mergedServices[0].id);
 
   // GSAP: Premium Entry Animation
   useGSAP(
@@ -123,7 +141,7 @@ export default function ServicesGrid() {
           - Desktop: Row (side by side horizontally)
         */}
         <div className="panels-container flex flex-col md:flex-row gap-2 md:gap-4 h-[70vh] min-h-[500px] md:min-h-[600px] md:h-[600px] w-full">
-          {SERVICES.map((service) => {
+          {mergedServices.map((service) => {
             const isActive = activeId === service.id;
 
             return (
@@ -144,12 +162,20 @@ export default function ServicesGrid() {
               >
                 {/* Image Layer */}
                 <div className="absolute inset-0 transition-transform duration-1000 ease-out transform scale-105 group-hover:scale-100">
-                  <ImagePlaceholder
-                    label={service.placeholder.label}
-                    description={service.placeholder.description}
-                    mood={service.dark ? "dark" : "warm"}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
+                  {service.cmsImageUrl ? (
+                    <img 
+                      src={service.cmsImageUrl} 
+                      alt={service.title} 
+                      className="absolute inset-0 w-full h-full object-cover" 
+                    />
+                  ) : (
+                    <ImagePlaceholder
+                      label={service.placeholder.label}
+                      description={service.placeholder.description}
+                      mood={service.dark ? "dark" : "warm"}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
                   
                   {/* Dynamic Darkening Overlay to focus attention on the active element */}
                   <div 

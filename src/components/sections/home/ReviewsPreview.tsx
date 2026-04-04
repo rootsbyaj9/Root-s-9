@@ -40,13 +40,22 @@ const PREVIEW_REVIEWS = [
   }
 ];
 
-export default function ReviewsPreview() {
+export default function ReviewsPreview({ reviews = [] }: { reviews?: any[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [triggerStars, setTriggerStars] = useState(false);
 
   // We duplicate the reviews array once so that even with only 3 fetched reviews,
   // the Swiper has enough physical DOM nodes to flawlessly infinite-loop on giant desktop monitors.
-  const SWIPER_REVIEWS = [...PREVIEW_REVIEWS, ...PREVIEW_REVIEWS];
+  // We map 'name' and 'reviewText' from CMS
+  const mappedReviews = reviews.length > 0
+    ? reviews.map((r: any) => ({
+        initial: r.name ? r.name.charAt(0) : "A",
+        name: r.name,
+        quote: r.reviewText,
+      }))
+    : PREVIEW_REVIEWS;
+
+  const SWIPER_REVIEWS = [...mappedReviews, ...mappedReviews];
 
   // Entry GSAP
   useGSAP(() => {

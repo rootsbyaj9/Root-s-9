@@ -15,7 +15,11 @@ import SectionHeader from "@/components/ui/SectionHeader";
 
 type TransformationType = "hair" | "skin";
 
-export default function BeforeAfter() {
+type BeforeAfterProps = {
+  homePageData?: any;
+};
+
+export default function BeforeAfter({ homePageData = {} }: BeforeAfterProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(50); // percentage — 0 to 100
@@ -146,16 +150,24 @@ export default function BeforeAfter() {
         >
           {/* ── AFTER image (full width, visible behind BEFORE) ─────────── */}
           <div className="absolute inset-0">
-            <ImagePlaceholder
-              label={activeTab === "hair" ? "HAIR AFTER · 1400×800px" : "SKIN AFTER · 1400×800px"}
-              description={
-                activeTab === "hair"
-                  ? "Hair styling after. Rich colour, professional lighting."
-                  : "Skin treatment after. Clear, glowing, radiant skin."
-              }
-              mood="dark"
-              className="absolute inset-0 w-full h-full"
-            />
+            {(activeTab === "hair" && homePageData?.beforeAfterHairAfter) || (activeTab === "skin" && homePageData?.beforeAfterSkinAfter) ? (
+              <img 
+                src={activeTab === "hair" ? homePageData.beforeAfterHairAfter : homePageData.beforeAfterSkinAfter} 
+                alt="After Transformation" 
+                className="absolute inset-0 w-full h-full object-cover" 
+              />
+            ) : (
+              <ImagePlaceholder
+                label={activeTab === "hair" ? "HAIR AFTER · 1400×800px" : "SKIN AFTER · 1400×800px"}
+                description={
+                  activeTab === "hair"
+                    ? "Hair styling after. Rich colour, professional lighting."
+                    : "Skin treatment after. Clear, glowing, radiant skin."
+                }
+                mood="dark"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
             <div className="absolute top-4 right-4 md:top-6 md:right-6">
               <span className="bg-roots-orange text-parchment font-sans leading-none rounded-none text-[10px] uppercase tracking-widest px-3 py-1.5 flex items-center justify-center">
                 After
@@ -169,16 +181,24 @@ export default function BeforeAfter() {
             style={{ width: `${position}%` }}
           >
             <div className="relative" style={{ width: `${100 / (position / 100)}%`, height: "100%" }}>
-              <ImagePlaceholder
-                label={activeTab === "hair" ? "HAIR BEFORE · 1400×800px" : "SKIN BEFORE · 1400×800px"}
-                description={
-                  activeTab === "hair"
-                    ? "Hair styling before. Natural, slightly flat colour."
-                    : "Skin treatment before. Natural, uneven tone."
-                }
-                mood="warm"
-                className="absolute inset-0 w-full h-full"
-              />
+              {(activeTab === "hair" && homePageData?.beforeAfterHairBefore) || (activeTab === "skin" && homePageData?.beforeAfterSkinBefore) ? (
+                <img 
+                  src={activeTab === "hair" ? homePageData.beforeAfterHairBefore : homePageData.beforeAfterSkinBefore} 
+                  alt="Before Transformation" 
+                  className="absolute inset-0 w-full h-full object-cover" 
+                />
+              ) : (
+                <ImagePlaceholder
+                  label={activeTab === "hair" ? "HAIR BEFORE · 1400×800px" : "SKIN BEFORE · 1400×800px"}
+                  description={
+                    activeTab === "hair"
+                      ? "Hair styling before. Natural, slightly flat colour."
+                      : "Skin treatment before. Natural, uneven tone."
+                  }
+                  mood="warm"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              )}
             </div>
             <div className="absolute top-4 left-4 md:top-6 md:left-6">
               <span className="bg-obsidian text-parchment font-sans leading-none rounded-none text-[10px] uppercase tracking-widest px-3 py-1.5 flex items-center justify-center">

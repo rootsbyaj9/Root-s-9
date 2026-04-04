@@ -1,6 +1,9 @@
 export { serviceCategory } from "./serviceCategory";
-export { review } from "./review";
 export { post } from "./post";
 export { location } from "./location";
 export { siteSettings } from "./siteSettings";
 export { aboutPage } from "./aboutPage";
+export { homePage } from "./homePage";
+export { franchisePage } from "./franchisePage";
+export { review } from "./review";
+export { transformation } from "./transformation";

@@ -39,8 +39,6 @@ const PRIMARY_LINKS = [
 
 const SECONDARY_LINKS = [{ label: "Franchise", href: "/franchise" }];
 
-const WHATSAPP_NUMBER = "919700744357";
-
 const SERVICES_SECTIONS = [
   { label: "Women's Menu", href: "/services?tab=womens" },
   { label: "Men's Menu", href: "/services?tab=mens" },
@@ -49,7 +47,8 @@ const SERVICES_SECTIONS = [
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function Navbar() {
+export default function Navbar({ settings }: { settings: any }) {
+  const WHATSAPP_NUMBER = settings?.contactWhatsApp || "919700744357";
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);

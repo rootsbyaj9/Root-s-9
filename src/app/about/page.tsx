@@ -8,7 +8,7 @@
 
 import type { Metadata } from 'next';
 import { client } from '@/sanity/client';
-import { groq } from 'next-sanity';
+import { getAboutPageQuery } from '@/sanity/lib/queries';
 import CTASection from '@/components/sections/shared/CTASection';
 import AboutHero from '@/components/sections/about/AboutHero';
 import AboutFounder from '@/components/sections/about/AboutFounder';
@@ -33,7 +33,7 @@ export default async function AboutPage() {
   // Fetch CMS singleton — .catch() ensures static fallback if Sanity isn't configured yet
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const about: any = await client
-    .fetch(groq`*[_type == "aboutPage"][0]`)
+    .fetch(getAboutPageQuery)
     .catch(() => null);
 
   return (
@@ -48,6 +48,8 @@ export default async function AboutPage() {
         founderQuote={about?.founderQuote}
         founderBio1={about?.founderBio1}
         founderBio2={about?.founderBio2}
+        founderImageUrl={about?.founderImageUrl}
+        aboutBackgroundImageUrl={about?.aboutBackgroundImageUrl}
       />
       <AboutValues
         heading={about?.valuesHeading}

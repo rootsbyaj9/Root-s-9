@@ -56,7 +56,46 @@ export const siteSettings = defineType({
       type: "datetime",
       description: "Banner auto-hides after this date (leave empty for no expiry)",
     }),
+    // ── Global Contact & Social ──────────────────────────────────────────────
+    defineField({
+      name: "contactEmail",
+      title: "Contact Email",
+      type: "string",
+      initialValue: "rootsbyaj9@gmail.com",
+    }),
+    defineField({
+      name: "contactPhone",
+      title: "Contact Phone (Display)",
+      type: "string",
+      initialValue: "+91 97007 44357",
+    }),
+    defineField({
+      name: "contactWhatsApp",
+      title: "WhatsApp Number (Numeric only)",
+      type: "string",
+      initialValue: "919700744357",
+      description: "Format: Country code + Number without '+', e.g. 919700744357"
+    }),
+    defineField({
+      name: "socialInstagram",
+      title: "Instagram URL",
+      type: "url",
+      initialValue: "https://www.instagram.com/roots_by_aj",
+    }),
+    defineField({
+      name: "socialFacebook",
+      title: "Facebook URL",
+      type: "url",
+      initialValue: "https://www.facebook.com/anikanth.jadhav.1",
+    }),
+    defineField({
+      name: "footerTagline",
+      title: "Footer Tagline",
+      type: "text",
+      initialValue: "Hyderabad's family salon — premium hair, skin, and beauty services across 3 branches. Crafted for every generation.",
+    }),
   ],
+// ─────────────────────────────────────────────────────────────────────────────
   preview: {
     select: { title: "googleRating", subtitle: "reviewCount" },
     prepare({ title, subtitle }) {

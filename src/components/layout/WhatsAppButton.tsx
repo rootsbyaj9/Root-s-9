@@ -11,9 +11,9 @@
  * REPLACE: Update phone number before launch.
  */
 
-const WHATSAPP_NUMBER = "919700744357";
+export default function WhatsAppButton({ settings }: { settings: any }) {
+  const WHATSAPP_NUMBER = settings?.contactWhatsApp || "919700744357";
 
-export default function WhatsAppButton() {
   return (
     <a
       href={`https://wa.me/${WHATSAPP_NUMBER}`}

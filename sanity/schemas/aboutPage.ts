@@ -12,6 +12,13 @@ export const aboutPage = defineType({
     { name: "values", title: "Values Section" },
   ],
   fields: [
+    // ── Background ─────────────────────────────────────────────────────────────
+    defineField({
+      name: "aboutBackgroundImage",
+      title: "About Section Full-Width Background Pattern/Image",
+      type: "image",
+      options: { hotspot: true },
+    }),
     // ── Hero ─────────────────────────────────────────────────────────────────
     defineField({
       name: "heroEyebrow",

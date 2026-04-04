@@ -24,6 +24,8 @@ interface ImagePlaceholderProps {
   className?: string;
   /** warm = linen bg (light sections) | dark = obsidian bg (dark sections) */
   mood?: "warm" | "dark";
+  /** Optional URL of the image from CMS to replace the placeholder */
+  imageUrl?: string | null;
 }
 
 export default function ImagePlaceholder({
@@ -31,8 +33,19 @@ export default function ImagePlaceholder({
   description,
   className,
   mood = "warm",
+  imageUrl,
 }: ImagePlaceholderProps) {
   const isWarm = mood === "warm";
+
+  if (imageUrl) {
+    return (
+      <img
+        src={imageUrl}
+        alt={label || description || ""}
+        className={cn("object-cover", className)}
+      />
+    );
+  }
 
   return (
     <div

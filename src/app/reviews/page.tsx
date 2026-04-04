@@ -16,6 +16,8 @@
 
 import type { Metadata } from 'next';
 import ReviewsClient from '@/components/sections/reviews/ReviewsClient';
+import { client } from "@/sanity/client";
+import { getReviewsQuery, getSiteSettingsQuery } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Client Reviews | Root's Salon Hyderabad | 1600+ Happy Clients",
@@ -28,6 +30,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ReviewsPage() {
-  return <ReviewsClient />;
+export default async function ReviewsPage() {
+  const reviewsData = await client.fetch(getReviewsQuery).catch(() => []);
+  const siteSettings = await client.fetch(getSiteSettingsQuery).catch(() => ({}));
+  
+  return <ReviewsClient reviews={reviewsData} settings={siteSettings} />;
 }

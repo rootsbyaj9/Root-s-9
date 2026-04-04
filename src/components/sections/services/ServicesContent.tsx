@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, createContext } from "react";
 import { useSearchParams } from "next/navigation";
 import WomensServices from "./WomensServices";
 import BridalServices from "./BridalServices";
@@ -8,6 +8,9 @@ import MensServices from "./MensServices";
 import TattooServices from "./TattooServices";
 
 type TabType = "womens" | "mens" | "bridal" | "tattoo";
+
+// Create context to supply CMS mappings down the entire tree seamlessly
+export const ServicesContext = createContext<any[]>([]);
 
 /**
  * Inner component that reads searchParams — isolated in its own Suspense boundary
@@ -26,11 +29,11 @@ function TabSyncer({ onTab }: { onTab: (t: TabType) => void }) {
   return null;
 }
 
-export default function ServicesContent() {
+export default function ServicesContent({ cmsCategories = [] }: { cmsCategories?: any[] }) {
   const [activeTab, setActiveTab] = useState<TabType>("womens");
 
   return (
-    <>
+    <ServicesContext.Provider value={cmsCategories}>
       {/* Read URL param without suspending the whole component */}
       <Suspense fallback={null}>
         <TabSyncer onTab={setActiveTab} />
@@ -92,6 +95,6 @@ export default function ServicesContent() {
         {activeTab === "bridal" && <BridalServices />}
         {activeTab === "tattoo" && <TattooServices />}
       </div>
-    </>
+    </ServicesContext.Provider>
   );
 }

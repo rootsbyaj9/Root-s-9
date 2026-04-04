@@ -16,6 +16,8 @@
 
 import type { Metadata } from 'next';
 import LocationsClient from '@/components/sections/locations/LocationsClient';
+import { client } from '@/sanity/client';
+import { getLocationsQuery } from '@/sanity/lib/queries';
 
 export const metadata: Metadata = {
   title: "Salon Near Me in Uppal & Tarnaka Hyderabad | Root's",
@@ -29,6 +31,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LocationsPage() {
-  return <LocationsClient />;
+export const revalidate = 60;
+
+export default async function LocationsPage() {
+  const locations = await client.fetch(getLocationsQuery) || [];
+  return <LocationsClient locationsData={locations} />;
 }

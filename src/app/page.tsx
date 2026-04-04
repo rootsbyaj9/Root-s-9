@@ -19,6 +19,8 @@ import ServicesGrid from "@/components/sections/home/ServicesGrid";
 import BeforeAfter from "@/components/sections/home/BeforeAfter";
 import ReviewsPreview from "@/components/sections/home/ReviewsPreview";
 import CTASection from "@/components/sections/shared/CTASection";
+import { client } from "@/sanity/client";
+import { getHomePageQuery, getServiceCategoriesQuery, getReviewsQuery } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Root's Family Salon Hyderabad | Hair, Skin, Bridal & Tattoo",
@@ -32,23 +34,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const homePageData = await client.fetch(getHomePageQuery).catch(() => ({}));
+  const servicesData = await client.fetch(getServiceCategoriesQuery).catch(() => []);
+  const reviewsData = await client.fetch(getReviewsQuery).catch(() => []);
+
   return (
     <>
       {/* 1 — Cinematic hero (full-screen, transparent navbar overlays this) */}
-      <Hero />
+      <Hero homePageData={homePageData} />
 
       {/* 2 — Trust strip (stat counters count-up on scroll entry) */}
       <TrustStrip />
 
       {/* 3 — Services bento grid (Hair · Bridal · Skin · Tattoo) */}
-      <ServicesGrid />
+      <ServicesGrid cmsServices={servicesData} cmsImages={homePageData} />
 
       {/* 4 — Before/After drag slider */}
-      <BeforeAfter />
+      <BeforeAfter homePageData={homePageData} />
 
       {/* 4.5 — Reviews Preview (3-card grid) */}
-      <ReviewsPreview />
+      <ReviewsPreview reviews={reviewsData} />
 
       {/* 5 — Dark CTA (shared component, ends every page) */}
       <CTASection />

@@ -30,15 +30,19 @@ import { cn } from "@/lib/utils";
 
 const STRIP_DISMISSED_KEY = "roots-offer-strip-v2";
 
-export default function Header() {
+export default function Header({ settings }: { settings: any }) {
   const [stripVisible, setStripVisible] = useState(false);
   const [hidden, setHidden]             = useState(false);
 
   // ── OfferStrip persistence ────────────────────────────────────────────────
   useEffect(() => {
+    if (settings && settings.offerBannerEnabled === false) {
+      setStripVisible(false);
+      return;
+    }
     const dismissed = localStorage.getItem(STRIP_DISMISSED_KEY);
     if (!dismissed) setStripVisible(true);
-  }, []);
+  }, [settings]);
 
   // ── Direction-aware scroll detection ─────────────────────────────────────
   useEffect(() => {
@@ -83,8 +87,8 @@ export default function Header() {
         hidden ? "-translate-y-full" : "translate-y-0"
       )}
     >
-      {stripVisible && <OfferStrip onDismiss={handleDismiss} />}
-      <Navbar />
+      {stripVisible && <OfferStrip onDismiss={handleDismiss} settings={settings} />}
+      <Navbar settings={settings} />
     </div>
   );
 }

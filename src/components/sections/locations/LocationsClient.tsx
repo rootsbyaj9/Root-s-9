@@ -37,8 +37,11 @@ function WhatsAppIcon() {
   );
 }
 
-export default function LocationsClient() {
+export default function LocationsClient({ locationsData = [] }: { locationsData?: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // If CMS returns data, merge or replace. We'll replace it entirely if it exists.
+  const activeBranches = locationsData.length > 0 ? locationsData : BRANCHES;
 
   useGSAP(() => {
     // Minimal GSAP animation: subtle fade up
@@ -82,16 +85,30 @@ export default function LocationsClient() {
       <section className="bg-linen py-16">
         <div className="container mx-auto px-6 md:px-16 max-w-5xl">
           <div className="flex flex-col gap-12">
-            {BRANCHES.map((branch) => (
+            {activeBranches.map((branch: any, idx: number) => {
+              const name = branch.branchName || branch.name;
+              const addr = branch.address;
+              const phone = branch.phone;
+              const whatsapp = branch.whatsappNumber;
+              const hours = branch.timings || branch.hours;
+              const mapUrl = branch.googleMapsLink || branch.mapUrl;
+              const embed = branch.embedUrl || "https://www.google.com/maps?q=17.397388,78.5885877&hl=en&z=15&output=embed";
+
+              return (
               <div 
-                key={branch.id} 
-                className="location-card bg-parchment rounded-2xl overflow-hidden border border-obsidian/[0.06] flex flex-col md:flex-row hover:shadow-2xl transition-shadow duration-500"
+                key={branch._id || branch.id || idx} 
+                className="location-card bg-parchment rounded-2xl overflow-hidden border border-obsidian/[0.06] flex flex-col md:flex-row hover:shadow-2xl transition-shadow duration-500 relative"
               >
+                {branch.isNew && (
+                  <div className="absolute top-0 right-0 bg-roots-orange text-parchment px-4 py-1 text-xs font-sans tracking-widest uppercase z-10">
+                    New
+                  </div>
+                )}
                 {/* Content Side */}
                 <div className="p-8 md:p-12 flex flex-col flex-1 order-2 md:order-1 justify-center">
-                  <h2 className="font-serif text-3xl text-obsidian mb-4">{branch.name}</h2>
+                  <h2 className="font-serif text-3xl text-obsidian mb-4">{name}</h2>
                   <p className="font-sans text-warm-gray text-sm md:text-base leading-relaxed mb-8">
-                    {branch.description}
+                    {branch.description || "Experience premium styling at our signature location. Let our experts craft your perfect look."}
                   </p>
 
                   {/* Details */}
@@ -103,7 +120,7 @@ export default function LocationsClient() {
                           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0z" />
                         </svg>
                       </div>
-                      <span className="font-sans text-obsidian text-sm uppercase tracking-wide mt-1">{branch.address}</span>
+                      <span className="font-sans text-obsidian text-sm uppercase tracking-wide mt-1">{addr}</span>
                     </div>
                     
                     <div className="flex items-start gap-4">
@@ -112,29 +129,33 @@ export default function LocationsClient() {
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
                         </svg>
                       </div>
-                      <span className="font-sans text-obsidian text-sm uppercase tracking-wide mt-1">{branch.hours}</span>
+                      <span className="font-sans text-obsidian text-sm uppercase tracking-wide mt-1">{hours}</span>
                     </div>
                   </div>
 
                   {/* Buttons */}
                   <div className="flex flex-wrap gap-4 mt-auto">
-                    <a
-                      href={`https://wa.me/${branch.phone}?text=Hi%20Root%27s%20Salon!%20I%27d%20like%20to%20book%20an%20appointment%20with%20you.`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-primary flex items-center justify-center gap-2 text-xs w-full sm:w-auto"
-                    >
-                      <WhatsAppIcon />
-                      Book Appointment
-                    </a>
-                    <a
-                      href={branch.mapUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-outline text-xs flex items-center justify-center gap-2 w-full sm:w-auto"
-                    >
-                      Open in Maps
-                    </a>
+                    {whatsapp && (
+                      <a
+                        href={`https://wa.me/${whatsapp}?text=Hi%20Root%27s%20Salon!%20I%27d%20like%20to%20book%20an%20appointment%20with%20you.`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary flex items-center justify-center gap-2 text-xs w-full sm:w-auto"
+                      >
+                        <WhatsAppIcon />
+                        Book Appointment
+                      </a>
+                    )}
+                    {mapUrl && (
+                      <a
+                        href={mapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-outline text-xs flex items-center justify-center gap-2 w-full sm:w-auto"
+                      >
+                        Open in Maps
+                      </a>
+                    )}
                   </div>
                 </div>
 
@@ -142,7 +163,7 @@ export default function LocationsClient() {
                 <div className="w-full md:w-1/2 aspect-square md:aspect-auto relative min-h-[350px] order-1 md:order-2 bg-obsidian/[0.03]">
                   {/* Embedded Google Map */}
                   <iframe 
-                    src={branch.embedUrl} 
+                    src={embed} 
                     className="absolute inset-0 w-full h-full border-0 filter contrast-125 saturate-50 mix-blend-multiply" 
                     allowFullScreen 
                     loading="lazy" 
@@ -152,7 +173,8 @@ export default function LocationsClient() {
                   <div className="absolute inset-0 bg-parchment/10 pointer-events-none mix-blend-overlay"></div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

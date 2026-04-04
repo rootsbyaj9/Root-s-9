@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import ServiceRow from "../ServiceRow";
 import { motion, Variants } from "framer-motion";
 
 const staggerContainer: Variants = {
@@ -175,14 +176,4 @@ export default function WomensSkin() {
   );
 }
 
-function ServiceRow({ name, price }: { name: string; price: string }) {
-  return (
-    <motion.div 
-      variants={listItemVariant}
-      className="group flex justify-between items-end border-b border-obsidian/10 hover:border-obsidian/30 pb-3 mb-3 transition-colors duration-300"
-    >
-      <span className="font-serif text-[18px] text-obsidian group-hover:text-roots-orange pr-4 transition-colors duration-300">{name}</span>
-      <span className="font-sans text-[13px] font-medium text-obsidian group-hover:text-roots-orange whitespace-nowrap transition-colors duration-300">{price}</span>
-    </motion.div>
-  );
-}
+

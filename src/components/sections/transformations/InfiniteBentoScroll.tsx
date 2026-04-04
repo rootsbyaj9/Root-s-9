@@ -20,7 +20,7 @@ export const BENTO_CMS_DATA = [
   { id: '9', title: 'LASH LIFT', description: 'Volume and curl enhancement.', aspect: 'aspect-[4/5]', mood: 'warm' as const },
 ];
 
-function BentoColumn({ items, duration, reverse }: { items: typeof BENTO_CMS_DATA, duration: string, reverse?: boolean }) {
+function BentoColumn({ items, duration, reverse }: { items: any[], duration: string, reverse?: boolean }) {
   return (
     <div className="relative h-full w-full bento-group">
       <div 
@@ -44,13 +44,14 @@ function BentoColumn({ items, duration, reverse }: { items: typeof BENTO_CMS_DAT
   );
 }
 
-function BentoCard({ item }: { item: typeof BENTO_CMS_DATA[0] }) {
+function BentoCard({ item }: { item: any }) {
   return (
     <div className={`relative w-full rounded-2xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 ease-out flex-shrink-0 ${item.aspect} hover:z-50 focus-within:z-50`}>
       <ImagePlaceholder
         label={item.title}
         description={item.description}
         mood={item.mood}
+        imageUrl={item.imageUrl}
         className="w-full h-full transform group-hover:scale-110 transition-transform duration-700 ease-out"
       />
       {/* Dark overlay focuses the picture and makes text pop */}
@@ -64,13 +65,25 @@ function BentoCard({ item }: { item: typeof BENTO_CMS_DATA[0] }) {
   );
 }
 
-export default function InfiniteBentoScroll() {
+export default function InfiniteBentoScroll({ transformations = [] }: { transformations?: any[] }) {
   // We duplicate the items inside the columns directly via the CMS slice mapping
   // to ensure sufficient vertical height to prevent layout voids.
   // Each column contains 6 items, yielding a very long stripe that smoothly loops.
-  const col1 = [...BENTO_CMS_DATA.slice(0, 3), ...BENTO_CMS_DATA.slice(6, 9)];
-  const col2 = [...BENTO_CMS_DATA.slice(3, 6), ...BENTO_CMS_DATA.slice(0, 3)];
-  const col3 = [...BENTO_CMS_DATA.slice(6, 9), ...BENTO_CMS_DATA.slice(3, 6)];
+  
+  const mappedTransformation = transformations.length > 0 
+    ? transformations.map((t: any) => ({
+        id: t._id,
+        title: t.title,
+        description: t.description,
+        aspect: t.aspect || 'aspect-[1/1]',
+        mood: t.mood || 'warm',
+        imageUrl: t.imageUrl
+      }))
+    : BENTO_CMS_DATA;
+
+  const col1 = [...mappedTransformation.slice(0, 3), ...mappedTransformation.slice(6, 9)];
+  const col2 = [...mappedTransformation.slice(3, 6), ...mappedTransformation.slice(0, 3)];
+  const col3 = [...mappedTransformation.slice(6, 9), ...mappedTransformation.slice(3, 6)];
 
   return (
     <section className="relative w-full h-[100vh] min-h-[800px] bg-parchment overflow-hidden flex flex-col pt-[72px]">

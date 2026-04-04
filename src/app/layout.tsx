@@ -4,6 +4,8 @@ import SmoothScroll from "@/components/layout/SmoothScroll";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import { client } from "@/sanity/client";
+import { getSiteSettingsQuery } from "@/sanity/lib/queries";
 
 /**
  * Fonts are self-hosted via next/font (no Google CDN call at runtime).
@@ -130,11 +132,13 @@ const jsonLd = [
   },
 ];
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await client.fetch(getSiteSettingsQuery).catch(() => null);
+
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
       <head>
@@ -147,16 +151,16 @@ export default function RootLayout({
       <body>
         <SmoothScroll>
           {/* ── Fixed header shell (OfferStrip + Navbar) ── */}
-          <Header />
+          <Header settings={settings} />
 
           {/* ── Page content ── */}
           <main>{children}</main>
 
           {/* ── Global footer ── */}
-          <Footer />
+          <Footer settings={settings} />
 
           {/* ── Persistent sticky WhatsApp button ── */}
-          <WhatsAppButton />
+          <WhatsAppButton settings={settings} />
         </SmoothScroll>
       </body>
     </html>

@@ -10,19 +10,21 @@ import { Star } from "lucide-react";
  * Features an infinite scrolling marquee.
  */
 
-const WHATSAPP_NUMBER = "919700744357";
-
 interface OfferStripProps {
   onDismiss: () => void;
+  settings: any;
 }
 
-export default function OfferStrip({ onDismiss }: OfferStripProps) {
+export default function OfferStrip({ onDismiss, settings }: OfferStripProps) {
+  const WHATSAPP_NUMBER = settings?.contactWhatsApp || "919700744357";
+  const getText = () => settings?.offerBannerText || "Book via WhatsApp & get 10% off your first visit";
+
   // We duplicate the offer multiple times so it fills wide screens
   // and allows a mathematically perfect seamless scroll.
   const OFFER_ITEMS = Array.from({ length: 6 }).map((_, i) => (
     <div key={i} className="flex items-center gap-6 shrink-0 pr-6">
       <Star className="w-3 h-3 fill-current text-parchment/80" />
-      <span>20% OFF ON THE NEW BRANCH AND 10% AT CURRENT BRANCHES.</span>
+      <span>{getText()}</span>
       <a
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Root%27s!%20I%20would%20like%20to%20book%20an%20appointment.`}
         target="_blank"

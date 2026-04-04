@@ -71,14 +71,6 @@ const REVIEWS = [
   }
 ];
 
-// Context pulled directly from verified Google Maps logic
-const STATS = [
-  { value: '1,600+', label: 'Happy Clients' }, // Uppal: 1386, Tarnaka: 275
-  { value: '4.8★', label: 'Google Rating' }, // Uppal 4.8, Tarnaka 4.9
-  { value: '2', label: 'Branches' },
-  { value: '8+', label: 'Years of Excellence' }, // Started in 2018
-];
-
 function StarRating({ count }: { count: number }) {
   return (
     <div className="flex gap-0.5" aria-label={`${count} out of 5 stars`}>
@@ -98,7 +90,7 @@ function StarRating({ count }: { count: number }) {
 }
 
 // Reusable animated column component
-function ReviewColumn({ items, duration, reverse }: { items: typeof REVIEWS, duration: string, reverse?: boolean }) {
+function ReviewColumn({ items, duration, reverse }: { items: any[], duration: string, reverse?: boolean }) {
   return (
     <div className="relative h-full w-full marquee-group">
       <div 
@@ -123,7 +115,7 @@ function ReviewColumn({ items, duration, reverse }: { items: typeof REVIEWS, dur
 }
 
 // Independent physical card
-function ReviewCard({ r }: { r: typeof REVIEWS[0] }) {
+function ReviewCard({ r }: { r: any }) {
   return (
     <div className="bg-parchment rounded-2xl p-7 flex flex-col border border-obsidian/[0.06] hover:shadow-xl transition-shadow duration-300 w-full">
       <div className="flex items-center justify-between mb-4">
@@ -159,13 +151,33 @@ function ReviewCard({ r }: { r: typeof REVIEWS[0] }) {
   )
 }
 
-export default function ReviewsClient() {
+export default function ReviewsClient({ reviews = [], settings }: { reviews?: any[], settings?: any }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const mappedReviews = reviews.length > 0
+    ? reviews.map((r: any) => ({
+        id: r._id,
+        name: r.name,
+        branch: r.branch,
+        rating: r.rating || 5,
+        date: r.date || 'Recent',
+        service: r.service,
+        review: r.reviewText
+      }))
+    : REVIEWS;
+
+  // Context pulled directly from verified Google Maps logic
+  const STATS = [
+    { value: settings?.reviewCount || '1,600+', label: 'Happy Clients' },
+    { value: settings?.googleRating || '4.8★', label: 'Google Rating' },
+    { value: settings?.branchCount || '2', label: 'Branches' },
+    { value: settings?.yearsOfMastery || '8+', label: 'Years of Excellence' },
+  ];
+
   // Pre-calculate stagger offsets so columns don't look identical
-  const col1 = [...REVIEWS];
-  const col2 = [...REVIEWS.slice(2), ...REVIEWS.slice(0, 2)];
-  const col3 = [...REVIEWS.slice(4), ...REVIEWS.slice(0, 4)];
+  const col1 = [...mappedReviews];
+  const col2 = [...mappedReviews.slice(2), ...mappedReviews.slice(0, 2)];
+  const col3 = [...mappedReviews.slice(4), ...mappedReviews.slice(0, 4)];
 
   useGSAP(() => {
     gsap.from('.hero-text', {

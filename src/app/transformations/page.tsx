@@ -13,6 +13,8 @@
 import type { Metadata } from 'next';
 import InfiniteBentoScroll from '@/components/sections/transformations/InfiniteBentoScroll';
 import CTASection from '@/components/sections/shared/CTASection';
+import { client } from "@/sanity/client";
+import { getTransformationsQuery } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Transformations Gallery | Root's The Family Salon Hyderabad",
@@ -26,10 +28,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function TransformationsPage() {
+export default async function TransformationsPage() {
+  const transformations = await client.fetch(getTransformationsQuery).catch(() => []);
+  
   return (
     <>
-      <InfiniteBentoScroll />
+      <InfiniteBentoScroll transformations={transformations} />
       <CTASection
         heading="See yourself transformed."
         subtext="Book a consultation and step into your best version. All it takes is one appointment."

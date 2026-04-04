@@ -14,6 +14,8 @@ interface AboutFounderProps {
   founderQuote?: string;
   founderBio1?: string;
   founderBio2?: string;
+  founderImageUrl?: string;
+  aboutBackgroundImageUrl?: string; // (Optional: we can use this for the background section if needed)
 }
 
 export default function AboutFounder({
@@ -22,6 +24,8 @@ export default function AboutFounder({
   founderQuote = "I wanted one place where my parents, my spouse, my kids \u2014 every generation \u2014 could walk out feeling their best. That\u2019s still why I do this.",
   founderBio1 = "Before Root\u2019s, Hyderabad had a clear gap \u2014 boutique-quality salons were expensive and inaccessible; affordable salons often cut corners. We built the alternative: premium technique, professional-grade products, and a genuinely warm space that welcomes every age and every budget.",
   founderBio2 = "Three branches later, we\u2019re still that same place my family visits every month. We\u2019ve simply invited more families in.",
+  founderImageUrl,
+  aboutBackgroundImageUrl,
 }: AboutFounderProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -113,15 +117,22 @@ export default function AboutFounder({
 
   return (
     <section ref={sectionRef} className="bg-parchment py-24 overflow-hidden">
-      <div className="container mx-auto px-6 md:px-16 max-w-7xl grid md:grid-cols-2 gap-16 items-center">
+      <div className="container mx-auto px-6 md:px-16 max-w-7xl grid md:grid-cols-2 gap-16 items-center relative z-10">
+        
+        {aboutBackgroundImageUrl && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-10 pointer-events-none -z-10">
+            <img src={aboutBackgroundImageUrl} alt="" className="w-full h-full object-cover rounded-full" />
+          </div>
+        )}
+
         {/* Image column */}
         <div 
           ref={imageRef} 
           className="order-2 md:order-1 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl relative"
         >
           <img
-            src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?q=80&w=1400&auto=format&fit=crop"
-            alt="Stylist at work"
+            src={founderImageUrl || "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?q=80&w=1400&auto=format&fit=crop"}
+            alt={founderName}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-obsidian/10 mix-blend-overlay"></div>

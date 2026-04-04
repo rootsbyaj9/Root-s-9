@@ -15,12 +15,12 @@ import type { Metadata } from 'next';
 import BlogClient from '@/components/sections/blog/BlogClient';
 
 export const metadata: Metadata = {
-  title: "Blog & Beauty Tips | Root's The Family Salon Hyderabad",
+  title: "Hair & Beauty Tips | Root's Salon Hyderabad Blog",
   description:
-    "Expert hair care tips, skin advice, and beauty guides from the Root's Salon team. Learn how to maintain your look between salon visits.",
+    "Expert hair and beauty advice from the Root's team — balayage care, facial guides, bridal trends, tattoo aftercare, and more.",
   openGraph: {
-    title: "Blog | Root's The Family Salon",
-    description: "Beauty tips, hair care guides, and skin advice from the Root's team.",
+    title: "Hair & Beauty Tips | Root's Salon Hyderabad Blog",
+    description: "Expert hair and beauty advice from the Root's team — balayage, facials, bridal trends, and more.",
     type: 'website',
   },
 };

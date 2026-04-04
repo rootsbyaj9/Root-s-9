@@ -10,7 +10,7 @@ import { Star } from "lucide-react";
  * Features an infinite scrolling marquee.
  */
 
-const WHATSAPP_NUMBER = "919550071714";
+const WHATSAPP_NUMBER = "919700744357";
 
 interface OfferStripProps {
   onDismiss: () => void;

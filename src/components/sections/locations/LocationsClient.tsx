@@ -13,7 +13,7 @@ const BRANCHES = [
     hours: 'Mon–Sun: 10 AM – 9 PM',
     mapUrl: 'https://maps.app.goo.gl/ocq8uts9jYaCp3bu8',
     embedUrl: "https://www.google.com/maps?q=17.397388,78.5885877&hl=en&z=15&output=embed",
-    phone: '+919550071714',
+    phone: '+919700744357',
     description: 'Experience premium styling at our signature Uppal location. Let our experts craft your perfect look.',
   },
   {
@@ -23,7 +23,7 @@ const BRANCHES = [
     hours: 'Mon–Sun: 10 AM – 9 PM',
     mapUrl: 'https://maps.app.goo.gl/NSNafg2mqV9acw9m7',
     embedUrl: "https://www.google.com/maps?q=17.4304751,78.5329607&hl=en&z=15&output=embed",
-    phone: '+919550071714',
+    phone: '+919700744357',
     description: 'Our second branch offering the identical luxurious Root\'s experience in Tarnaka.',
   }
 ];

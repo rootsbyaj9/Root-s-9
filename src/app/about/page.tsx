@@ -17,13 +17,13 @@ import AboutValues from '@/components/sections/about/AboutValues';
 import AboutTimeline from '@/components/sections/about/AboutTimeline';
 
 export const metadata: Metadata = {
-  title: "About Us | Root's The Family Salon Hyderabad",
+  title: "About Root's Family Salon | Anikanth Jadhav, Hyderabad",
   description:
-    "Meet the founder and team behind Root's The Family Salon — a family destination for premium hair, skin, and beauty services across Hyderabad.",
+    "Founded by Anikanth Jadhav, Root's has been Hyderabad's trusted family salon for 8+ years. Hair, skin, bridal and tattoo under one roof at Uppal and Tarnaka.",
   openGraph: {
-    title: "About Root's The Family Salon",
+    title: "About Root's Family Salon | Anikanth Jadhav, Hyderabad",
     description:
-      "Our story, mission, and the values that drive every appointment.",
+      "Founded by Anikanth Jadhav. 8+ years trusted in Hyderabad. Hair, skin, bridal and tattoo under one roof.",
     type: 'website',
   },
 };

@@ -19,6 +19,7 @@
  */
 
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -38,7 +39,7 @@ const PRIMARY_LINKS = [
 
 const SECONDARY_LINKS = [{ label: "Franchise", href: "/franchise" }];
 
-const WHATSAPP_NUMBER = "919550071714";
+const WHATSAPP_NUMBER = "919700744357";
 
 const SERVICES_SECTIONS = [
   { label: "Women's Menu", href: "/services?tab=womens" },
@@ -51,6 +52,9 @@ const SERVICES_SECTIONS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
   
   // Mega menu states
   const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
@@ -112,10 +116,11 @@ export default function Navbar() {
   // ── GSAP mobile menu reveal ────────────────────────────────────────────────
   useGSAP(() => {
     if (menuOpen && !mobileServicesOpen) {
+      // Animate only Y position — never touch opacity so links stay visible if animation misfires
       gsap.fromTo(
         ".mobile-nav-link",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, ease: "power2.out" }
+        { y: 24 },
+        { y: 0, duration: 0.45, stagger: 0.05, ease: "power2.out" }
       );
     }
   }, { dependencies: [menuOpen], scope: menuRef });
@@ -323,69 +328,74 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ── Mobile main slide-in overlay ────────────────────────────────── */}
-      <div
-        ref={menuRef}
-        className={cn(
-          "lg:hidden fixed inset-0 z-40 bg-[#FEFCF8] flex flex-col items-center justify-center transition-all duration-300",
-          menuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        )}
-        aria-hidden={!menuOpen}
-        id="mobile-menu"
-      >
-        <div className="flex flex-col items-center justify-center gap-8 w-full max-h-[80vh] overflow-y-auto">
-          {[...PRIMARY_LINKS, ...SECONDARY_LINKS].map((link) => {
-            if (link.label === "Services") {
+      {/* ── Mobile overlay — portalled to document.body so it escapes
+           the Header's CSS transform stacking context. Without this,
+           position:fixed is clipped to the Header's bounding box. ── */}
+      {mounted && createPortal(
+        <div
+          ref={menuRef}
+          className={cn(
+            "lg:hidden fixed inset-0 bg-[#FEFCF8] flex flex-col items-center justify-center transition-opacity duration-300",
+            menuOpen
+              ? "opacity-100 pointer-events-auto z-[9998]"
+              : "opacity-0 pointer-events-none z-[-1]"
+          )}
+          aria-hidden={!menuOpen}
+          id="mobile-menu"
+        >
+          <div className="flex flex-col items-center justify-center gap-8 w-full max-h-[80vh] overflow-y-auto">
+            {[...PRIMARY_LINKS, ...SECONDARY_LINKS].map((link) => {
+              if (link.label === "Services") {
+                return (
+                  <div key="services" className="mobile-nav-link flex flex-col items-center w-full">
+                    <div className="font-serif text-4xl text-[#1A1008] mb-4">
+                      {link.label}
+                    </div>
+                    <div className="flex flex-col items-center gap-3">
+                      {SERVICES_SECTIONS.map((sub, j) => (
+                        <Link
+                          key={j}
+                          href={sub.href}
+                          onClick={() => setMenuOpen(false)}
+                          className="font-sans text-[13px] uppercase tracking-widest text-[#1A1008]/80 hover:text-[#E87722] transition-colors"
+                          tabIndex={menuOpen ? 0 : -1}
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
               return (
-                <div key="services" className="mobile-nav-link flex flex-col items-center w-full">
-                  <div className="font-serif text-4xl text-[#1A1008] mb-4">
-                    {link.label}
-                  </div>
-                  <div className="flex flex-col items-center gap-3">
-                    {SERVICES_SECTIONS.map((sub, j) => (
-                      <Link
-                        key={j}
-                        href={sub.href}
-                        onClick={() => setMenuOpen(false)}
-                        className="font-sans text-[13px] uppercase tracking-widest text-[#1A1008]/80 hover:text-[#E87722] transition-colors"
-                        tabIndex={menuOpen ? 0 : -1}
-                      >
-                        {sub.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={cn(
+                    "mobile-nav-link font-serif text-4xl text-[#1A1008] hover:text-[#E87722] transition-colors duration-200",
+                    pathname === link.href && "text-[#E87722]"
+                  )}
+                  tabIndex={menuOpen ? 0 : -1}
+                >
+                  {link.label}
+                </Link>
               );
-            }
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={cn(
-                  "mobile-nav-link font-serif text-4xl text-[#1A1008] hover:text-[#E87722] transition-colors duration-200",
-                  pathname === link.href && "text-[#E87722]"
-                )}
-                tabIndex={menuOpen ? 0 : -1}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+            })}
 
-          <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mobile-nav-link btn-primary mt-4"
-            tabIndex={menuOpen ? 0 : -1}
-          >
-            Book via WhatsApp
-          </a>
-        </div>
-      </div>
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-nav-link btn-primary mt-4"
+              tabIndex={menuOpen ? 0 : -1}
+            >
+              Book via WhatsApp
+            </a>
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 }

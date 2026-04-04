@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import WomensServices from "./WomensServices";
 import BridalServices from "./BridalServices";
@@ -9,21 +9,34 @@ import TattooServices from "./TattooServices";
 
 type TabType = "womens" | "mens" | "bridal" | "tattoo";
 
-export default function ServicesContent() {
+/**
+ * Inner component that reads searchParams — isolated in its own Suspense boundary
+ * so the rest of ServicesContent renders immediately without suspending.
+ */
+function TabSyncer({ onTab }: { onTab: (t: TabType) => void }) {
   const searchParams = useSearchParams();
   const rawTab = searchParams.get("tab") as TabType;
-  
-  const [activeTab, setActiveTab] = useState<TabType>("womens");
 
   useEffect(() => {
     if (rawTab && ["womens", "mens", "bridal", "tattoo"].includes(rawTab)) {
-      setActiveTab(rawTab);
+      onTab(rawTab);
     }
-  }, [rawTab]);
+  }, [rawTab, onTab]);
+
+  return null;
+}
+
+export default function ServicesContent() {
+  const [activeTab, setActiveTab] = useState<TabType>("womens");
 
   return (
     <>
-      {/* Toggles - Moved out of Hero into the sticky control bar */}
+      {/* Read URL param without suspending the whole component */}
+      <Suspense fallback={null}>
+        <TabSyncer onTab={setActiveTab} />
+      </Suspense>
+
+      {/* Toggles */}
       <div className="bg-parchment pt-8 pb-12 border-b border-obsidian/10">
         <div className="container mx-auto px-8 md:px-16 max-w-[1400px] flex flex-wrap gap-4">
           <button

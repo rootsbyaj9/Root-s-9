@@ -18,12 +18,13 @@ import type { Metadata } from 'next';
 import LocationsClient from '@/components/sections/locations/LocationsClient';
 
 export const metadata: Metadata = {
-  title: "Locations | Root's The Family Salon Hyderabad",
+  title: "Salon Near Me in Uppal & Tarnaka Hyderabad | Root's",
   description:
-    "Find Root's The Family Salon near you. Visit our premium branches across Hyderabad.",
+    "Find Root's Family Salon near you. Two premium branches in Hyderabad — Uppal (Peerzadiguda Road) and Tarnaka (South Lallaguda). Open Mon–Sun 10AM–9PM.",
   openGraph: {
-    title: "Our Locations | Root's The Family Salon",
-    description: "Visit our premium branches across Hyderabad.",
+    title: "Salon Near Me in Uppal & Tarnaka Hyderabad | Root's",
+    description:
+      "Two premium branches in Hyderabad — Uppal and Tarnaka. Open Mon–Sun 10AM–9PM.",
     type: 'website',
   },
 };

@@ -1,23 +1,40 @@
 import type { Metadata } from "next";
 import ServicesHero from "@/components/sections/services/ServicesHero";
-import { Suspense } from "react";
 import ServicesContent from "@/components/sections/services/ServicesContent";
 import ServicesCTA from "@/components/sections/services/ServicesCTA";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 
 export const metadata: Metadata = {
-  title: "Services Menu | Root's The Family Salon Hyderabad",
+  title: "Hair, Skin & Bridal Services in Hyderabad | Root's Salon",
   description:
-    "Curated treatments, expert artistry, and real results — from a quick blowdry to a full bridal transformation at Root's Family Salon.",
+    "Explore Root's complete service menu — haircuts from ₹200, facials from ₹500, bridal packages from ₹7000. Women's and men's services at 2 branches in Hyderabad.",
+  openGraph: {
+    title: "Hair, Skin & Bridal Services in Hyderabad | Root's Salon",
+    description:
+      "Full service menu — haircuts from ₹200, facials from ₹500, bridal packages from ₹7000. Two branches in Hyderabad.",
+    type: "website",
+  },
 };
 
 export default function ServicesPage() {
   return (
     <>
-      <ServicesHero />
-      <Suspense fallback={<div className="h-screen w-full flex items-center justify-center bg-[#FEFCF8]">Loading...</div>}>
-        <ServicesContent />
-      </Suspense>
+      {/* Desktop: full hero. Mobile: hidden — tabs show first instead */}
+      <div className="hidden md:block">
+        <ServicesHero />
+      </div>
+
+      {/* Mobile-only compact header — gives context without burying the menu */}
+      <div className="md:hidden bg-parchment pt-[100px] pb-6 px-6 border-b border-obsidian/10">
+        <span className="font-sans text-[11px] uppercase tracking-[0.15em] text-roots-orange block mb-2">
+          MENU
+        </span>
+        <h1 className="font-serif text-4xl text-obsidian">
+          Our Services<span className="italic">.</span>
+        </h1>
+      </div>
+
+      <ServicesContent />
       <ServicesCTA />
       <ScrollToTop />
     </>

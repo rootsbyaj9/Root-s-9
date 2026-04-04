@@ -9,8 +9,8 @@ import SectionHeader from "@/components/ui/SectionHeader";
 gsap.registerPlugin(ScrollTrigger);
 
 const MILESTONES = [
-  { year: "2020", event: "Founded in Hyderabad with one vision — bring premium salon quality to every family." },
-  { year: "2023", event: "Crossed 1,000+ loyal clients. Expanded skin and tattoo services." },
+  { year: "2018", event: "Founded in Hyderabad with one vision — bring premium salon quality to every family." },
+  { year: "2022", event: "Crossed 1,000+ loyal clients. Expanded skin and tattoo services." },
   { year: "2025", event: "Third branch opens — a milestone built on trust, craft, and community." },
 ];
 
@@ -72,7 +72,7 @@ export default function AboutTimeline() {
       <div className="container mx-auto px-6 md:px-16 max-w-7xl">
         <SectionHeader
           eyebrow="OUR JOURNEY"
-          heading="Five years of growing together."
+          heading="Eight years of growing together."
           align="center"
           className="[&_.eyebrow]:text-roots-orange/70 [&_h2]:text-parchment"
         />

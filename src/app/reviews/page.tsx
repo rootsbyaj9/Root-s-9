@@ -18,12 +18,12 @@ import type { Metadata } from 'next';
 import ReviewsClient from '@/components/sections/reviews/ReviewsClient';
 
 export const metadata: Metadata = {
-  title: "Client Reviews | Root's The Family Salon Hyderabad",
+  title: "Client Reviews | Root's Salon Hyderabad | 1600+ Happy Clients",
   description:
-    "Read real reviews from Root's Salon clients. 4.9★ rated across Hyderabad — Kondapur, Manikonda, and our newest branch.",
+    "Read 1600+ real Google reviews for Root's Family Salon Hyderabad. Rated 4.8★ across our Uppal and Tarnaka branches.",
   openGraph: {
-    title: "Client Reviews | Root's The Family Salon",
-    description: "4.9★ rated · 500+ happy clients across Hyderabad.",
+    title: "Client Reviews | Root's Salon Hyderabad",
+    description: "1600+ real Google reviews. Rated 4.8★ across Uppal and Tarnaka branches.",
     type: 'website',
   },
 };

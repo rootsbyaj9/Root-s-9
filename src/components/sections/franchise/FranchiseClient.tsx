@@ -6,7 +6,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Trophy, GraduationCap, MapPin } from "lucide-react";
 import CTASection from "@/components/sections/shared/CTASection";
-import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -91,14 +90,7 @@ export default function FranchiseClient() {
     <>
       {/* ─── HERO ─────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-[65vh] flex items-end bg-obsidian pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 opacity-25">
-          <ImagePlaceholder
-            label="FRANCHISE SALON INTERIOR"
-            description="Premium salon interior — spacious, modern, warm lighting. Shows the scale and ambiance of a Root's salon. 16:9, 1440×810px."
-            mood="dark"
-            className="w-full h-full"
-          />
-        </div>
+        <div className="absolute inset-0 bg-[#1A1008]" />
         <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/70 to-transparent" />
 
         <div className="relative container mx-auto px-6 md:px-16 max-w-7xl">
@@ -113,7 +105,7 @@ export default function FranchiseClient() {
           </p>
           <div className="hero-element mt-10">
             <a
-              href="https://wa.me/919550071714?text=Hi%20Root%27s%20Team!%20I%27m%20interested%20in%20a%20franchise%20opportunity."
+              href="https://wa.me/919700744357?text=Hi%20Root%27s%20Team!%20I%27m%20interested%20in%20a%20franchise%20opportunity."
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary inline-flex items-center gap-2"
@@ -260,7 +252,7 @@ export default function FranchiseClient() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <a
-              href="https://wa.me/919550071714?text=Hi%20Root%27s%20Team!%20I%27m%20interested%20in%20the%20franchise%20opportunity.%20Please%20share%20the%20franchise%20kit."
+              href="https://wa.me/919700744357?text=Hi%20Root%27s%20Team!%20I%27m%20interested%20in%20the%20franchise%20opportunity.%20Please%20share%20the%20franchise%20kit."
               target="_blank"
               rel="noopener noreferrer"
               className="bg-parchment text-obsidian font-sans text-sm font-semibold uppercase tracking-[0.1em] px-8 py-4 rounded-full hover:bg-parchment/90 transition-colors duration-200 inline-flex items-center justify-center gap-2 group"

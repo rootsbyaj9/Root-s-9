@@ -78,7 +78,7 @@ export default function Header() {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 flex flex-col",
+        "fixed top-0 left-0 right-0 z-[9999] flex flex-col",
         "transition-transform duration-[350ms] ease-in-out",
         hidden ? "-translate-y-full" : "translate-y-0"
       )}

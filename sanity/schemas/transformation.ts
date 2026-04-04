@@ -24,7 +24,7 @@ export const transformation = defineType({
       title: "Transformation Photo",
       type: "image",
       options: { hotspot: true },
-      description: "📸 Upload the transformation photo here. This appears in the scrolling gallery on the Transformations page. For best results use a clear, well-lit photo.",
+      description: "📸 TRANSFORMATIONS GALLERY — Choose your aspect ratio below first, then upload a photo cropped to those exact dimensions. The photo will fill the entire gallery card. File size: keep under 400 KB for fast loading.",
       fields: [
         defineField({
           name: "alt",
@@ -38,14 +38,14 @@ export const transformation = defineType({
       name: "aspect",
       title: "Photo Shape",
       type: "string",
-      description: "Choose how the photo is cropped in the gallery. Portrait (tall) works best for full-length looks; Square for face/detail shots.",
+      description: "Choose the shape of the gallery card for this photo. Upload a photo that matches the listed pixel size for the best result — uploading the wrong ratio will cause cropping.",
       options: {
         list: [
-          { title: "📐 Portrait — Tall (best for full look)",             value: "aspect-[3/4]"  },
-          { title: "📐 Landscape — Wide (good for groups/scene)",          value: "aspect-[4/3]"  },
-          { title: "📐 Narrow Portrait — Tallest",                         value: "aspect-[2/3]"  },
-          { title: "📐 Square",                                             value: "aspect-[1/1]"  },
-          { title: "📐 Near-Square Portrait",                               value: "aspect-[4/5]"  },
+          { title: "📐 Portrait — Tall  (3:4) — upload 900 × 1200 px",        value: "aspect-[3/4]"  },
+          { title: "📐 Landscape — Wide  (4:3) — upload 1200 × 900 px",      value: "aspect-[4/3]"  },
+          { title: "📐 Narrow Portrait — Tallest (2:3) — upload 800 × 1200 px", value: "aspect-[2/3]"  },
+          { title: "📐 Square  (1:1) — upload 900 × 900 px",                  value: "aspect-[1/1]"  },
+          { title: "📐 Near-Square Portrait (4:5) — upload 960 × 1200 px",    value: "aspect-[4/5]"  },
         ],
         layout: "radio",
       },

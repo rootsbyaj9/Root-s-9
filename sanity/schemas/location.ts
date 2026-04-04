@@ -85,7 +85,7 @@ export const location = defineType({
       type: "image",
       group: "photo",
       options: { hotspot: true },
-      description: "📸 This photo appears on the Locations page for this branch. Use a clear exterior or interior shot of the salon. Recommended: landscape (1200×800px).",
+      description: "📸 LOCATIONS PAGE — Branch card photo. Ratio: 16:9 (landscape/wide) or 4:3. Size: 1200 × 675 px (16:9) or 1200 × 900 px (4:3). Use a clear salon exterior or interior shot with good lighting. File size: keep under 500 KB.",
       fields: [
         defineField({
           name: "alt",

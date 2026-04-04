@@ -18,7 +18,7 @@ export const homePage = defineType({
       type: "image",
       group: "hero",
       options: { hotspot: true },
-      description: "📸 This is the large full-screen photo that customers see first when they visit the homepage. Use a stunning salon or transformation photo. Recommended: landscape, minimum 1920×1080px.",
+      description: "📸 HERO BACKGROUND — fills the entire screen on load. Ratio: 16:9 (landscape). Minimum size: 1920 × 1080 px. Ideal: 2560 × 1440 px. Use a high-quality salon or transformation photo with a clear focal point in the centre.",
       fields: [
         defineField({
           name: "alt",
@@ -102,7 +102,7 @@ export const homePage = defineType({
       type: "image",
       group: "services",
       options: { hotspot: true },
-      description: "📸 This photo appears on the 'Hair Masterclass' card on the home page services grid. Use a portrait-style hair photo.",
+      description: "📸 HOME PAGE — Hair card in the Services Grid. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. Crops from centre — ensure the main subject is centred.",
     }),
     defineField({
       name: "bridalServiceImage",
@@ -110,7 +110,7 @@ export const homePage = defineType({
       type: "image",
       group: "services",
       options: { hotspot: true },
-      description: "📸 This photo appears on the 'Bridal Studio' card on the home page services grid. Use a bridal makeup/hairstyle photo.",
+      description: "📸 HOME PAGE — Bridal card in the Services Grid. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. Keep the subject (face/hair) centred in the frame.",
     }),
     defineField({
       name: "skinServiceImage",
@@ -118,7 +118,7 @@ export const homePage = defineType({
       type: "image",
       group: "services",
       options: { hotspot: true },
-      description: "📸 This photo appears on the 'Skin Rituals' card on the home page services grid. Use a facial or skin treatment photo.",
+      description: "📸 HOME PAGE — Skin card in the Services Grid. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. Close-up facial or treatment photos work best.",
     }),
     defineField({
       name: "tattooServiceImage",
@@ -126,7 +126,7 @@ export const homePage = defineType({
       type: "image",
       group: "services",
       options: { hotspot: true },
-      description: "📸 This photo appears on the 'Tattoo Artistry' card on the home page services grid. Use a tattoo work or studio photo.",
+      description: "📸 HOME PAGE — Tattoo card in the Services Grid. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. Use a clear, well-lit tattoo or studio photo.",
     }),
 
     // ── BEFORE & AFTER ────────────────────────────────────────────────────
@@ -136,7 +136,7 @@ export const homePage = defineType({
       type: "image",
       group: "transform",
       options: { hotspot: true },
-      description: "📸 Left side of the hair drag-slider on the homepage. Shows the client's hair before the treatment.",
+      description: "📸 HOME PAGE — Before/After Slider, hair BEFORE photo (left side). Ratio: 1:1 (square) or 4:5. Size: 800 × 800 px (square) or 800 × 1000 px (4:5). ⚠️ The BEFORE and AFTER photos must be the SAME ratio and size — otherwise the slider will look misaligned.",
     }),
     defineField({
       name: "beforeAfterHairAfter",
@@ -144,7 +144,7 @@ export const homePage = defineType({
       type: "image",
       group: "transform",
       options: { hotspot: true },
-      description: "📸 Right side of the hair drag-slider. Shows the final result after the treatment.",
+      description: "📸 HOME PAGE — Before/After Slider, hair AFTER photo (right side). Ratio: must match the BEFORE photo exactly — same size and crop. Size: 800 × 800 px (square) or 800 × 1000 px (4:5).",
     }),
     defineField({
       name: "beforeAfterSkinBefore",
@@ -152,7 +152,7 @@ export const homePage = defineType({
       type: "image",
       group: "transform",
       options: { hotspot: true },
-      description: "📸 Left side of the skin drag-slider. Shows the client's skin before treatment (e.g. before HydraFacial).",
+      description: "📸 HOME PAGE — Before/After Slider, skin BEFORE photo (left side). Ratio: 1:1 (square) or 4:5. Size: 800 × 800 px (square) or 800 × 1000 px (4:5). ⚠️ Must be the same ratio as the AFTER photo.",
     }),
     defineField({
       name: "beforeAfterSkinAfter",
@@ -160,7 +160,7 @@ export const homePage = defineType({
       type: "image",
       group: "transform",
       options: { hotspot: true },
-      description: "📸 Right side of the skin drag-slider. Shows the glowing result.",
+      description: "📸 HOME PAGE — Before/After Slider, skin AFTER photo (right side). Ratio: must match the BEFORE photo exactly. Size: 800 × 800 px (square) or 800 × 1000 px (4:5).",
     }),
   ],
   preview: {

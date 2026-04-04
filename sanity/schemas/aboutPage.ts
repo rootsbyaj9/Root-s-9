@@ -18,6 +18,7 @@ export const aboutPage = defineType({
       title: "About Section Full-Width Background Pattern/Image",
       type: "image",
       options: { hotspot: true },
+      description: "📸 ABOUT PAGE — full-width decorative background pattern or texture. Ratio: 16:9 or wide panoramic. Size: minimum 1920 × 600 px. This is shown as a subtle background behind the founder section — use a texture, pattern, or blurred salon photo.",
     }),
     // ── Hero ─────────────────────────────────────────────────────────────────
     defineField({
@@ -91,8 +92,7 @@ export const aboutPage = defineType({
       title: "Founder / Salon Photo",
       type: "image",
       group: "founder",
-      options: { hotspot: true },
-      fields: [defineField({ name: "alt", title: "Alt Text", type: "string" })],
+      description: "📸 ABOUT PAGE — Founder photo shown next to the founder story. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. A clear, professional-looking portrait or candid salon photo works best.",
     }),
 
     // ── Timeline ─────────────────────────────────────────────────────────────

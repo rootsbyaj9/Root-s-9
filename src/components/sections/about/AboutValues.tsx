@@ -8,7 +8,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const VALUES = [
+const DEFAULT_VALUES = [
   {
     number: "01",
     title: "Craft First",
@@ -26,7 +26,15 @@ const VALUES = [
   },
 ];
 
-export default function AboutValues() {
+interface AboutValuesProps {
+  heading?: string;
+  values?: { number: string; title: string; body: string }[];
+}
+
+export default function AboutValues({
+  heading = "Our three principles.",
+  values = DEFAULT_VALUES,
+}: AboutValuesProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -60,14 +68,14 @@ export default function AboutValues() {
       <div className="container mx-auto px-6 md:px-16 max-w-7xl">
         <SectionHeader
           eyebrow="WHAT WE STAND FOR"
-          heading="Our three principles."
+          heading={heading}
           align="center"
         />
         <div 
           ref={gridRef}
           className="mt-16 grid md:grid-cols-3 gap-px bg-obsidian/[0.08] rounded-2xl overflow-hidden"
         >
-          {VALUES.map((v) => (
+          {values.map((v: { number: string; title: string; body: string }) => (
             <div
               key={v.number}
               className="bg-linen p-10 group hover:bg-parchment transition-colors duration-500 flex flex-col"

@@ -1,20 +1,21 @@
 /**
- * about/page.tsx — About Page
+ * about/page.tsx — About Page (Server Component)
  *
- * Section order:
- *   1. Hero — "Where Craft Meets Care." full-width with founder portrait
- *   2. Founder Story — editorial 2-col with pull quote
- *   3. Values Grid — 3 cards (Craft, Warmth, Growth)
- *   4. Timeline — 3 milestones ("Founded", "1000 Clients", "3rd Branch")
- *   5. CTASection
+ * Fetches the `aboutPage` singleton from Sanity CMS.
+ * Falls back to each component's built-in static defaults if Sanity returns null.
+ * Revalidates every 1 hour via ISR.
  */
 
 import type { Metadata } from 'next';
+import { client } from '@/sanity/client';
+import { groq } from 'next-sanity';
 import CTASection from '@/components/sections/shared/CTASection';
 import AboutHero from '@/components/sections/about/AboutHero';
 import AboutFounder from '@/components/sections/about/AboutFounder';
 import AboutValues from '@/components/sections/about/AboutValues';
 import AboutTimeline from '@/components/sections/about/AboutTimeline';
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "About Root's Family Salon | Anikanth Jadhav, Hyderabad",
@@ -28,14 +29,35 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  // Fetch CMS singleton — .catch() ensures static fallback if Sanity isn't configured yet
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const about: any = await client
+    .fetch(groq`*[_type == "aboutPage"][0]`)
+    .catch(() => null);
+
   return (
     <>
-      <AboutHero />
-      <AboutFounder />
-      <AboutValues />
-      <AboutTimeline />
-      
+      <AboutHero
+        eyebrow={about?.heroEyebrow}
+        subtext={about?.heroSubtext}
+      />
+      <AboutFounder
+        founderName={about?.founderName}
+        founderHeadline={about?.founderHeadline}
+        founderQuote={about?.founderQuote}
+        founderBio1={about?.founderBio1}
+        founderBio2={about?.founderBio2}
+      />
+      <AboutValues
+        heading={about?.valuesHeading}
+        values={about?.values}
+      />
+      <AboutTimeline
+        heading={about?.timelineHeading}
+        milestones={about?.milestones}
+      />
+
       <CTASection
         heading="Come meet us in person."
         subtext="Book a complimentary consultation at any of our three branches. Let's talk about what a transformation looks like for you."
@@ -44,3 +66,4 @@ export default function AboutPage() {
     </>
   );
 }
+

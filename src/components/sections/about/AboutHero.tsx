@@ -8,7 +8,15 @@ import SplitType from "split-type";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function AboutHero() {
+interface AboutHeroProps {
+  eyebrow?: string;
+  subtext?: string;
+}
+
+export default function AboutHero({
+  eyebrow = "OUR STORY",
+  subtext = "Root's is the Hyderabad salon built for every member of your family — without ever compromising on quality.",
+}: AboutHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -86,13 +94,12 @@ export default function AboutHero() {
       <div className="absolute inset-0 bg-gradient-to-r from-obsidian/95 via-obsidian/60 to-transparent" />
 
       <div ref={contentRef} className="relative z-10 container mx-auto px-6 md:px-16 max-w-7xl">
-        <span className="eyebrow text-roots-orange/80 mb-3 block">OUR STORY</span>
+        <span className="eyebrow text-roots-orange/80 mb-3 block">{eyebrow}</span>
         <h1 className="font-serif text-6xl md:text-8xl text-parchment leading-[0.95] max-w-3xl">
           Where Craft <em className="italic font-normal text-roots-orange">Meets</em> Care.
         </h1>
         <p className="mt-6 font-sans text-parchment/70 text-base md:text-lg max-w-md leading-relaxed">
-          Root&apos;s is the Hyderabad salon built for every member of your family —
-          without ever compromising on quality.
+          {subtext}
         </p>
       </div>
     </section>

@@ -8,7 +8,21 @@ import SplitType from "split-type";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function AboutFounder() {
+interface AboutFounderProps {
+  founderName?: string;
+  founderHeadline?: string;
+  founderQuote?: string;
+  founderBio1?: string;
+  founderBio2?: string;
+}
+
+export default function AboutFounder({
+  founderName = "Anikanth Jadhav",
+  founderHeadline = "I started Root\u2019s for my family.",
+  founderQuote = "I wanted one place where my parents, my spouse, my kids \u2014 every generation \u2014 could walk out feeling their best. That\u2019s still why I do this.",
+  founderBio1 = "Before Root\u2019s, Hyderabad had a clear gap \u2014 boutique-quality salons were expensive and inaccessible; affordable salons often cut corners. We built the alternative: premium technique, professional-grade products, and a genuinely warm space that welcomes every age and every budget.",
+  founderBio2 = "Three branches later, we\u2019re still that same place my family visits every month. We\u2019ve simply invited more families in.",
+}: AboutFounderProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -117,31 +131,24 @@ export default function AboutFounder() {
         <div ref={textRef} className="order-1 md:order-2 flex flex-col items-start gap-4">
           <span className="eyebrow block">FOUNDER&apos;S NOTE</span>
           <h2 className="font-serif text-4xl md:text-5xl text-obsidian leading-[1.05] mt-3 mb-4">
-            I started Root&apos;s for my family.
+            {founderHeadline}
           </h2>
 
           {/* Pull quote */}
           <blockquote className="border-l-2 border-roots-orange pl-6 my-4 py-2 transition-colors">
             <p className="font-serif italic text-xl text-warm-gray leading-relaxed mb-3">
-              &ldquo;I wanted one place where my parents, my spouse, my kids — every
-              generation — could walk out feeling their best. That&apos;s still why
-              I do this.&rdquo;
+              &ldquo;{founderQuote}&rdquo;
             </p>
             <footer className="font-sans text-xs font-semibold uppercase tracking-widest text-roots-orange block">
-              — Anikanth Jadhav, Founder
+              — {founderName}, Founder
             </footer>
           </blockquote>
 
           <p className="font-sans text-warm-gray text-base leading-relaxed">
-            Before Root&apos;s, Hyderabad had a clear gap — boutique-quality
-            salons were expensive and inaccessible; affordable salons often
-            cut corners. We built the alternative: premium technique,
-            professional-grade products, and a genuinely warm space that
-            welcomes every age and every budget.
+            {founderBio1}
           </p>
           <p className="font-sans text-warm-gray text-base leading-relaxed">
-            Three branches later, we&apos;re still that same place my family visits
-            every month. We&apos;ve simply invited more families in.
+            {founderBio2}
           </p>
         </div>
       </div>

@@ -8,13 +8,21 @@ import SectionHeader from "@/components/ui/SectionHeader";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const MILESTONES = [
+const DEFAULT_MILESTONES = [
   { year: "2018", event: "Founded in Hyderabad with one vision — bring premium salon quality to every family." },
   { year: "2022", event: "Crossed 1,000+ loyal clients. Expanded skin and tattoo services." },
   { year: "2025", event: "Third branch opens — a milestone built on trust, craft, and community." },
 ];
 
-export default function AboutTimeline() {
+interface AboutTimelineProps {
+  heading?: string;
+  milestones?: { year: string; event: string }[];
+}
+
+export default function AboutTimeline({
+  heading = "Eight years of growing together.",
+  milestones = DEFAULT_MILESTONES,
+}: AboutTimelineProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const milestonesRef = useRef<HTMLDivElement>(null);
@@ -72,7 +80,7 @@ export default function AboutTimeline() {
       <div className="container mx-auto px-6 md:px-16 max-w-7xl">
         <SectionHeader
           eyebrow="OUR JOURNEY"
-          heading="Eight years of growing together."
+          heading={heading}
           align="center"
           className="[&_.eyebrow]:text-roots-orange/70 [&_h2]:text-parchment"
         />
@@ -84,7 +92,7 @@ export default function AboutTimeline() {
           </div>
 
           <div ref={milestonesRef} className="flex flex-col gap-16 md:gap-24 relative z-10">
-            {MILESTONES.map((m, i) => (
+            {milestones.map((m: { year: string; event: string }, i: number) => (
               <div
                 key={m.year}
                 className={`flex flex-col md:grid md:grid-cols-2 md:gap-16 items-center ${

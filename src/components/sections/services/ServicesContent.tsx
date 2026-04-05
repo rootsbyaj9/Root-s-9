@@ -259,6 +259,8 @@ const TAB_META: Record<
   },
 };
 
+import { FALLBACK_CATEGORIES } from "@/lib/fallback-services";
+
 // ─── Main export ──────────────────────────────────────────────────────────────
 export default function ServicesContent({
   cmsCategories = [],
@@ -267,6 +269,9 @@ export default function ServicesContent({
 }) {
   const [activeTab, setActiveTab] = useState<TabType>("womens");
   const meta = TAB_META[activeTab];
+  
+  // Use CMS data if available, otherwise fall back to static data
+  const dataToUse = cmsCategories.length > 0 ? cmsCategories : FALLBACK_CATEGORIES;
 
   return (
     <>
@@ -297,7 +302,7 @@ export default function ServicesContent({
       {/* Active tab content */}
       <TabPanel
         tab={activeTab}
-        categories={cmsCategories}
+        categories={dataToUse}
         eyebrow={meta.eyebrow}
         heading={meta.heading}
         description={meta.description}

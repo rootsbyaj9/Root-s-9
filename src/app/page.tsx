@@ -34,6 +34,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   const homePageData = await client?.fetch(getHomePageQuery).catch(() => ({})) ?? {};
   const servicesData = await client?.fetch(getServiceCategoriesQuery).catch(() => []) ?? [];

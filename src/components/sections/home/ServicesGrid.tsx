@@ -14,6 +14,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
+import { urlForImage } from "@/sanity/lib/image";
 
 // ── CMS-Compatible Service Data ───────────────────────────────────────────────
 const SERVICES = [
@@ -77,28 +78,33 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
     const title = cmsMatch?.title || base.title;
 
     let cmsImageUrl;
+    let fallbackPosition = "center";
     let hotspot;
-    if (base.id === "hair") {
-      cmsImageUrl = cmsImages?.hairImageUrl;
-      hotspot = cmsImages?.hairImageHotspot;
-    } else if (base.id === "bridal") {
-      cmsImageUrl = cmsImages?.bridalImageUrl;
-      hotspot = cmsImages?.bridalImageHotspot;
-    } else if (base.id === "skin") {
-      cmsImageUrl = cmsImages?.skinImageUrl;
-      hotspot = cmsImages?.skinImageHotspot;
-    } else if (base.id === "tattoo") {
-      cmsImageUrl = cmsImages?.tattooImageUrl;
-      hotspot = cmsImages?.tattooImageHotspot;
+    
+    try {
+      if (base.id === "hair" && cmsImages?.hairImage) {
+        cmsImageUrl = urlForImage(cmsImages.hairImage).url();
+        hotspot = cmsImages.hairImage.hotspot;
+      } else if (base.id === "bridal" && cmsImages?.bridalImage) {
+        cmsImageUrl = urlForImage(cmsImages.bridalImage).url();
+        hotspot = cmsImages.bridalImage.hotspot;
+      } else if (base.id === "skin" && cmsImages?.skinImage) {
+        cmsImageUrl = urlForImage(cmsImages.skinImage).url();
+        hotspot = cmsImages.skinImage.hotspot;
+      } else if (base.id === "tattoo" && cmsImages?.tattooImage) {
+        cmsImageUrl = urlForImage(cmsImages.tattooImage).url();
+        hotspot = cmsImages.tattooImage.hotspot;
+      }
+    } catch(e) {
+      // Graceful fallback if url builder fails
+      console.error(e);
     }
 
-    // Default object position if no hotspot is available
-    let objectPosition = "center";
     if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
-      objectPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
+      fallbackPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
     }
 
-    return { ...base, title, cmsImageUrl, objectPosition };
+    return { ...base, title, cmsImageUrl, objectPosition: fallbackPosition };
   });
 
   // Track which accordion panel is active. Default to the first one.

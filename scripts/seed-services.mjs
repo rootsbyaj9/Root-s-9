@@ -16,7 +16,12 @@ try {
   const env = readFileSync(".env.local", "utf-8");
   env.split("\n").forEach((line) => {
     const [key, ...rest] = line.split("=");
-    if (key && rest.length) process.env[key.trim()] = rest.join("=").trim();
+    if (key && rest.length) {
+      let val = rest.join("=").trim();
+      if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+      if (val.startsWith("'") && val.endsWith("'")) val = val.slice(1, -1);
+      process.env[key.trim()] = val;
+    }
   });
 } catch {
   dotenv.config();

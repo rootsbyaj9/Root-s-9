@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type ServiceItem = {
@@ -101,12 +102,14 @@ function CategoryBlock({ cat, index }: { cat: ServiceCategory; index: number }) 
       {/* Image column */}
       <div className={`${isEven ? "order-1" : "order-1 md:order-2"}`}>
         {cat.imageUrl ? (
-          <motion.div variants={fadeUp} className="w-full aspect-[3/4] overflow-hidden rounded-md">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <motion.div variants={fadeUp} className="relative w-full aspect-[3/4] overflow-hidden rounded-md">
+            <Image
               src={cat.imageUrl}
               alt={cat.title}
-              className="w-full h-full object-cover"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
             />
           </motion.div>
         ) : (
@@ -270,8 +273,17 @@ export default function ServicesContent({
   const [activeTab, setActiveTab] = useState<TabType>("womens");
   const meta = TAB_META[activeTab];
   
-  // Use CMS data if available, otherwise fall back to static data
-  const dataToUse = cmsCategories.length > 0 ? cmsCategories : FALLBACK_CATEGORIES;
+  const router = useRouter();
+  
+  // Checking if Sanity actually contains populated items (in case empty categories were created manually)
+  const hasPopulatedServices = cmsCategories.some(cat => cat.items && cat.items.length > 0);
+  const dataToUse = hasPopulatedServices ? cmsCategories : FALLBACK_CATEGORIES;
+
+  const handleTabClick = (tab: TabType) => {
+    setActiveTab(tab);
+    // Replace URL without scrolling the page so it stays preserved on reload
+    router.replace(`?tab=${tab}`, { scroll: false });
+  };
 
   return (
     <>
@@ -286,7 +298,7 @@ export default function ServicesContent({
           {(Object.keys(TAB_META) as TabType[]).map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => handleTabClick(tab)}
               className={`inline-flex items-center justify-center font-sans text-[12px] uppercase tracking-[0.05em] px-6 py-[10px] rounded-md transition-colors ${
                 activeTab === tab
                   ? "bg-roots-orange text-parchment border border-roots-orange"

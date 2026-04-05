@@ -77,12 +77,28 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
     const title = cmsMatch?.title || base.title;
 
     let cmsImageUrl;
-    if (base.id === "hair") cmsImageUrl = cmsImages?.hairImageUrl;
-    else if (base.id === "bridal") cmsImageUrl = cmsImages?.bridalImageUrl;
-    else if (base.id === "skin") cmsImageUrl = cmsImages?.skinImageUrl;
-    else if (base.id === "tattoo") cmsImageUrl = cmsImages?.tattooImageUrl;
+    let hotspot;
+    if (base.id === "hair") {
+      cmsImageUrl = cmsImages?.hairImageUrl;
+      hotspot = cmsImages?.hairImageHotspot;
+    } else if (base.id === "bridal") {
+      cmsImageUrl = cmsImages?.bridalImageUrl;
+      hotspot = cmsImages?.bridalImageHotspot;
+    } else if (base.id === "skin") {
+      cmsImageUrl = cmsImages?.skinImageUrl;
+      hotspot = cmsImages?.skinImageHotspot;
+    } else if (base.id === "tattoo") {
+      cmsImageUrl = cmsImages?.tattooImageUrl;
+      hotspot = cmsImages?.tattooImageHotspot;
+    }
 
-    return { ...base, title, cmsImageUrl };
+    // Default object position if no hotspot is available
+    let objectPosition = "center";
+    if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
+      objectPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
+    }
+
+    return { ...base, title, cmsImageUrl, objectPosition };
   });
 
   // Track which accordion panel is active. Default to the first one.
@@ -167,6 +183,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                       src={service.cmsImageUrl} 
                       alt={service.title} 
                       className="absolute inset-0 w-full h-full object-cover" 
+                      style={{ objectPosition: service.objectPosition }}
                     />
                   ) : (
                     <ImagePlaceholder

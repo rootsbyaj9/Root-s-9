@@ -14,10 +14,8 @@ export default function TransitionWrapper({ children }: { children: React.ReactN
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // localStorage persists across sessions — animation truly plays only once ever
-    const alreadySeen = localStorage.getItem(STORAGE_KEY);
-    if (!alreadySeen) {
-      localStorage.setItem(STORAGE_KEY, "true");
+    // the user wants the intro logo animation to appear every time they reload the site on the home page
+    if (window.location.pathname === "/") {
       setShow(true);
     }
   }, []);

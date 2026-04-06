@@ -157,7 +157,7 @@ export default function BlogClient() {
       {/* ─── FEATURED POST ────────────────────────────── */}
       <section className="bg-linen py-12">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl">
-          <Link href={`/blog/${featured.slug}`} className="group block">
+          <div className="group block cursor-default">
             <div className="grid md:grid-cols-2 gap-12 items-center bg-parchment rounded-2xl overflow-hidden border border-obsidian/[0.06] hover:shadow-xl transition-shadow duration-300">
               
               {/* Image with Framer clip-path reveal */}
@@ -197,14 +197,13 @@ export default function BlogClient() {
                   <span className="font-sans text-xs text-warm-gray">{featured.date}</span>
                   <span className="font-sans text-xs text-obsidian/30">·</span>
                   <span className="font-sans text-xs text-warm-gray">{featured.readTime}</span>
-                  <span className="relative ml-auto font-sans text-xs font-semibold text-roots-orange uppercase tracking-widest inline-block group/link">
-                    Read Article →
-                    <span className="absolute left-0 bottom-[-2px] w-full h-[1px] bg-roots-orange origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
+                  <span className="relative ml-auto font-sans text-xs font-semibold text-roots-orange/50 uppercase tracking-widest inline-block">
+                    Coming Soon
                   </span>
                 </div>
               </motion.div>
             </div>
-          </Link>
+          </div>
         </div>
       </section>
 
@@ -220,10 +219,10 @@ export default function BlogClient() {
           >
             {rest.map((post) => (
               <motion.div key={post.slug} variants={gridItemVariants}>
-                <Link href={`/blog/${post.slug}`} className="group block h-full">
+                <div className="group block h-full cursor-default">
                   <article className="bg-parchment rounded-2xl overflow-hidden border border-obsidian/[0.06] hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
                     
-                    <div className="aspect-[4/3] overflow-hidden">
+                    <div className="aspect-[4/3] overflow-hidden relative">
                       <div className="w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
                         <ImagePlaceholder
                           label={post.imgLabel}
@@ -231,6 +230,9 @@ export default function BlogClient() {
                           mood="warm"
                           className="w-full h-full object-cover"
                         />
+                      </div>
+                      <div className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-sm text-parchment text-[10px] uppercase font-sans tracking-widest py-1 px-2.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Coming Soon
                       </div>
                     </div>
 
@@ -240,7 +242,6 @@ export default function BlogClient() {
                       </div>
                       <h3 className="font-serif text-xl text-obsidian leading-[1.2] mt-3 mb-3 flex-1 inline-block relative">
                         {post.title}
-                        <span className="absolute left-0 bottom-[-2px] w-full h-[1px] bg-roots-orange origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
                       </h3>
                       <p className="font-sans text-warm-gray text-sm leading-relaxed mb-5 line-clamp-2">
                         {post.excerpt}
@@ -252,7 +253,7 @@ export default function BlogClient() {
                       </div>
                     </div>
                   </article>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </motion.div>

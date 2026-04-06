@@ -28,20 +28,18 @@ import OfferStrip from "./OfferStrip";
 import Navbar from "./Navbar";
 import { cn } from "@/lib/utils";
 
-const STRIP_DISMISSED_KEY = "roots-offer-strip-v2";
 
 export default function Header({ settings }: { settings: any }) {
   const [stripVisible, setStripVisible] = useState(false);
   const [hidden, setHidden]             = useState(false);
 
-  // ── OfferStrip persistence ────────────────────────────────────────────────
+  // ── OfferStrip visibility ────────────────────────────────────────────────
   useEffect(() => {
     if (settings && settings.offerBannerEnabled === false) {
       setStripVisible(false);
       return;
     }
-    const dismissed = localStorage.getItem(STRIP_DISMISSED_KEY);
-    if (!dismissed) setStripVisible(true);
+    setStripVisible(true);
   }, [settings]);
 
   // ── Direction-aware scroll detection ─────────────────────────────────────
@@ -75,7 +73,6 @@ export default function Header({ settings }: { settings: any }) {
   }, []);
 
   const handleDismiss = () => {
-    localStorage.setItem(STRIP_DISMISSED_KEY, "1");
     setStripVisible(false);
   };
 

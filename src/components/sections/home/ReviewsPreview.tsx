@@ -24,7 +24,7 @@ const PREVIEW_REVIEWS = [
     initial: "M",
     name: "Manasa Mahankali",
     quote:
-      "I was nervous about trying a new style, but Mr Anikanth Jadhav at Root's family saloon made me feel so comfortable. He is an artist! My hair looks healthier and more stylish than it has in years.",
+      "I was nervous about trying a new style, but Mr Anikanth Jadhav at Root's Family Salon made me feel so comfortable. He is an artist! My hair looks healthier and more stylish than it has in years.",
   },
   {
     initial: "A",

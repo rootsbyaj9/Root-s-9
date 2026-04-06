@@ -17,7 +17,7 @@ const REVIEWS = [
     date: 'Recent',
     service: 'Hair Styling',
     review:
-      'I was nervous about trying a new style, but Mr Anikanth Jadhav at Root\'s family saloon made me feel so comfortable. He is an artist! My hair looks healthier and more stylish than it has in years. I’ve already received so many compliments. Thank you for the incredible service!',
+      'I was nervous about trying a new style, but Mr Anikanth Jadhav at Root\'s Family Salon made me feel so comfortable. He is an artist! My hair looks healthier and more stylish than it has in years. I’ve already received so many compliments. Thank you for the incredible service!',
   },
   {
     id: 'r2',

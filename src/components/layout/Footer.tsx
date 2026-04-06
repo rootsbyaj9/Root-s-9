@@ -31,7 +31,7 @@ export default function Footer({ settings }: { settings: any }) {
 
   const socialIg = settings?.socialInstagram || "https://www.instagram.com/roots_by_aj";
   const socialFb = settings?.socialFacebook || "https://www.facebook.com/anikanth.jadhav.1";
-  const tagline = settings?.footerTagline || "Hyderabad's family salon — premium hair, skin, and beauty services across 3 branches. Crafted for every generation.";
+  const tagline = settings?.footerTagline || "Hyderabad's family salon — premium hair, skin, and beauty services across 2 branches, with a 3rd opening soon. Crafted for every generation.";
 
   const SOCIAL = [
     {

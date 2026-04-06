@@ -3,8 +3,6 @@ import ServicesHero from "@/components/sections/services/ServicesHero";
 import ServicesContent from "@/components/sections/services/ServicesContent";
 import ServicesCTA from "@/components/sections/services/ServicesCTA";
 import ScrollToTop from "@/components/ui/ScrollToTop";
-import { client } from "@/sanity/client";
-import { getServiceCategoriesQuery } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Hair, Skin & Bridal Services in Hyderabad | Root's Salon",
@@ -20,8 +18,10 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-export default async function ServicesPage() {
-  const categories = await client?.fetch(getServiceCategoriesQuery).catch(() => []) ?? [];
+export default function ServicesPage() {
+  // Using an empty array to trigger the instant fallback menu
+  // bypassing Sanity completely to avoid the "Loading..." hang.
+  const categories: any[] = [];
 
   return (
     <>

@@ -281,8 +281,12 @@ export default function ServicesContent({
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
-    // Replace URL without scrolling the page so it stays preserved on reload
-    router.replace(`?tab=${tab}`, { scroll: false });
+    // Replace URL without triggering a Next.js soft-navigation that might reset state
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set("tab", tab);
+      window.history.replaceState(null, "", url.toString());
+    }
   };
 
   return (

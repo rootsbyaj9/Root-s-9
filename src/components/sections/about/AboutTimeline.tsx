@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const DEFAULT_MILESTONES = [
   { year: "2018", event: "Founded in Hyderabad with one vision — bring premium salon quality to every family." },
   { year: "2022", event: "Crossed 1,000+ loyal clients. Expanded skin and tattoo services." },
-  { year: "2026", event: "Third branch opens — a milestone built on trust, craft, and community." },
+  { year: "2026", event: "Third branch opening in 3 days — a milestone built on trust, craft, and community." },
 ];
 
 interface AboutTimelineProps {

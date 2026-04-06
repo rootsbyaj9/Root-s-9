@@ -25,6 +25,15 @@ const BRANCHES = [
     embedUrl: "https://www.google.com/maps?q=17.4304751,78.5329607&hl=en&z=15&output=embed",
     phone: '+919700744357',
     description: 'Our second branch offering the identical luxurious Root\'s experience in Tarnaka.',
+  },
+  {
+    id: 'branch-3',
+    name: 'Root\'s The Family Salon - COMING SOON',
+    address: 'Hyderabad',
+    hours: 'Opening in 3 Days',
+    phone: '+919700744357',
+    description: 'Our third branch is opening soon! We are bringing the premium Root\'s experience to a new neighborhood in just 3 days.',
+    isNew: true,
   }
 ];
 

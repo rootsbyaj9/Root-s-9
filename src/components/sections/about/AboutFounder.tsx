@@ -23,7 +23,7 @@ export default function AboutFounder({
   founderHeadline = "I started Root\u2019s for my family.",
   founderQuote = "I wanted one place where my parents, my spouse, my kids \u2014 every generation \u2014 could walk out feeling their best. That\u2019s still why I do this.",
   founderBio1 = "Before Root\u2019s, Hyderabad had a clear gap \u2014 boutique-quality salons were expensive and inaccessible; affordable salons often cut corners. We built the alternative: premium technique, professional-grade products, and a genuinely warm space that welcomes every age and every budget.",
-  founderBio2 = "Three branches later, we\u2019re still that same place my family visits every month. We\u2019ve simply invited more families in.",
+  founderBio2 = "Two branches later \u2014 with a third on the way \u2014 we\u2019re still that same place my family visits every month. We\u2019ve simply invited more families in.",
   founderImageUrl,
   aboutBackgroundImageUrl,
 }: AboutFounderProps) {

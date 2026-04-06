@@ -15,7 +15,7 @@ const REASONS = [
     number: "01",
     icon: <Trophy className="w-10 h-10 text-roots-orange stroke-1" />,
     title: "A Brand People Trust",
-    body: "Root's has built a loyal customer base across Hyderabad over 5 years. When you open a Root's franchise, you inherit that trust immediately — not having to build it from zero.",
+    body: "Root's has built a loyal customer base across Hyderabad over 8 years. When you open a Root's franchise, you inherit that trust immediately — not having to build it from zero.",
   },
   {
     number: "02",

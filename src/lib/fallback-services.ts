@@ -20,7 +20,7 @@ export const FALLBACK_CATEGORIES: ServiceCategory[] = [
       { name: "Tong Curls", price: "from ₹1000" },
       { name: "Root Touch Up (Ammonia Free)", price: "₹1200" },
       { name: "Global Colour (Ammonia Free)", price: "from ₹2200" },
-      { name: "Global Highlights", price: "S: ₹2k / M: ₹2.5k / L: ₹3.5k" },
+      { name: "Global Highlights", price: "S: ₹2,000 / M: ₹2,500 / L: ₹3,500" },
       { name: "Crown Highlights", price: "from ₹1500" },
       { name: "Funk's (1 Foil)", price: "from ₹350" },
       { name: "Smoothening S/M/L", price: "from ₹4.5k" },

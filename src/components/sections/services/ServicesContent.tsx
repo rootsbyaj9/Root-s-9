@@ -298,12 +298,12 @@ export default function ServicesContent({
 
       {/* Tab toggles */}
       <div className="bg-parchment pt-8 pb-12 border-b border-obsidian/10">
-        <div className="container mx-auto px-8 md:px-16 max-w-[1400px] flex flex-wrap gap-4">
+        <div className="container mx-auto px-8 md:px-16 max-w-[1400px] flex overflow-x-auto scrollbar-hide gap-4 -mx-4 px-4 md:mx-0 md:px-16">
           {(Object.keys(TAB_META) as TabType[]).map((tab) => (
             <button
               key={tab}
               onClick={() => handleTabClick(tab)}
-              className={`inline-flex items-center justify-center font-sans text-[12px] uppercase tracking-[0.05em] px-6 py-[10px] rounded-md transition-colors ${
+              className={`inline-flex items-center justify-center font-sans text-[12px] uppercase tracking-[0.05em] px-6 py-[10px] rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
                 activeTab === tab
                   ? "bg-roots-orange text-parchment border border-roots-orange"
                   : "border border-[#E8D4BE] text-obsidian/60 hover:text-obsidian hover:border-obsidian/30"

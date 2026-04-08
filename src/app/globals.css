@@ -234,3 +234,15 @@ body {
     transform: translateY(0%);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR HIDE — cross-browser utility
+   Used on horizontally scrollable tab bars (services page)
+═══════════════════════════════════════════════════════════ */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

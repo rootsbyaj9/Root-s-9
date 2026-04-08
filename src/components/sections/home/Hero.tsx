@@ -91,7 +91,7 @@ export default function Hero({ homePageData = {} }: HeroProps) {
           Hyderabad's premium family salon for hair, skin, bridal & tattoo artistry
         </span>
 
-        <h1 className="font-serif text-5xl md:text-7xl lg:text-[6.5rem] text-parchment leading-[1.05] mb-10 tracking-tight drop-shadow-xl w-full">
+        <h1 className="font-serif text-[40px] sm:text-[52px] md:text-[68px] lg:text-[88px] text-parchment leading-[1.05] mb-10 tracking-tight drop-shadow-xl w-full">
           Walk in.
           <br className="md:hidden" /> <em className="italic text-parchment/90 font-normal">Walk out different.</em>
         </h1>

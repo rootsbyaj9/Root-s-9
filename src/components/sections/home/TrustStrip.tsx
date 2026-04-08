@@ -91,7 +91,7 @@ export default function TrustStrip() {
       aria-label="Trust statistics"
     >
       <div className="container mx-auto px-8 md:px-16">
-        <div className="flex flex-wrap justify-between items-center gap-y-10 md:gap-y-0">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 md:gap-x-0">
           {STATS.map((stat) => (
             <div
               key={stat.id}

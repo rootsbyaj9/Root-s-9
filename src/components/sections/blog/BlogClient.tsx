@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import CTASection from '@/components/sections/shared/CTASection';
-import ImagePlaceholder from '@/components/ui/ImagePlaceholder';
 
 interface BlogPost {
   slug: string;
@@ -15,8 +14,7 @@ interface BlogPost {
   category: string;
   readTime: string;
   date: string;
-  imgLabel: string;
-  imgDescription: string;
+  accentColor: string;
 }
 
 const POSTS: BlogPost[] = [
@@ -28,8 +26,7 @@ const POSTS: BlogPost[] = [
     category: 'Hair Colour',
     readTime: '4 min read',
     date: 'March 18, 2025',
-    imgLabel: 'BALAYAGE MAINTENANCE',
-    imgDescription: 'Close-up of beautiful sun-kissed balayage strands, warm tones, editorial styling. 16:9, 800×450px.',
+    accentColor: 'from-amber-700/30 to-orange-900/40',
   },
   {
     slug: 'hydrafacial-vs-regular-facial',
@@ -39,8 +36,7 @@ const POSTS: BlogPost[] = [
     category: 'Skin Therapy',
     readTime: '5 min read',
     date: 'March 5, 2025',
-    imgLabel: 'HYDRAFACIAL TREATMENT',
-    imgDescription: 'HydraFacial wand on glowing skin — clinical-warm lighting, clean aesthetic. 4:3, 600×450px.',
+    accentColor: 'from-rose-700/25 to-pink-900/35',
   },
   {
     slug: 'bridal-hair-colour-trends-2025',
@@ -50,8 +46,7 @@ const POSTS: BlogPost[] = [
     category: 'Bridal',
     readTime: '3 min read',
     date: 'February 20, 2025',
-    imgLabel: 'BRIDAL HAIR TREND',
-    imgDescription: 'Bridal updo with subtle colour — elegant, warm-toned editorial shot. 4:3, 600×450px.',
+    accentColor: 'from-yellow-700/20 to-amber-800/30',
   },
   {
     slug: 'aftercare-for-fine-line-tattoos',
@@ -61,8 +56,7 @@ const POSTS: BlogPost[] = [
     category: 'Tattoo',
     readTime: '6 min read',
     date: 'February 10, 2025',
-    imgLabel: 'TATTOO AFTERCARE',
-    imgDescription: 'Fine-line tattoo close-up on forearm — minimal, dark background, artistic. 3:4, 450×600px.',
+    accentColor: 'from-slate-700/30 to-stone-900/40',
   },
   {
     slug: 'best-shampoo-for-colour-treated-hair',
@@ -72,8 +66,7 @@ const POSTS: BlogPost[] = [
     category: 'Hair Care',
     readTime: '4 min read',
     date: 'January 28, 2025',
-    imgLabel: 'SHAMPOO PRODUCT FLAT LAY',
-    imgDescription: 'Premium shampoo bottles arranged on marble or linen — clean, editorial flat lay. 16:9, 800×450px.',
+    accentColor: 'from-emerald-700/20 to-teal-900/30',
   },
 ];
 
@@ -169,12 +162,11 @@ export default function BlogClient() {
                 variants={curtainVariants}
               >
                 <div className="w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
-                  <ImagePlaceholder
-                    label={featured.imgLabel}
-                    description={featured.imgDescription}
-                    mood="warm"
-                    className="w-full h-full object-cover"
-                  />
+                  <div className={`w-full h-full bg-gradient-to-br ${featured.accentColor} flex items-center justify-center`}>
+                    <span className="font-sans text-[11px] uppercase tracking-[0.15em] font-semibold text-obsidian/30">
+                      {featured.category}
+                    </span>
+                  </div>
                 </div>
               </motion.div>
               
@@ -224,12 +216,11 @@ export default function BlogClient() {
                     
                     <div className="aspect-[4/3] overflow-hidden relative">
                       <div className="w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
-                        <ImagePlaceholder
-                          label={post.imgLabel}
-                          description={post.imgDescription}
-                          mood="warm"
-                          className="w-full h-full object-cover"
-                        />
+                        <div className={`w-full h-full bg-gradient-to-br ${post.accentColor} flex items-center justify-center`}>
+                          <span className="font-sans text-[11px] uppercase tracking-[0.15em] font-semibold text-obsidian/30">
+                            {post.category}
+                          </span>
+                        </div>
                       </div>
                       <div className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-sm text-parchment text-[10px] uppercase font-sans tracking-widest py-1 px-2.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                         Coming Soon

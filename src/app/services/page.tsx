@@ -35,9 +35,9 @@ export default function ServicesPage() {
         <span className="font-sans text-[11px] uppercase tracking-[0.15em] text-roots-orange block mb-2">
           MENU
         </span>
-        <h1 className="font-serif text-4xl text-obsidian">
+        <p className="font-serif text-4xl text-obsidian" role="heading" aria-level={2}>
           Our Services<span className="italic">.</span>
-        </h1>
+        </p>
       </div>
 
       <ServicesContent cmsCategories={categories} />

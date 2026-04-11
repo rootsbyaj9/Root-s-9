@@ -63,7 +63,7 @@ const jsonLd = [
     "@context": "https://schema.org",
     "@type": "HairSalon",
     "name": "Root's The Family Salon - Uppal",
-    "image": "https://root-s-9.vercel.app/logo-nobg1.svg",
+    "image": `${BASE_URL}/logo-nobg1.svg`,
     "telephone": "+919700744357",
     "address": {
       "@type": "PostalAddress",
@@ -129,7 +129,7 @@ const jsonLd = [
       "ratingValue": "4.9",
       "reviewCount": "275",
     },
-    "url": "https://root-s-9.vercel.app/locations",
+    "url": `${BASE_URL}/locations`,
   },
 ];
 

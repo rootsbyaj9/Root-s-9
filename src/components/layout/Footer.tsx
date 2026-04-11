@@ -171,6 +171,7 @@ export default function Footer({ settings }: { settings: any }) {
           {/* Made by Skar — from wireframe */}
           <p className="flex items-center gap-1.5 group">
             Made with{" "}
+            <span className="sr-only">love</span>
             <svg
               className="w-3 h-3 text-roots-orange fill-current transition-transform group-hover:scale-125"
               viewBox="0 0 24 24"

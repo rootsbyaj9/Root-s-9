@@ -223,7 +223,7 @@ export default function BlogClient() {
                         </div>
                       </div>
                       <div className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-sm text-parchment text-[10px] uppercase font-sans tracking-widest py-1 px-2.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                        Coming Soon
+                        Coming Soon<span className="sr-only">. </span>
                       </div>
                     </div>
 

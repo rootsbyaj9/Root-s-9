@@ -60,8 +60,8 @@ export default async function HomePage() {
 
       {/* 5 — Dark CTA (shared component, ends every page) */}
       <CTASection 
-        heading={homePageData?.ctaHeadline}
-        ctaLabel={homePageData?.ctaButtonText}
+        heading={homePageData?.ctaHeadline || undefined}
+        ctaLabel={homePageData?.ctaButtonText || undefined}
       />
     </>
   );

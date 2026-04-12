@@ -18,20 +18,23 @@ interface CTASectionProps {
 }
 
 export default function CTASection({
-  heading = "Ready for your Look?",
-  subtext = "Step into the premier salon experience in Hyderabad. Let our experts craft your signature look.",
-  ctaLabel = "Book Consultation via WhatsApp",
+  heading,
+  subtext,
+  ctaLabel,
 }: CTASectionProps) {
+  const resolvedHeading  = heading  || "Ready for your Look?";
+  const resolvedSubtext  = subtext  || "Step into the premier salon experience in Hyderabad. Let our experts craft your signature look.";
+  const resolvedCtaLabel = ctaLabel || "Book Consultation via WhatsApp";
   const waUrl = `https://wa.me/${WHATSAPP_NUMBER}`;
 
   return (
     <section className="py-24 md:py-32 bg-obsidian text-parchment">
       <div className="container mx-auto px-6 md:px-16 flex flex-col items-center text-center max-w-3xl">
         <h2 className="font-serif text-4xl md:text-5xl text-parchment mb-6 leading-[1.15]">
-          {heading}
+          {resolvedHeading}
         </h2>
         <p className="font-sans text-parchment/70 text-base md:text-lg leading-relaxed mb-10 max-w-xl">
-          {subtext}
+          {resolvedSubtext}
         </p>
         <a
           href={waUrl}
@@ -39,7 +42,7 @@ export default function CTASection({
           rel="noopener noreferrer"
           className="btn-primary"
         >
-          {ctaLabel}
+          {resolvedCtaLabel}
         </a>
       </div>
     </section>

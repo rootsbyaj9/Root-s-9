@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Trophy, GraduationCap, MapPin } from "lucide-react";
 import CTASection from "@/components/sections/shared/CTASection";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { urlForImage } from "@/sanity/lib/image";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,20 +96,8 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
   const modelPoints = cmsData?.modelPoints?.length ? cmsData.modelPoints : MODEL_POINTS;
   const faqs = cmsData?.faqs?.length ? cmsData.faqs : FAQS;
 
-  let cmsImageUrl;
-  let fallbackPosition = "center";
-
-  if (cmsData?.heroBackgroundImage) {
-    try {
-      cmsImageUrl = urlForImage(cmsData.heroBackgroundImage).url();
-      const hotspot = cmsData.heroBackgroundImage.hotspot;
-      if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
-        fallbackPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
-      }
-    } catch(e) {
-      console.error(e);
-    }
-  }
+  // heroBackgroundImageUrl is pre-resolved server-side via GROQ asset->url projection
+  const cmsImageUrl = cmsData?.heroBackgroundImageUrl || undefined;
 
   return (
     <>
@@ -120,7 +108,6 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
             src={cmsImageUrl || "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2000&auto=format&fit=crop"}
             alt="Root's Franchise"
             className="absolute inset-0 w-full h-full object-cover opacity-60"
-            style={{ objectPosition: fallbackPosition }}
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/80 to-transparent" />

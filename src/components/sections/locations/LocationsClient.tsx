@@ -53,21 +53,21 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
   const activeBranches = locationsData.length > 0 ? locationsData : BRANCHES;
 
   useGSAP(() => {
-    // Minimal GSAP animation: subtle fade up
+    // Cards: fade up on scroll
     gsap.from('.location-card', {
-      opacity: 0,
+      autoAlpha: 0,
       y: 30,
       duration: 0.8,
       stagger: 0.2,
       ease: 'power3.out',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 80%',
+        start: 'top 90%',
       }
     });
 
     gsap.from('.hero-text', {
-      opacity: 0,
+      autoAlpha: 0,
       y: -20,
       duration: 0.8,
       ease: 'power2.out'

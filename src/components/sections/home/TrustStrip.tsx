@@ -116,7 +116,7 @@ export default function TrustStrip({ homePageData = {} }: TrustStripProps) {
       aria-label="Trust statistics"
     >
       <div className="container mx-auto px-8 md:px-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 md:gap-x-0">
+        <div className="grid grid-cols-2 md:flex md:justify-between gap-y-10 gap-x-6">
           {STATS.map((baseStat) => {
             const displayValue = homePageData ? (
               baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
@@ -129,7 +129,7 @@ export default function TrustStrip({ homePageData = {} }: TrustStripProps) {
             return (
               <div
                 key={baseStat.id}
-                className="trust-stat w-1/2 md:w-auto text-center md:text-left opacity-0"
+                className="trust-stat flex flex-col items-center text-center opacity-0"
               >
                 {/* Numeral — Playfair large; textContent driven by GSAP */}
                 <span

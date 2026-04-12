@@ -33,8 +33,9 @@ interface AboutValuesProps {
 
 export default function AboutValues({
   heading = "Our three principles.",
-  values = DEFAULT_VALUES,
+  values: rawValues,
 }: AboutValuesProps) {
+  const values = rawValues ?? DEFAULT_VALUES;
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 

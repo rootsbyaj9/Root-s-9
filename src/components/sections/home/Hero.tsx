@@ -87,12 +87,14 @@ export default function Hero({ homePageData = {} }: HeroProps) {
     >
       {/* ── Salon Interior Background ──────────── */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={cmsImageUrl || "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=2000&auto=format&fit=crop"}
-          alt="Root's Family Salon Interior"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectPosition: fallbackPosition }}
-        />
+        {cmsImageUrl && (
+          <img
+            src={cmsImageUrl}
+            alt="Root's Family Salon Interior"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: fallbackPosition }}
+          />
+        )}
       </div>
 
       {/* ── Reduced Dark Veil (40%) ── */}

@@ -41,6 +41,7 @@ export default async function AboutPage() {
       <AboutHero
         eyebrow={about?.heroEyebrow}
         subtext={about?.heroSubtext}
+        bgImageUrl={about?.aboutBackgroundImageUrl}
       />
       <AboutFounder
         founderName={about?.founderName}

@@ -11,11 +11,13 @@ gsap.registerPlugin(ScrollTrigger);
 interface AboutHeroProps {
   eyebrow?: string;
   subtext?: string;
+  bgImageUrl?: string;
 }
 
 export default function AboutHero({
   eyebrow = "OUR STORY",
   subtext = "Root's is the Hyderabad salon built for every member of your family — without ever compromising on quality.",
+  bgImageUrl,
 }: AboutHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -83,11 +85,13 @@ export default function AboutHero({
     >
       {/* Background founder portrait mock */}
       <div ref={bgRef} className="absolute inset-0 opacity-30 will-change-transform bg-obsidian">
-        <img
-          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop"
-          alt="Premium Salon Ambience"
-          className="w-full h-full object-cover object-center grayscale mix-blend-luminosity"
-        />
+        {bgImageUrl && (
+          <img
+            src={bgImageUrl}
+            alt="Premium Salon Ambience"
+            className="w-full h-full object-cover object-center grayscale mix-blend-luminosity"
+          />
+        )}
       </div>
 
       {/* Gradient overlay */}

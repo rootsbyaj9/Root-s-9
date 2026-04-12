@@ -17,6 +17,11 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import CTASection from '@/components/sections/shared/CTASection';
 import ImagePlaceholder from '@/components/ui/ImagePlaceholder';
+import { client } from "@/sanity/client";
+import { getPostBySlugQuery, getPostsQuery } from "@/sanity/lib/queries";
+import { PortableText } from "next-sanity";
+
+export const revalidate = 60;
 
 /* ─── POST DATA ──────────────────────────────────────────── */
 
@@ -142,6 +147,15 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  
+  const sanityPost = await client?.fetch(getPostBySlugQuery, { slug }).catch(() => null);
+  if (sanityPost) {
+    return {
+      title: `${sanityPost.title} | Root's Salon Blog`,
+      description: sanityPost.excerpt || `${sanityPost.title} blog post`,
+    };
+  }
+
   const post = POSTS[slug];
   if (!post) return { title: 'Post Not Found' };
   return {
@@ -150,8 +164,18 @@ export async function generateMetadata({
   };
 }
 
-export function generateStaticParams() {
-  return Object.keys(POSTS).map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const posts = await client?.fetch(getPostsQuery).catch(() => []) ?? [];
+  const sanitySlugs = posts.map((post: any) => ({ slug: post.slug }));
+  const staticSlugs = Object.keys(POSTS).map((slug) => ({ slug }));
+  
+  const allSlugs = [...sanitySlugs];
+  for (const staticSlug of staticSlugs) {
+    if (!allSlugs.some(s => s.slug === staticSlug.slug)) {
+      allSlugs.push(staticSlug);
+    }
+  }
+  return allSlugs;
 }
 
 /* ─── PAGE ────────────────────────────────────────────────── */
@@ -170,12 +194,144 @@ function renderBody(paragraph: string) {
   });
 }
 
+const portableTextComponents: any = {
+  block: {
+    normal: ({ children }: any) => (
+      <p className="font-sans text-obsidian/80 text-base md:text-lg leading-relaxed mb-6">
+        {children}
+      </p>
+    ),
+    h1: ({ children }: any) => (
+      <h1 className="font-serif text-4xl md:text-5xl text-obsidian mt-12 mb-6 leading-[1.1]">
+        {children}
+      </h1>
+    ),
+    h2: ({ children }: any) => (
+      <h2 className="font-serif text-3xl md:text-4xl text-obsidian mt-10 mb-5 leading-[1.15]">
+        {children}
+      </h2>
+    ),
+    h3: ({ children }: any) => (
+      <h3 className="font-serif text-2xl md:text-3xl text-obsidian mt-8 mb-4 leading-[1.2]">
+        {children}
+      </h3>
+    ),
+    h4: ({ children }: any) => (
+      <h4 className="font-serif text-xl md:text-2xl text-obsidian mt-6 mb-3">
+        {children}
+      </h4>
+    ),
+    blockquote: ({ children }: any) => (
+      <blockquote className="border-l-2 border-roots-orange pl-6 my-8 py-2 font-serif italic text-xl md:text-2xl text-warm-gray leading-relaxed">
+        {children}
+      </blockquote>
+    ),
+  },
+  list: {
+    bullet: ({ children }: any) => (
+      <ul className="list-disc pl-5 font-sans text-obsidian/80 text-base md:text-lg leading-relaxed space-y-3 mb-6 marker:text-roots-orange">
+        {children}
+      </ul>
+    ),
+    number: ({ children }: any) => (
+      <ol className="list-decimal pl-5 font-sans text-obsidian/80 text-base md:text-lg leading-relaxed space-y-3 mb-6 marker:text-roots-orange">
+        {children}
+      </ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }: any) => <li className="pl-2">{children}</li>,
+    number: ({ children }: any) => <li className="pl-2">{children}</li>,
+  },
+  marks: {
+    strong: ({ children }: any) => (
+      <strong className="font-semibold text-obsidian">{children}</strong>
+    ),
+    em: ({ children }: any) => <em className="italic text-obsidian">{children}</em>,
+    link: ({ children, value }: any) => {
+      const rel = !value?.href?.startsWith('/') ? 'noreferrer noopener' : undefined;
+      return (
+        <a 
+          href={value?.href} 
+          rel={rel} 
+          className="text-roots-orange hover:text-roots-orange/80 underline underline-offset-4 decoration-roots-orange/30 hover:decoration-roots-orange transition-colors"
+        >
+          {children}
+        </a>
+      );
+    },
+  },
+};
+
 export default async function BlogPostPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  
+  const sanityPost = await client?.fetch(getPostBySlugQuery, { slug }).catch(() => null);
+
+  if (sanityPost) {
+    const pubDate = new Date(sanityPost.publishedAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    return (
+      <>
+        {/* ─── ARTICLE HERO ────────────────────────────── */}
+        <section className="pt-32 pb-0 bg-parchment">
+          <div className="container mx-auto px-6 md:px-16 max-w-4xl">
+            <span className="eyebrow">{sanityPost.category || "General"}</span>
+            <h1 className="font-serif text-4xl md:text-6xl text-obsidian leading-[1.05] mt-3 mb-6">
+              {sanityPost.title}
+            </h1>
+            <div className="flex items-center gap-4 mb-10">
+              <span className="font-sans text-sm text-warm-gray">{pubDate}</span>
+              <span className="text-obsidian/20">·</span>
+              <span className="font-sans text-sm text-warm-gray">{sanityPost.readTime || 3} min read</span>
+            </div>
+          </div>
+          {/* Full-bleed hero image */}
+          <div className="w-full aspect-[21/9] md:aspect-[21/7] max-h-[480px]">
+             {sanityPost.mainImageUrl ? (
+               <img src={sanityPost.mainImageUrl} alt={sanityPost.title} className="w-full h-full object-cover" />
+             ) : (
+               <ImagePlaceholder
+                 label="Post Image"
+                 description="No image"
+                 mood="warm"
+                 className="w-full h-full"
+               />
+             )}
+          </div>
+        </section>
+
+        {/* ─── ARTICLE BODY ────────────────────────────── */}
+        <article className="bg-parchment py-16">
+          <div className="container mx-auto px-6 md:px-16 max-w-3xl">
+            <div className="prose-like space-y-6">
+                 <PortableText value={sanityPost.body} components={portableTextComponents} />
+            </div>
+            
+            {/* Back to blog */}
+            <div className="mt-12">
+              <Link
+                href="/blog"
+                className="font-sans text-sm text-roots-orange hover:underline inline-flex items-center gap-2"
+              >
+                ← Back to Journal
+              </Link>
+            </div>
+          </div>
+        </article>
+
+        <CTASection
+          heading="Ready for your own transformation?"
+          subtext="Book an appointment at any Root's branch in Hyderabad. We'd love to bring this to life for you."
+          ctaLabel="Book via WhatsApp"
+        />
+      </>
+    );
+  }
+
   const post = POSTS[slug];
   if (!post) notFound();
 

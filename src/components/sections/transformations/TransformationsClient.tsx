@@ -9,8 +9,6 @@
 
 'use client';
 
-import { useState } from 'react';
-import FilterBar from './FilterBar';
 import MasonryGrid from './MasonryGrid';
 
 type TransformationsClientProps = {
@@ -18,7 +16,6 @@ type TransformationsClientProps = {
 };
 
 export default function TransformationsClient({ cmsTransformations = [] }: TransformationsClientProps) {
-  const [active, setActive] = useState('all');
 
   return (
     <>
@@ -37,11 +34,8 @@ export default function TransformationsClient({ cmsTransformations = [] }: Trans
         </div>
       </section>
 
-      {/* 2 — Sticky filter pills */}
-      <FilterBar active={active} onSelect={setActive} />
-
-      {/* 3 — Masonry gallery */}
-      <MasonryGrid activeCategory={active} cmsTransformations={cmsTransformations} />
+      {/* 2 — Masonry gallery */}
+      <MasonryGrid cmsTransformations={cmsTransformations} />
     </>
   );
 }

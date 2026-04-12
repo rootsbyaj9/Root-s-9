@@ -16,6 +16,11 @@ interface BlogPost {
   readTime: string;
   date: string;
   accentColor: string;
+  mainImageUrl?: string;
+}
+
+interface BlogClientProps {
+  posts?: any[];
 }
 
 const POSTS: BlogPost[] = [
@@ -81,8 +86,24 @@ function CategoryPill({ label }: { label: string }) {
   );
 }
 
-export default function BlogClient() {
+export default function BlogClient({ posts = [] }: BlogClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Format Sanity posts to match the local BlogPost expected structure
+  const formattedPosts: BlogPost[] = posts.length > 0 
+    ? posts.map(p => ({
+        slug: p.slug,
+        title: p.title || "Untitled Post",
+        excerpt: p.excerpt || "",
+        category: p.category || "General",
+        readTime: `${p.readTime || 3} min read`,
+        date: new Date(p.publishedAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+        accentColor: 'from-obsidian/20 to-obsidian/30',
+        mainImageUrl: p.mainImageUrl
+      }))
+    : POSTS;
+
+  const [featured, ...rest] = formattedPosts;
   const headline = "The Editorial.";
   const titleLetters = headline.split('');
 
@@ -162,14 +183,18 @@ export default function BlogClient() {
                 viewport={{ once: true, margin: "-100px" }}
                 variants={curtainVariants}
               >
-                <div className="w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
-                  <ImagePlaceholder 
-                    label="Editorial Photo" 
-                    description={`High-res editorial photo for ${featured.category}`} 
-                    className="w-full h-full" 
-                    mood="warm" 
-                  />
-                </div>
+                <Link href={`/blog/${featured.slug}`} className="block w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
+                  {featured.mainImageUrl ? (
+                    <img src={featured.mainImageUrl} alt={featured.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <ImagePlaceholder 
+                      label="Editorial Photo" 
+                      description={`High-res editorial photo for ${featured.category}`} 
+                      className="w-full h-full" 
+                      mood="warm" 
+                    />
+                  )}
+                </Link>
               </motion.div>
               
               {/* Content Panel sliding in from right */}
@@ -181,9 +206,11 @@ export default function BlogClient() {
                 variants={textPanelVariants}
               >
                 <CategoryPill label={featured.category} />
-                <h2 className="font-serif text-3xl md:text-4xl text-obsidian leading-[1.1] mt-4 mb-5 transition-colors duration-200">
-                  {featured.title}
-                </h2>
+                <Link href={`/blog/${featured.slug}`}>
+                  <h2 className="font-serif text-3xl md:text-4xl text-obsidian leading-[1.1] mt-4 mb-5 transition-colors duration-200 hover:text-roots-orange">
+                    {featured.title}
+                  </h2>
+                </Link>
                 <p className="font-sans text-warm-gray text-base leading-relaxed mb-8">
                   {featured.excerpt}
                 </p>
@@ -191,9 +218,11 @@ export default function BlogClient() {
                   <span className="font-sans text-xs text-warm-gray">{featured.date}</span>
                   <span className="font-sans text-xs text-obsidian/30">·</span>
                   <span className="font-sans text-xs text-warm-gray">{featured.readTime}</span>
-                  <span className="relative ml-auto font-sans text-xs font-semibold text-roots-orange/50 uppercase tracking-widest inline-block">
-                    Coming Soon
-                  </span>
+                  {posts.length === 0 && (
+                    <span className="relative ml-auto font-sans text-xs font-semibold text-roots-orange/50 uppercase tracking-widest inline-block">
+                      Coming Soon
+                    </span>
+                  )}
                 </div>
               </motion.div>
             </div>
@@ -217,26 +246,34 @@ export default function BlogClient() {
                   <article className="bg-parchment rounded-2xl overflow-hidden border border-obsidian/[0.06] hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
                     
                     <div className="aspect-[4/3] overflow-hidden relative">
-                      <div className="w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
-                        <ImagePlaceholder 
-                          label="Editorial Photo" 
-                          description={`Photo for ${post.category}`} 
-                          className="w-full h-full" 
-                          mood="warm" 
-                        />
-                      </div>
-                      <div className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-sm text-parchment text-[10px] uppercase font-sans tracking-widest py-1 px-2.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                        Coming Soon<span className="sr-only">. </span>
-                      </div>
+                      <Link href={`/blog/${post.slug}`} className="block w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
+                        {post.mainImageUrl ? (
+                          <img src={post.mainImageUrl} alt={post.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <ImagePlaceholder 
+                            label="Editorial Photo" 
+                            description={`Photo for ${post.category}`} 
+                            className="w-full h-full" 
+                            mood="warm" 
+                          />
+                        )}
+                      </Link>
+                      {posts.length === 0 && (
+                        <div className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-sm text-parchment text-[10px] uppercase font-sans tracking-widest py-1 px-2.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                          Coming Soon<span className="sr-only">. </span>
+                        </div>
+                      )}
                     </div>
 
                     <div className="p-6 flex flex-col flex-1">
                       <div>
                         <CategoryPill label={post.category} />
                       </div>
-                      <h3 className="font-serif text-xl text-obsidian leading-[1.2] mt-3 mb-3 flex-1 inline-block relative">
-                        {post.title}
-                      </h3>
+                      <Link href={`/blog/${post.slug}`} className="flex-1">
+                        <h3 className="font-serif text-xl text-obsidian leading-[1.2] mt-3 mb-3 inline-block relative hover:text-roots-orange transition-colors">
+                          {post.title}
+                        </h3>
+                      </Link>
                       <p className="font-sans text-warm-gray text-sm leading-relaxed mb-5 line-clamp-2">
                         {post.excerpt}
                       </p>

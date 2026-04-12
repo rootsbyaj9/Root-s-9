@@ -130,7 +130,7 @@ function CategoryBlock({ cat, index }: { cat: ServiceCategory; index: number }) 
           <span className="font-sans text-[36px] text-obsidian/15 inline-block mr-3">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <h3 className="font-serif text-[38px] text-obsidian inline-block">{cat.title}</h3>
+          <h3 className="font-serif text-[26px] md:text-[38px] text-obsidian inline-block">{cat.title}</h3>
           <div className="w-full h-px bg-[#E8D4BE] mt-4" />
         </motion.div>
 
@@ -281,12 +281,7 @@ export default function ServicesContent({
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
-    // Replace URL without triggering a Next.js soft-navigation that might reset state
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      url.searchParams.set("tab", tab);
-      window.history.replaceState(null, "", url.toString());
-    }
+    router.replace(`?tab=${tab}`, { scroll: false });
   };
 
   return (
@@ -298,7 +293,7 @@ export default function ServicesContent({
 
       {/* Tab toggles */}
       <div className="bg-parchment pt-8 pb-12 border-b border-obsidian/10">
-        <div className="container mx-auto px-8 md:px-16 max-w-[1400px] flex overflow-x-auto scrollbar-hide gap-4 -mx-4 px-4 md:mx-0 md:px-16">
+        <div className="flex overflow-x-auto scrollbar-hide gap-3 px-6 md:px-16 max-w-[1400px] mx-auto">
           {(Object.keys(TAB_META) as TabType[]).map((tab) => (
             <button
               key={tab}

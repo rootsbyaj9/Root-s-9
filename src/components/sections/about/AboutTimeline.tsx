@@ -21,8 +21,9 @@ interface AboutTimelineProps {
 
 export default function AboutTimeline({
   heading = "Eight years of growing together.",
-  milestones = DEFAULT_MILESTONES,
+  milestones: rawMilestones,
 }: AboutTimelineProps) {
+  const milestones = rawMilestones ?? DEFAULT_MILESTONES;
   const sectionRef = useRef<HTMLElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const milestonesRef = useRef<HTMLDivElement>(null);

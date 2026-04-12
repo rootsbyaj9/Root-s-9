@@ -19,8 +19,9 @@ export default function Footer({ settings }: { settings: any }) {
     { label: "About Us", href: "/about" },
     { label: "Services", href: "/services" },
     { label: "Transformations", href: "/transformations" },
+    { label: "Locations", href: "/locations" },
     { label: "Reviews", href: "/reviews" },
-    { label: "Contact", href: "/contact" },
+    { label: "Franchise", href: "/franchise" },
   ];
 
   const CONTACT = {

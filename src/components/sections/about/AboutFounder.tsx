@@ -128,14 +128,22 @@ export default function AboutFounder({
         {/* Image column */}
         <div 
           ref={imageRef} 
-          className="order-2 md:order-1 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl relative"
+          className="order-2 md:order-1 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl relative bg-warm-gray/20"
         >
-          <img
-            src={founderImageUrl || "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?q=80&w=1400&auto=format&fit=crop"}
-            alt={founderName}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-obsidian/10 mix-blend-overlay"></div>
+          {founderImageUrl ? (
+            <>
+              <img
+                src={founderImageUrl}
+                alt={founderName}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-obsidian/10 mix-blend-overlay"></div>
+            </>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-warm-gray/40 font-sans text-sm tracking-widest uppercase">
+              Founder Photo
+            </div>
+          )}
         </div>
 
         {/* Text column */}

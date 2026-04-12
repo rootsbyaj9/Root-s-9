@@ -334,7 +334,7 @@ export default function Navbar({ settings }: { settings: any }) {
         <div
           ref={menuRef}
           className={cn(
-            "lg:hidden fixed inset-0 bg-[#FEFCF8] flex flex-col items-center justify-center transition-opacity duration-300",
+            "lg:hidden fixed inset-0 bg-[#FEFCF8] flex flex-col items-center justify-start overflow-y-auto transition-opacity duration-300",
             menuOpen
               ? "opacity-100 pointer-events-auto z-[9998]"
               : "opacity-0 pointer-events-none z-[-1]"
@@ -342,7 +342,7 @@ export default function Navbar({ settings }: { settings: any }) {
           aria-hidden={!menuOpen}
           id="mobile-menu"
         >
-          <div className="flex flex-col items-center justify-center gap-8 w-full max-h-[80vh] overflow-y-auto">
+          <div className="flex flex-col items-center gap-8 w-full pt-28 pb-16">
             {[...PRIMARY_LINKS, ...SECONDARY_LINKS].map((link) => {
               if (link.label === "Services") {
                 return (

@@ -7,6 +7,7 @@ import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import MobileCTABar from "@/components/layout/MobileCTABar";
 import { client } from "@/sanity/client";
 import { getSiteSettingsQuery } from "@/sanity/lib/queries";
+import Script from "next/script";
 
 /**
  * Fonts are self-hosted via next/font (no Google CDN call at runtime).
@@ -152,6 +153,25 @@ export default async function RootLayout({
         />
       </head>
       <body>
+        {/* ── Google Analytics 4 ── */}
+        {/* Set NEXT_PUBLIC_GA_ID in Vercel to activate tracking */}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
+        
         <SmoothScroll>
           {/* ── Fixed header shell (OfferStrip + Navbar) ── */}
           <Header settings={settings} />

@@ -104,11 +104,13 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
       {/* ─── HERO ─────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-[65vh] flex items-end bg-obsidian pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-[#1A1008]">
-          <img
-            src={cmsImageUrl || "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2000&auto=format&fit=crop"}
-            alt="Root's Franchise"
-            className="absolute inset-0 w-full h-full object-cover opacity-60"
-          />
+          {cmsImageUrl && (
+            <img
+              src={cmsImageUrl}
+              alt="Root's Franchise"
+              className="absolute inset-0 w-full h-full object-cover opacity-60"
+            />
+          )}
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/80 to-transparent" />
 

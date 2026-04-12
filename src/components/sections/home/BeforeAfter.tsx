@@ -12,7 +12,6 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { urlForImage } from "@/sanity/lib/image";
 
 type TransformationType = "hair" | "skin";
 
@@ -152,9 +151,9 @@ export default function BeforeAfter({ homePageData = {} }: BeforeAfterProps) {
         >
           {/* ── AFTER image (full width, visible behind BEFORE) ─────────── */}
           <div className="absolute inset-0">
-            {(activeTab === "hair" && homePageData?.beforeAfterHairAfter) || (activeTab === "skin" && homePageData?.beforeAfterSkinAfter) ? (
+            {(activeTab === "hair" && homePageData?.beforeAfterHairAfterUrl) || (activeTab === "skin" && homePageData?.beforeAfterSkinAfterUrl) ? (
               <img 
-                src={urlForImage(activeTab === "hair" ? homePageData.beforeAfterHairAfter : homePageData.beforeAfterSkinAfter).url()} 
+                src={activeTab === "hair" ? homePageData.beforeAfterHairAfterUrl : homePageData.beforeAfterSkinAfterUrl} 
                 alt="After Transformation" 
                 className="absolute inset-0 w-full h-full object-cover" 
               />
@@ -183,9 +182,9 @@ export default function BeforeAfter({ homePageData = {} }: BeforeAfterProps) {
             style={{ width: `${position}%` }}
           >
             <div className="relative" style={{ width: `${100 / (position / 100)}%`, height: "100%" }}>
-              {(activeTab === "hair" && homePageData?.beforeAfterHairBefore) || (activeTab === "skin" && homePageData?.beforeAfterSkinBefore) ? (
+              {(activeTab === "hair" && homePageData?.beforeAfterHairBeforeUrl) || (activeTab === "skin" && homePageData?.beforeAfterSkinBeforeUrl) ? (
                 <img 
-                  src={urlForImage(activeTab === "hair" ? homePageData.beforeAfterHairBefore : homePageData.beforeAfterSkinBefore).url()} 
+                  src={activeTab === "hair" ? homePageData.beforeAfterHairBeforeUrl : homePageData.beforeAfterSkinBeforeUrl} 
                   alt="Before Transformation" 
                   className="absolute inset-0 w-full h-full object-cover" 
                 />

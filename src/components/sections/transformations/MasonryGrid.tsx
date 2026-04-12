@@ -23,7 +23,6 @@ import { urlForImage } from '@/sanity/lib/image';
 
 interface TransformationItem {
   id: string;
-  category: string;
   label: string;
   description: string;
   aspectClass: string;
@@ -36,7 +35,6 @@ interface TransformationItem {
 const ITEMS: TransformationItem[] = [
   {
     id: 't1',
-    category: 'skin',
     label: 'SKIN GLOW-UP',
     description: 'Before/after skin collage — glowing result. Square or 3:4 portrait, 600×800px.',
     aspectClass: 'aspect-[3/4]',
@@ -44,7 +42,6 @@ const ITEMS: TransformationItem[] = [
   },
   {
     id: 't2',
-    category: 'hair-color',
     label: 'HAIR COLOUR TRANSFORM',
     description: 'Dramatic hair colour transformation. Before dull → after vibrant. 4:3, 600×450px.',
     aspectClass: 'aspect-[4/3]',
@@ -52,7 +49,6 @@ const ITEMS: TransformationItem[] = [
   },
   {
     id: 't3',
-    category: 'bridal',
     label: 'BRIDAL FINAL LOOK',
     description: 'Full bridal makeup + hair. Golden celebratory portrait. 2:3 portrait, 600×900px.',
     aspectClass: 'aspect-[2/3]',
@@ -60,7 +56,6 @@ const ITEMS: TransformationItem[] = [
   },
   {
     id: 't4',
-    category: 'cut-style',
     label: 'CUT & STYLE EDITORIAL',
     description: 'Before/after precision cut. Editorial angle, warm tones. 3:4, 600×800px.',
     aspectClass: 'aspect-[3/4]',
@@ -68,7 +63,6 @@ const ITEMS: TransformationItem[] = [
   },
   {
     id: 't5',
-    category: 'balayage',
     label: 'BALAYAGE CLOSE-UP',
     description: 'Sun-kissed balayage result — hero card. Dimensional, soft, warm. 2:3 tall, 600×900px.',
     aspectClass: 'aspect-[2/3]',
@@ -76,7 +70,6 @@ const ITEMS: TransformationItem[] = [
   },
   {
     id: 't6',
-    category: 'hydrafacial',
     label: 'HYDRAFACIAL GLOW',
     description: 'HydraFacial result — radiant, dewy skin. Clinical-warm lighting. 4:3, 600×450px.',
     aspectClass: 'aspect-[4/3]',
@@ -84,7 +77,6 @@ const ITEMS: TransformationItem[] = [
   },
   {
     id: 't7',
-    category: 'tattoo',
     label: 'FINE-LINE TATTOO',
     description: 'Fine-line or realism tattoo on arm/wrist. High contrast, dark background. 3:4, 600×800px.',
     aspectClass: 'aspect-[3/4]',
@@ -92,7 +84,6 @@ const ITEMS: TransformationItem[] = [
   },
   {
     id: 't8',
-    category: 'cut-style',
     label: 'KERATIN SMOOTHENING',
     description: 'Before/after hair smoothening. Sleek, frizz-free result. 4:3, 600×450px.',
     aspectClass: 'aspect-[4/3]',
@@ -100,7 +91,6 @@ const ITEMS: TransformationItem[] = [
   },
   {
     id: 't9',
-    category: 'bridal',
     label: 'BRIDAL PARTY LOOK',
     description: 'Full bridal party — group shot with complete styling. 3:4, 600×800px.',
     aspectClass: 'aspect-[3/4]',
@@ -109,11 +99,10 @@ const ITEMS: TransformationItem[] = [
 ];
 
 interface MasonryGridProps {
-  activeCategory: string;
   cmsTransformations?: any[];
 }
 
-export default function MasonryGrid({ activeCategory, cmsTransformations = [] }: MasonryGridProps) {
+export default function MasonryGrid({ cmsTransformations = [] }: MasonryGridProps) {
   const gridRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<TransformationItem[]>(ITEMS);
 
@@ -136,23 +125,27 @@ export default function MasonryGrid({ activeCategory, cmsTransformations = [] }:
           console.error("Image url generation failed:", e);
         }
 
-        // We assign a default aspect class if the CMS field isn't explicitly setting one
-        const aspectMap: Record<string, string> = {
-          '1:1': 'aspect-square',
-          '2:3': 'aspect-[2/3]',
-          '3:4': 'aspect-[3/4]',
-          '4:5': 'aspect-[4/5]',
-          '4:3': 'aspect-[4/3]',
-          '16:9': 'aspect-video'
-        };
+        let cssAspectClass = 'aspect-[3/4]';
+        if (cmsItem.aspect) {
+          if (cmsItem.aspect.startsWith('aspect-')) {
+            cssAspectClass = cmsItem.aspect;
+          } else {
+            const aspectMap: Record<string, string> = {
+              '1:1': 'aspect-square',
+              '2:3': 'aspect-[2/3]',
+              '3:4': 'aspect-[3/4]',
+              '4:5': 'aspect-[4/5]',
+              '4:3': 'aspect-[4/3]',
+              '16:9': 'aspect-video'
+            };
+            cssAspectClass = aspectMap[cmsItem.aspect] || 'aspect-[3/4]';
+          }
+        } else {
+          cssAspectClass = ITEMS[index % ITEMS.length]?.aspectClass || 'aspect-[3/4]';
+        }
 
-        const cssAspectClass = aspectMap[cmsItem.aspect] || (ITEMS[index % ITEMS.length]?.aspectClass || 'aspect-[3/4]');
-
-        // Map CMS data to our component format
-        // In this implementation, since CMS category mapping was not strictly defined, we use a basic fallback
         return {
           id: cmsItem._id || `cms-${index}`,
-          category: 'hair-color', // Fallback as transformation schema might not have the category field explicitly defined yet
           label: cmsItem.title || 'TRANSFORMATION',
           description: cmsItem.description || '',
           aspectClass: cssAspectClass,
@@ -194,22 +187,17 @@ export default function MasonryGrid({ activeCategory, cmsTransformations = [] }:
         }
       );
     },
-    { scope: gridRef, dependencies: [data, activeCategory] }
+    { scope: gridRef, dependencies: [data] }
   );
-
-  const filtered =
-    activeCategory === 'all'
-      ? data
-      : data.filter((item) => item.category === activeCategory);
 
   return (
     <div ref={gridRef} className="py-16">
       <div className="container mx-auto px-6 md:px-10 max-w-7xl">
         <div
-          style={{ columnCount: 3, columnGap: '8px' }}
-          className="max-sm:[column-count:1] sm:max-md:[column-count:2]"
+          className="masonry-grid"
+          style={{ columnGap: '8px' }}
         >
-          {filtered.map((item) => (
+          {data.map((item) => (
             <div
               key={item.id}
               className="masonry-cell group relative mb-2 overflow-hidden rounded-[8px] break-inside-avoid"
@@ -244,10 +232,10 @@ export default function MasonryGrid({ activeCategory, cmsTransformations = [] }:
           ))}
         </div>
 
-        {filtered.length === 0 && (
+        {data.length === 0 && (
           <div className="text-center py-24">
             <p className="font-sans text-warm-gray text-sm">
-              No transformations in this category yet — check back soon.
+              No transformations available yet — check back soon.
             </p>
           </div>
         )}

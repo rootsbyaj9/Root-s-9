@@ -22,7 +22,7 @@ const SERVICES = [
     id: "hair",
     number: "01",
     title: "Hair",
-    href: "/services#hair",
+    href: "/services?tab=womens",
     placeholder: {
       label: "Hair · High-Res Image",
       description: "Close-up of styled hair. Warm background.",
@@ -33,7 +33,7 @@ const SERVICES = [
     id: "bridal",
     number: "02",
     title: "Bridal",
-    href: "/services#bridal",
+    href: "/services?tab=bridal",
     placeholder: {
       label: "Bridal · High-Res Image",
       description: "Bridal full look. Golden hour.",
@@ -44,7 +44,7 @@ const SERVICES = [
     id: "skin",
     number: "03",
     title: "Skin",
-    href: "/services#skin",
+    href: "/services?tab=womens",
     placeholder: {
       label: "Skin · High-Res Image",
       description: "Glowing skin close-up. Radiant.",
@@ -55,7 +55,7 @@ const SERVICES = [
     id: "tattoo",
     number: "04",
     title: "Tattoo",
-    href: "/services#tattoo",
+    href: "/services?tab=tattoo",
     placeholder: {
       label: "Tattoo · High-Res Image",
       description: "Fine-line tattoo. High contrast.",
@@ -160,8 +160,6 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
 
         {/* 
           Interactive Accordion Container 
-          - Mobile: Column (stacked vertically)
-          - Desktop: Row (side by side horizontally)
         */}
         <div className="panels-container flex flex-col md:flex-row gap-2 md:gap-4 h-[70vh] min-h-[500px] md:min-h-[600px] md:h-[600px] w-full">
           {mergedServices.map((service) => {
@@ -175,21 +173,21 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                 className={`
                   service-panel relative overflow-hidden bg-parchment rounded-sm cursor-pointer
                   transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-                  ${isActive ? "flex-[4]" : "flex-[1]"}
+                  ${isActive ? "flex-[3] md:flex-[4]" : "flex-[1]"}
                 `}
-                // Adding a min width/height ensures collapsed state remains clickable and visible
                 style={{
                   minHeight: "4rem", 
-                  minWidth: "4rem"
+                  minWidth: "4rem",
+                  transform: "translateZ(0)"
                 }}
               >
-                {/* Image Layer */}
-                <div className="absolute inset-0 transition-transform duration-1000 ease-out transform scale-105 group-hover:scale-100">
+                {/* Image Layer — fixed-size images prevent zoom during flex transitions */}
+                <div className="absolute inset-0 overflow-hidden">
                   {service.cmsImageUrl ? (
                     <img 
                       src={service.cmsImageUrl} 
                       alt={service.title} 
-                      className="absolute inset-0 w-full h-full object-cover" 
+                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover pointer-events-none" 
                       style={{ objectPosition: service.objectPosition }}
                     />
                   ) : (
@@ -197,14 +195,14 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                       label={service.placeholder.label}
                       description={service.placeholder.description}
                       mood={service.dark ? "dark" : "warm"}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover"
                     />
                   )}
                   
-                  {/* Dynamic Darkening Overlay to focus attention on the active element */}
+                  {/* Dynamic Darkening Overlay */}
                   <div 
-                    className={`absolute inset-0 transition-colors duration-700 ease-in-out ${
-                      isActive ? "bg-obsidian/20" : "bg-obsidian/60"
+                    className={`absolute inset-0 transition-colors duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                      isActive ? "bg-obsidian/10" : "bg-obsidian/60"
                     }`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent pointer-events-none" />

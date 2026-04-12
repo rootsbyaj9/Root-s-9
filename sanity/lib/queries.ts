@@ -37,10 +37,10 @@ export const getHomePageQuery = groq`
     tattooServiceImage,
     transformationsHeadline,
     transformationsSubheadline,
-    beforeAfterHairBefore,
-    beforeAfterHairAfter,
-    beforeAfterSkinBefore,
-    beforeAfterSkinAfter,
+    "beforeAfterHairBeforeUrl": beforeAfterHairBefore.asset->url,
+    "beforeAfterHairAfterUrl": beforeAfterHairAfter.asset->url,
+    "beforeAfterSkinBeforeUrl": beforeAfterSkinBefore.asset->url,
+    "beforeAfterSkinAfterUrl": beforeAfterSkinAfter.asset->url,
     ctaHeadline,
     ctaButtonText
   }
@@ -148,6 +148,32 @@ export const getTransformationsQuery = groq`
     description,
     image,
     aspect,
-    mood
+  }
+`
+
+export const getPostsQuery = groq`
+  *[_type == "post"] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    "mainImageUrl": mainImage.asset->url,
+    category,
+    publishedAt,
+    readTime
+  }
+`
+
+export const getPostBySlugQuery = groq`
+  *[_type == "post" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    body,
+    "mainImageUrl": mainImage.asset->url,
+    category,
+    publishedAt,
+    readTime
   }
 `

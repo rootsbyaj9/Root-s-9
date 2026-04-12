@@ -18,7 +18,7 @@ export const franchisePage = defineType({
       type: "image",
       group: "hero",
       options: { hotspot: true },
-      description: "📸 FRANCHISE PAGE — full-screen hero background. Ratio: 16:9 (landscape). Size: minimum 1920 × 1080 px. Ideal: 2560 × 1440 px. Use a professional salon interior or team photo.",
+      description: "📸 FRANCHISE PAGE — full-screen hero background. Required Size: exactly 1920 × 1080 px (16:9). Max file size: 500KB. Format: WEBP or JPG. 📱 Ensure hotspot is centered so the subject remains visible on mobile devices.",
     }),
     defineField({
       name: "heroEyebrow",

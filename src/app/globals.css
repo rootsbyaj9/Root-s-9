@@ -49,6 +49,7 @@
   /* Custom Animations */
   --animate-infinite-scroll-up: infinite-scroll-up 40s linear infinite;
   --animate-infinite-scroll-down: infinite-scroll-down 40s linear infinite;
+  --animate-marquee-horizontal: marquee-horizontal 40s linear infinite;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -97,6 +98,11 @@ body {
 ::selection {
   background-color: var(--color-roots-orange);
   color: var(--color-parchment);
+}
+
+.fade-edges-horizontal {
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -232,6 +238,15 @@ body {
   }
   100% {
     transform: translateY(0%);
+  }
+}
+
+@keyframes marquee-horizontal {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
 

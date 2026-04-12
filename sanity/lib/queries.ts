@@ -28,20 +28,46 @@ export const getHomePageQuery = groq`
     statRating,
     statLocations,
     statReviews,
-    "heroImageUrl": heroBackgroundImage.asset->url,
-    "hairImage": hairServiceImage,
-    "bridalImage": bridalServiceImage,
-    "skinImage": skinServiceImage,
-    "tattooImage": tattooServiceImage,
-    "beforeAfterHairBefore": beforeAfterHairBefore.asset->url,
-    "beforeAfterHairAfter": beforeAfterHairAfter.asset->url,
-    "beforeAfterSkinBefore": beforeAfterSkinBefore.asset->url,
-    "beforeAfterSkinAfter": beforeAfterSkinAfter.asset->url
+    heroBackgroundImage,
+    servicesHeadline,
+    servicesSubheadline,
+    hairServiceImage,
+    bridalServiceImage,
+    skinServiceImage,
+    tattooServiceImage,
+    transformationsHeadline,
+    transformationsSubheadline,
+    beforeAfterHairBefore,
+    beforeAfterHairAfter,
+    beforeAfterSkinBefore,
+    beforeAfterSkinAfter,
+    ctaHeadline,
+    ctaButtonText
   }
 `
 
+// NOTE: founderImageUrl and aboutBackgroundImageUrl are resolved server-side
+// using GROQ asset->url projection so components receive plain strings directly.
 export const getAboutPageQuery = groq`
   *[_type == "aboutPage"][0] {
+    heroEyebrow,
+    heroSubtext,
+    founderName,
+    founderHeadline,
+    founderQuote,
+    founderBio1,
+    founderBio2,
+    valuesHeading,
+    values[] {
+      icon,
+      title,
+      body
+    },
+    timelineHeading,
+    milestones[] {
+      year,
+      event
+    },
     "founderImageUrl": founderImage.asset->url,
     "aboutBackgroundImageUrl": aboutBackgroundImage.asset->url
   }
@@ -61,12 +87,13 @@ export const getLocationsQuery = groq`
   }
 `
 
+// NOTE: heroBackgroundImageUrl resolved server-side via asset->url
 export const getFranchisePageQuery = groq`
   *[_type == "franchisePage"][0] {
     heroEyebrow,
     heroHeadline,
     heroSubtext,
-    "heroImageUrl": heroBackgroundImage.asset->url,
+    "heroBackgroundImageUrl": heroBackgroundImage.asset->url,
     reasonsHeading,
     reasons[] {
       title,
@@ -92,7 +119,7 @@ export const getServiceCategoriesQuery = groq`
     "slug": slug.current,
     gender,
     displayOrder,
-    "imageUrl": image.asset->url,
+    image,
     items[] {
       name,
       price,
@@ -119,7 +146,7 @@ export const getTransformationsQuery = groq`
     _id,
     title,
     description,
-    "imageUrl": image.asset->url,
+    image,
     aspect,
     mood
   }

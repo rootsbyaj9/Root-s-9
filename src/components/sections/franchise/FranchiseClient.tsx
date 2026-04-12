@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Trophy, GraduationCap, MapPin } from "lucide-react";
 import CTASection from "@/components/sections/shared/CTASection";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { urlForImage } from "@/sanity/lib/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,7 +64,11 @@ const FAQS = [
   },
 ];
 
-export default function FranchiseClient() {
+type FranchiseClientProps = {
+  cmsData?: any;
+};
+
+export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   
@@ -86,22 +91,53 @@ export default function FranchiseClient() {
     return () => ctx.revert();
   }, []);
 
+  // CMS Value Fallbacks
+  const reasons = cmsData?.reasons?.length ? cmsData.reasons : REASONS;
+  const modelPoints = cmsData?.modelPoints?.length ? cmsData.modelPoints : MODEL_POINTS;
+  const faqs = cmsData?.faqs?.length ? cmsData.faqs : FAQS;
+
+  let cmsImageUrl;
+  let fallbackPosition = "center";
+
+  if (cmsData?.heroBackgroundImage) {
+    try {
+      cmsImageUrl = urlForImage(cmsData.heroBackgroundImage).url();
+      const hotspot = cmsData.heroBackgroundImage.hotspot;
+      if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
+        fallbackPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
+      }
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
   return (
     <>
       {/* ─── HERO ─────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-[65vh] flex items-end bg-obsidian pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[#1A1008]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/70 to-transparent" />
+        <div className="absolute inset-0 bg-[#1A1008]">
+          <img
+            src={cmsImageUrl || "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2000&auto=format&fit=crop"}
+            alt="Root's Franchise"
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
+            style={{ objectPosition: fallbackPosition }}
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/80 to-transparent" />
 
         <div className="relative container mx-auto px-6 md:px-16 max-w-7xl">
-          <span className="hero-element eyebrow text-roots-orange/80 mb-3 block">FRANCHISE OPPORTUNITY</span>
+          <span className="hero-element eyebrow text-roots-orange/80 mb-3 block">
+            {cmsData?.heroEyebrow || "FRANCHISE OPPORTUNITY"}
+          </span>
           <h1 ref={titleRef} className="hero-element font-serif text-6xl md:text-8xl text-parchment leading-[0.95] max-w-3xl">
-            Own a <em className="italic font-normal text-roots-orange">Root&apos;s</em>.
+            {cmsData?.heroHeadline ? (
+              <span dangerouslySetInnerHTML={{ __html: cmsData.heroHeadline.replace("Root's", "<em class='italic font-normal text-roots-orange'>Root&apos;s</em>") }} />
+            ) : (
+              <>Own a <em className="italic font-normal text-roots-orange">Root&apos;s</em>.</>
+            )}
           </h1>
           <p className="hero-element mt-6 font-sans text-parchment/70 text-base md:text-lg max-w-lg leading-relaxed">
-            Bring Hyderabad&apos;s most trusted family salon to your city.
-            We&apos;ll give you the brand, the training, and the support.
-            You bring the ambition.
+            {cmsData?.heroSubtext || `Bring Hyderabad's most trusted family salon to your city. We'll give you the brand, the training, and the support. You bring the ambition.`}
           </p>
           <div className="hero-element mt-10">
             <a
@@ -127,15 +163,19 @@ export default function FranchiseClient() {
           >
             <SectionHeader
               eyebrow="WHY PARTNER WITH US"
-              heading="Built for successful franchise partners."
+              heading={cmsData?.reasonsHeading || "Built for successful franchise partners."}
               align="center"
             />
           </motion.div>
           
           <div className="mt-16 grid md:grid-cols-3 gap-8">
-            {REASONS.map((r, idx) => (
+            {reasons.map((r: any, idx: number) => {
+              const num = typeof r.number === 'string' ? r.number : `0${idx + 1}`.slice(-2);
+              const Icon = idx === 0 ? Trophy : idx === 1 ? GraduationCap : MapPin;
+              
+              return (
               <motion.div
-                key={r.number}
+                key={idx}
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -148,7 +188,7 @@ export default function FranchiseClient() {
               >
                 {/* Background decorative number */}
                 <span className="font-serif text-8xl text-obsidian/[0.03] absolute right-0 bottom-0 translate-x-4 translate-y-4 select-none leading-none z-0">
-                  {r.number}
+                  {num}
                 </span>
 
                 <div className="relative z-10 flex flex-col items-start">
@@ -159,13 +199,13 @@ export default function FranchiseClient() {
                     transition={{ delay: (idx * 0.1) + 0.2, duration: 0.5, ease: "backOut" }}
                     className="mb-6 p-4 rounded-full bg-[#FEFCF8] shadow-sm border border-obsidian/[0.04]"
                   >
-                    {r.icon}
+                    {r.icon || <Icon className="w-10 h-10 text-roots-orange stroke-1" />}
                   </motion.div>
                   <h3 className="font-serif text-2xl text-obsidian mb-4">{r.title}</h3>
                   <p className="font-sans text-warm-gray text-sm leading-relaxed">{r.body}</p>
                 </div>
               </motion.div>
-            ))}
+            )})}
           </div>
         </div>
       </section>
@@ -181,16 +221,16 @@ export default function FranchiseClient() {
           >
             <SectionHeader
               eyebrow="THE NUMBERS"
-              heading="A model built to win."
+              heading={cmsData?.modelHeading || "A model built to win."}
               align="center"
               className="[&_.eyebrow]:text-roots-orange/70 [&_h2]:text-parchment"
             />
           </motion.div>
 
           <div className="mt-16 grid md:grid-cols-2 gap-px bg-parchment/[0.06] rounded-2xl overflow-hidden">
-            {MODEL_POINTS.map((point, idx) => (
+            {modelPoints.map((point: any, idx: number) => (
               <motion.div 
-                key={point.label} 
+                key={idx} 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
@@ -281,13 +321,13 @@ export default function FranchiseClient() {
           >
             <SectionHeader
               eyebrow="COMMON QUESTIONS"
-              heading="FAQ"
+              heading={cmsData?.faqHeading || "FAQ"}
               align="left"
             />
           </motion.div>
           
           <div className="mt-12 divide-y divide-obsidian/[0.08]">
-            {FAQS.map((faq, i) => (
+            {faqs.map((faq: any, i: number) => (
               <motion.div 
                 key={i} 
                 initial={{ opacity: 0, y: 15 }}

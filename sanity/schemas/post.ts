@@ -51,7 +51,7 @@ export const post = defineType({
         {
           type: "image",
           options: { hotspot: true },
-          description: "📸 BLOG BODY — in-article photo. Ratio: 16:9 or 4:3. Size: minimum 800 × 450 px. Displays full-width inside the article; keep file under 400 KB.",
+          description: "📸 BLOG BODY — in-article photo. Required Size: exactly 800 × 450 px (16:9) or 800 × 600 px (4:3). Max file size: 300KB. Format: WEBP or JPG. 📱 Displays full-width inside the article.",
           fields: [
             defineField({
               name: "alt",
@@ -71,7 +71,7 @@ export const post = defineType({
       type: "image",
       group: "thumbnail",
       options: { hotspot: true },
-      description: "📸 BLOG — Cover/thumbnail photo. Ratio: 16:9 (landscape/wide). Size: 1200 × 630 px — this is also shared when someone posts the article on WhatsApp or social media. Use a clear, well-lit photo that captures the article topic. File size: keep under 500 KB.",
+      description: "📸 BLOG — Cover/thumbnail photo. Required Size: exactly 1200 × 630 px (16:9). Max file size: 400KB. Format: WEBP or JPG. 📱 Optimal for WhatsApp sharing and mobile SEO.",
       fields: [
         defineField({
           name: "alt",

@@ -82,18 +82,18 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
     let hotspot;
     
     try {
-      if (base.id === "hair" && cmsImages?.hairImage) {
-        cmsImageUrl = urlForImage(cmsImages.hairImage).url();
-        hotspot = cmsImages.hairImage.hotspot;
-      } else if (base.id === "bridal" && cmsImages?.bridalImage) {
-        cmsImageUrl = urlForImage(cmsImages.bridalImage).url();
-        hotspot = cmsImages.bridalImage.hotspot;
-      } else if (base.id === "skin" && cmsImages?.skinImage) {
-        cmsImageUrl = urlForImage(cmsImages.skinImage).url();
-        hotspot = cmsImages.skinImage.hotspot;
-      } else if (base.id === "tattoo" && cmsImages?.tattooImage) {
-        cmsImageUrl = urlForImage(cmsImages.tattooImage).url();
-        hotspot = cmsImages.tattooImage.hotspot;
+      if (base.id === "hair" && cmsImages?.hairServiceImage) {
+        cmsImageUrl = urlForImage(cmsImages.hairServiceImage).url();
+        hotspot = cmsImages.hairServiceImage.hotspot;
+      } else if (base.id === "bridal" && cmsImages?.bridalServiceImage) {
+        cmsImageUrl = urlForImage(cmsImages.bridalServiceImage).url();
+        hotspot = cmsImages.bridalServiceImage.hotspot;
+      } else if (base.id === "skin" && cmsImages?.skinServiceImage) {
+        cmsImageUrl = urlForImage(cmsImages.skinServiceImage).url();
+        hotspot = cmsImages.skinServiceImage.hotspot;
+      } else if (base.id === "tattoo" && cmsImages?.tattooServiceImage) {
+        cmsImageUrl = urlForImage(cmsImages.tattooServiceImage).url();
+        hotspot = cmsImages.tattooServiceImage.hotspot;
       }
     } catch(e) {
       // Graceful fallback if url builder fails
@@ -144,8 +144,9 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
       <div className="container mx-auto px-6 md:px-16">
         <SectionHeader
           eyebrow="Our Expertise"
-          heading="Curated"
-          headingEmphasis="Services"
+          heading={cmsImages?.servicesHeadline ? cmsImages.servicesHeadline.split(" ")[0] : "Curated"}
+          headingEmphasis={cmsImages?.servicesHeadline ? cmsImages.servicesHeadline.split(" ").slice(1).join(" ") : "Services"}
+          subheading={cmsImages?.servicesSubheadline}
           className="mb-12 md:mb-16"
           action={
             <Link

@@ -14,6 +14,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import SplitType from "split-type";
+import { urlForImage } from "@/sanity/lib/image";
 
 const WHATSAPP_NUMBER = "919700744357";
 
@@ -63,6 +64,21 @@ export default function Hero({ homePageData = {} }: HeroProps) {
     { scope: sectionRef }
   );
 
+  let cmsImageUrl;
+  let fallbackPosition = "center";
+  
+  if (homePageData?.heroBackgroundImage) {
+    try {
+      cmsImageUrl = urlForImage(homePageData.heroBackgroundImage).url();
+      const hotspot = homePageData.heroBackgroundImage.hotspot;
+      if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
+        fallbackPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
+      }
+    } catch(e) {
+      console.error("Failed to build Sanity image url:", e);
+    }
+  }
+
   return (
     <section
       ref={sectionRef}
@@ -72,9 +88,10 @@ export default function Hero({ homePageData = {} }: HeroProps) {
       {/* ── Salon Interior Background ──────────── */}
       <div className="absolute inset-0 z-0">
         <img
-          src={homePageData?.heroImageUrl || "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=2000&auto=format&fit=crop"}
+          src={cmsImageUrl || "https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=2000&auto=format&fit=crop"}
           alt="Root's Family Salon Interior"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: fallbackPosition }}
         />
       </div>
 
@@ -88,12 +105,12 @@ export default function Hero({ homePageData = {} }: HeroProps) {
         className="relative z-20 text-center max-w-5xl px-6 md:px-8 mx-auto flex flex-col items-center pointer-events-auto"
       >
         <span className="font-sans text-roots-orange uppercase tracking-[0.15em] text-xs md:text-sm font-semibold mb-6 block drop-shadow-md">
-          Hyderabad's premium family salon for hair, skin, bridal & tattoo artistry
+          {homePageData?.heroEyebrow || "Hyderabad's premium family salon for hair, skin, bridal & tattoo artistry"}
         </span>
 
         <h1 className="font-serif text-[40px] sm:text-[52px] md:text-[68px] lg:text-[88px] text-parchment leading-[1.05] mb-10 tracking-tight drop-shadow-xl w-full">
-          Walk in.
-          <br className="md:hidden" /> <em className="italic text-parchment/90 font-normal">Walk out different.</em>
+          {homePageData?.heroHeadline || "Walk in."}
+          <br className="md:hidden" /> <em className="italic text-parchment/90 font-normal">{homePageData?.heroHeadlineItalic || "Walk out different."}</em>
         </h1>
 
         <div className="cta-wrapper flex flex-col items-center">
@@ -103,7 +120,7 @@ export default function Hero({ homePageData = {} }: HeroProps) {
             rel="noopener noreferrer"
             className="btn-primary shadow-2xl hover:scale-105 transition-transform duration-300"
           >
-            Book Your Appointment
+            {homePageData?.heroCtaText || "Book Your Appointment"}
           </a>
           <span className="font-sans text-[10px] md:text-xs text-parchment/70 uppercase tracking-widest mt-4">
             Instant confirmation  ·  No waiting

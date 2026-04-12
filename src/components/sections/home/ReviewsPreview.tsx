@@ -7,10 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import LottieStarsPlayer from "@/components/ui/LottieStarsPlayer";
 
-// Swiper Integration
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-import "swiper/css";
+// Swiper integration removed in favor of high-performance CSS marquee
 
 /**
  * ReviewsPreview.tsx
@@ -93,30 +90,11 @@ export default function ReviewsPreview({ reviews = [] }: { reviews?: any[] }) {
       </div>
 
       {/* Infinite Autoscroll Marquee Container */}
-      <div className="mt-16 pb-12 px-0 overflow-hidden">
-        <style>{`
-          /* Forces continuous, linear motion for Swiper autoplay (no stuttering easing between slides) */
-          .reviews-swiper .swiper-wrapper {
-            transition-timing-function: linear !important;
-          }
-        `}</style>
-
-        <Swiper
-          modules={[Autoplay]}
-          spaceBetween={32}
-          slidesPerView="auto"
-          loop={true}
-          speed={7000} // 7s transit time creates a high-end, relaxed scroll velocity
-          autoplay={{
-            delay: 0, // 0 delay means continuous uninterrupted movement
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true, // Freezes on hover so users can easily read the review!
-          }}
-          className="reviews-swiper w-full !px-6 sm:!px-12 xl:!px-24"
-        >
+      <div className="mt-16 pb-12 px-0 overflow-hidden relative fade-edges-horizontal">
+        <div className="flex w-max animate-marquee-horizontal hover:[animation-play-state:paused]">
           {SWIPER_REVIEWS.map((review, i) => (
-            <SwiperSlide key={i} className="!w-[85vw] md:!w-[50vw] lg:!w-[40vw] max-w-[500px]">
-              <div className="review-card h-full bg-parchment border border-obsidian/10 p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-500 flex flex-col justify-between opacity-0 cursor-grab active:cursor-grabbing">
+            <div key={i} className="w-[85vw] md:w-[50vw] lg:w-[40vw] max-w-[500px] shrink-0 px-4">
+              <div className="review-card h-full bg-parchment border border-obsidian/10 p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-500 flex flex-col justify-between opacity-0">
                 <div>
                   {/* Lottie 5-Stars triggered remotely */}
                   <LottieStarsPlayer className="mb-6 -ml-2 pointer-events-none" triggerPlay={triggerStars} />
@@ -136,9 +114,9 @@ export default function ReviewsPreview({ reviews = [] }: { reviews?: any[] }) {
                   </div>
                 </div>
               </div>
-            </SwiperSlide>
+            </div>
           ))}
-        </Swiper>
+        </div>
       </div>
 
       <div className="mt-8 text-center px-6">

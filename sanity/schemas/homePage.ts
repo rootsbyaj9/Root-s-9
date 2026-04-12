@@ -13,28 +13,12 @@ export const homePage = defineType({
   fields: [
     // ── HERO ─────────────────────────────────────────────────────────────
     defineField({
-      name: "heroBackgroundImage",
-      title: "Hero Background Photo",
-      type: "image",
-      group: "hero",
-      options: { hotspot: true },
-      description: "📸 HERO BACKGROUND — fills the entire screen on load. Ratio: 16:9 (landscape). Minimum size: 1920 × 1080 px. Ideal: 2560 × 1440 px. Use a high-quality salon or transformation photo with a clear focal point in the centre.",
-      fields: [
-        defineField({
-          name: "alt",
-          title: "Image Description",
-          type: "string",
-          description: 'e.g. "Stylist doing a bridal hairstyle at Root\'s The Family Salon"',
-        }),
-      ],
-    }),
-    defineField({
       name: "heroEyebrow",
       title: "Hero Small Label (above headline)",
       type: "string",
       group: "hero",
       description: 'Small uppercase text shown above the main headline. e.g. "The Premium Experience"',
-      initialValue: "The Premium Experience",
+      initialValue: "Hyderabad's premium family salon for hair, skin, bridal & tattoo artistry",
     }),
     defineField({
       name: "heroHeadline",
@@ -57,9 +41,26 @@ export const homePage = defineType({
       title: "Hero Button Label",
       type: "string",
       group: "hero",
-      description: 'Text on the main call-to-action button. e.g. "Reserve Your Time" or "Book Now"',
-      initialValue: "Reserve Your Time",
+      description: 'Text on the main call-to-action button. e.g. "Reserve Your Time" or "Book Your Appointment"',
+      initialValue: "Book Your Appointment",
     }),
+    defineField({
+      name: "heroBackgroundImage",
+      title: "Hero Background Photo",
+      type: "image",
+      group: "hero",
+      options: { hotspot: true },
+      description: "📸 HERO BACKGROUND — fills the entire screen on load. Required Size: exactly 1920 × 1080 px (16:9). Max file size: 500KB. Format: WEBP (or JPG). 📱 MOBILE FIRST: Ensure the subject is centred so it crops well on mobile screens automatically.",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Image Description",
+          type: "string",
+          description: 'e.g. "Stylist doing a bridal hairstyle at Root\'s The Family Salon"',
+        }),
+      ],
+    }),
+
 
     // ── STATS ─────────────────────────────────────────────────────────────
     defineField({
@@ -97,12 +98,26 @@ export const homePage = defineType({
 
     // ── SERVICE GRID IMAGES ───────────────────────────────────────────────
     defineField({
+      name: "servicesHeadline",
+      title: "Services Section Headline",
+      type: "string",
+      group: "services",
+      description: 'e.g. "Curated Services"',
+      initialValue: "Curated Services",
+    }),
+    defineField({
+      name: "servicesSubheadline",
+      title: "Services Section Subheadline",
+      type: "text",
+      group: "services",
+    }),
+    defineField({
       name: "hairServiceImage",
       title: "Hair — Grid Card Photo",
       type: "image",
       group: "services",
       options: { hotspot: true },
-      description: "📸 HOME PAGE — Hair card in the Services Grid. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. Crops from centre — ensure the main subject is centred.",
+      description: "📸 HOME PAGE — Hair card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP (preferred) or JPG. 📱 Crops from centre on mobile — keep the subject centered.",
     }),
     defineField({
       name: "bridalServiceImage",
@@ -110,7 +125,7 @@ export const homePage = defineType({
       type: "image",
       group: "services",
       options: { hotspot: true },
-      description: "📸 HOME PAGE — Bridal card in the Services Grid. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. Keep the subject (face/hair) centred in the frame.",
+      description: "📸 HOME PAGE — Bridal card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG. 📱 Keep the subject (face/hair) centred for mobile.",
     }),
     defineField({
       name: "skinServiceImage",
@@ -118,7 +133,7 @@ export const homePage = defineType({
       type: "image",
       group: "services",
       options: { hotspot: true },
-      description: "📸 HOME PAGE — Skin card in the Services Grid. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. Close-up facial or treatment photos work best.",
+      description: "📸 HOME PAGE — Skin card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG. 📱 Close-up facial or treatment photos work best (keep focal point centered).",
     }),
     defineField({
       name: "tattooServiceImage",
@@ -126,17 +141,31 @@ export const homePage = defineType({
       type: "image",
       group: "services",
       options: { hotspot: true },
-      description: "📸 HOME PAGE — Tattoo card in the Services Grid. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. Use a clear, well-lit tattoo or studio photo.",
+      description: "📸 HOME PAGE — Tattoo card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG. 📱 Ensure the focal point is centered for mobile displays.",
     }),
 
     // ── BEFORE & AFTER ────────────────────────────────────────────────────
+    defineField({
+      name: "transformationsHeadline",
+      title: "Before & After Headline",
+      type: "string",
+      group: "transform",
+      description: 'e.g. "Visible Transformations"',
+      initialValue: "Visible Transformations",
+    }),
+    defineField({
+      name: "transformationsSubheadline",
+      title: "Before & After Subheadline",
+      type: "text",
+      group: "transform",
+    }),
     defineField({
       name: "beforeAfterHairBefore",
       title: "Hair Transformation — BEFORE Photo",
       type: "image",
       group: "transform",
       options: { hotspot: true },
-      description: "📸 HOME PAGE — Before/After Slider, hair BEFORE photo (left side). Ratio: 1:1 (square) or 4:5. Size: 800 × 800 px (square) or 800 × 1000 px (4:5). ⚠️ The BEFORE and AFTER photos must be the SAME ratio and size — otherwise the slider will look misaligned.",
+      description: "📸 HOME PAGE — Before/After Slider, hair BEFORE photo (left side). Required Size: exactly 800 × 800 px (Square 1:1) OR exactly 800 × 1000 px (Portrait 4:5). Max file size: 300KB. Format: WEBP or JPG. ⚠️ The BEFORE and AFTER photos must be identical in size to prevent slider misalignment.",
     }),
     defineField({
       name: "beforeAfterHairAfter",
@@ -144,7 +173,7 @@ export const homePage = defineType({
       type: "image",
       group: "transform",
       options: { hotspot: true },
-      description: "📸 HOME PAGE — Before/After Slider, hair AFTER photo (right side). Ratio: must match the BEFORE photo exactly — same size and crop. Size: 800 × 800 px (square) or 800 × 1000 px (4:5).",
+      description: "📸 HOME PAGE — Before/After Slider, hair AFTER photo (right side). Required Size: must exactly match the BEFORE photo (800 × 800 px or 800 × 1000 px). Max file size: 300KB. Format: WEBP or JPG.",
     }),
     defineField({
       name: "beforeAfterSkinBefore",
@@ -152,7 +181,7 @@ export const homePage = defineType({
       type: "image",
       group: "transform",
       options: { hotspot: true },
-      description: "📸 HOME PAGE — Before/After Slider, skin BEFORE photo (left side). Ratio: 1:1 (square) or 4:5. Size: 800 × 800 px (square) or 800 × 1000 px (4:5). ⚠️ Must be the same ratio as the AFTER photo.",
+      description: "📸 HOME PAGE — Before/After Slider, skin BEFORE photo (left side). Required Size: exactly 800 × 800 px (Square 1:1) OR exactly 800 × 1000 px (Portrait 4:5). Max file size: 300KB. Format: WEBP or JPG. ⚠️ Must be identical in size to the AFTER photo to prevent slider bugs.",
     }),
     defineField({
       name: "beforeAfterSkinAfter",
@@ -160,7 +189,20 @@ export const homePage = defineType({
       type: "image",
       group: "transform",
       options: { hotspot: true },
-      description: "📸 HOME PAGE — Before/After Slider, skin AFTER photo (right side). Ratio: must match the BEFORE photo exactly. Size: 800 × 800 px (square) or 800 × 1000 px (4:5).",
+      description: "📸 HOME PAGE — Before/After Slider, skin AFTER photo (right side). Required Size: must exactly match the BEFORE photo. Max file size: 300KB. Format: WEBP or JPG.",
+    }),
+    // ── CTA ───────────────────────────────────────────────────────────────
+    defineField({
+      name: 'ctaHeadline',
+      title: 'Bottom CTA Headline',
+      type: 'string',
+      description: 'e.g. "Ready for your Look?"',
+    }),
+    defineField({
+      name: 'ctaButtonText',
+      title: 'Bottom CTA Button Text',
+      type: 'string',
+      description: 'e.g. "Book Consultation via WhatsApp"',
     }),
   ],
   preview: {

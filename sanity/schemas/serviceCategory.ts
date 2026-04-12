@@ -119,7 +119,7 @@ export const serviceCategory = defineType({
       type: "image",
       group: "image",
       options: { hotspot: true },
-      description: "📸 HOME PAGE — Services Grid card photo. Ratio: 3:4 (portrait/tall). Size: 600 × 800 px minimum. The subject should be centred — Sanity will let you set the focal point (drag the circle). File size: keep under 500 KB for fast loading.",
+      description: "📸 HOME PAGE — Services Grid card photo. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG. 📱 The subject MUST be centred — use the hotspot feature to set the focal point for mobile devices.",
       fields: [
         defineField({
           name: "alt",

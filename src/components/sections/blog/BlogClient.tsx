@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import CTASection from '@/components/sections/shared/CTASection';
+import ImagePlaceholder from '@/components/ui/ImagePlaceholder';
 
 interface BlogPost {
   slug: string;
@@ -162,11 +163,12 @@ export default function BlogClient() {
                 variants={curtainVariants}
               >
                 <div className="w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
-                  <div className={`w-full h-full bg-gradient-to-br ${featured.accentColor} flex items-center justify-center`}>
-                    <span className="font-sans text-[11px] uppercase tracking-[0.15em] font-semibold text-obsidian/30">
-                      {featured.category}
-                    </span>
-                  </div>
+                  <ImagePlaceholder 
+                    label="Editorial Photo" 
+                    description={`High-res editorial photo for ${featured.category}`} 
+                    className="w-full h-full" 
+                    mood="warm" 
+                  />
                 </div>
               </motion.div>
               
@@ -216,11 +218,12 @@ export default function BlogClient() {
                     
                     <div className="aspect-[4/3] overflow-hidden relative">
                       <div className="w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
-                        <div className={`w-full h-full bg-gradient-to-br ${post.accentColor} flex items-center justify-center`}>
-                          <span className="font-sans text-[11px] uppercase tracking-[0.15em] font-semibold text-obsidian/30">
-                            {post.category}
-                          </span>
-                        </div>
+                        <ImagePlaceholder 
+                          label="Editorial Photo" 
+                          description={`Photo for ${post.category}`} 
+                          className="w-full h-full" 
+                          mood="warm" 
+                        />
                       </div>
                       <div className="absolute top-4 right-4 bg-obsidian/80 backdrop-blur-sm text-parchment text-[10px] uppercase font-sans tracking-widest py-1 px-2.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                         Coming Soon<span className="sr-only">. </span>

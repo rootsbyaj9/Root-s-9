@@ -12,6 +12,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { urlForImage } from "@/sanity/lib/image";
 
 type TransformationType = "hair" | "skin";
 
@@ -100,8 +101,9 @@ export default function BeforeAfter({ homePageData = {} }: BeforeAfterProps) {
       <div className="container mx-auto px-6 md:px-16 mb-10">
         <SectionHeader
           eyebrow="The Root's Difference"
-          heading="Visible"
-          headingEmphasis="Transformations"
+          heading={homePageData?.transformationsHeadline ? homePageData.transformationsHeadline.split(" ")[0] : "Visible"}
+          headingEmphasis={homePageData?.transformationsHeadline ? homePageData.transformationsHeadline.split(" ").slice(1).join(" ") : "Transformations"}
+          subheading={homePageData?.transformationsSubheadline}
           align="center"
         />
       </div>
@@ -152,7 +154,7 @@ export default function BeforeAfter({ homePageData = {} }: BeforeAfterProps) {
           <div className="absolute inset-0">
             {(activeTab === "hair" && homePageData?.beforeAfterHairAfter) || (activeTab === "skin" && homePageData?.beforeAfterSkinAfter) ? (
               <img 
-                src={activeTab === "hair" ? homePageData.beforeAfterHairAfter : homePageData.beforeAfterSkinAfter} 
+                src={urlForImage(activeTab === "hair" ? homePageData.beforeAfterHairAfter : homePageData.beforeAfterSkinAfter).url()} 
                 alt="After Transformation" 
                 className="absolute inset-0 w-full h-full object-cover" 
               />
@@ -183,7 +185,7 @@ export default function BeforeAfter({ homePageData = {} }: BeforeAfterProps) {
             <div className="relative" style={{ width: `${100 / (position / 100)}%`, height: "100%" }}>
               {(activeTab === "hair" && homePageData?.beforeAfterHairBefore) || (activeTab === "skin" && homePageData?.beforeAfterSkinBefore) ? (
                 <img 
-                  src={activeTab === "hair" ? homePageData.beforeAfterHairBefore : homePageData.beforeAfterSkinBefore} 
+                  src={urlForImage(activeTab === "hair" ? homePageData.beforeAfterHairBefore : homePageData.beforeAfterSkinBefore).url()} 
                   alt="Before Transformation" 
                   className="absolute inset-0 w-full h-full object-cover" 
                 />

@@ -13,7 +13,11 @@ import { useState } from 'react';
 import FilterBar from './FilterBar';
 import MasonryGrid from './MasonryGrid';
 
-export default function TransformationsClient() {
+type TransformationsClientProps = {
+  cmsTransformations?: any[];
+};
+
+export default function TransformationsClient({ cmsTransformations = [] }: TransformationsClientProps) {
   const [active, setActive] = useState('all');
 
   return (
@@ -21,7 +25,7 @@ export default function TransformationsClient() {
       {/* 1 — Page header */}
       <section className="pt-36 pb-12 bg-parchment">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl text-center">
-          <span className="eyebrow">OUR PORTFOLIO</span>
+          <span className="eyebrow block mb-4 text-roots-orange tracking-[0.2em]">OUR PORTFOLIO</span>
           <h1 className="font-serif text-5xl md:text-7xl text-obsidian leading-[1.0] mt-2 mb-5">
             Real{' '}
             <em className="italic font-normal text-obsidian/70">Results.</em>
@@ -37,7 +41,7 @@ export default function TransformationsClient() {
       <FilterBar active={active} onSelect={setActive} />
 
       {/* 3 — Masonry gallery */}
-      <MasonryGrid activeCategory={active} />
+      <MasonryGrid activeCategory={active} cmsTransformations={cmsTransformations} />
     </>
   );
 }

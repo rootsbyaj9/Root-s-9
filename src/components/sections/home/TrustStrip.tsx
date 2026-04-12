@@ -31,7 +31,11 @@ const STATS = [
 ] as const;
 // ──────────────────────────────────────────────────────────────────────────
 
-export default function TrustStrip() {
+type TrustStripProps = {
+  homePageData?: any;
+};
+
+export default function TrustStrip({ homePageData = {} }: TrustStripProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -58,7 +62,28 @@ export default function TrustStrip() {
       // Correct GSAP pattern: gsap.to(proxyObject, toVars)
       // gsap.fromTo needs 3 args (target, fromVars, toVars)
       // gsap.to on a plain {val:0} object is the clean way to drive counters.
-      STATS.forEach((stat) => {
+      const activeStats = STATS.map(stat => {
+        let targetValue = stat.target;
+        let displayValue: string = stat.display;
+        if (homePageData) {
+          if (stat.id === "years" && homePageData.statYears) {
+            targetValue = homePageData.statYears;
+            displayValue = `${targetValue}+`;
+          } else if (stat.id === "rating" && homePageData.statRating) {
+            targetValue = homePageData.statRating;
+            displayValue = `${targetValue}/5`;
+          } else if (stat.id === "locations" && homePageData.statLocations) {
+            targetValue = homePageData.statLocations;
+            displayValue = `${targetValue}`;
+          } else if (stat.id === "reviews" && homePageData.statReviews) {
+            targetValue = homePageData.statReviews;
+            displayValue = `${targetValue}k+`;
+          }
+        }
+        return { ...stat, target: targetValue, display: displayValue };
+      });
+
+      activeStats.forEach((stat) => {
         const el = document.getElementById(`stat-${stat.id}`);
         if (!el) return;
         const proxy = { val: 0 };
@@ -92,25 +117,35 @@ export default function TrustStrip() {
     >
       <div className="container mx-auto px-8 md:px-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 md:gap-x-0">
-          {STATS.map((stat) => (
-            <div
-              key={stat.id}
-              className="trust-stat w-1/2 md:w-auto text-center md:text-left opacity-0"
-            >
-              {/* Numeral — Playfair large; textContent driven by GSAP */}
-              <span
-                id={`stat-${stat.id}`}
-                className="block font-serif text-4xl md:text-5xl text-obsidian mb-1 tracking-tight tabular-nums"
-                aria-label={stat.display}
-              >
-                {stat.display}
-              </span>
+          {STATS.map((baseStat) => {
+            const displayValue = homePageData ? (
+              baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
+              baseStat.id === "rating" && homePageData.statRating ? `${homePageData.statRating}/5` :
+              baseStat.id === "locations" && homePageData.statLocations ? `${homePageData.statLocations}` :
+              baseStat.id === "reviews" && homePageData.statReviews ? `${homePageData.statReviews}k+` :
+              baseStat.display
+            ) : baseStat.display;
 
-              <span className="font-sans text-[10px] uppercase tracking-widest text-obsidian/55">
-                {stat.label}
-              </span>
-            </div>
-          ))}
+            return (
+              <div
+                key={baseStat.id}
+                className="trust-stat w-1/2 md:w-auto text-center md:text-left opacity-0"
+              >
+                {/* Numeral — Playfair large; textContent driven by GSAP */}
+                <span
+                  id={`stat-${baseStat.id}`}
+                  className="block font-serif text-4xl md:text-5xl text-obsidian mb-1 tracking-tight tabular-nums"
+                  aria-label={displayValue}
+                >
+                  {displayValue}
+                </span>
+
+                <span className="font-sans text-[10px] uppercase tracking-widest text-obsidian/55">
+                  {baseStat.label}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

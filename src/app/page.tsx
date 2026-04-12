@@ -47,7 +47,7 @@ export default async function HomePage() {
       <Hero homePageData={homePageData} />
 
       {/* 2 — Trust strip (stat counters count-up on scroll entry) */}
-      <TrustStrip />
+      <TrustStrip homePageData={homePageData} />
 
       {/* 3 — Services bento grid (Hair · Bridal · Skin · Tattoo) */}
       <ServicesGrid cmsServices={servicesData} cmsImages={homePageData} />
@@ -59,7 +59,10 @@ export default async function HomePage() {
       <ReviewsPreview reviews={reviewsData} />
 
       {/* 5 — Dark CTA (shared component, ends every page) */}
-      <CTASection />
+      <CTASection 
+        heading={homePageData?.ctaHeadline}
+        ctaLabel={homePageData?.ctaButtonText}
+      />
     </>
   );
 }

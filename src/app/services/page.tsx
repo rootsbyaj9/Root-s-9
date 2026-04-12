@@ -1,9 +1,9 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import ServicesHero from "@/components/sections/services/ServicesHero";
 import ServicesContent from "@/components/sections/services/ServicesContent";
 import ServicesCTA from "@/components/sections/services/ServicesCTA";
 import ScrollToTop from "@/components/ui/ScrollToTop";
-
 export const metadata: Metadata = {
   title: "Hair, Skin & Bridal Services in Hyderabad | Root's Salon",
   description:
@@ -15,13 +15,21 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+import { client } from "@/sanity/client";
+import { getServiceCategoriesQuery } from "@/sanity/lib/queries";
+import { urlForImage } from "@/sanity/lib/image";
 
 export const revalidate = 60;
 
-export default function ServicesPage() {
-  // Using an empty array to trigger the instant fallback menu
-  // bypassing Sanity completely to avoid the "Loading..." hang.
-  const categories: any[] = [];
+export default async function ServicesPage() {
+  const rawCategories = await client?.fetch(getServiceCategoriesQuery).catch(() => []) ?? [];
+
+  // Resolve raw Sanity image objects → imageUrl strings server-side
+  // so client component ServicesContent receives a plain string it can render directly.
+  const categories = rawCategories.map((cat: any) => ({
+    ...cat,
+    imageUrl: cat.image ? urlForImage(cat.image).width(800).url() : undefined,
+  }));
 
   return (
     <>
@@ -40,7 +48,9 @@ export default function ServicesPage() {
         </p>
       </div>
 
-      <ServicesContent cmsCategories={categories} />
+      <Suspense fallback={<div className="min-h-screen bg-parchment flex items-center justify-center animate-pulse"><span className="text-sm uppercase tracking-widest text-roots-orange">Loading Menu...</span></div>}>
+        <ServicesContent cmsCategories={categories} />
+      </Suspense>
       <ServicesCTA />
       <ScrollToTop />
     </>

@@ -74,16 +74,17 @@ export const getAboutPageQuery = groq`
 `
 
 export const getLocationsQuery = groq`
-  *[_type == "location"] | order(displayOrder asc) {
+  *[_type == "location" && isActive != false] | order(displayOrder asc) {
     _id,
-    branchName,
-    isNew,
+    name,
     address,
     phone,
-    email,
     whatsappNumber,
-    googleMapsLink,
-    timings
+    description,
+    hours,
+    googleMapsUrl,
+    embedUrl,
+    isActive
   }
 `
 

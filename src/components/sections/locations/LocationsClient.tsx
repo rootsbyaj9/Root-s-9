@@ -19,9 +19,9 @@ const BRANCHES = [
   {
     id: 'branch-2',
     name: 'Root\'s The Family Salon - Tarnaka',
-    address: 'Tarnaka Main Rd, Tarnaka, Hyderabad',
+    address: 'Vijayapuri Colony, opp. St Ann\'s School, South Lallaguda, Tarnaka, Secunderabad',
     hours: 'Mon–Sun: 10 AM – 9 PM',
-    mapUrl: 'https://maps.app.goo.gl/NSNafg2mqV9acw9m7',
+    mapUrl: 'https://maps.app.goo.gl/HtxnUPQ9b9a4f5Qv7',
     embedUrl: "https://www.google.com/maps?q=17.4304751,78.5329607&hl=en&z=15&output=embed",
     phone: '+919700744357',
     description: 'Our second branch offering the identical luxurious Root\'s experience in Tarnaka.',
@@ -95,12 +95,12 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
         <div className="container mx-auto px-6 md:px-16 max-w-5xl">
           <div className="flex flex-col gap-12">
             {activeBranches.map((branch: any, idx: number) => {
-              const name = branch.branchName || branch.name;
+              const name = branch.name;
               const addr = branch.address;
               const phone = branch.phone;
               const whatsapp = branch.whatsappNumber;
-              const hours = branch.timings || branch.hours;
-              const mapUrl = branch.googleMapsLink || branch.mapUrl;
+              const hours = branch.hours;
+              const mapUrl = branch.googleMapsUrl || branch.mapUrl;
               const embed = branch.embedUrl || "https://www.google.com/maps?q=17.397388,78.5885877&hl=en&z=15&output=embed";
 
               return (

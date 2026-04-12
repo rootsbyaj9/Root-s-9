@@ -17,7 +17,9 @@ interface OfferStripProps {
 
 export default function OfferStrip({ onDismiss, settings }: OfferStripProps) {
   const WHATSAPP_NUMBER = settings?.contactWhatsApp || "919700744357";
-  const getText = () => "Get 20% off at our new branch and 10% off at our existing branch";
+  const getText = () =>
+    settings?.offerBannerText ||
+    "Get 20% off at our new branch and 10% off at our existing branch";
 
   // We duplicate the offer multiple times so it fills wide screens
   // and allows a mathematically perfect seamless scroll.

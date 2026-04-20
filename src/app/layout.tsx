@@ -5,8 +5,6 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import MobileCTABar from "@/components/layout/MobileCTABar";
-import { client } from "@/sanity/client";
-import { getSiteSettingsQuery } from "@/sanity/lib/queries";
 import Script from "next/script";
 
 /**
@@ -141,7 +139,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await client?.fetch(getSiteSettingsQuery).catch(() => null) ?? null;
+  const settings = null; // Sanity fetching disabled per user request
 
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>

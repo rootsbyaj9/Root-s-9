@@ -1,11 +1,11 @@
 "use client";
 
 /**
- * ServicesGrid.tsx — Interactive Accordion Gallery
+ * ServicesGrid.tsx — Interactive Service Showcase
  *
- * A premium, CMS-compatible horizontal/vertical accordion.
- * - Desktop: 4 vertical slices expanding horizontally on hover.
- * - Mobile: 4 horizontal slices expanding vertically on tap.
+ * - Desktop: 6 vertical slices expanding horizontally on hover (accordion).
+ * - Mobile: 2×3 bento grid with fixed cards for better touch usability.
+ * - F-reading pattern: name at top-left, catchy tagline at bottom, CTA at bottom-right.
  */
 
 import { useRef, useState } from "react";
@@ -22,6 +22,7 @@ const SERVICES = [
     id: "hair",
     number: "01",
     title: "Hair",
+    tagline: "Where strands tell stories",
     href: "/services?tab=womens",
     placeholder: {
       label: "Hair · High-Res Image",
@@ -33,6 +34,7 @@ const SERVICES = [
     id: "bridal",
     number: "02",
     title: "Bridal",
+    tagline: "Your day. Our artistry.",
     href: "/services?tab=bridal",
     placeholder: {
       label: "Bridal · High-Res Image",
@@ -44,6 +46,7 @@ const SERVICES = [
     id: "skin",
     number: "03",
     title: "Skin",
+    tagline: "Glow from within",
     href: "/services?tab=womens",
     placeholder: {
       label: "Skin · High-Res Image",
@@ -55,10 +58,35 @@ const SERVICES = [
     id: "tattoo",
     number: "04",
     title: "Tattoo",
+    tagline: "Ink that speaks for you",
     href: "/services?tab=tattoo",
     placeholder: {
       label: "Tattoo · High-Res Image",
       description: "Fine-line tattoo. High contrast.",
+    },
+    dark: true,
+  },
+  {
+    id: "nails",
+    number: "05",
+    title: "Nails",
+    tagline: "Details that define you",
+    href: "/services?tab=womens",
+    placeholder: {
+      label: "Nails · High-Res Image",
+      description: "Manicured nails, elegant style.",
+    },
+    dark: false,
+  },
+  {
+    id: "piercing",
+    number: "06",
+    title: "Piercing",
+    tagline: "Bold. Beautiful. You.",
+    href: "/services?tab=womens",
+    placeholder: {
+      label: "Piercing · High-Res Image",
+      description: "Ear piercing, modern jewelry.",
     },
     dark: true,
   },
@@ -82,18 +110,18 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
     let hotspot;
     
     try {
-      if (base.id === "hair" && cmsImages?.hairServiceImage) {
-        cmsImageUrl = urlForImage(cmsImages.hairServiceImage).url();
-        hotspot = cmsImages.hairServiceImage.hotspot;
-      } else if (base.id === "bridal" && cmsImages?.bridalServiceImage) {
-        cmsImageUrl = urlForImage(cmsImages.bridalServiceImage).url();
-        hotspot = cmsImages.bridalServiceImage.hotspot;
-      } else if (base.id === "skin" && cmsImages?.skinServiceImage) {
-        cmsImageUrl = urlForImage(cmsImages.skinServiceImage).url();
-        hotspot = cmsImages.skinServiceImage.hotspot;
-      } else if (base.id === "tattoo" && cmsImages?.tattooServiceImage) {
-        cmsImageUrl = urlForImage(cmsImages.tattooServiceImage).url();
-        hotspot = cmsImages.tattooServiceImage.hotspot;
+      const imageFieldMap: Record<string, string> = {
+        hair: "hairServiceImage",
+        bridal: "bridalServiceImage",
+        skin: "skinServiceImage",
+        tattoo: "tattooServiceImage",
+        nails: "nailsServiceImage",
+        piercing: "piercingServiceImage",
+      };
+      const fieldName = imageFieldMap[base.id];
+      if (fieldName && cmsImages?.[fieldName]) {
+        cmsImageUrl = urlForImage(cmsImages[fieldName]).url();
+        hotspot = cmsImages[fieldName].hotspot;
       }
     } catch(e) {
       // Graceful fallback if url builder fails
@@ -107,7 +135,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
     return { ...base, title, cmsImageUrl, objectPosition: fallbackPosition };
   });
 
-  // Track which accordion panel is active. Default to the first one.
+  // Track which accordion panel is active (desktop only).
   const [activeId, setActiveId] = useState<string>(mergedServices[0].id);
 
   // GSAP: Premium Entry Animation
@@ -158,10 +186,62 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
           }
         />
 
-        {/* 
-          Interactive Accordion Container 
-        */}
-        <div className="panels-container flex flex-col md:flex-row gap-2 md:gap-4 h-[70vh] min-h-[500px] md:min-h-[600px] md:h-[600px] w-full">
+        {/* ── Mobile: Bento Grid ── */}
+        <div className="md:hidden panels-container grid grid-cols-2 gap-3">
+          {mergedServices.map((service) => (
+            <Link
+              key={service.id}
+              href={service.href}
+              className="service-panel relative overflow-hidden rounded-lg aspect-[3/4] group"
+            >
+              {/* Image Layer */}
+              <div className="absolute inset-0">
+                {service.cmsImageUrl ? (
+                  <img 
+                    src={service.cmsImageUrl} 
+                    alt={service.title} 
+                    className="w-full h-full object-cover" 
+                    style={{ objectPosition: service.objectPosition }}
+                    loading="lazy"
+                  />
+                ) : (
+                  <ImagePlaceholder
+                    label={service.placeholder.label}
+                    description={service.placeholder.description}
+                    mood={service.dark ? "dark" : "warm"}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/25 to-transparent" />
+              </div>
+
+              {/* Content: F-Pattern — name top-left, tagline + CTA at bottom */}
+              <div className="absolute inset-0 p-4 flex flex-col justify-between z-10">
+                {/* Top: Number + Name */}
+                <div>
+                  <span className="font-sans text-parchment/50 text-[10px] uppercase tracking-widest block">
+                    {service.number}
+                  </span>
+                  <h3 className="font-serif text-parchment text-xl mt-1">
+                    {service.title}
+                  </h3>
+                </div>
+                
+                {/* Bottom: Tagline + Arrow */}
+                <div className="flex items-end justify-between">
+                  <p className="font-sans text-parchment/70 text-[11px] italic leading-snug max-w-[70%]">
+                    {service.tagline}
+                  </p>
+                  <span className="text-roots-orange text-lg group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* ── Desktop: Accordion ── */}
+        <div className="panels-container hidden md:flex gap-3 h-[600px] w-full">
           {mergedServices.map((service) => {
             const isActive = activeId === service.id;
 
@@ -173,15 +253,14 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                 className={`
                   service-panel relative overflow-hidden bg-parchment rounded-sm cursor-pointer
                   transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-                  ${isActive ? "flex-[3] md:flex-[4]" : "flex-[1]"}
+                  ${isActive ? "flex-[4]" : "flex-[1]"}
                 `}
                 style={{
-                  minHeight: "4rem", 
-                  minWidth: "4rem",
+                  minWidth: "3rem",
                   transform: "translateZ(0)"
                 }}
               >
-                {/* Image Layer — fixed-size images prevent zoom during flex transitions */}
+                {/* Image Layer */}
                 <div className="absolute inset-0 overflow-hidden">
                   {service.cmsImageUrl ? (
                     <img 
@@ -208,41 +287,45 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                   <div className="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent pointer-events-none" />
                 </div>
 
-                {/* Content Layer */}
-                <div className="absolute bottom-0 left-0 w-full h-full p-5 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
+                {/* Content Layer — F-Pattern */}
+                <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 pointer-events-none">
                   
-                  {/* Number Badge */}
-                  <span 
-                    className={`
-                      font-sans text-parchment/60 text-[10px] uppercase tracking-widest block mb-2
-                      transition-all duration-500 transform
-                      ${isActive ? "translate-y-0 opacity-100 delay-100" : "translate-y-4 opacity-0"}
-                    `}
-                  >
-                    {service.number}
-                  </span>
-                  
-                  {/* Title (Uses whitespace-nowrap so long titles slide in gracefully out of the overflow clipping) */}
-                  <h3 
-                    className={`
-                      font-serif text-parchment whitespace-nowrap origin-bottom-left md:origin-left
-                      transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-                      ${isActive ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"}
-                    `}
-                  >
-                    {service.title}
-                  </h3>
+                  {/* Top: Number + Name */}
+                  <div>
+                    <span 
+                      className={`
+                        font-sans text-parchment/60 text-[10px] uppercase tracking-widest block mb-1
+                        transition-all duration-500 transform
+                        ${isActive ? "translate-y-0 opacity-100 delay-100" : "translate-y-4 opacity-0"}
+                      `}
+                    >
+                      {service.number}
+                    </span>
+                    <h3 
+                      className={`
+                        font-serif text-parchment whitespace-nowrap
+                        transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
+                        ${isActive ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"}
+                      `}
+                    >
+                      {service.title}
+                    </h3>
+                  </div>
 
-                  {/* Call to action — revealed when active */}
+                  {/* Bottom: Tagline + CTA — revealed when active */}
                   <div 
                     className={`
-                      overflow-hidden transition-all duration-700 ease-in-out
-                      ${isActive ? "max-h-12 opacity-100 mt-4 pointer-events-auto" : "max-h-0 opacity-0 mt-0 pointer-events-none"}
+                      flex items-end justify-between
+                      transition-all duration-700 ease-in-out
+                      ${isActive ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"}
                     `}
                   >
+                    <p className="font-sans text-parchment/70 text-[12px] italic max-w-[60%] leading-snug">
+                      {service.tagline}
+                    </p>
                     <Link
                       href={service.href}
-                      className="text-roots-orange uppercase text-[10px] tracking-widest font-sans flex items-center gap-2 hover:gap-3 transition-all inline-flex w-max"
+                      className="text-roots-orange uppercase text-[10px] tracking-widest font-sans flex items-center gap-2 hover:gap-3 transition-all"
                     >
                       Discover <span className="text-base">→</span>
                     </Link>

@@ -34,7 +34,7 @@ export default function TransitionWrapper({ children }: { children: React.ReactN
             aria-live="polite"
             aria-busy="true"
           >
-            <div className="w-full max-w-[640px] mx-auto px-8">
+            <div className="w-[70vw] max-w-[900px] mx-auto px-8">
               <Lottie
                 animationData={heroData}
                 loop={false}

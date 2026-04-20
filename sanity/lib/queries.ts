@@ -35,6 +35,8 @@ export const getHomePageQuery = groq`
     bridalServiceImage,
     skinServiceImage,
     tattooServiceImage,
+    nailsServiceImage,
+    piercingServiceImage,
     transformationsHeadline,
     transformationsSubheadline,
     "beforeAfterHairBeforeUrl": beforeAfterHairBefore.asset->url,

@@ -22,9 +22,9 @@ export default function CTASection({
   subtext,
   ctaLabel,
 }: CTASectionProps) {
-  const resolvedHeading  = heading  || "Ready for your Look?";
-  const resolvedSubtext  = subtext  || "Step into the premier salon experience in Hyderabad. Let our experts craft your signature look.";
-  const resolvedCtaLabel = ctaLabel || "Book Consultation via WhatsApp";
+  const resolvedHeading  = heading  || "Your Best Look Starts Here.";
+  const resolvedSubtext  = subtext  || "Walk in with an idea, walk out with confidence. Our stylists are ready when you are.";
+  const resolvedCtaLabel = ctaLabel || "Book via WhatsApp";
   const waUrl = `https://wa.me/${WHATSAPP_NUMBER}`;
 
   return (

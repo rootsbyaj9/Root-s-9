@@ -139,7 +139,7 @@ export default function Navbar({ settings }: { settings: any }) {
         )}
         aria-label="Main navigation"
       >
-        <div className="flex items-center justify-between px-6 md:px-12 h-[72px]">
+        <div className="flex items-center justify-between px-6 md:px-12 h-[80px]">
 
           {/* Logo */}
           <Link
@@ -151,7 +151,7 @@ export default function Navbar({ settings }: { settings: any }) {
               src="/logo-nobg1.svg"
               alt="Root's Family Salon"
               className={cn(
-                "h-10 md:h-12 w-auto object-contain transition-opacity duration-500 ease-out",
+                "h-14 md:h-16 w-auto object-contain transition-opacity duration-500 ease-out",
                 isLight ? "opacity-100" : "opacity-0 absolute inset-0"
               )}
             />
@@ -159,7 +159,7 @@ export default function Navbar({ settings }: { settings: any }) {
               src="/logo-nobg2.svg"
               alt="Root's Family Salon"
               className={cn(
-                "h-10 md:h-12 w-auto object-contain transition-opacity duration-500 ease-out",
+                "h-14 md:h-16 w-auto object-contain transition-opacity duration-500 ease-out",
                 !isLight ? "opacity-100" : "opacity-0 absolute inset-0"
               )}
             />
@@ -206,7 +206,7 @@ export default function Navbar({ settings }: { settings: any }) {
                     {/* Simple Dropdown */}
                     <div 
                       className={cn(
-                        "absolute top-[72px] bg-[#FEFCF8] border-t-2 border-[#E87722] border-x border-b border-[#1A1008]/10 shadow-lg z-40 transition-all duration-200 ease-out w-48 flex flex-col p-2",
+                        "absolute top-[80px] bg-[#FEFCF8] border-t-2 border-[#E87722] border-x border-b border-[#1A1008]/10 shadow-lg z-40 transition-all duration-200 ease-out w-48 flex flex-col p-2",
                         desktopServicesOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-2"
                       )}
                     >

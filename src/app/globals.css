@@ -50,6 +50,7 @@
   --animate-infinite-scroll-up: infinite-scroll-up 40s linear infinite;
   --animate-infinite-scroll-down: infinite-scroll-down 40s linear infinite;
   --animate-marquee-horizontal: marquee-horizontal 40s linear infinite;
+  --animate-shimmer: shimmer 2.5s ease-in-out infinite;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -89,7 +90,7 @@
 ═══════════════════════════════════════════════════════════ */
 html,
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -247,6 +248,15 @@ body {
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 

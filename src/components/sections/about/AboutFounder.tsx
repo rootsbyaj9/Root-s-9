@@ -20,10 +20,10 @@ interface AboutFounderProps {
 
 export default function AboutFounder({
   founderName = "Anikanth Jadhav",
-  founderHeadline = "I started Root\u2019s for my family.",
-  founderQuote = "I wanted one place where my parents, my spouse, my kids \u2014 every generation \u2014 could walk out feeling their best. That\u2019s still why I do this.",
-  founderBio1 = "Before Root\u2019s, Hyderabad had a clear gap \u2014 boutique-quality salons were expensive and inaccessible; affordable salons often cut corners. We built the alternative: premium technique, professional-grade products, and a genuinely warm space that welcomes every age and every budget.",
-  founderBio2 = "Two branches later \u2014 with a third on the way \u2014 we\u2019re still that same place my family visits every month. We\u2019ve simply invited more families in.",
+  founderHeadline = "I left the bank. I followed my passion.",
+  founderQuote = "Nine years behind a desk taught me discipline. But every evening, I dreamed of creating a space where families walk in as guests and walk out as family. Root\u2019s is that dream \u2014 built on passion, grown with trust.",
+  founderBio1 = "After 9 years as a bank manager, Anikanth Jadhav made the leap \u2014 trading spreadsheets for scissors, client meetings for client transformations. Root\u2019s was born from a simple conviction: Hyderabad deserved a premium salon that treated every customer like family.",
+  founderBio2 = "He still greets customers by name, and personally ensures every visit feels like coming home.",
   founderImageUrl,
   aboutBackgroundImageUrl,
 }: AboutFounderProps) {
@@ -118,7 +118,7 @@ export default function AboutFounder({
   return (
     <section ref={sectionRef} className="bg-parchment py-24 overflow-hidden">
       <div className="container mx-auto px-6 md:px-16 max-w-7xl grid md:grid-cols-2 gap-16 items-center relative z-10">
-        
+
         {aboutBackgroundImageUrl && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-10 pointer-events-none -z-10">
             <img src={aboutBackgroundImageUrl} alt="" className="w-full h-full object-cover rounded-full" />
@@ -126,8 +126,8 @@ export default function AboutFounder({
         )}
 
         {/* Image column */}
-        <div 
-          ref={imageRef} 
+        <div
+          ref={imageRef}
           className="order-2 md:order-1 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl relative bg-warm-gray/20"
         >
           {founderImageUrl ? (

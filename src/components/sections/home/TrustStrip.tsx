@@ -24,10 +24,10 @@ import { gsap } from "gsap";
 
 // ── Stat data ──────────────────────────────────────────────────────────────
 const STATS = [
-  { id: "years",           target: 8,   display: "8+",    suffix: "+",  label: "Years of Mastery",    decimals: 0 },
-  { id: "rating",          target: 4.8, display: "4.8/5", suffix: "/5", label: "Google Rating",       decimals: 1 },
-  { id: "locations",       target: 2,   display: "2",     suffix: "",   label: "Premium Locations",    decimals: 0 },
-  { id: "reviews",         target: 1.6, display: "1.6k+", suffix: "k+", label: "Google Reviews",       decimals: 1 },
+  { id: "years",           target: 8,   display: "8+",    suffix: "+",  label: "Years of Craft",      decimals: 0 },
+  { id: "rating",          target: 4.8, display: "4.8/5", suffix: "/5", label: "Client Rating",       decimals: 1 },
+  { id: "locations",       target: 2,   display: "2",     suffix: "",   label: "Salon Locations",     decimals: 0 },
+  { id: "reviews",         target: 1.6, display: "1.6k+", suffix: "k+", label: "Happy Reviews",       decimals: 1 },
 ] as const;
 // ──────────────────────────────────────────────────────────────────────────
 

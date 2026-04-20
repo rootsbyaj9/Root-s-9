@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 import TransformationsClient from '@/components/sections/transformations/TransformationsClient';
-import { client } from '@/sanity/client';
-import { getTransformationsQuery } from '@/sanity/lib/queries';
 
 export const metadata: Metadata = {
   title: "Transformations Gallery | Root's The Family Salon Hyderabad",
@@ -18,7 +16,7 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function TransformationsPage() {
-  const transformations = await client?.fetch(getTransformationsQuery).catch(() => []) ?? [];
+  const transformations: any[] = []; // Sanity fetching disabled — will be wired at final delivery
 
   return (
     <>

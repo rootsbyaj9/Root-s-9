@@ -30,11 +30,9 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  // Fetch CMS singleton — .catch() ensures static fallback if Sanity isn't configured yet
+  // Fetch CMS singleton temporarily disabled per user request
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const about: any = await client
-    ?.fetch(getAboutPageQuery)
-    .catch(() => null) ?? null;
+  const about: any = null;
 
   return (
     <>

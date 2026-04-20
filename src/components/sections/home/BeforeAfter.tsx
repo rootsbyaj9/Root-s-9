@@ -100,9 +100,9 @@ export default function BeforeAfter({ homePageData = {} }: BeforeAfterProps) {
       <div className="container mx-auto px-6 md:px-16 mb-10">
         <SectionHeader
           eyebrow="The Root's Difference"
-          heading={homePageData?.transformationsHeadline ? homePageData.transformationsHeadline.split(" ")[0] : "Visible"}
-          headingEmphasis={homePageData?.transformationsHeadline ? homePageData.transformationsHeadline.split(" ").slice(1).join(" ") : "Transformations"}
-          subheading={homePageData?.transformationsSubheadline}
+          heading={homePageData?.transformationsHeadline ? homePageData.transformationsHeadline.split(" ")[0] : "Real"}
+          headingEmphasis={homePageData?.transformationsHeadline ? homePageData.transformationsHeadline.split(" ").slice(1).join(" ") : "Results"}
+          subheading={homePageData?.transformationsSubheadline || "Drag to compare — see what our stylists can do."}
           align="center"
         />
       </div>

@@ -143,6 +143,22 @@ export const homePage = defineType({
       options: { hotspot: true },
       description: "📸 HOME PAGE — Tattoo card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG. 📱 Ensure the focal point is centered for mobile displays.",
     }),
+    defineField({
+      name: "nailsServiceImage",
+      title: "Nails — Grid Card Photo",
+      type: "image",
+      group: "services",
+      options: { hotspot: true },
+      description: "📸 HOME PAGE — Nails card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG.",
+    }),
+    defineField({
+      name: "piercingServiceImage",
+      title: "Piercing — Grid Card Photo",
+      type: "image",
+      group: "services",
+      options: { hotspot: true },
+      description: "📸 HOME PAGE — Piercing card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG.",
+    }),
 
     // ── BEFORE & AFTER ────────────────────────────────────────────────────
     defineField({

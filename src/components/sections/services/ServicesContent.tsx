@@ -3,17 +3,9 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-type ServiceItem = {
-  name: string;
-  price?: string;
-  description?: string;
-  isHighlighted?: boolean;
-};
-
 export type ServiceCategory = {
   _id: string;
   title: string;
@@ -21,19 +13,23 @@ export type ServiceCategory = {
   gender: "womens" | "mens" | "bridal" | "tattoo" | "both";
   displayOrder?: number;
   imageUrl?: string;
-  items?: ServiceItem[];
+  description?: string;
 };
 
 type TabType = "womens" | "mens" | "bridal" | "tattoo";
 
 // ─── Animation variants ───────────────────────────────────────────────────────
 const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as any } },
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as any },
+  },
 };
 const stagger = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
 };
 
 // ─── URL param sync ───────────────────────────────────────────────────────────
@@ -48,182 +44,89 @@ function TabSyncer({ onTab }: { onTab: (t: TabType) => void }) {
   return null;
 }
 
-// ─── Single service row ───────────────────────────────────────────────────────
-function ServiceRow({ name, price, description, isHighlighted }: ServiceItem) {
-  return (
-    <div
-      className={`flex justify-between items-baseline border-b pb-3 mb-3 gap-4 ${
-        isHighlighted ? "border-roots-orange/30" : "border-obsidian/10"
-      }`}
-    >
-      <div className="flex-1">
-        <span
-          className={`font-sans text-[15px] ${
-            isHighlighted ? "text-roots-orange font-medium" : "text-obsidian"
-          }`}
-        >
-          {name}
-          {isHighlighted && (
-            <span className="ml-2 text-[10px] uppercase tracking-widest text-roots-orange/70">
-              ★ Popular
-            </span>
-          )}
-        </span>
-        {description && (
-          <p className="font-sans text-[12px] text-obsidian/50 mt-0.5">{description}</p>
-        )}
-      </div>
-      {price && (
-        <span
-          className={`font-sans text-[13px] font-medium whitespace-nowrap ${
-            isHighlighted ? "text-roots-orange" : "text-obsidian/70"
-          }`}
-        >
-          {price}
-        </span>
-      )}
-    </div>
-  );
-}
+// ─── Category icons (simple SVG placeholders) ─────────────────────────────────
+const CATEGORY_ICONS: Record<string, string> = {
+  "hair-masterclass": "✂️",
+  "skin-rituals": "✨",
+  refinement: "💎",
+  "bridal-studio": "👰",
+  "mens-grooming": "🪒",
+  "mens-skin": "🧴",
+  "tattoo-artistry": "🎨",
+};
 
-// ─── Category block ───────────────────────────────────────────────────────────
-function CategoryBlock({ cat, index }: { cat: ServiceCategory; index: number }) {
-  const isEven = index % 2 === 0;
+// ─── Category card ────────────────────────────────────────────────────────────
+function CategoryCard({ cat }: { cat: ServiceCategory }) {
+  const icon = CATEGORY_ICONS[cat.slug] || "💈";
 
   return (
     <motion.div
-      id={cat.slug}
-      className="grid md:grid-cols-2 gap-[64px] items-start mb-24"
-      variants={stagger}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      variants={fadeUp}
+      className="group relative flex flex-col bg-parchment border border-obsidian/8 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-obsidian/5 hover:border-roots-orange/30 hover:-translate-y-1"
     >
-      {/* Image column */}
-      <div className={`${isEven ? "order-1" : "order-1 md:order-2"}`}>
-        {cat.imageUrl ? (
-          <motion.div variants={fadeUp} className="relative w-full aspect-[3/4] overflow-hidden rounded-md">
-            <Image
-              src={cat.imageUrl}
-              alt={cat.title}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </motion.div>
-        ) : (
-          <motion.div
-            variants={fadeUp}
-            className="w-full aspect-[3/4] bg-[#F5EDE0] flex items-center justify-center rounded-md"
-          >
-            <span className="font-sans text-[13px] uppercase tracking-widest text-obsidian/30">
-              {cat.title}
-            </span>
-          </motion.div>
-        )}
-      </div>
-
-      {/* Service list column */}
-      <div className={`${isEven ? "order-2" : "order-2 md:order-1"}`}>
-        <motion.div variants={fadeUp} className="mb-8">
-          <span className="font-sans text-[36px] text-obsidian/15 inline-block mr-3">
-            {String(index + 1).padStart(2, "0")}
+      {/* Image area */}
+      {cat.imageUrl ? (
+        <div className="relative w-full aspect-[4/3] overflow-hidden">
+          <Image
+            src={cat.imageUrl}
+            alt={cat.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-obsidian/30 to-transparent" />
+        </div>
+      ) : (
+        <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-linen to-[#EDE3D5] flex items-center justify-center overflow-hidden">
+          {/* Decorative circle */}
+          <div className="absolute w-32 h-32 rounded-full bg-roots-orange/5 -top-8 -right-8" />
+          <div className="absolute w-24 h-24 rounded-full bg-roots-orange/5 -bottom-6 -left-6" />
+          {/* Icon */}
+          <span className="text-5xl select-none relative z-10 transition-transform duration-300 group-hover:scale-110">
+            {icon}
           </span>
-          <h3 className="font-serif text-[26px] md:text-[38px] text-obsidian inline-block">{cat.title}</h3>
-          <div className="w-full h-px bg-[#E8D4BE] mt-4" />
-        </motion.div>
+        </div>
+      )}
 
-        {cat.items && cat.items.length > 0 ? (
-          <motion.div variants={stagger}>
-            {cat.items.map((item, i) => (
-              <motion.div key={i} variants={fadeUp}>
-                <ServiceRow {...item} />
-              </motion.div>
-            ))}
-          </motion.div>
-        ) : (
-          <p className="font-sans text-[14px] text-obsidian/40 italic">
-            No services listed yet. Add them in the CMS → ✂️ Services Menu.
+      {/* Content */}
+      <div className="flex flex-col flex-1 p-6 md:p-7">
+        {/* Title */}
+        <h3 className="font-serif text-[22px] md:text-[24px] text-obsidian leading-snug">
+          {cat.title}
+        </h3>
+
+        {/* Description */}
+        {cat.description && (
+          <p className="font-sans text-[14px] text-obsidian/55 leading-relaxed mt-3 flex-1">
+            {cat.description}
           </p>
         )}
 
-        <motion.div variants={fadeUp} className="mt-8">
-          <a
-            href="https://wa.me/919700744357"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-roots-orange text-parchment font-sans text-[11px] uppercase tracking-[0.08em] px-[28px] py-[14px] rounded-md transition-colors hover:bg-[#C9621E]"
+        {/* CTA */}
+        <a
+          href="https://wa.me/919700744357"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.08em] text-roots-orange font-medium mt-5 transition-colors hover:text-[#C9621E] group/link"
+        >
+          Enquire Now
+          <svg
+            className="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
           >
-            BOOK THIS SERVICE
-          </a>
-        </motion.div>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
+        </a>
       </div>
     </motion.div>
-  );
-}
-
-// ─── Tab panel ────────────────────────────────────────────────────────────────
-function TabPanel({
-  tab,
-  categories,
-  eyebrow,
-  heading,
-  description,
-}: {
-  tab: TabType;
-  categories: ServiceCategory[];
-  eyebrow: string;
-  heading: string;
-  description: string;
-}) {
-  const filtered = categories.filter(
-    (c) => c.gender === tab || c.gender === "both"
-  );
-
-  return (
-    <section id={tab} className="py-section md:py-section-md bg-parchment">
-      <div className="container mx-auto px-8 md:px-16 max-w-[1400px]">
-        {/* Section header */}
-        <div className="mb-20 text-center md:text-left">
-          <span className="eyebrow">{eyebrow}</span>
-          <h2 className="font-serif text-[48px] md:text-[56px] text-obsidian">
-            {heading}
-          </h2>
-          <p className="font-sans text-[16px] text-obsidian/60 max-w-[600px] mt-4 mx-auto md:mx-0">
-            {description}
-          </p>
-
-          {/* Jump links */}
-          {filtered.length > 1 && (
-            <div className="flex flex-wrap gap-3 mt-8 justify-center md:justify-start">
-              {filtered.map((cat) => (
-                <a
-                  key={cat._id}
-                  href={`#${cat.slug}`}
-                  className="inline-flex items-center justify-center font-sans text-[11px] uppercase tracking-[0.05em] px-4 py-2 border border-roots-orange/30 text-roots-orange bg-roots-orange/5 hover:bg-roots-orange hover:text-parchment rounded-md transition-colors"
-                >
-                  {cat.title}
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Category blocks */}
-        {filtered.length > 0 ? (
-          <div className="flex flex-col gap-0">
-            {filtered.map((cat, i) => (
-              <CategoryBlock key={cat._id} cat={cat} index={i} />
-            ))}
-          </div>
-        ) : (
-          <p className="font-sans text-[15px] text-obsidian/40 italic text-center py-20">
-            Services coming soon — check back shortly.
-          </p>
-        )}
-      </div>
-    </section>
   );
 }
 
@@ -272,12 +175,16 @@ export default function ServicesContent({
 }) {
   const [activeTab, setActiveTab] = useState<TabType>("womens");
   const meta = TAB_META[activeTab];
-  
+
   const router = useRouter();
-  
-  // Checking if Sanity actually contains populated items (in case empty categories were created manually)
-  const hasPopulatedServices = cmsCategories.some(cat => cat.items && cat.items.length > 0);
-  const dataToUse = hasPopulatedServices ? cmsCategories : FALLBACK_CATEGORIES;
+
+  // Use CMS data if available, otherwise fallback
+  const dataToUse =
+    cmsCategories.length > 0 ? cmsCategories : FALLBACK_CATEGORIES;
+
+  const filtered = dataToUse.filter(
+    (c) => c.gender === activeTab || c.gender === "both"
+  );
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);
@@ -311,13 +218,39 @@ export default function ServicesContent({
       </div>
 
       {/* Active tab content */}
-      <TabPanel
-        tab={activeTab}
-        categories={dataToUse}
-        eyebrow={meta.eyebrow}
-        heading={meta.heading}
-        description={meta.description}
-      />
+      <section className="py-16 md:py-24 bg-parchment">
+        <div className="container mx-auto px-6 md:px-16 max-w-[1400px]">
+          {/* Section header */}
+          <div className="mb-12 md:mb-16 text-center md:text-left">
+            <span className="eyebrow">{meta.eyebrow}</span>
+            <h2 className="font-serif text-[40px] md:text-[52px] text-obsidian mt-2">
+              {meta.heading}
+            </h2>
+            <p className="font-sans text-[16px] text-obsidian/55 max-w-[560px] mt-4 mx-auto md:mx-0 leading-relaxed">
+              {meta.description}
+            </p>
+          </div>
+
+          {/* Category cards grid */}
+          {filtered.length > 0 ? (
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+              variants={stagger}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-60px" }}
+            >
+              {filtered.map((cat) => (
+                <CategoryCard key={cat._id} cat={cat} />
+              ))}
+            </motion.div>
+          ) : (
+            <p className="font-sans text-[15px] text-obsidian/40 italic text-center py-20">
+              Services coming soon — check back shortly.
+            </p>
+          )}
+        </div>
+      </section>
     </>
   );
 }

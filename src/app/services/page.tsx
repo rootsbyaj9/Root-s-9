@@ -4,32 +4,22 @@ import ServicesHero from "@/components/sections/services/ServicesHero";
 import ServicesContent from "@/components/sections/services/ServicesContent";
 import ServicesCTA from "@/components/sections/services/ServicesCTA";
 import ScrollToTop from "@/components/ui/ScrollToTop";
+
 export const metadata: Metadata = {
   title: "Hair, Skin & Bridal Services in Hyderabad | Root's Salon",
   description:
-    "Explore Root's complete service menu — haircuts from ₹200, facials from ₹500, bridal packages from ₹7000. Women's and men's services at 2 branches in Hyderabad.",
+    "Explore Root's complete service menu — expert hair, skin, bridal, tattoo, and grooming services for women and men at 2 branches in Hyderabad.",
   openGraph: {
     title: "Hair, Skin & Bridal Services in Hyderabad | Root's Salon",
     description:
-      "Full service menu — haircuts from ₹200, facials from ₹500, bridal packages from ₹7000. Two branches in Hyderabad.",
+      "Expert hair, skin, bridal, tattoo, and grooming services for the whole family. Two branches in Hyderabad.",
     type: "website",
   },
 };
-import { client } from "@/sanity/client";
-import { getServiceCategoriesQuery } from "@/sanity/lib/queries";
-import { urlForImage } from "@/sanity/lib/image";
 
 export const revalidate = 60;
 
 export default async function ServicesPage() {
-  const rawCategories = await client?.fetch(getServiceCategoriesQuery).catch(() => []) ?? [];
-
-  // Resolve raw Sanity image objects → imageUrl strings server-side
-  // so client component ServicesContent receives a plain string it can render directly.
-  const categories = rawCategories.map((cat: any) => ({
-    ...cat,
-    imageUrl: cat.image ? urlForImage(cat.image).width(800).url() : undefined,
-  }));
 
   return (
     <>
@@ -49,7 +39,7 @@ export default async function ServicesPage() {
       </div>
 
       <Suspense fallback={<div className="min-h-screen bg-parchment flex items-center justify-center animate-pulse"><span className="text-sm uppercase tracking-widest text-roots-orange">Loading Menu...</span></div>}>
-        <ServicesContent cmsCategories={categories} />
+        <ServicesContent />
       </Suspense>
       <ServicesCTA />
       <ScrollToTop />

@@ -16,11 +16,10 @@ import type { Metadata } from "next";
 import Hero from "@/components/sections/home/Hero";
 import TrustStrip from "@/components/sections/home/TrustStrip";
 import ServicesGrid from "@/components/sections/home/ServicesGrid";
+import StickyServicesScroll from "@/components/sections/home/StickyServicesScroll";
 import BeforeAfter from "@/components/sections/home/BeforeAfter";
 import ReviewsPreview from "@/components/sections/home/ReviewsPreview";
 import CTASection from "@/components/sections/shared/CTASection";
-import { client } from "@/sanity/client";
-import { getHomePageQuery, getServiceCategoriesQuery, getReviewsQuery } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Root's Family Salon Hyderabad | Hair, Skin, Bridal & Tattoo",
@@ -37,13 +36,16 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const homePageData = await client?.fetch(getHomePageQuery).catch(() => ({})) ?? {};
-  const servicesData = await client?.fetch(getServiceCategoriesQuery).catch(() => []) ?? [];
-  const reviewsData = await client?.fetch(getReviewsQuery).catch(() => []) ?? [];
+  // Sanity fetching disabled — will be wired at final delivery.
+  // Using empty objects/arrays to force fully hardcoded fallback text in components.
+  const homePageData: Record<string, any> = {}; 
+  const servicesData: any[] = []; 
+  const reviewsData: any[] = [];  
+
 
   return (
     <>
-      {/* 1 — Cinematic hero (full-screen, transparent navbar overlays this) */}
+      {/* 1 — Cinematic hero */}
       <Hero homePageData={homePageData} />
 
       {/* 2 — Trust strip (stat counters count-up on scroll entry) */}
@@ -51,6 +53,9 @@ export default async function HomePage() {
 
       {/* 3 — Services bento grid (Hair · Bridal · Skin · Tattoo) */}
       <ServicesGrid cmsServices={servicesData} cmsImages={homePageData} />
+
+      {/* 3.5 — Sticky scroll feature section (Ally21-style) */}
+      <StickyServicesScroll />
 
       {/* 4 — Before/After drag slider */}
       <BeforeAfter homePageData={homePageData} />

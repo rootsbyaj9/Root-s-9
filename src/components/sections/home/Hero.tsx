@@ -146,14 +146,13 @@ export default function Hero({ homePageData = {} }: HeroProps) {
           {homePageData?.heroEyebrow || "Hyderabad's Premium Family Salon"}
         </span>
 
-        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-parchment leading-[1.08] mb-10 tracking-tight">
-          {homePageData?.heroHeadline || "Your Complete Destination for"}
-          <br className="hidden md:block" />
-          <em className="italic text-parchment/80 font-normal">
-            {homePageData?.heroHeadlineItalic || "Hair, Skin, Bridal & Tattoo"}
-          </em>{" "}
-          <br className="hidden sm:block" />
-          in Hyderabad
+        <h1 className="font-serif text-5xl md:text-7xl lg:text-[85px] text-parchment leading-[1.1] mb-10 tracking-tight">
+          <span className="font-bold block mb-1 md:mb-2">
+            {homePageData?.heroHeadline || "Your Complete Destination for"}
+          </span>
+          <em className="italic text-parchment/90 font-normal block">
+            {homePageData?.heroHeadlineItalic || "Hair, Skin, Bridal & Tattoo in Hyderabad"}
+          </em>
         </h1>
 
         <p className="subtitle-text font-sans text-parchment/70 text-sm md:text-base max-w-2xl mb-10 drop-shadow-md leading-relaxed">

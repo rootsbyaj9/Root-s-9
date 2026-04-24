@@ -1,21 +1,16 @@
 /**
  * MasonryGrid.tsx
  *
- * 3-column masonry gallery for the Transformations page.
- * 9 image slots, cascading heights, category-filterable.
+ * Infinite vertical bento scroll gallery for the Transformations page.
+ * 3 columns on desktop, each scrolling at different speeds (some reversed),
+ * mirroring the review page's infinite marquee pattern but with image cards.
  *
- * Implementation:
- * - CSS columns (3 on desktop, 2 on tablet, 1 on mobile)
- * - 8px gaps (per design spec — "gallery: clean masonry, 8px gaps max")
- * - Filtered items animate out/in with opacity + scale (CSS transition)
- * - Each cell shows category badge on hover
- *
- * Placeholder images have explicit dimensions for art direction.
+ * Uses CSS animations for silky performance — no JS scroll handlers.
  */
 
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import ImagePlaceholder from '@/components/ui/ImagePlaceholder';
@@ -98,147 +93,198 @@ const ITEMS: TransformationItem[] = [
   },
 ];
 
+/* ── Single Image Card ──────────────────────── */
+function BentoCard({ item }: { item: TransformationItem }) {
+  return (
+    <div className="group relative overflow-hidden rounded-[8px]">
+      <div className={item.aspectClass}>
+        {item.imageUrl ? (
+          <img
+            src={item.imageUrl}
+            alt={item.title || item.label}
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            style={{ objectPosition: item.objectPosition }}
+            loading="lazy"
+          />
+        ) : (
+          <ImagePlaceholder
+            label={item.label}
+            description={item.description}
+            mood={item.mood ?? 'warm'}
+            className="w-full h-full"
+          />
+        )}
+      </div>
+      {/* Category badge on hover */}
+      <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/30 transition-all duration-300 flex items-end p-4">
+        <span className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-200 font-sans text-[10px] font-semibold uppercase tracking-[0.15em] text-parchment bg-roots-orange px-3 py-1.5 rounded-full pointer-events-none">
+          {item.label.split(' ').slice(0, 2).join(' ')}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Infinite Scroll Column ────────────────── */
+function BentoColumn({
+  items,
+  duration,
+  reverse,
+}: {
+  items: TransformationItem[];
+  duration: string;
+  reverse?: boolean;
+}) {
+  return (
+    <div className="relative h-full w-full bento-marquee-group">
+      <div
+        className={`h-max flex flex-col gap-2 ${reverse ? 'bento-marquee-reverse' : 'bento-marquee'}`}
+        style={{ animationDuration: duration }}
+      >
+        {/* Set 1 */}
+        <div className="flex flex-col gap-2 flex-shrink-0">
+          {items.map((item, idx) => (
+            <BentoCard key={item.id + '-a-' + idx} item={item} />
+          ))}
+        </div>
+        {/* Set 2 — duplicate for seamless loop */}
+        <div className="flex flex-col gap-2 flex-shrink-0">
+          {items.map((item, idx) => (
+            <BentoCard key={item.id + '-b-' + idx} item={item} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Main Component ────────────────────────── */
 interface MasonryGridProps {
   cmsTransformations?: any[];
 }
 
 export default function MasonryGrid({ cmsTransformations = [] }: MasonryGridProps) {
-  const gridRef = useRef<HTMLDivElement>(null);
-  const [data, setData] = useState<TransformationItem[]>(ITEMS);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Merge CMS entries or use them directly if mapping matches
-    if (cmsTransformations && cmsTransformations.length > 0) {
-      const merged = cmsTransformations.map((cmsItem: any, index: number) => {
-        let imageUrl;
-        let objectPosition = "center";
-        
-        try {
-          if (cmsItem.image) {
-            imageUrl = urlForImage(cmsItem.image).url();
-            const hotspot = cmsItem.image.hotspot;
-            if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
-              objectPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
-            }
+  // Merge CMS data if available
+  let data = ITEMS;
+  if (cmsTransformations && cmsTransformations.length > 0) {
+    data = cmsTransformations.map((cmsItem: any, index: number) => {
+      let imageUrl;
+      let objectPosition = 'center';
+      try {
+        if (cmsItem.image) {
+          imageUrl = urlForImage(cmsItem.image).url();
+          const hotspot = cmsItem.image.hotspot;
+          if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
+            objectPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
           }
-        } catch (e) {
-          console.error("Image url generation failed:", e);
         }
-
-        let cssAspectClass = 'aspect-[3/4]';
-        if (cmsItem.aspect) {
-          if (cmsItem.aspect.startsWith('aspect-')) {
-            cssAspectClass = cmsItem.aspect;
-          } else {
-            const aspectMap: Record<string, string> = {
-              '1:1': 'aspect-square',
-              '2:3': 'aspect-[2/3]',
-              '3:4': 'aspect-[3/4]',
-              '4:5': 'aspect-[4/5]',
-              '4:3': 'aspect-[4/3]',
-              '16:9': 'aspect-video'
-            };
-            cssAspectClass = aspectMap[cmsItem.aspect] || 'aspect-[3/4]';
-          }
-        } else {
-          cssAspectClass = ITEMS[index % ITEMS.length]?.aspectClass || 'aspect-[3/4]';
-        }
-
-        return {
-          id: cmsItem._id || `cms-${index}`,
-          label: cmsItem.title || 'TRANSFORMATION',
-          description: cmsItem.description || '',
-          aspectClass: cssAspectClass,
-          mood: cmsItem.mood || 'warm',
-          imageUrl,
-          objectPosition
-        } as TransformationItem;
-      });
-
-      // If we have enough CMS items, replace completely, else merge
-      if (merged.length >= ITEMS.length) {
-        setData(merged);
-      } else {
-        const combined = [...ITEMS];
-        for (let i = 0; i < merged.length; i++) {
-          combined[i] = merged[i];
-        }
-        setData(combined);
+      } catch (e) {
+        console.error('Image url generation failed:', e);
       }
+
+      let cssAspectClass = 'aspect-[3/4]';
+      if (cmsItem.aspect) {
+        if (cmsItem.aspect.startsWith('aspect-')) {
+          cssAspectClass = cmsItem.aspect;
+        } else {
+          const aspectMap: Record<string, string> = {
+            '1:1': 'aspect-square',
+            '2:3': 'aspect-[2/3]',
+            '3:4': 'aspect-[3/4]',
+            '4:5': 'aspect-[4/5]',
+            '4:3': 'aspect-[4/3]',
+            '16:9': 'aspect-video',
+          };
+          cssAspectClass = aspectMap[cmsItem.aspect] || 'aspect-[3/4]';
+        }
+      } else {
+        cssAspectClass = ITEMS[index % ITEMS.length]?.aspectClass || 'aspect-[3/4]';
+      }
+
+      return {
+        id: cmsItem._id || `cms-${index}`,
+        label: cmsItem.title || 'TRANSFORMATION',
+        description: cmsItem.description || '',
+        aspectClass: cssAspectClass,
+        mood: cmsItem.mood || 'warm',
+        imageUrl,
+        objectPosition,
+      } as TransformationItem;
+    });
+
+    // If fewer CMS items than placeholders, merge
+    if (data.length < ITEMS.length) {
+      const combined = [...ITEMS];
+      for (let i = 0; i < data.length; i++) {
+        combined[i] = data[i];
+      }
+      data = combined;
     }
-  }, [cmsTransformations]);
+  }
+
+  // Distribute items across 3 columns (disjoint sets)
+  const col1 = data.filter((_, i) => i % 3 === 0);
+  const col2 = data.filter((_, i) => i % 3 === 1);
+  const col3 = data.filter((_, i) => i % 3 === 2);
 
   useGSAP(
     () => {
-      gsap.fromTo(
-        '.masonry-cell',
-        { opacity: 0, y: 20, scale: 0.97 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.55,
-          stagger: 0.07,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: gridRef.current,
-            start: 'top 80%',
-          },
-        }
-      );
+      gsap.from('.bento-container', {
+        opacity: 0,
+        y: 40,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.bento-container', start: 'top 75%' },
+      });
     },
-    { scope: gridRef, dependencies: [data] }
+    { scope: containerRef }
   );
 
   return (
-    <div ref={gridRef} className="py-16">
-      <div className="container mx-auto px-6 md:px-10 max-w-7xl">
-        <div
-          className="masonry-grid"
-          style={{ columnGap: '8px' }}
-        >
-          {data.map((item) => (
-            <div
-              key={item.id}
-              className="masonry-cell group relative mb-2 overflow-hidden rounded-[8px] break-inside-avoid"
-            >
-              {/* Image layer */}
-              <div className={item.aspectClass}>
-                {item.imageUrl ? (
-                  <img
-                    src={item.imageUrl}
-                    alt={item.title || item.label}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    style={{ objectPosition: item.objectPosition }}
-                    loading="lazy"
-                  />
-                ) : (
-                  <ImagePlaceholder
-                    label={item.label}
-                    description={item.description}
-                    mood={item.mood ?? 'warm'}
-                    className="w-full h-full"
-                  />
-                )}
-              </div>
+    <div ref={containerRef}>
+      <style>{`
+        .bento-fade-edges {
+          mask-image: linear-gradient(to bottom, transparent, black 4%, black 96%, transparent);
+          -webkit-mask-image: linear-gradient(to bottom, transparent, black 4%, black 96%, transparent);
+        }
+        .bento-marquee {
+          animation: bentoScrollVert linear infinite;
+        }
+        .bento-marquee-reverse {
+          animation: bentoScrollVertRev linear infinite;
+        }
+        .bento-marquee-group:hover .bento-marquee,
+        .bento-marquee-group:hover .bento-marquee-reverse {
+          animation-play-state: paused;
+        }
+        @keyframes bentoScrollVert {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(calc(-50% - 4px)); }
+        }
+        @keyframes bentoScrollVertRev {
+          0% { transform: translateY(calc(-50% - 4px)); }
+          100% { transform: translateY(0); }
+        }
+      `}</style>
 
-              {/* Category badge on hover */}
-              <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/30 transition-all duration-300 flex items-end p-4">
-                <span className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-200 font-sans text-[10px] font-semibold uppercase tracking-[0.15em] text-parchment bg-roots-orange px-3 py-1.5 rounded-full pointer-events-none">
-                  {item.label.split(' ').slice(0, 2).join(' ')}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {data.length === 0 && (
-          <div className="text-center py-24">
-            <p className="font-sans text-warm-gray text-sm">
-              No transformations available yet — check back soon.
-            </p>
+      <div className="py-16 bento-container">
+        <div className="container mx-auto px-6 md:px-10 max-w-[1400px]">
+          <div className="h-[80vh] overflow-hidden bento-fade-edges grid grid-cols-2 md:grid-cols-3 gap-2">
+            <BentoColumn items={col1} duration="45s" />
+            <BentoColumn items={col2} duration="55s" reverse />
+            <BentoColumn items={col3} duration="50s" />
           </div>
-        )}
+
+          {data.length === 0 && (
+            <div className="text-center py-24">
+              <p className="font-sans text-warm-gray text-sm">
+                No transformations available yet — check back soon.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

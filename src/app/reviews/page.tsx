@@ -1,22 +1,16 @@
 /**
  * reviews/page.tsx — Client Reviews & Testimonials Page
  *
- * Section order (per implementation plan §Phase 6):
- *   1. Hero header — "What Our Clients Say"
- *   2. Stats bar — 500+ Reviews · 4.9★ Google · 3 Branches
- *   3. Testimonials masonry — 8 hardcoded reviews, 3-col layout
- *   4. Google Reviews CTA banner
- *   5. CTASection
+ * Data source: Google Places API (New) → both Uppal & Tarnaka branches.
+ * Falls back to static reviews.json when the API is unavailable.
  *
- * Design patterns:
- * - Cards: warm parchment/linen, subtle border, star ratings in roots-orange
- * - Alternating card heights for editorial variety
- * - Google badge linking to Google Business
+ * ISR: Revalidates every 30 days (~monthly auto-refresh).
  */
 
 import type { Metadata } from 'next';
 import ReviewsClient from '@/components/sections/reviews/ReviewsClient';
 import { getPlacesReviews } from '@/lib/google-places';
+import reviewsJson from '@/data/reviews.json';
 
 export const metadata: Metadata = {
   title: "Client Reviews | Root's Salon Hyderabad | 1600+ Happy Clients",
@@ -34,9 +28,14 @@ export const revalidate = 2592000; // revalidate every 30 days
 export default async function ReviewsPage() {
   const siteSettings: Record<string, any> = {};
 
-  // Fetch live reviews directly from Google Places API (server-side)
-  const reviewsData = await getPlacesReviews();
+  // Try Google Places API first (live, auto-updating)
+  const apiReviews = await getPlacesReviews();
+
+  // Merge manual/pinned reviews from JSON with live API reviews
+  let reviewsData = [...(reviewsJson as any[])];
+  if (apiReviews && apiReviews.length > 0) {
+    reviewsData = [...reviewsData, ...apiReviews];
+  }
 
   return <ReviewsClient reviews={reviewsData} settings={siteSettings} />;
 }
-

@@ -127,6 +127,13 @@ export default function Navbar({ settings }: { settings: any }) {
   const isHomePage = pathname === "/";
   const isLight = !isHomePage || scrolled || menuOpen || desktopServicesOpen;
 
+  /** Scroll to top when clicking nav link for the current page */
+  const handleNavClick = (href: string) => {
+    if (pathname === href) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       {/* ── Main nav bar ───────────────────────────────────────────────────── */}
@@ -144,6 +151,7 @@ export default function Navbar({ settings }: { settings: any }) {
           {/* Logo */}
           <Link
             href="/"
+            onClick={() => handleNavClick("/")}
             className="relative flex items-center transition-all duration-500 hover:opacity-85 z-50 group"
             aria-label="Root's — Home"
           >
@@ -231,6 +239,7 @@ export default function Navbar({ settings }: { settings: any }) {
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={() => handleNavClick(link.href)}
                   className={cn(
                     "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative group",
                     isActive
@@ -368,7 +377,7 @@ export default function Navbar({ settings }: { settings: any }) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => { handleNavClick(link.href); setMenuOpen(false); }}
                   className={cn(
                     "mobile-nav-link font-serif text-3xl text-[#1A1008] hover:text-[#E87722] transition-colors duration-200",
                     pathname === link.href && "text-[#E87722]"

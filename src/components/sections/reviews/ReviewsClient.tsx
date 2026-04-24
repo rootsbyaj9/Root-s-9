@@ -8,68 +8,6 @@ import CTASection from '@/components/sections/shared/CTASection';
 const GOOGLE_MAPS_URL_1 = 'https://maps.app.goo.gl/ocq8uts9jYaCp3bu8';
 const GOOGLE_MAPS_URL_2 = 'https://maps.app.goo.gl/NSNafg2mqV9acw9m7';
 
-const REVIEWS = [
-  {
-    id: 'r1',
-    name: 'Manasa Mahankali',
-    branch: 'Uppal',
-    rating: 5,
-    date: 'Recent',
-    service: 'Hair Styling',
-    review:
-      'I was nervous about trying a new style, but Mr Anikanth Jadhav at Root\'s Family Salon made me feel so comfortable. He is an artist! My hair looks healthier and more stylish than it has in years. I’ve already received so many compliments. Thank you for the incredible service!',
-  },
-  {
-    id: 'r2',
-    name: 'Shakib ALi',
-    branch: 'Tarnaka',
-    rating: 5,
-    date: 'Recent',
-    service: 'Haircut & Facial',
-    review:
-      'Visited this salon by Google it was a wonderful experince I ever had and I went along with. My sister for her haircut and facial & dandruff treatments. The way they gave service it was mind blowing and my sister hair cut and facial service …',
-  },
-  {
-    id: 'r3',
-    name: 'Divya Panjala',
-    branch: 'Uppal',
-    rating: 5,
-    date: 'Recent',
-    service: 'Tattoo Studio',
-    review:
-      'I’ve had a tattoo on my wrist done twice here, and both times the experience was excellent. Anikanth Kumar is very creative and enthusiastic. He really puts effort into his work and ensures customer satisfaction. Highly recommended.',
-  },
-  {
-    id: 'r4',
-    name: 'Shailaja Keshapuram',
-    branch: 'Tarnaka',
-    rating: 5,
-    date: 'Recent',
-    service: 'Hair Services',
-    review:
-      'Roots The Family Salon is the best!!!! It\'s an outstanding customer experience and hair services provided by Roots team. They also help us with suggestions and styles. Very much happy satisfied with the outcome. Thanks again to Anikanth Sir and his team.',
-  },
-  {
-    id: 'r5',
-    name: 'Z L',
-    branch: 'Uppal',
-    rating: 5,
-    date: 'Recent',
-    service: 'Salon Experience',
-    review:
-      'I recently visited this "Roots the family salon" and I couldn’t be more impressed with the entire experience. From the moment I walked in, I felt welcomed by the friendly staff. It’s clear that this place is focused on providing top-notch service...',
-  },
-  {
-    id: 'r6',
-    name: 'Renee Lazarus',
-    branch: 'Tarnaka',
-    rating: 5,
-    date: 'Recent',
-    service: 'Root Touch Up & Facial',
-    review:
-      'Best service 👍👍✨ swapna didi s head massage, root touch up, facial, eyebrows perfect and the boys who do the hair cut are also professional and great superb ....loved it! …',
-  }
-];
 
 function StarRating({ count }: { count: number }) {
   return (
@@ -159,18 +97,16 @@ function ReviewCard({ r }: { r: any }) {
 export default function ReviewsClient({ reviews = [], settings }: { reviews?: any[], settings?: any }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const mappedReviews = reviews.length > 0
-    ? reviews.map((r: any) => ({
-        id: r._id,
-        name: r.name,
-        branch: r.branch,
-        rating: r.rating || 5,
-        date: r.date || 'Recent',
-        service: r.service,
-        review: r.reviewText,
-        avatar: r.avatar
-      }))
-    : REVIEWS;
+  const mappedReviews = (reviews || []).map((r: any) => ({
+    id: r._id || r.id || Math.random().toString(),
+    name: r.name,
+    branch: r.branch,
+    rating: r.rating || 5,
+    date: r.date || 'Recent',
+    service: r.service || 'Salon Visit',
+    review: r.reviewText || r.review,
+    avatar: r.avatar
+  }));
 
   // Context pulled directly from verified Google Maps logic
   const STATS = [
@@ -180,10 +116,28 @@ export default function ReviewsClient({ reviews = [], settings }: { reviews?: an
     { value: settings?.yearsOfMastery || '8+', label: 'Years of Excellence' },
   ];
 
+  // Deduplicate reviews to ensure no name appears twice
+  const uniqueReviews: any[] = [];
+  const seenNames = new Set();
+  for (const r of mappedReviews) {
+    if (!seenNames.has(r.name)) {
+      seenNames.add(r.name);
+      uniqueReviews.push(r);
+    }
+  }
+
+  // Sort so reviews with avatars appear first
+  uniqueReviews.sort((a, b) => {
+    if (a.avatar && !b.avatar) return -1;
+    if (!a.avatar && b.avatar) return 1;
+    return 0;
+  });
+
   // Pre-calculate stagger offsets so columns don't look identical
-  const col1 = [...mappedReviews];
-  const col2 = [...mappedReviews.slice(2), ...mappedReviews.slice(0, 2)];
-  const col3 = [...mappedReviews.slice(4), ...mappedReviews.slice(0, 4)];
+  // By using disjoint sets (modulo 3), we guarantee no identical reviews in different columns.
+  const col1 = uniqueReviews.filter((_, i) => i % 3 === 0);
+  const col2 = uniqueReviews.filter((_, i) => i % 3 === 1);
+  const col3 = uniqueReviews.filter((_, i) => i % 3 === 2);
 
   useGSAP(() => {
     gsap.from('.hero-text', {
@@ -282,20 +236,13 @@ export default function ReviewsClient({ reviews = [], settings }: { reviews?: an
         </div>
       </section>
 
-      {/* ─── MULTI-COLUMN INFINITE SCROLL ──────────────── */}
+      {/* ─── INFINITE SCROLL COLUMNS ──────────────── */}
       <section className="bg-linen py-20 marquee-container">
         <div className="container mx-auto px-6 md:px-10 max-w-[1400px]">
-          {/* We define a strict height container and mask the edges so reviews fade in/out beautifully */}
-          <div className="h-[60vh] min-h-[500px] md:h-[800px] flex gap-6 overflow-hidden fade-edges relative">
-            <div className="hidden lg:block flex-1 w-full relative">
-               <ReviewColumn items={col1} duration="35s" />
-            </div>
-            <div className="flex-1 w-full relative">
-               <ReviewColumn items={col2} duration="40s" reverse />
-            </div>
-            <div className="hidden md:block flex-1 w-full relative">
-               <ReviewColumn items={col3} duration="30s" />
-            </div>
+          <div className="h-[80vh] overflow-hidden fade-edges grid grid-cols-1 md:grid-cols-3 gap-6">
+            <ReviewColumn items={col1} duration="60s" />
+            <ReviewColumn items={col2} duration="75s" reverse />
+            <ReviewColumn items={col3} duration="65s" />
           </div>
         </div>
       </section>

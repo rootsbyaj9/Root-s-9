@@ -22,6 +22,7 @@ import BrandStrip from "@/components/sections/home/BrandStrip";
 import ReviewsPreview from "@/components/sections/home/ReviewsPreview";
 import CTASection from "@/components/sections/shared/CTASection";
 import { getPlacesReviews } from "@/lib/google-places";
+import reviewsJson from "@/data/reviews.json";
 
 export const metadata: Metadata = {
   title: "Root's Family Salon Hyderabad | Hair, Skin, Bridal & Tattoo",
@@ -43,8 +44,14 @@ export default async function HomePage() {
   const homePageData: Record<string, any> = {};
   const servicesData: any[] = [];
 
-  // Fetch live reviews directly from Google Places API (cached via ISR)
-  const reviewsData = await getPlacesReviews();
+  // Live reviews from Google Places API (auto-refreshes via ISR)
+  const apiReviews = await getPlacesReviews();
+  
+  // Merge manual/pinned reviews from JSON with live API reviews
+  let reviewsData = [...(reviewsJson as any[])];
+  if (apiReviews && apiReviews.length > 0) {
+    reviewsData = [...reviewsData, ...apiReviews];
+  }
 
 
   return (

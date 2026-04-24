@@ -1,87 +1,83 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Link from "next/link";
-import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap-config";
-import LottieStarsPlayer from "@/components/ui/LottieStarsPlayer";
 
-// Swiper integration removed in favor of high-performance CSS marquee
 
-/**
- * ReviewsPreview.tsx
- *
- * A swipeable and draggable horizontal gallery of client testimonials.
- * Uses custom mouse physics for desktop dragging + snap for mobile.
- */
 
-const PREVIEW_REVIEWS = [
-  {
-    initial: "M",
-    name: "Manasa Mahankali",
-    quote:
-      "I was nervous about trying a new style, but Mr Anikanth Jadhav at Root's Family Salon made me feel so comfortable. He is an artist! My hair looks healthier and more stylish than it has in years.",
-  },
-  {
-    initial: "A",
-    name: "Azlaan Pathan",
-    quote:
-      "Very nice service. I am coming here since 2018 and day by day their service and skills towards customers increases to the peaks. Well maintained and ambience is superb.",
-  },
-  {
-    initial: "S",
-    name: "Shailaja Keshapuram",
-    quote:
-      "Roots The Family Salon is the best!!!! It's an outstanding customer experience and hair services provided by Roots team. They also help us with suggestions and styles.",
+function StarRating({ count }: { count: number }) {
+  return (
+    <div className="flex gap-0.5" aria-label={`${count} out of 5 stars`}>
+      {Array.from({ length: count }).map((_, i) => (
+        <svg
+          key={i}
+          className="w-4 h-4 text-roots-orange"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+/** Avatar with graceful fallback to initial circle on load error */
+function Avatar({ name, avatar, initial }: { name: string; avatar?: string; initial: string }) {
+  const [error, setError] = useState(false);
+
+  if (!avatar || error) {
+    return (
+      <div className="w-10 h-10 rounded-full bg-obsidian text-parchment flex items-center justify-center font-serif font-bold shrink-0">
+        {initial}
+      </div>
+    );
   }
-];
+  return (
+    <img
+      src={avatar}
+      alt={name}
+      className="w-10 h-10 rounded-full object-cover shrink-0"
+      onError={() => setError(true)}
+    />
+  );
+}
 
 export default function ReviewsPreview({ reviews = [] }: { reviews?: any[] }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [triggerStars, setTriggerStars] = useState(false);
+  const mappedReviews = (reviews || []).map((r: any) => ({
+    initial: r.name ? r.name.charAt(0) : "A",
+    name: r.name,
+    quote: r.reviewText || r.review,
+    rating: r.rating ?? 5,
+    avatar: r.avatar,
+    service: r.service || "Salon Experience",
+    branch: r.branch || "Hyderabad"
+  }));
 
-  // We duplicate the reviews array once so that even with only 3 fetched reviews,
-  // the Swiper has enough physical DOM nodes to flawlessly infinite-loop on giant desktop monitors.
-  // We map 'name' and 'reviewText' from CMS
-  const mappedReviews = reviews.length > 0
-    ? reviews.map((r: any) => ({
-        initial: r.name ? r.name.charAt(0) : "A",
-        name: r.name,
-        quote: r.reviewText,
-        rating: r.rating ?? 5,
-        avatar: r.avatar,
-      }))
-    : PREVIEW_REVIEWS.map((r) => ({ ...r, rating: 5 }));
+  // Deduplicate by name
+  let uniqueReviews: any[] = [];
+  const seenNames = new Set();
+  for (const r of mappedReviews) {
+    if (!seenNames.has(r.name)) {
+      seenNames.add(r.name);
+      uniqueReviews.push(r);
+    }
+  }
 
-  const SWIPER_REVIEWS = [...mappedReviews, ...mappedReviews];
+  // Sort so reviews with avatars appear first
+  uniqueReviews.sort((a, b) => {
+    if (a.avatar && !b.avatar) return -1;
+    if (!a.avatar && b.avatar) return 1;
+    return 0;
+  });
 
-  // Entry GSAP
-  useGSAP(() => {
-    gsap.fromTo(
-      ".review-card",
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.2, // increased stagger slightly for premium pacing
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 40%", // Waits until section is prominently in view
-          toggleActions: "play none none none",
-          onEnter: () => {
-             // 1000ms delay ensures cards are beautifully faded in before the stars slowly draw themselves.
-             setTimeout(() => setTriggerStars(true), 1000);
-          },
-        },
-      }
-    );
-  }, { scope: sectionRef });
+  // Duplicate for seamless loop
+  const SWIPER_REVIEWS = [...uniqueReviews, ...uniqueReviews];
 
   return (
-    <section ref={sectionRef} className="bg-linen py-20 md:py-32 px-0 overflow-hidden">
+    <section className="bg-linen py-20 md:py-32 px-0 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-12 xl:px-24">
         <SectionHeader
           eyebrow="CLIENT LOVE"
@@ -91,32 +87,40 @@ export default function ReviewsPreview({ reviews = [] }: { reviews?: any[] }) {
         />
       </div>
 
-      {/* Infinite Autoscroll Marquee Container */}
-      <div className="mt-16 pb-12 px-0 overflow-hidden relative fade-edges-horizontal">
-        <div className="flex w-max animate-marquee-horizontal hover:[animation-play-state:paused]">
+      {/* Infinite Autoscroll Marquee — CSS animation with hover-pause */}
+      <div className="mt-16 pb-12 px-0 overflow-hidden relative">
+        {/* Left fade */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 z-10 bg-gradient-to-r from-linen to-transparent pointer-events-none" />
+        {/* Right fade */}
+        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 z-10 bg-gradient-to-l from-linen to-transparent pointer-events-none" />
+
+        <div 
+          className="flex w-max"
+          style={{ animation: `marquee-horizontal ${Math.max(uniqueReviews.length * 8, 30)}s linear infinite` }}
+          onMouseEnter={(e) => { e.currentTarget.style.animationPlayState = 'paused'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.animationPlayState = 'running'; }}
+        >
           {SWIPER_REVIEWS.map((review, i) => (
-            <div key={i} className="w-[85vw] md:w-[50vw] lg:w-[40vw] max-w-[500px] shrink-0 px-4">
-              <div className="review-card h-full bg-parchment border border-obsidian/10 p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-500 flex flex-col justify-between opacity-0">
-                <div>
-                  {/* Lottie 5-Stars triggered remotely */}
-                  <LottieStarsPlayer className="mb-6 -ml-2 pointer-events-none" triggerPlay={triggerStars} rating={review.rating} />
-
-                  <p className="font-serif text-lg text-obsidian italic leading-relaxed mb-10 pointer-events-none">
-                    &quot;{review.quote}&quot;
-                  </p>
+            <div key={i} className="w-[75vw] md:w-[38vw] lg:w-[30vw] max-w-[420px] shrink-0 px-3">
+              <div className="h-full bg-parchment rounded-2xl p-5 md:p-7 flex flex-col border border-obsidian/[0.06] hover:shadow-xl transition-shadow duration-300 w-full">
+                {/* Stars */}
+                <div className="mb-4">
+                  <StarRating count={review.rating} />
                 </div>
+                
+                {/* Quote */}
+                <p className="font-serif text-base text-obsidian leading-relaxed mb-5 flex-1 line-clamp-5">
+                  &ldquo;{review.quote}&rdquo;
+                </p>
 
-                {/* Author Row */}
-                <div className="flex items-center gap-4 mt-auto pointer-events-none">
-                  {review.avatar ? (
-                    <img src={review.avatar} alt={review.name} className="w-10 h-10 rounded-full object-cover pointer-events-none" />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full bg-obsidian text-parchment flex items-center justify-center font-serif font-bold pointer-events-none">
-                      {review.initial}
+                {/* Author */}
+                <div className="border-t border-obsidian/[0.06] pt-4 flex items-center mt-auto">
+                  <div className="flex items-center gap-3">
+                    <Avatar name={review.name} avatar={review.avatar} initial={review.initial} />
+                    <div>
+                      <p className="font-sans text-sm font-semibold text-obsidian uppercase tracking-wide">{review.name}</p>
+                      <p className="font-sans text-xs text-warm-gray">{review.branch} Location</p>
                     </div>
-                  )}
-                  <div className="font-sans font-medium text-obsidian uppercase tracking-wide text-xs pointer-events-none">
-                    {review.name}
                   </div>
                 </div>
               </div>

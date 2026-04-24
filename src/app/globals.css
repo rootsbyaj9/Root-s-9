@@ -49,7 +49,7 @@
   /* Custom Animations */
   --animate-infinite-scroll-up: infinite-scroll-up 40s linear infinite;
   --animate-infinite-scroll-down: infinite-scroll-down 40s linear infinite;
-  --animate-marquee-horizontal: marquee-horizontal 40s linear infinite;
+  --animate-marquee-horizontal: marquee-horizontal 35s linear infinite;
   --animate-shimmer: shimmer 2.5s ease-in-out infinite;
 }
 
@@ -251,6 +251,14 @@ body {
   }
 }
 
+/* Review preview marquee — comfortable reading speed, hover-pausable */
+.review-marquee-track {
+  animation: marquee-horizontal 55s linear infinite;
+}
+.review-marquee-track:hover {
+  animation-play-state: paused;
+}
+
 @keyframes shimmer {
   0%, 100% {
     background-position: 0% 50%;
@@ -304,10 +312,22 @@ body {
 }
 @media (min-width: 768px) {
   .accordion-img {
-    /* Desktop: panels side by side, height doesn't change, width does */
-    /* Container = 100vw - 2×64px padding - 3×16px gaps = 100vw - 176px */
-    /* Expanded panel = 4/7 of container */
-    width: calc((100vw - 176px) * 4 / 7);
+    /* Desktop: panels side by side. 
+       Fixed wide width ensures the image acts as a mask during the flex transition, 
+       rather than squishing/stretching. */
+    width: 60vw;
     height: 100%;
+    max-width: none;
   }
+}
+
+/* Service panel entry — subtle, fast, no blank-state */
+.service-panel {
+  opacity: 0.4;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.service-panel.panel-visible {
+  opacity: 1;
+  transform: translateY(0);
 }

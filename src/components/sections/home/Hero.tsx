@@ -146,12 +146,11 @@ export default function Hero({ homePageData = {} }: HeroProps) {
           {homePageData?.heroEyebrow || "Hyderabad's Premium Family Salon"}
         </span>
 
-        <h1 className="font-serif text-[36px] sm:text-[48px] md:text-[56px] lg:text-[64px] text-parchment leading-[1.08] mb-4 tracking-tight drop-shadow-xl w-full">
-          {homePageData?.heroHeadline || "Your Complete Destination for"}{" "}
+        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-parchment leading-[1.08] mb-10 tracking-tight">
+          {homePageData?.heroHeadline || "Your Complete Destination for"}
           <br className="hidden md:block" />
-          <em className="italic text-parchment/90 font-normal">
-            {homePageData?.heroHeadlineItalic ||
-              "Hair, Skin, Bridal & Tattoo"}
+          <em className="italic text-parchment/80 font-normal">
+            {homePageData?.heroHeadlineItalic || "Hair, Skin, Bridal & Tattoo"}
           </em>{" "}
           <br className="hidden sm:block" />
           in Hyderabad
@@ -168,7 +167,7 @@ export default function Hero({ homePageData = {} }: HeroProps) {
             className="relative"
           >
             <span className="relative btn-primary block shadow-2xl">
-              {homePageData?.heroCtaText || "Book Appointment"}
+              {homePageData?.heroCtaText || "Book Your Appointment"}
             </span>
           </button>
 

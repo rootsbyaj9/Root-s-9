@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import MobileCTABar from "@/components/layout/MobileCTABar";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 import BookingModal from "@/components/layout/BookingModal";
 import Script from "next/script";
 
@@ -172,6 +173,7 @@ export default async function RootLayout({
         )}
         
         <SmoothScroll>
+          <ScrollToTop />
           {/* ── Fixed header shell (OfferStrip + Navbar) ── */}
           <Header settings={settings} />
 

@@ -1,18 +1,17 @@
 import { NextResponse } from "next/server";
 import { getPlacesReviews } from "@/lib/google-places";
+import reviewsJson from "@/data/reviews.json";
 
 /**
  * GET /api/reviews
- * Returns reviews from Google Sheets. Kept as an API route for potential
- * external consumers or client-side fetching. The shared getReviews()
- * utility handles caching and authentication.
+ * Returns reviews from Google Places API, with static fallback.
  */
 export async function GET() {
-  try {
-    const reviews = await getPlacesReviews();
-    return NextResponse.json({ reviews });
-  } catch (err: any) {
-    console.error("[/api/reviews]", err.message);
-    return NextResponse.json({ reviews: [], error: err.message }, { status: 200 });
+  let reviews = await getPlacesReviews();
+
+  if (!reviews || reviews.length === 0) {
+    reviews = reviewsJson as any[];
   }
+
+  return NextResponse.json({ reviews });
 }

@@ -138,26 +138,23 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
   // Track which accordion panel is active (desktop only).
   const [activeId, setActiveId] = useState<string>(mergedServices[0].id);
 
-  // GSAP: Premium Entry Animation
+  // Lightweight CSS-based entry — no GSAP opacity:0 blocking
   useGSAP(
     () => {
-      const panels = gsap.utils.toArray(".service-panel");
-      gsap.from(
-        panels as HTMLElement[],
-        {
-          opacity: 0,
-          y: 40,
-          duration: 1.2,
-          stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".panels-container",
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-          clearProps: "all", // Clears inline styles after animation so they stay fully visible
-        }
+      const panels = document.querySelectorAll(".service-panel");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              (entry.target as HTMLElement).classList.add("panel-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.05 }
       );
+      panels.forEach((panel) => observer.observe(panel));
+      return () => observer.disconnect();
     },
     { scope: sectionRef }
   );
@@ -252,12 +249,11 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                 onClick={() => setActiveId(service.id)}
                 className={`
                   service-panel relative overflow-hidden bg-parchment rounded-sm cursor-pointer
-                  transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-                  ${isActive ? "flex-[4]" : "flex-[1]"}
                 `}
                 style={{
                   minWidth: "3rem",
-                  transform: "translateZ(0)"
+                  flex: isActive ? 4 : 1,
+                  transition: "flex 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, transform 0.5s ease"
                 }}
               >
                 {/* Image Layer */}

@@ -62,7 +62,7 @@ export default async function AboutPage() {
       <CTASection
         heading="Come meet us in person."
         subtext="Book a complimentary consultation at either of our branches. Let's talk about what a transformation looks like for you."
-        ctaLabel="Book via WhatsApp"
+        ctaLabel="Book Appointment"
       />
     </>
   );

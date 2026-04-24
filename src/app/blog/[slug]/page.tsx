@@ -326,7 +326,7 @@ export default async function BlogPostPage({
         <CTASection
           heading="Ready for your own transformation?"
           subtext="Book an appointment at any Root's branch in Hyderabad. We'd love to bring this to life for you."
-          ctaLabel="Book via WhatsApp"
+          ctaLabel="Book Appointment"
         />
       </>
     );
@@ -403,7 +403,7 @@ export default async function BlogPostPage({
       <CTASection
         heading="Ready for your own transformation?"
         subtext="Book an appointment at any Root's branch in Hyderabad. We'd love to bring this to life for you."
-        ctaLabel="Book via WhatsApp"
+        ctaLabel="Book Appointment"
       />
     </>
   );

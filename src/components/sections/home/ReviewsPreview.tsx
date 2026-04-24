@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 import LottieStarsPlayer from "@/components/ui/LottieStarsPlayer";
 
 // Swiper integration removed in favor of high-performance CSS marquee
@@ -49,8 +49,10 @@ export default function ReviewsPreview({ reviews = [] }: { reviews?: any[] }) {
         initial: r.name ? r.name.charAt(0) : "A",
         name: r.name,
         quote: r.reviewText,
+        rating: r.rating ?? 5,
+        avatar: r.avatar,
       }))
-    : PREVIEW_REVIEWS;
+    : PREVIEW_REVIEWS.map((r) => ({ ...r, rating: 5 }));
 
   const SWIPER_REVIEWS = [...mappedReviews, ...mappedReviews];
 
@@ -97,7 +99,7 @@ export default function ReviewsPreview({ reviews = [] }: { reviews?: any[] }) {
               <div className="review-card h-full bg-parchment border border-obsidian/10 p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-500 flex flex-col justify-between opacity-0">
                 <div>
                   {/* Lottie 5-Stars triggered remotely */}
-                  <LottieStarsPlayer className="mb-6 -ml-2 pointer-events-none" triggerPlay={triggerStars} />
+                  <LottieStarsPlayer className="mb-6 -ml-2 pointer-events-none" triggerPlay={triggerStars} rating={review.rating} />
 
                   <p className="font-serif text-lg text-obsidian italic leading-relaxed mb-10 pointer-events-none">
                     &quot;{review.quote}&quot;
@@ -106,9 +108,13 @@ export default function ReviewsPreview({ reviews = [] }: { reviews?: any[] }) {
 
                 {/* Author Row */}
                 <div className="flex items-center gap-4 mt-auto pointer-events-none">
-                  <div className="w-10 h-10 rounded-full bg-obsidian text-parchment flex items-center justify-center font-serif font-bold pointer-events-none">
-                    {review.initial}
-                  </div>
+                  {review.avatar ? (
+                    <img src={review.avatar} alt={review.name} className="w-10 h-10 rounded-full object-cover pointer-events-none" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-obsidian text-parchment flex items-center justify-center font-serif font-bold pointer-events-none">
+                      {review.initial}
+                    </div>
+                  )}
                   <div className="font-sans font-medium text-obsidian uppercase tracking-wide text-xs pointer-events-none">
                     {review.name}
                   </div>

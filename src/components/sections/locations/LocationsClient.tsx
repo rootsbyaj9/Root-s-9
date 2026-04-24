@@ -5,36 +5,40 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import CTASection from '@/components/sections/shared/CTASection';
 
+// Fallback data (will be replaced by CMS props at final delivery)
 const BRANCHES = [
   {
     id: 'branch-1',
-    name: 'Root\'s The Family Salon - Uppal',
-    address: 'Peerzadiguda, Uppal, Hyderabad',
+    shortName: 'Uppal',
+    name: "Root's The Family Salon — Uppal",
+    address: '#10-25/7, Taj Mahal Colony, Peerzadiguda Road, opp. Global Indian International School, Uppal, Hyderabad 500039',
     hours: 'Mon–Sun: 10 AM – 9 PM',
     mapUrl: 'https://maps.app.goo.gl/ocq8uts9jYaCp3bu8',
-    embedUrl: "https://www.google.com/maps?q=17.397388,78.5885877&hl=en&z=15&output=embed",
+    embedUrl: 'https://www.google.com/maps?q=17.397388,78.5885877&hl=en&z=15&output=embed',
     phone: '+919700744357',
     description: 'Experience premium styling at our signature Uppal location. Let our experts craft your perfect look.',
   },
   {
     id: 'branch-2',
-    name: 'Root\'s The Family Salon - Tarnaka',
-    address: 'Vijayapuri Colony, opp. St Ann\'s School, South Lallaguda, Tarnaka, Secunderabad',
+    shortName: 'Tarnaka',
+    name: "Root's The Family Salon — Tarnaka",
+    address: "#12-5-16/4, Vijayapuri Colony, opp. St Ann's School, Chenna Reddy Lane, Tarnaka South Lallaguda, Secunderabad 500017",
     hours: 'Mon–Sun: 10 AM – 9 PM',
     mapUrl: 'https://maps.app.goo.gl/HtxnUPQ9b9a4f5Qv7',
-    embedUrl: "https://www.google.com/maps?q=17.4304751,78.5329607&hl=en&z=15&output=embed",
+    embedUrl: 'https://www.google.com/maps?q=17.4304751,78.5329607&hl=en&z=15&output=embed',
     phone: '+919700744357',
-    description: 'Our second branch offering the identical luxurious Root\'s experience in Tarnaka.',
+    description: "Our second branch offering the identical luxurious Root's experience in Tarnaka.",
   },
   {
     id: 'branch-3',
-    name: 'Root\'s The Family Salon - COMING SOON',
+    shortName: 'New Branch',
+    name: "Root's The Family Salon — Coming Soon",
     address: 'Hyderabad',
     hours: 'Opening in 3 Days',
     phone: '+919700744357',
-    description: 'Our third branch is opening soon! We are bringing the premium Root\'s experience to a new neighborhood in just 3 days.',
+    description: "Our third branch is opening soon! We are bringing the premium Root's experience to a new neighborhood in just 3 days.",
     isNew: true,
-  }
+  },
 ];
 
 function WhatsAppIcon() {
@@ -144,16 +148,17 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
 
                   {/* Buttons */}
                   <div className="flex flex-wrap gap-4 mt-auto">
-                    {whatsapp && (
-                      <a
-                        href={`https://wa.me/${whatsapp}?text=Hi%20Root%27s%20Salon!%20I%27d%20like%20to%20book%20an%20appointment%20with%20you.`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    {!branch.isNew && (
+                      <button
+                        onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking', branch: branch.shortName } }))}
                         className="btn-primary flex items-center justify-center gap-2 text-xs w-full sm:w-auto"
                       >
-                        <WhatsAppIcon />
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="3" y="4" width="18" height="18" rx="2" />
+                          <path d="M16 2v4M8 2v4M3 10h18" />
+                        </svg>
                         Book Appointment
-                      </a>
+                      </button>
                     )}
                     {mapUrl && (
                       <a
@@ -190,8 +195,8 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
 
       <CTASection
         heading="Ready for a change?"
-        subtext="Drop by any of our branches or secure your slot instantly on WhatsApp."
-        ctaLabel="Book via WhatsApp"
+        subtext="Drop by any of our branches or book your slot instantly online."
+        ctaLabel="Book Appointment"
       />
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionHeader from "@/components/ui/SectionHeader";
 

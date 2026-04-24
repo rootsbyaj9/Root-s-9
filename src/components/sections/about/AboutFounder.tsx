@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 
@@ -120,8 +121,8 @@ export default function AboutFounder({
       <div className="container mx-auto px-6 md:px-16 max-w-7xl grid md:grid-cols-2 gap-16 items-center relative z-10">
 
         {aboutBackgroundImageUrl && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-10 pointer-events-none -z-10">
-            <img src={aboutBackgroundImageUrl} alt="" className="w-full h-full object-cover rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] opacity-10 pointer-events-none -z-10 rounded-full overflow-hidden">
+            <Image src={aboutBackgroundImageUrl} alt="" fill className="object-cover" sizes="800px" />
           </div>
         )}
 
@@ -132,10 +133,12 @@ export default function AboutFounder({
         >
           {founderImageUrl ? (
             <>
-              <img
+              <Image
                 src={founderImageUrl}
                 alt={founderName}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-obsidian/10 mix-blend-overlay"></div>
             </>

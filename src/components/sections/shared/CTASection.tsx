@@ -4,12 +4,11 @@
  * The dark obsidian CTA section that appears at the END of every page.
  * Every page ends with a CTA — this is non-negotiable (Law #5 in CLAUDE.md).
  *
- * Conversion endpoint: WhatsApp click-to-chat.
- * REPLACE the phone number below at launch.
+ * Conversion endpoint: Opens the booking modal.
+ * WhatsApp is still accessible via the persistent floating button.
  */
 
-// Replace with the actual WhatsApp Business number before launch
-const WHATSAPP_NUMBER = "919700744357";
+'use client';
 
 interface CTASectionProps {
   heading?: string;
@@ -24,8 +23,7 @@ export default function CTASection({
 }: CTASectionProps) {
   const resolvedHeading  = heading  || "Your Best Look Starts Here.";
   const resolvedSubtext  = subtext  || "Walk in with an idea, walk out with confidence. Our stylists are ready when you are.";
-  const resolvedCtaLabel = ctaLabel || "Book via WhatsApp";
-  const waUrl = `https://wa.me/${WHATSAPP_NUMBER}`;
+  const resolvedCtaLabel = ctaLabel || "Book Appointment";
 
   return (
     <section className="py-24 md:py-32 bg-obsidian text-parchment">
@@ -36,14 +34,12 @@ export default function CTASection({
         <p className="font-sans text-parchment/70 text-base md:text-lg leading-relaxed mb-10 max-w-xl">
           {resolvedSubtext}
         </p>
-        <a
-          href={waUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
           className="btn-primary"
         >
           {resolvedCtaLabel}
-        </a>
+        </button>
       </div>
     </section>
   );

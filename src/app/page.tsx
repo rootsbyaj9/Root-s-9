@@ -18,13 +18,15 @@ import TrustStrip from "@/components/sections/home/TrustStrip";
 import ServicesGrid from "@/components/sections/home/ServicesGrid";
 import StickyServicesScroll from "@/components/sections/home/StickyServicesScroll";
 import BeforeAfter from "@/components/sections/home/BeforeAfter";
+import BrandStrip from "@/components/sections/home/BrandStrip";
 import ReviewsPreview from "@/components/sections/home/ReviewsPreview";
 import CTASection from "@/components/sections/shared/CTASection";
+import { getPlacesReviews } from "@/lib/google-places";
 
 export const metadata: Metadata = {
   title: "Root's Family Salon Hyderabad | Hair, Skin, Bridal & Tattoo",
   description:
-    "Walk in. Walk out different. Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services at Uppal and Tarnaka. Book via WhatsApp today.",
+    "Walk in. Walk out different. Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services at Uppal and Tarnaka. Book your appointment today.",
   openGraph: {
     title: "Root's Family Salon Hyderabad | Hair, Skin, Bridal & Tattoo",
     description:
@@ -33,14 +35,16 @@ export const metadata: Metadata = {
   },
 };
 
+// Revalidate set to 60 for fast ISR caching in production
 export const revalidate = 60;
 
 export default async function HomePage() {
   // Sanity fetching disabled — will be wired at final delivery.
-  // Using empty objects/arrays to force fully hardcoded fallback text in components.
-  const homePageData: Record<string, any> = {}; 
-  const servicesData: any[] = []; 
-  const reviewsData: any[] = [];  
+  const homePageData: Record<string, any> = {};
+  const servicesData: any[] = [];
+
+  // Fetch live reviews directly from Google Places API (cached via ISR)
+  const reviewsData = await getPlacesReviews();
 
 
   return (
@@ -60,7 +64,10 @@ export default async function HomePage() {
       {/* 4 — Before/After drag slider */}
       <BeforeAfter homePageData={homePageData} />
 
-      {/* 4.5 — Reviews Preview (3-card grid) */}
+      {/* 4.5 — Brand Partner Strip */}
+      <BrandStrip />
+
+      {/* 5 — Reviews Preview (3-card grid) */}
       <ReviewsPreview reviews={reviewsData} />
 
       {/* 5 — Dark CTA (shared component, ends every page) */}

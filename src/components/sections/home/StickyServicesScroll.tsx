@@ -21,7 +21,7 @@
 
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import Link from "next/link";
@@ -32,7 +32,7 @@ const HIGHLIGHTS = [
   {
     id: "hair",
     eyebrow: "Hair Masterclass",
-    heading: "Precision Cuts &\nColour Artistry",
+    heading: "Precision Cuts & Colour Artistry",
     body: "From sharp bobs to lived-in balayage — our stylists are trained in the latest techniques, using only damage-free, ammonia-free products so your hair stays healthy and luminous.",
     cta: { label: "Explore Hair", href: "/services?tab=womens" },
     placeholder: {
@@ -44,7 +44,7 @@ const HIGHLIGHTS = [
   {
     id: "bridal",
     eyebrow: "Bridal Studio",
-    heading: "Your Biggest Day,\nMade Flawless",
+    heading: "Your Biggest Day, Made Flawless",
     body: "Complete bridal packages — HD makeup, elegant updo, manicure, and more — tailored to your look, skin tone, and dream. We've dressed hundreds of Hyderabad brides.",
     cta: { label: "Book Bridal Trial", href: "/services?tab=bridal" },
     placeholder: {
@@ -56,7 +56,7 @@ const HIGHLIGHTS = [
   {
     id: "skin",
     eyebrow: "Skin Rituals",
-    heading: "Glow That Goes\nSkin-Deep",
+    heading: "Glow That Goes Skin-Deep",
     body: "Advanced facials, cleanup treatments, and skin-specific rituals that target your concerns — not just today's glow, but long-term skin health.",
     cta: { label: "Explore Skin", href: "/services?tab=womens" },
     placeholder: {
@@ -68,7 +68,7 @@ const HIGHLIGHTS = [
   {
     id: "tattoo",
     eyebrow: "Tattoo Artistry",
-    heading: "Fine-Line Realism.\nPermanent Art.",
+    heading: "Fine-Line Realism. Permanent Art.",
     body: "Our resident tattoo artists specialise in fine-line, geometric, and realism styles. Every piece is unique — inked in a fully sterile, private studio.",
     cta: { label: "View Tattoo Gallery", href: "/services?tab=tattoo" },
     placeholder: {
@@ -321,7 +321,7 @@ export default function StickyServicesScroll() {
               }}
             >
               <span className="eyebrow mb-3 block">{item.eyebrow}</span>
-              <h3 className="font-serif text-obsidian whitespace-pre-line leading-[1.15] mb-3" style={{ fontSize: "1.5rem" }}>
+              <h3 className="font-serif text-obsidian leading-[1.15] mb-3" style={{ fontSize: "1.5rem" }}>
                 {item.heading}
               </h3>
               <p className="font-sans text-obsidian/60 leading-relaxed mb-5" style={{ fontSize: "0.875rem" }}>

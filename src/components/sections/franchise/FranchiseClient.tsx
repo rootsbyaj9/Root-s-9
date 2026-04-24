@@ -2,10 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Trophy, GraduationCap, MapPin } from "lucide-react";
-import CTASection from "@/components/sections/shared/CTASection";
 import SectionHeader from "@/components/ui/SectionHeader";
 
 
@@ -41,28 +40,6 @@ const MODEL_POINTS = [
   { label: "Territories Open", value: "Pan-India (priority to Hyderabad expanded zones)" },
 ];
 
-const FAQS = [
-  {
-    q: "Do I need prior experience in the beauty industry?",
-    a: "No. Business acumen and a passion for customer experience are more important. We train your staff on all technical skills. You focus on running an excellent business.",
-  },
-  {
-    q: "How long does it take to open after signing?",
-    a: "Typically 60–90 days from agreement to grand opening. This includes location fit-out, staff recruitment, and training.",
-  },
-  {
-    q: "What kind of support do I receive after launch?",
-    a: "Ongoing: dedicated franchise coordinator, monthly performance reviews, access to Root's marketing materials, product sourcing at partner rates, and priority support for any operational issues.",
-  },
-  {
-    q: "Can I open in a city outside Hyderabad?",
-    a: "Yes. We are actively looking for franchise partners across Telangana and Andhra Pradesh. Pan-India expansion is in the pipeline for 2025–26.",
-  },
-  {
-    q: "Is there a minimum salon size requirement?",
-    a: "We recommend a minimum of 800 sq. ft. to accommodate hair, skin, and beauty services comfortably. Smaller formats (600 sq. ft.) are possible for express-service outlets.",
-  },
-];
 
 type FranchiseClientProps = {
   cmsData?: any;
@@ -94,7 +71,6 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
   // CMS Value Fallbacks
   const reasons = cmsData?.reasons?.length ? cmsData.reasons : REASONS;
   const modelPoints = cmsData?.modelPoints?.length ? cmsData.modelPoints : MODEL_POINTS;
-  const faqs = cmsData?.faqs?.length ? cmsData.faqs : FAQS;
 
   // heroBackgroundImageUrl is pre-resolved server-side via GROQ asset->url projection
   const cmsImageUrl = cmsData?.heroBackgroundImageUrl || undefined;
@@ -299,47 +275,6 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
         </div>
       </section>
 
-      {/* ─── FAQ ──────────────────────────────────────── */}
-      <section className="bg-parchment py-24">
-        <div className="container mx-auto px-6 md:px-16 max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <SectionHeader
-              eyebrow="COMMON QUESTIONS"
-              heading={cmsData?.faqHeading || "FAQ"}
-              align="left"
-            />
-          </motion.div>
-          
-          <div className="mt-12 divide-y divide-obsidian/[0.08]">
-            {faqs.map((faq: any, i: number) => (
-              <motion.div 
-                key={i} 
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="py-8 group"
-              >
-                <h3 className="font-sans text-[15px] font-semibold text-obsidian mb-3 group-hover:text-roots-orange transition-colors">
-                  {faq.q}
-                </h3>
-                <p className="font-sans text-warm-gray text-sm leading-relaxed">{faq.a}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CTASection
-        heading="Take the first step today."
-        subtext="Every Root's branch started with one conversation. Let's have ours."
-        ctaLabel="Enquire via WhatsApp"
-      />
     </>
   );
 }

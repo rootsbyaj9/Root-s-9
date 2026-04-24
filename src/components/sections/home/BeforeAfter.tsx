@@ -9,7 +9,7 @@
 import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import SectionHeader from "@/components/ui/SectionHeader";
 

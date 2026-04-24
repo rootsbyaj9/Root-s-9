@@ -1,10 +1,11 @@
-import { Playfair_Display, DM_Sans } from "next/font/google";
+import { Cormorant_Garamond, Outfit } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import MobileCTABar from "@/components/layout/MobileCTABar";
+import BookingModal from "@/components/layout/BookingModal";
 import Script from "next/script";
 
 /**
@@ -18,18 +19,18 @@ import Script from "next/script";
  *
  * This chain resolves correctly at render time.
  */
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  variable: "--font-playfair",
+  variable: "--font-cormorant",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+const outfit = Outfit({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
-  variable: "--font-dm-sans",
+  variable: "--font-outfit",
   display: "swap",
 });
 
@@ -142,7 +143,7 @@ export default async function RootLayout({
   const settings = null; // Sanity fetching disabled per user request
 
   return (
-    <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${outfit.variable}`}>
       <head>
         {/* ── JSON-LD Structured Data: Local Business (both branches) ── */}
         <script
@@ -185,6 +186,9 @@ export default async function RootLayout({
 
           {/* ── Mobile-only sticky booking bar ── */}
           <MobileCTABar settings={settings} />
+
+          {/* ── Booking Modal (global, triggered via CustomEvent) ── */}
+          <BookingModal />
         </SmoothScroll>
       </body>
     </html>

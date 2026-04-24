@@ -16,7 +16,6 @@ interface OfferStripProps {
 }
 
 export default function OfferStrip({ onDismiss, settings }: OfferStripProps) {
-  const WHATSAPP_NUMBER = settings?.contactWhatsApp || "919700744357";
   const getText = () =>
     settings?.offerBannerText ||
     "Get 20% off at our new branch and 10% off at our existing branch";
@@ -27,14 +26,12 @@ export default function OfferStrip({ onDismiss, settings }: OfferStripProps) {
     <div key={i} className="flex items-center gap-6 shrink-0 pr-6">
       <Star className="w-3 h-3 fill-current text-parchment/80" />
       <span>{getText()}</span>
-      <a
-        href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Root%27s!%20I%20would%20like%20to%20book%20an%20appointment.`}
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
         className="underline underline-offset-2 font-bold hover:text-parchment transition-colors"
       >
         BOOK NOW →
-      </a>
+      </button>
     </div>
   ));
 

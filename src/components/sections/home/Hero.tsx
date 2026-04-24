@@ -11,10 +11,12 @@
  */
 
 import { useRef } from "react";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
+import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -107,34 +109,33 @@ export default function Hero({ homePageData = {} }: HeroProps) {
         ref={bgRef}
         className="absolute inset-0 z-0 will-change-transform origin-center"
       >
-        {/* Warm gradient orbs for depth */}
-        <div className="absolute top-[8%] left-[12%] w-[600px] h-[600px] rounded-full bg-roots-orange/12 blur-[140px]" />
-        <div className="absolute bottom-[5%] right-[8%] w-[450px] h-[450px] rounded-full bg-roots-orange/8 blur-[110px]" />
-        <div className="absolute top-[45%] right-[30%] w-[350px] h-[350px] rounded-full bg-parchment/5 blur-[90px]" />
-        <div className="absolute bottom-[30%] left-[40%] w-[250px] h-[250px] rounded-full bg-roots-orange/6 blur-[80px]" />
-
-        {/* Subtle dot grid */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
-            backgroundSize: "40px 40px",
-          }}
-        />
+        {homePageData?.heroBackgroundImage ? (
+          <div className="absolute inset-0">
+            <Image
+              src={homePageData.heroBackgroundImage}
+              alt="Hero Background"
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+        ) : (
+          <ImagePlaceholder
+            label="HERO IMAGE"
+            aspectRatio="1920 × 1080 px · 16:9"
+            description="Cinematic shot of premium salon interior or beautiful styling."
+            mood="dark"
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
 
       {/* ── Dark Veil ── */}
       <div className="absolute inset-0 z-10 bg-obsidian/35" />
       <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-obsidian/70 to-transparent z-10" />
 
-      {/* ── Bottom blend — fades hero edge into parchment, eliminates hard cut ── */}
-      <div
-        className="absolute bottom-0 left-0 w-full z-20 pointer-events-none"
-        style={{
-          height: "160px",
-          background: "linear-gradient(to bottom, transparent 0%, #FEFCF8 100%)",
-        }}
-      />
+
 
       {/* ── Central Typography & CTA ─────────────────────── */}
       <div
@@ -145,33 +146,31 @@ export default function Hero({ homePageData = {} }: HeroProps) {
           {homePageData?.heroEyebrow || "Hyderabad's Premium Family Salon"}
         </span>
 
-        <h1 className="font-serif text-[36px] sm:text-[48px] md:text-[64px] lg:text-[84px] text-parchment leading-[1.08] mb-4 tracking-tight drop-shadow-xl w-full">
-          {homePageData?.heroHeadline || "Where Every Look"}{" "}
-          <br className="md:hidden" />
+        <h1 className="font-serif text-[36px] sm:text-[48px] md:text-[56px] lg:text-[64px] text-parchment leading-[1.08] mb-4 tracking-tight drop-shadow-xl w-full">
+          {homePageData?.heroHeadline || "Your Complete Destination for"}{" "}
+          <br className="hidden md:block" />
           <em className="italic text-parchment/90 font-normal">
             {homePageData?.heroHeadlineItalic ||
-              "Begins."}
-          </em>
+              "Hair, Skin, Bridal & Tattoo"}
+          </em>{" "}
+          <br className="hidden sm:block" />
+          in Hyderabad
         </h1>
 
         <p className="subtitle-text font-sans text-parchment/70 text-sm md:text-base max-w-2xl mb-10 drop-shadow-md leading-relaxed">
-          Hair · Skin · Bridal · Tattoo · Nails — one family salon, two premium locations in Hyderabad.
+          Walk in. Walk out different. Two premium locations serving your entire family.
         </p>
 
         <div className="cta-wrapper flex flex-col sm:flex-row items-center gap-4">
-          {/* ── Rainbow-glow primary CTA ── */}
-          <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative group"
+          {/* ── Primary CTA ── */}
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
+            className="relative"
           >
-            {/* Glow ring */}
-            <span className="absolute -inset-[2px] rounded-lg bg-gradient-to-r from-roots-orange via-amber-400 to-roots-orange bg-[length:200%_100%] animate-shimmer opacity-70 group-hover:opacity-100 blur-[3px] transition-opacity duration-300" />
             <span className="relative btn-primary block shadow-2xl">
-              {homePageData?.heroCtaText || "Reserve Your Time"}
+              {homePageData?.heroCtaText || "Book Appointment"}
             </span>
-          </a>
+          </button>
 
           {/* ── Glassmorphic secondary CTA ── */}
           <a
@@ -189,11 +188,7 @@ export default function Hero({ homePageData = {} }: HeroProps) {
         </div>
       </div>
 
-      {/* ── Scroll indicator ── */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-30 pointer-events-none">
-        <span className="font-sans text-[10px] uppercase tracking-[0.15em] text-parchment/40">Scroll</span>
-        <div className="w-px h-10 bg-gradient-to-b from-parchment/40 to-transparent animate-pulse" />
-      </div>
+
     </section>
   );
 }

@@ -128,9 +128,14 @@ function ReviewCard({ r }: { r: any }) {
         &ldquo;{r.review}&rdquo;
       </p>
       <div className="border-t border-obsidian/[0.06] pt-4 flex items-center justify-between mt-auto">
-        <div>
-          <p className="font-sans text-sm font-semibold text-obsidian">{r.name}</p>
-          <p className="font-sans text-xs text-warm-gray">{r.branch} Location</p>
+        <div className="flex items-center gap-3">
+          {r.avatar && (
+            <img src={r.avatar} alt={r.name} className="w-10 h-10 rounded-full" />
+          )}
+          <div>
+            <p className="font-sans text-sm font-semibold text-obsidian">{r.name}</p>
+            <p className="font-sans text-xs text-warm-gray">{r.branch} Location</p>
+          </div>
         </div>
         <a 
           href={r.branch === 'Uppal' ? GOOGLE_MAPS_URL_1 : GOOGLE_MAPS_URL_2}
@@ -162,7 +167,8 @@ export default function ReviewsClient({ reviews = [], settings }: { reviews?: an
         rating: r.rating || 5,
         date: r.date || 'Recent',
         service: r.service,
-        review: r.reviewText
+        review: r.reviewText,
+        avatar: r.avatar
       }))
     : REVIEWS;
 
@@ -338,8 +344,8 @@ export default function ReviewsClient({ reviews = [], settings }: { reviews?: an
 
       <CTASection
         heading="Ready to become our next happy client?"
-        subtext="Join 1,600+ Hyderabad families who trust Root's. Book your appointment in seconds via WhatsApp."
-        ctaLabel="Book via WhatsApp"
+        subtext="Join 1,600+ Hyderabad families who trust Root's. Book your appointment in seconds."
+        ctaLabel="Book Appointment"
       />
     </div>
   );

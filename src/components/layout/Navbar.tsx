@@ -24,7 +24,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 
 // ── Site navigation links ─────────────────────────────────────────────────────
 const PRIMARY_LINKS = [
@@ -285,14 +285,12 @@ export default function Navbar({ settings }: { settings: any }) {
             ))}
 
             {/* Book CTA */}
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
               className="btn-primary !py-2.5 !px-5 !text-[10px]"
             >
               Book Now
-            </a>
+            </button>
           </div>
 
           {/* ── Mobile hamburger ──────────────────────────────────────────── */}
@@ -342,21 +340,21 @@ export default function Navbar({ settings }: { settings: any }) {
           aria-hidden={!menuOpen}
           id="mobile-menu"
         >
-          <div className="flex flex-col items-center gap-8 w-full pt-28 pb-16">
+          <div className="flex flex-col items-center gap-5 w-full pt-24 pb-12">
             {[...PRIMARY_LINKS, ...SECONDARY_LINKS].map((link) => {
               if (link.label === "Services") {
                 return (
                   <div key="services" className="mobile-nav-link flex flex-col items-center w-full">
-                    <div className="font-serif text-4xl text-[#1A1008] mb-4">
+                    <div className="font-serif text-3xl text-[#1A1008] mb-3">
                       {link.label}
                     </div>
-                    <div className="flex flex-col items-center gap-3">
+                    <div className="flex flex-col items-center gap-2">
                       {SERVICES_SECTIONS.map((sub, j) => (
                         <Link
                           key={j}
                           href={sub.href}
                           onClick={() => setMenuOpen(false)}
-                          className="font-sans text-[13px] uppercase tracking-widest text-[#1A1008]/80 hover:text-[#E87722] transition-colors"
+                          className="font-sans text-[12px] uppercase tracking-widest text-[#1A1008]/80 hover:text-[#E87722] transition-colors"
                           tabIndex={menuOpen ? 0 : -1}
                         >
                           {sub.label}
@@ -372,7 +370,7 @@ export default function Navbar({ settings }: { settings: any }) {
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
                   className={cn(
-                    "mobile-nav-link font-serif text-4xl text-[#1A1008] hover:text-[#E87722] transition-colors duration-200",
+                    "mobile-nav-link font-serif text-3xl text-[#1A1008] hover:text-[#E87722] transition-colors duration-200",
                     pathname === link.href && "text-[#E87722]"
                   )}
                   tabIndex={menuOpen ? 0 : -1}
@@ -382,15 +380,16 @@ export default function Navbar({ settings }: { settings: any }) {
               );
             })}
 
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => {
+                setMenuOpen(false);
+                setTimeout(() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } })), 300);
+              }}
               className="mobile-nav-link btn-primary mt-4"
               tabIndex={menuOpen ? 0 : -1}
             >
-              Book via WhatsApp
-            </a>
+              Book Appointment
+            </button>
           </div>
         </div>,
         document.body

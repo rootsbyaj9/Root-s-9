@@ -2,8 +2,9 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import gsap from 'gsap';
+import { gsap } from '@/lib/gsap-config';
 import { useGSAP } from '@gsap/react';
 import CTASection from '@/components/sections/shared/CTASection';
 import ImagePlaceholder from '@/components/ui/ImagePlaceholder';
@@ -185,10 +186,13 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
               >
                 <Link href={`/blog/${featured.slug}`} className="block w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
                   {featured.mainImageUrl ? (
-                    <img src={featured.mainImageUrl} alt={featured.title} className="w-full h-full object-cover" />
+                    <div className="relative w-full h-full">
+                      <Image src={featured.mainImageUrl} alt={featured.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+                    </div>
                   ) : (
                     <ImagePlaceholder 
-                      label="Editorial Photo" 
+                      label="Featured Editorial Photo"
+                      aspectRatio="1200 × 675 px · 16:9"
                       description={`High-res editorial photo for ${featured.category}`} 
                       className="w-full h-full" 
                       mood="warm" 
@@ -248,10 +252,13 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
                     <div className="aspect-[4/3] overflow-hidden relative">
                       <Link href={`/blog/${post.slug}`} className="block w-full h-full transform transition-transform duration-[600ms] group-hover:scale-[1.04]">
                         {post.mainImageUrl ? (
-                          <img src={post.mainImageUrl} alt={post.title} className="w-full h-full object-cover" />
+                          <div className="relative w-full h-full">
+                            <Image src={post.mainImageUrl} alt={post.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                          </div>
                         ) : (
                           <ImagePlaceholder 
-                            label="Editorial Photo" 
+                            label="Blog Post Photo"
+                            aspectRatio="600 × 400 px · 3:2"
                             description={`Photo for ${post.category}`} 
                             className="w-full h-full" 
                             mood="warm" 

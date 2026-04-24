@@ -11,7 +11,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import { urlForImage } from "@/sanity/lib/image";
@@ -22,7 +22,7 @@ const SERVICES = [
     id: "hair",
     number: "01",
     title: "Hair",
-    tagline: "Where strands tell stories",
+    tagline: "Where your signature look begins.",
     href: "/services?tab=womens",
     placeholder: {
       label: "Hair · High-Res Image",
@@ -34,7 +34,7 @@ const SERVICES = [
     id: "bridal",
     number: "02",
     title: "Bridal",
-    tagline: "Your day. Our artistry.",
+    tagline: "The spotlight, perfected.",
     href: "/services?tab=bridal",
     placeholder: {
       label: "Bridal · High-Res Image",
@@ -46,7 +46,7 @@ const SERVICES = [
     id: "skin",
     number: "03",
     title: "Skin",
-    tagline: "Glow from within",
+    tagline: "Radiance redefined.",
     href: "/services?tab=womens",
     placeholder: {
       label: "Skin · High-Res Image",
@@ -58,7 +58,7 @@ const SERVICES = [
     id: "tattoo",
     number: "04",
     title: "Tattoo",
-    tagline: "Ink that speaks for you",
+    tagline: "Art styled for your skin.",
     href: "/services?tab=tattoo",
     placeholder: {
       label: "Tattoo · High-Res Image",
@@ -70,7 +70,7 @@ const SERVICES = [
     id: "nails",
     number: "05",
     title: "Nails",
-    tagline: "Details that define you",
+    tagline: "Elegance at your fingertips.",
     href: "/services?tab=womens",
     placeholder: {
       label: "Nails · High-Res Image",
@@ -82,7 +82,7 @@ const SERVICES = [
     id: "piercing",
     number: "06",
     title: "Piercing",
-    tagline: "Bold. Beautiful. You.",
+    tagline: "Bold accents. Safely done.",
     href: "/services?tab=womens",
     placeholder: {
       label: "Piercing · High-Res Image",
@@ -142,12 +142,11 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
   useGSAP(
     () => {
       const panels = gsap.utils.toArray(".service-panel");
-      gsap.fromTo(
+      gsap.from(
         panels as HTMLElement[],
-        { opacity: 0, y: 40 },
         {
-          opacity: 1,
-          y: 0,
+          opacity: 0,
+          y: 40,
           duration: 1.2,
           stagger: 0.1,
           ease: "power3.out",
@@ -156,6 +155,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
             start: "top 85%",
             toggleActions: "play none none none",
           },
+          clearProps: "all", // Clears inline styles after animation so they stay fully visible
         }
       );
     },

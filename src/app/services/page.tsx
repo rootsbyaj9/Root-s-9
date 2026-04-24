@@ -38,9 +38,7 @@ export default async function ServicesPage() {
         </p>
       </div>
 
-      <Suspense fallback={<div className="min-h-screen bg-parchment flex items-center justify-center animate-pulse"><span className="text-sm uppercase tracking-widest text-roots-orange">Loading Menu...</span></div>}>
-        <ServicesContent />
-      </Suspense>
+      <ServicesContent />
       <ServicesCTA />
       <ScrollToTop />
     </>

@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 
 export default function ServicesCTA() {
@@ -7,20 +9,18 @@ export default function ServicesCTA() {
         <h2 className="font-serif text-[40px] md:text-[48px] text-parchment">
           Ready to book your look?
         </h2>
-        
+
         <p className="font-sans text-[16px] text-parchment/70 max-w-[480px] mt-6">
-          WhatsApp us to check availability, ask questions, or lock in your appointment. 
-          No forms. No waiting.
+          Book your appointment online in seconds — pick your branch, service, and time.
+          No waiting, no forms.
         </p>
 
-        <a
-          href="https://wa.me/919700744357"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
           className="inline-block bg-roots-orange text-parchment font-sans text-[12px] uppercase tracking-[0.08em] px-[40px] py-[16px] rounded-md transition-colors hover:bg-[#C9621E] mt-10"
         >
-          BOOK VIA WHATSAPP
-        </a>
+          Book Appointment
+        </button>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { Scissors, Sparkles, Gem, Crown, Droplet, Palette, Star } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export type ServiceCategory = {
@@ -44,20 +45,19 @@ function TabSyncer({ onTab }: { onTab: (t: TabType) => void }) {
   return null;
 }
 
-// ─── Category icons (simple SVG placeholders) ─────────────────────────────────
-const CATEGORY_ICONS: Record<string, string> = {
-  "hair-masterclass": "✂️",
-  "skin-rituals": "✨",
-  refinement: "💎",
-  "bridal-studio": "👰",
-  "mens-grooming": "🪒",
-  "mens-skin": "🧴",
-  "tattoo-artistry": "🎨",
+// ─── Category icons (Lucide React) ──────────────────────────────────────────
+const CATEGORY_ICONS: Record<string, React.ReactNode> = {
+  "hair-masterclass": <Scissors className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "skin-rituals": <Sparkles className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "refinement": <Gem className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "bridal-studio": <Crown className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "mens-grooming": <Scissors className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "mens-skin": <Droplet className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "tattoo-artistry": <Palette className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
 };
 
-// ─── Category card ────────────────────────────────────────────────────────────
 function CategoryCard({ cat }: { cat: ServiceCategory }) {
-  const icon = CATEGORY_ICONS[cat.slug] || "💈";
+  const icon = CATEGORY_ICONS[cat.slug] || <Star className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />;
 
   return (
     <motion.div
@@ -83,7 +83,7 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
           <div className="absolute w-32 h-32 rounded-full bg-roots-orange/5 -top-8 -right-8" />
           <div className="absolute w-24 h-24 rounded-full bg-roots-orange/5 -bottom-6 -left-6" />
           {/* Icon */}
-          <span className="text-5xl select-none relative z-10 transition-transform duration-300 group-hover:scale-110">
+          <span className="relative z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
             {icon}
           </span>
         </div>
@@ -104,13 +104,14 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
         )}
 
         {/* CTA */}
-        <a
-          href="https://wa.me/919700744357"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.08em] text-roots-orange font-medium mt-5 transition-colors hover:text-[#C9621E] group/link"
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            window.dispatchEvent(new CustomEvent("open-booking-modal"));
+          }}
+          className="inline-flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.08em] text-roots-orange font-medium mt-5 transition-colors hover:text-[#C9621E] group/link text-left"
         >
-          Enquire Now
+          Book Now
           <svg
             className="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-1"
             fill="none"
@@ -124,7 +125,7 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
               d="M17 8l4 4m0 0l-4 4m4-4H3"
             />
           </svg>
-        </a>
+        </button>
       </div>
     </motion.div>
   );
@@ -234,11 +235,11 @@ export default function ServicesContent({
           {/* Category cards grid */}
           {filtered.length > 0 ? (
             <motion.div
+              key={activeTab}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
               variants={stagger}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
+              animate="visible"
             >
               {filtered.map((cat) => (
                 <CategoryCard key={cat._id} cat={cat} />

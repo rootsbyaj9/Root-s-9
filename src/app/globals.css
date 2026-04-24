@@ -28,12 +28,12 @@
   --color-warm-gray: #6B5E53;      /* Secondary text, captions */
 
   /* Typography
-     --font-dm-sans and --font-playfair are injected by next/font
+     --font-outfit and --font-cormorant are injected by next/font
      as CSS vars on the <html> element at runtime. Referencing them
      here lets Tailwind's font-sans / font-serif utilities resolve
      correctly through the CSS custom property chain. */
-  --font-sans: var(--font-dm-sans);
-  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-outfit);
+  --font-serif: var(--font-cormorant);
 
   /* Border Radius */
   --radius-md: 12px;

@@ -20,7 +20,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 
 // ── Stat data ──────────────────────────────────────────────────────────────
 const STATS = [

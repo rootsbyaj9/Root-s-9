@@ -10,6 +10,7 @@
 'use client';
 
 import MasonryGrid from './MasonryGrid';
+import InstagramCTA from './InstagramCTA';
 
 type TransformationsClientProps = {
   cmsTransformations?: any[];
@@ -36,6 +37,9 @@ export default function TransformationsClient({ cmsTransformations = [] }: Trans
 
       {/* 2 — Masonry gallery */}
       <MasonryGrid cmsTransformations={cmsTransformations} />
+
+      {/* 3 — Instagram CTA */}
+      <InstagramCTA />
     </>
   );
 }

@@ -16,6 +16,7 @@
 
 import type { Metadata } from 'next';
 import ReviewsClient from '@/components/sections/reviews/ReviewsClient';
+import { getPlacesReviews } from '@/lib/google-places';
 
 export const metadata: Metadata = {
   title: "Client Reviews | Root's Salon Hyderabad | 1600+ Happy Clients",
@@ -28,11 +29,14 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 60;
+export const revalidate = 2592000; // revalidate every 30 days
 
 export default async function ReviewsPage() {
-  const reviewsData: any[] = []; // Sanity fetching disabled — will be wired at final delivery
-  const siteSettings: Record<string, any> = {}; // Sanity fetching disabled — will be wired at final delivery
-  
+  const siteSettings: Record<string, any> = {};
+
+  // Fetch reviews directly from Google Places API (server-side)
+  const reviewsData = await getPlacesReviews();
+
   return <ReviewsClient reviews={reviewsData} settings={siteSettings} />;
 }
+

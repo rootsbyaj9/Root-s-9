@@ -178,7 +178,7 @@ export default async function RootLayout({
           <Header settings={settings} />
 
           {/* ── Page content ── */}
-          <main className="pb-16 md:pb-0">{children}</main>
+          <main>{children}</main>
 
           {/* ── Global footer ── */}
           <Footer settings={settings} />

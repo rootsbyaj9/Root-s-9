@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getReviews } from "@/lib/google-sheets";
+import { getPlacesReviews } from "@/lib/google-places";
 
 /**
  * GET /api/reviews
@@ -9,7 +9,7 @@ import { getReviews } from "@/lib/google-sheets";
  */
 export async function GET() {
   try {
-    const reviews = await getReviews();
+    const reviews = await getPlacesReviews();
     return NextResponse.json({ reviews });
   } catch (err: any) {
     console.error("[/api/reviews]", err.message);

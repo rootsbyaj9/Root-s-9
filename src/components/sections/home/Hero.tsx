@@ -156,7 +156,7 @@ export default function Hero({ homePageData = {} }: HeroProps) {
         </h1>
 
         <p className="subtitle-text font-sans text-parchment/70 text-sm md:text-base max-w-2xl mb-10 drop-shadow-md leading-relaxed">
-          Walk in. Walk out different. Two premium locations serving your entire family.
+          Two premium locations serving your entire family.
         </p>
 
         <div className="cta-wrapper flex flex-col sm:flex-row items-center gap-4">

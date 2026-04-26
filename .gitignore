@@ -60,3 +60,12 @@ AGENTS.md
 /*.json
 /*.ps1
 .gitnexus
+
+# IDE and Editor rules
+.claude/
+.cursorrules
+.windsurfrules
+
+# Untracked scratch files
+.cgcignore
+scratch-*

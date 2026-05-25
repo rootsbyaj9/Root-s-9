@@ -13,6 +13,10 @@ export async function appendToSheet(
   if (!keyJson) throw new Error("Missing GOOGLE_SERVICE_ACCOUNT_KEY");
 
   const credentials = JSON.parse(keyJson);
+  // Vercel env vars mangle \n in private keys — restore real newlines
+  if (credentials.private_key) {
+    credentials.private_key = credentials.private_key.replace(/\\n/g, "\n");
+  }
 
   const auth = new google.auth.GoogleAuth({
     credentials,
@@ -103,6 +107,10 @@ export async function createCalendarEvent({
   if (!calendarId) throw new Error("Missing GOOGLE_CALENDAR_ID");
 
   const credentials = JSON.parse(keyJson);
+  // Vercel env vars mangle \n in private keys — restore real newlines
+  if (credentials.private_key) {
+    credentials.private_key = credentials.private_key.replace(/\\n/g, "\n");
+  }
 
   const auth = new google.auth.GoogleAuth({
     credentials,

@@ -7,8 +7,7 @@ import { appendToSheet, createCalendarEvent } from "@/lib/google-calendar";
  * Receives a booking form submission:
  *   { name, phone, service, date, time, branch }
  *
- * 1. Appends a row to the "Bookings" worksheet in Google Sheets
- * 2. Creates a Google Calendar event
+ * Responds immediately, then writes to Google Sheets + Calendar in the background.
  */
 export async function POST(request: Request) {
   try {
@@ -27,38 +26,26 @@ export async function POST(request: Request) {
       timeZone: "Asia/Kolkata",
     });
 
-    // 1. Append to Google Sheets — branch-specific tab
-    // Tab name pattern: "Bookings - Uppal", "Bookings - Tarnaka", etc.
-    // Columns: Name | Phone | Service | Preferred Date | Preferred Time | Submitted At
     const sheetTab = `Bookings - ${branch}`;
-    await appendToSheet(`'${sheetTab}'!A:F`, [
-      name,
-      phone,
-      service,
-      date,
-      time,
-      submittedAt,
-    ]);
 
-    // 2. Create Google Calendar event
-    let calendarEventId: string | null = null;
-    try {
-      calendarEventId = await createCalendarEvent({
+    // ✅ Fire-and-forget: don't block the response on Google API calls
+    Promise.all([
+      appendToSheet(`'${sheetTab}'!A:F`, [
         name,
         phone,
         service,
         date,
         time,
-        branch,
-      });
-    } catch (calErr: any) {
-      // Calendar is non-critical — log but don't fail the booking
-      console.error("[/api/bookings] Calendar error:", calErr.message);
-    }
+        submittedAt,
+      ]).catch((err) => console.error("[/api/bookings] Sheets error:", err.message)),
 
+      createCalendarEvent({ name, phone, service, date, time, branch })
+        .catch((err) => console.error("[/api/bookings] Calendar error:", err.message)),
+    ]);
+
+    // Respond immediately — user sees success in <300ms
     return NextResponse.json({
       success: true,
-      calendarEventId,
       message: "Booking received! We'll confirm your appointment shortly.",
     });
   } catch (err: any) {

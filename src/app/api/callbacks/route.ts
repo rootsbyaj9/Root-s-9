@@ -26,17 +26,16 @@ export async function POST(request: Request) {
       timeZone: "Asia/Kolkata",
     });
 
-    // Append to Google Sheets — branch-specific tab
-    // Tab name pattern: "Callbacks - Uppal", "Callbacks - Tarnaka", etc.
-    // Columns: Name | Phone | Preferred Time | Purpose/Note | Submitted At
-    const sheetTab = `Callbacks - ${branch || 'General'}`;
-    await appendToSheet(`'${sheetTab}'!A:E`, [
+    const sheetTab = `Callbacks - ${branch || "General"}`;
+
+    // ✅ Fire-and-forget: respond instantly, write to Sheets in background
+    appendToSheet(`'${sheetTab}'!A:E`, [
       name,
       phone,
       preferredTime || "Anytime",
       note || "",
       submittedAt,
-    ]);
+    ]).catch((err) => console.error("[/api/callbacks] Sheets error:", err.message));
 
     return NextResponse.json({
       success: true,

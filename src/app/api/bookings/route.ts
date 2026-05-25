@@ -1,4 +1,4 @@
-import { NextResponse, after } from "next/server";
+import { NextResponse } from "next/server";
 import { appendToSheet, createCalendarEvent } from "@/lib/google-calendar";
 
 /**
@@ -28,32 +28,28 @@ export async function POST(request: Request) {
 
     const sheetTab = `Bookings - ${branch}`;
 
-    // ✅ after() keeps the Vercel function alive until writes complete
-    // User gets instant response; Sheets + Calendar run in the background
-    after(async () => {
-      await Promise.all([
-        appendToSheet(`'${sheetTab}'!A:F`, [
-          name,
-          phone,
-          service,
-          date,
-          time,
-          submittedAt,
-        ]).catch((err) => console.error("[/api/bookings] Sheets error:", err.message)),
-
-        createCalendarEvent({ name, phone, service, date, time, branch })
-          .catch((err) => console.error("[/api/bookings] Calendar error:", err.message)),
-      ]);
-    });
+    // Await the external API calls to ensure they complete before the serverless function terminates
+    // Do NOT swallow errors with .catch so we can debug production issues
+    await Promise.all([
+      appendToSheet(`'${sheetTab}'!A:F`, [
+        name,
+        phone,
+        service,
+        date,
+        time,
+        submittedAt,
+      ]),
+      createCalendarEvent({ name, phone, service, date, time, branch })
+    ]);
 
     return NextResponse.json({
       success: true,
       message: "Booking received! We'll confirm your appointment shortly.",
     });
   } catch (err: any) {
-    console.error("[/api/bookings]", err.message);
+    console.error("[/api/bookings]", err.message, err.stack);
     return NextResponse.json(
-      { success: false, error: "Something went wrong. Please try again." },
+      { success: false, error: `Server Error: ${err.message}` },
       { status: 500 }
     );
   }

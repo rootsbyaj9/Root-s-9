@@ -1,4 +1,4 @@
-import { NextResponse, after } from "next/server";
+import { NextResponse } from "next/server";
 import { appendToSheet } from "@/lib/google-calendar";
 
 /**
@@ -28,25 +28,23 @@ export async function POST(request: Request) {
 
     const sheetTab = `Callbacks - ${branch || "General"}`;
 
-    // ✅ after() keeps Vercel function alive until write completes
-    after(async () => {
-      await appendToSheet(`'${sheetTab}'!A:E`, [
-        name,
-        phone,
-        preferredTime || "Anytime",
-        note || "",
-        submittedAt,
-      ]).catch((err) => console.error("[/api/callbacks] Sheets error:", err.message));
-    });
+    // Await the external API calls to ensure they complete before the serverless function terminates
+    await appendToSheet(`'${sheetTab}'!A:E`, [
+      name,
+      phone,
+      preferredTime || "Anytime",
+      note || "",
+      submittedAt,
+    ]);
 
     return NextResponse.json({
       success: true,
       message: "We'll call you back shortly!",
     });
   } catch (err: any) {
-    console.error("[/api/callbacks]", err.message);
+    console.error("[/api/callbacks]", err.message, err.stack);
     return NextResponse.json(
-      { success: false, error: "Something went wrong. Please try again." },
+      { success: false, error: `Server Error: ${err.message}` },
       { status: 500 }
     );
   }

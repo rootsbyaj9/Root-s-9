@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { appendToSheet } from "@/lib/google-calendar";
 
 /**
@@ -28,14 +28,16 @@ export async function POST(request: Request) {
 
     const sheetTab = `Callbacks - ${branch || "General"}`;
 
-    // ✅ Fire-and-forget: respond instantly, write to Sheets in background
-    appendToSheet(`'${sheetTab}'!A:E`, [
-      name,
-      phone,
-      preferredTime || "Anytime",
-      note || "",
-      submittedAt,
-    ]).catch((err) => console.error("[/api/callbacks] Sheets error:", err.message));
+    // ✅ after() keeps Vercel function alive until write completes
+    after(async () => {
+      await appendToSheet(`'${sheetTab}'!A:E`, [
+        name,
+        phone,
+        preferredTime || "Anytime",
+        note || "",
+        submittedAt,
+      ]).catch((err) => console.error("[/api/callbacks] Sheets error:", err.message));
+    });
 
     return NextResponse.json({
       success: true,

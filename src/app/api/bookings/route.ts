@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { appendToSheet, createCalendarEvent } from "@/lib/google-calendar";
 
 /**
@@ -28,22 +28,24 @@ export async function POST(request: Request) {
 
     const sheetTab = `Bookings - ${branch}`;
 
-    // ✅ Fire-and-forget: don't block the response on Google API calls
-    Promise.all([
-      appendToSheet(`'${sheetTab}'!A:F`, [
-        name,
-        phone,
-        service,
-        date,
-        time,
-        submittedAt,
-      ]).catch((err) => console.error("[/api/bookings] Sheets error:", err.message)),
+    // ✅ after() keeps the Vercel function alive until writes complete
+    // User gets instant response; Sheets + Calendar run in the background
+    after(async () => {
+      await Promise.all([
+        appendToSheet(`'${sheetTab}'!A:F`, [
+          name,
+          phone,
+          service,
+          date,
+          time,
+          submittedAt,
+        ]).catch((err) => console.error("[/api/bookings] Sheets error:", err.message)),
 
-      createCalendarEvent({ name, phone, service, date, time, branch })
-        .catch((err) => console.error("[/api/bookings] Calendar error:", err.message)),
-    ]);
+        createCalendarEvent({ name, phone, service, date, time, branch })
+          .catch((err) => console.error("[/api/bookings] Calendar error:", err.message)),
+      ]);
+    });
 
-    // Respond immediately — user sees success in <300ms
     return NextResponse.json({
       success: true,
       message: "Booking received! We'll confirm your appointment shortly.",

@@ -28,7 +28,7 @@ export const getHomePageQuery = groq`
     statRating,
     statLocations,
     statReviews,
-    heroBackgroundImage,
+    "heroBackgroundImageUrl": heroBackgroundImage.asset->url,
     servicesHeadline,
     servicesSubheadline,
     hairServiceImage,
@@ -61,7 +61,7 @@ export const getAboutPageQuery = groq`
     founderBio2,
     valuesHeading,
     values[] {
-      icon,
+      number,
       title,
       body
     },
@@ -122,7 +122,9 @@ export const getServiceCategoriesQuery = groq`
     "slug": slug.current,
     gender,
     displayOrder,
-    image,
+    "imageUrl": image.asset->url,
+    "imageHotspot": image.hotspot,
+    "imageAlt": image.alt,
     items[] {
       name,
       price,

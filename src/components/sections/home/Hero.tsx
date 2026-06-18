@@ -109,10 +109,10 @@ export default function Hero({ homePageData = {} }: HeroProps) {
         ref={bgRef}
         className="absolute inset-0 z-0 will-change-transform origin-center"
       >
-        {homePageData?.heroBackgroundImage ? (
+        {homePageData?.heroBackgroundImageUrl ? (
           <div className="absolute inset-0">
             <Image
-              src={homePageData.heroBackgroundImage}
+              src={homePageData.heroBackgroundImageUrl}
               alt="Hero Background"
               fill
               priority

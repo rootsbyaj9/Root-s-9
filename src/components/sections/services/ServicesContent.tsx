@@ -14,6 +14,8 @@ export type ServiceCategory = {
   gender: "womens" | "mens" | "bridal" | "tattoo" | "both";
   displayOrder?: number;
   imageUrl?: string;
+  imageHotspot?: { x: number; y: number };
+  imageAlt?: string;
   description?: string;
 };
 
@@ -58,6 +60,9 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
 
 function CategoryCard({ cat }: { cat: ServiceCategory }) {
   const icon = CATEGORY_ICONS[cat.slug] || <Star className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />;
+  const objectPosition = cat.imageHotspot
+    ? `${cat.imageHotspot.x * 100}% ${cat.imageHotspot.y * 100}%`
+    : "center";
 
   return (
     <motion.div
@@ -69,10 +74,11 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
         <div className="relative w-full aspect-[4/3] overflow-hidden">
           <Image
             src={cat.imageUrl}
-            alt={cat.title}
+            alt={cat.imageAlt || cat.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
+            style={{ objectPosition }}
           />
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-obsidian/30 to-transparent" />

@@ -19,6 +19,7 @@ export const getSiteSettingsQuery = groq`
 `
 
 export const getHomePageQuery = groq`
+  // Cache buster: 2026-06-18
   *[_type == "homePage"][0] {
     heroEyebrow,
     heroHeadline,

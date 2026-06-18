@@ -110,21 +110,33 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
     let hotspot;
     
     try {
-      const imageFieldMap: Record<string, string> = {
-        hair: "hairServiceImage",
-        bridal: "bridalServiceImage",
-        skin: "skinServiceImage",
-        tattoo: "tattooServiceImage",
-        nails: "nailsServiceImage",
-        piercing: "piercingServiceImage",
+      // Map base service IDs to the projected URL and hotspot fields
+      const urlFieldMap: Record<string, string> = {
+        hair: "hairImageUrl",
+        bridal: "bridalImageUrl",
+        skin: "skinImageUrl",
+        tattoo: "tattooImageUrl",
+        nails: "nailsImageUrl",
+        piercing: "piercingImageUrl",
       };
-      const fieldName = imageFieldMap[base.id];
-      if (fieldName && cmsImages?.[fieldName]) {
-        cmsImageUrl = urlForImage(cmsImages[fieldName]).url();
-        hotspot = cmsImages[fieldName].hotspot;
+      const hotspotFieldMap: Record<string, string> = {
+        hair: "hairImageHotspot",
+        bridal: "bridalImageHotspot",
+        skin: "skinImageHotspot",
+        tattoo: "tattooImageHotspot",
+        nails: "nailsImageHotspot",
+        piercing: "piercingImageHotspot",
+      };
+      
+      const urlField = urlFieldMap[base.id];
+      const hotspotField = hotspotFieldMap[base.id];
+
+      if (urlField && cmsImages?.[urlField]) {
+        cmsImageUrl = cmsImages[urlField];
+        hotspot = cmsImages[hotspotField];
       }
     } catch(e) {
-      // Graceful fallback if url builder fails
+      // Graceful fallback
       console.error(e);
     }
 

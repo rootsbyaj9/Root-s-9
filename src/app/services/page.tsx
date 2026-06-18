@@ -1,9 +1,10 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import ServicesHero from "@/components/sections/services/ServicesHero";
 import ServicesContent from "@/components/sections/services/ServicesContent";
 import ServicesCTA from "@/components/sections/services/ServicesCTA";
 import ScrollToTop from "@/components/ui/ScrollToTop";
+import { client } from "@/sanity/client";
+import { getServiceCategoriesQuery } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Hair, Skin & Bridal Services in Hyderabad | Root's Salon",
@@ -20,6 +21,8 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function ServicesPage() {
+  // Fetch service categories from Sanity CMS (falls back to FALLBACK_CATEGORIES if null)
+  const cmsCategories = await client?.fetch(getServiceCategoriesQuery).catch(() => null) ?? [];
 
   return (
     <>
@@ -38,7 +41,7 @@ export default async function ServicesPage() {
         </p>
       </div>
 
-      <ServicesContent />
+      <ServicesContent cmsCategories={cmsCategories} />
       <ServicesCTA />
       <ScrollToTop />
     </>

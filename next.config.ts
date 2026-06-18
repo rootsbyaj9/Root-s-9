@@ -43,6 +43,15 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      // Google Places API — reviewer avatar photos
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "streetviewpixels-pa.googleapis.com",
+      },
     ],
   },
   async headers() {

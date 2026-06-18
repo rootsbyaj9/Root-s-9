@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * WhatsAppButton.tsx
  *
@@ -6,12 +8,18 @@
  * because this is a platform color, not a brand color.
  *
  * CSS animation: slow-ping keyframe defined in globals.css
- * Server component — zero JS needed.
  *
  * REPLACE: Update phone number before launch.
  */
 
+import { usePathname } from "next/navigation";
+
 export default function WhatsAppButton({ settings }: { settings: any }) {
+  const pathname = usePathname();
+
+  // Never render inside Sanity Studio
+  if (pathname?.startsWith("/studio")) return null;
+
   const WHATSAPP_NUMBER = settings?.contactWhatsApp || "919700744357";
 
   return (
@@ -45,3 +53,4 @@ export default function WhatsAppButton({ settings }: { settings: any }) {
     </a>
   );
 }
+

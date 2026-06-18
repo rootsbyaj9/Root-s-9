@@ -8,6 +8,6 @@ export const client = projectId
       projectId,
       dataset,
       apiVersion,
-      useCdn: true, // CDN cache — pairs with revalidate:3600 ISR on pages
+      useCdn: false, // Always query live Sanity API — Next.js ISR handles page caching
     })
   : null;

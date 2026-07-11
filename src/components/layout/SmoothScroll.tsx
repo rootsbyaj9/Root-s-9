@@ -37,6 +37,11 @@ export default function SmoothScroll({
       
       gsap.ticker.add(updateFn);
       gsap.ticker.lagSmoothing(0); // Prevent GSAP from adjusting time based on lag
+
+      // Delay ScrollTrigger refresh to allow DOM and images to settle, preventing initial scroll jank
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 500);
     });
 
     return () => {

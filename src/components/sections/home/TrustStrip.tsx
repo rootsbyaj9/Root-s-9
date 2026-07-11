@@ -130,7 +130,7 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData }: 
             return (
               <div
                 key={baseStat.id}
-                className="trust-stat flex flex-col items-center text-center opacity-0"
+                className="trust-stat flex flex-col items-center text-center opacity-0 will-change-transform"
               >
                 {/* Numeral — Playfair large; textContent driven by GSAP */}
                 <span

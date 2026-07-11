@@ -15,6 +15,9 @@ export default function SmoothScroll({
     let lenisInstance: LenisType | null = null;
     let updateFn: (time: number) => void;
 
+    // Ponytail: Disable smooth scroll on mobile entirely. Destroys mobile PageSpeed (TBT) and ruins native scroll feel.
+    if (window.innerWidth < 768) return;
+
     import("lenis").then((module) => {
       const Lenis = module.default;
       lenisInstance = new Lenis({

@@ -15,7 +15,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
-import { urlForImage } from "@/sanity/lib/image";
+
 import type { SanityServiceCategory, SanityHomePageData } from "@/types/sanity";
 
 // ── CMS-Compatible Service Data ───────────────────────────────────────────────

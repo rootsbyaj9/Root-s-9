@@ -158,7 +158,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
                       <span className="font-sans text-xs text-obsidian/30">·</span>
                       <span className="font-sans text-xs text-warm-gray">{featured.readTime}</span>
                     </div>
-                  </>
+                  </div>
                 </div>
               </div>
             </div>
@@ -226,9 +226,9 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
                     </div>
                   </article>
                 </div>
-              </>
+              </div>
             ))}
-          </>
+          </div>
         </div>
       </section>
 

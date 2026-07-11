@@ -322,13 +322,3 @@ body {
   }
 }
 
-/* Service panel entry — subtle, fast, no blank-state */
-.service-panel {
-  opacity: 0.4;
-  transform: translateY(16px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.service-panel.panel-visible {
-  opacity: 1;
-  transform: translateY(0);
-}

@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     // Fetch the branch's specific Google Calendar ID from Sanity CMS (if configured)
     const branchQuery = groq`*[_type == "location" && shortName == $branch][0]{ googleCalendarId }`;
-    const branchDoc = await client.fetch(branchQuery, { branch: branchName }).catch(() => null);
+    const branchDoc = await client?.fetch(branchQuery, { branch: branchName }).catch(() => null);
 
     await createCalendarEvent({
       name,

@@ -117,13 +117,13 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
       className="bg-parchment relative z-20"
       aria-label="Trust statistics"
     >
-      <div className="container mx-auto px-6 md:px-12 max-w-6xl -mt-12 md:-mt-24 mb-12 md:mb-24">
-        <div className="relative bg-white/80 backdrop-blur-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white/50 rounded-3xl py-12 md:py-16 px-4 md:px-0 overflow-hidden">
+      <div className="container mx-auto px-6 md:px-12 max-w-6xl -mt-12 md:-mt-24 mb-8 md:mb-16">
+        <div className="relative bg-[#1A1816] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] border border-roots-orange/20 rounded-3xl py-12 md:py-16 px-4 md:px-0 overflow-hidden">
           
           {/* Subtle ambient glow behind the numbers */}
-          <div className="absolute inset-0 bg-gradient-to-br from-roots-orange/5 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-roots-orange/10 via-transparent to-transparent pointer-events-none" />
 
-          <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-y-0 md:divide-x md:divide-obsidian/10 items-center justify-center">
+          <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-y-0 md:divide-x md:divide-parchment/10 items-center justify-center">
             {STATS.map((baseStat, index) => {
             const displayValue = homePageData ? (
               baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
@@ -147,7 +147,7 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
                   {displayValue}
                 </span>
 
-                <span className="font-sans text-[10px] uppercase tracking-widest text-obsidian/55">
+                <span className="font-sans text-[10px] uppercase tracking-widest text-parchment/60">
                   {baseStat.label}
                 </span>
               </div>

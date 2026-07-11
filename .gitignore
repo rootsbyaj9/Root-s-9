@@ -65,6 +65,7 @@ AGENTS.md
 .claude/
 .cursorrules
 .windsurfrules
+.kiro
 
 # Untracked scratch files
 .cgcignore

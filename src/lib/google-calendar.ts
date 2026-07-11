@@ -138,6 +138,13 @@ export async function createCalendarEvent({
       location: branch === "Tarnaka"
         ? "Root's Family Salon, Tarnaka, Hyderabad"
         : "Root's Family Salon, Uppal, Hyderabad",
+      reminders: {
+        useDefault: false,
+        overrides: [
+          { method: "popup", minutes: 24 * 60 }, // 1 day before (for you to call)
+          { method: "popup", minutes: 30 },      // 30 mins before (standard)
+        ],
+      },
     },
   });
 

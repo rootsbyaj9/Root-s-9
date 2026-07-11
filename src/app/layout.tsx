@@ -12,6 +12,8 @@ import Script from "next/script";
 import { client } from "@/sanity/client";
 import { getSiteSettingsQuery, getLocationsQuery } from "@/sanity/lib/queries";
 
+export const revalidate = 60;
+
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],

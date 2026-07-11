@@ -15,7 +15,7 @@ export async function GET() {
 
   // Check GOOGLE_CALENDAR_ID
   results.GOOGLE_CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID
-    ? `✅ Present`
+    ? `✅ Present: ${process.env.GOOGLE_CALENDAR_ID}`
     : "❌ MISSING";
 
   // Check GOOGLE_SERVICE_ACCOUNT_KEY

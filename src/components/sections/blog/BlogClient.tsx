@@ -63,34 +63,6 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
     });
   }, { scope: containerRef });
 
-  // Framer Motion Variants
-  const curtainVariants = {
-    hidden: { clipPath: 'inset(100% 0 0 0)' },
-    visible: { 
-      clipPath: 'inset(0% 0 0 0)', 
-      transition: { duration: 0.8, ease: [0.77, 0, 0.175, 1] as const } 
-    }
-  };
-
-  const textPanelVariants = {
-    hidden: { opacity: 0, x: 30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" as const } }
-  };
-
-  const gridContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1, // 0ms, 100ms, 200ms stagger
-      }
-    }
-  };
-
-  const gridItemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } }
-  };
 
   return (
     <div ref={containerRef}>

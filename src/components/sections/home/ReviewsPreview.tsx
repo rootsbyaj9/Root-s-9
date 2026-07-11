@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Link from "next/link";
+import Image from "next/image";
 
 
 
@@ -36,13 +37,14 @@ function Avatar({ name, avatar, initial }: { name: string; avatar?: string; init
     );
   }
   return (
-    <img
+    <Image
       src={avatar}
       alt={name}
       width={40}
       height={40}
       className="w-10 h-10 rounded-full object-cover shrink-0"
       onError={() => setError(true)}
+      unoptimized={false}
     />
   );
 }

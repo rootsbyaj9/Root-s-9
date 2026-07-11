@@ -192,7 +192,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                     alt={service.title}
                     fill
                     loading="lazy"
-                    sizes="(max-width: 768px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 45vw, 33vw"
                     className="object-cover"
                     style={{ objectPosition: service.objectPosition }}
                   />

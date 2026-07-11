@@ -25,7 +25,7 @@ export async function appendToSheet(
 
   const sheets = google.sheets({ version: "v4", auth });
 
-  const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+  const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID?.trim();
   if (!spreadsheetId) throw new Error("Missing GOOGLE_SHEETS_SPREADSHEET_ID");
 
   // Extract tab name from range (e.g. "'Bookings - Uppal'!A:F" → "Bookings - Uppal")
@@ -103,7 +103,7 @@ export async function createCalendarEvent({
   const keyJson = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
   if (!keyJson) throw new Error("Missing GOOGLE_SERVICE_ACCOUNT_KEY");
 
-  const calendarId = process.env.GOOGLE_CALENDAR_ID;
+  const calendarId = process.env.GOOGLE_CALENDAR_ID?.trim();
   if (!calendarId) throw new Error("Missing GOOGLE_CALENDAR_ID");
 
   const credentials = JSON.parse(keyJson);

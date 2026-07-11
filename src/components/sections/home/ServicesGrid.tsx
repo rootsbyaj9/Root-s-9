@@ -175,7 +175,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
   return (
     <section
       ref={sectionRef}
-      className="py-24 md:py-32 bg-linen"
+      className="pt-12 pb-24 md:pt-16 md:pb-32 bg-linen"
       id="services"
       aria-label="Our Services"
     >

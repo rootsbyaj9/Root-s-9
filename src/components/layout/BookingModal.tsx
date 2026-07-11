@@ -26,7 +26,7 @@ const SERVICES = [
   'Other',
 ];
 
-const BRANCHES = ['Uppal', 'Tarnaka'];
+// Removed hardcoded BRANCHES, now passed as prop
 
 const TIME_SLOTS = [
   '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
@@ -40,7 +40,7 @@ const TIME_SLOTS = [
 type Tab = 'booking' | 'callback';
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-export default function BookingModal() {
+export default function BookingModal({ branches = ['Uppal', 'Tarnaka'] }: { branches?: string[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>('booking');
@@ -55,7 +55,7 @@ export default function BookingModal() {
     service: '',
     date: '',
     time: '',
-    branch: BRANCHES[0],
+    branch: branches[0] || '',
   });
 
   const [callbackForm, setCallbackForm] = useState({
@@ -63,7 +63,7 @@ export default function BookingModal() {
     phone: '',
     preferredTime: '',
     note: '',
-    branch: BRANCHES[0],
+    branch: branches[0] || '',
   });
 
   useEffect(() => { setMounted(true); }, []);
@@ -129,7 +129,7 @@ export default function BookingModal() {
       const data = await res.json();
       if (data.success) {
         setStatus('success');
-        setBookingForm({ name: '', phone: '', service: '', date: '', time: '', branch: BRANCHES[0] });
+        setBookingForm({ name: '', phone: '', service: '', date: '', time: '', branch: branches[0] || '' });
       } else {
         setStatus('error');
         setErrorMessage(data.error || 'Something went wrong.');
@@ -156,7 +156,7 @@ export default function BookingModal() {
       const data = await res.json();
       if (data.success) {
         setStatus('success');
-        setCallbackForm({ name: '', phone: '', preferredTime: '', note: '', branch: BRANCHES[0] });
+        setCallbackForm({ name: '', phone: '', preferredTime: '', note: '', branch: branches[0] || '' });
       } else {
         setStatus('error');
         setErrorMessage(data.error || 'Something went wrong.');
@@ -285,6 +285,7 @@ export default function BookingModal() {
                 />
               </div>
               <BranchSelector
+                branches={branches}
                 value={bookingForm.branch}
                 onChange={(v) => setBookingForm({ ...bookingForm, branch: v })}
               />
@@ -323,6 +324,7 @@ export default function BookingModal() {
                 placeholder="e.g. Want to inquire about bridal packages"
               />
               <BranchSelector
+                branches={branches}
                 value={callbackForm.branch}
                 onChange={(v) => setCallbackForm({ ...callbackForm, branch: v })}
               />
@@ -452,9 +454,11 @@ function SelectField({
 }
 
 function BranchSelector({
+  branches,
   value,
   onChange,
 }: {
+  branches: string[];
   value: string;
   onChange: (v: string) => void;
 }) {
@@ -463,8 +467,8 @@ function BranchSelector({
       <span className="font-sans text-[11px] uppercase tracking-[0.1em] text-obsidian/60 font-semibold">
         Branch <span className="text-roots-orange">*</span>
       </span>
-      <div className="grid grid-cols-2 gap-3" style={{ gridTemplateColumns: `repeat(${Math.min(BRANCHES.length, 3)}, 1fr)` }}>
-        {BRANCHES.map((branch) => (
+      <div className="grid grid-cols-2 gap-3" style={{ gridTemplateColumns: `repeat(${Math.min(branches.length, 3)}, 1fr)` }}>
+        {branches.map((branch) => (
           <button
             key={branch}
             type="button"

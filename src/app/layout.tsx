@@ -10,7 +10,7 @@ import BookingModal from "@/components/layout/BookingModal";
 import SiteChrome from "@/components/layout/SiteChrome";
 import Script from "next/script";
 import { client } from "@/sanity/client";
-import { getSiteSettingsQuery } from "@/sanity/lib/queries";
+import { getSiteSettingsQuery, getLocationsQuery } from "@/sanity/lib/queries";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -133,7 +133,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await client?.fetch(getSiteSettingsQuery).catch(() => null) ?? null;
+  const [settings, locations] = await Promise.all([
+    client?.fetch(getSiteSettingsQuery).catch(() => null),
+    client?.fetch(getLocationsQuery).catch(() => null)
+  ]);
+  
+  const branches = (locations || []).length > 0 
+    ? locations.map((l: any) => l.shortName).filter(Boolean) 
+    : ["Uppal", "Tarnaka"];
 
   return (
     <html lang="en" className={`${cormorant.variable} ${outfit.variable}`}>
@@ -188,7 +195,7 @@ export default async function RootLayout({
             <MobileCTABar settings={settings} />
 
             {/* ── Booking Modal (global, triggered via CustomEvent) ── */}
-            <BookingModal />
+            <BookingModal branches={branches} />
           </SiteChrome>
         </SmoothScroll>
       </body>

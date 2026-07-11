@@ -92,6 +92,7 @@ export async function createCalendarEvent({
   date,
   time,
   branch,
+  calendarIdOverride,
 }: {
   name: string;
   phone: string;

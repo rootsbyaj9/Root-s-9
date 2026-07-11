@@ -99,11 +99,12 @@ export async function createCalendarEvent({
   date: string;
   time: string;
   branch: string;
+  calendarIdOverride?: string;
 }): Promise<string | null> {
   const keyJson = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
   if (!keyJson) throw new Error("Missing GOOGLE_SERVICE_ACCOUNT_KEY");
 
-  const calendarId = process.env.GOOGLE_CALENDAR_ID?.trim();
+  const calendarId = (calendarIdOverride || process.env.GOOGLE_CALENDAR_ID)?.trim();
   if (!calendarId) throw new Error("Missing GOOGLE_CALENDAR_ID");
 
   const credentials = JSON.parse(keyJson);

@@ -128,6 +128,13 @@ export const location = defineType({
       description: "The branch with 1 appears first on the page, 2 second, etc.",
       initialValue: 1,
     }),
+    defineField({
+      name: "googleCalendarId",
+      title: "Google Calendar ID (Optional)",
+      type: "string",
+      group: "settings",
+      description: "If provided, bookings for this branch will be sent to this specific Google Calendar (e.g. roots.tarnaka@gmail.com). If left empty, it uses the default website calendar.",
+    }),
   ],
   orderings: [
     { title: "Sort Order", name: "orderAsc", by: [{ field: "displayOrder", direction: "asc" }] },

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { createCalendarEvent } from "@/lib/google-calendar";
+import { client } from "@/sanity/client";
+import { groq } from "next-sanity";
 
 /**
  * POST /api/bookings
@@ -26,8 +28,20 @@ export async function POST(request: Request) {
       timeZone: "Asia/Kolkata",
     });
 
+    // Fetch the branch's specific Google Calendar ID from Sanity CMS (if configured)
+    const branchQuery = groq`*[_type == "location" && shortName == $branch][0]{ googleCalendarId }`;
+    const branchDoc = await client.fetch(branchQuery, { branch }).catch(() => null);
+
     // Write only to Google Calendar
-    await createCalendarEvent({ name, phone, service, date, time, branch });
+    await createCalendarEvent({
+      name,
+      phone,
+      service,
+      date,
+      time,
+      branch,
+      calendarIdOverride: branchDoc?.googleCalendarId,
+    });
 
     return NextResponse.json({
       success: true,

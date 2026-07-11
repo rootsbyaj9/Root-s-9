@@ -317,7 +317,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                     </p>
                     <Link
                       href={service.href}
-                      className="text-roots-orange uppercase text-[10px] tracking-widest font-sans flex items-center gap-2 hover:gap-3 transition-all"
+                      className="text-roots-orange-dark uppercase text-[10px] tracking-widest font-sans flex items-center gap-2 hover:gap-3 transition-all"
                     >
                       Discover <span className="text-base">→</span>
                     </Link>

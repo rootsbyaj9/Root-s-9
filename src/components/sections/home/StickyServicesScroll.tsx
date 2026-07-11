@@ -216,7 +216,7 @@ export default function StickyServicesScroll() {
               </p>
               <Link
                 href={item.cta.href}
-                className="item-cta inline-flex items-center gap-2 font-sans uppercase tracking-[0.08em] text-roots-orange font-medium group/link"
+                className="item-cta inline-flex items-center gap-2 font-sans uppercase tracking-[0.08em] text-roots-orange-dark font-medium group/link"
                 style={{ fontSize: "0.6875rem" }}
               >
                 {item.cta.label}
@@ -337,7 +337,7 @@ export default function StickyServicesScroll() {
               </p>
               <Link
                 href={item.cta.href}
-                className="inline-flex items-center gap-2 font-sans uppercase tracking-[0.08em] text-roots-orange font-medium"
+                className="inline-flex items-center gap-2 font-sans uppercase tracking-[0.08em] text-roots-orange-dark font-medium"
                 style={{ fontSize: "0.6875rem" }}
               >
                 {item.cta.label} →

@@ -114,10 +114,10 @@ body {
 ═══════════════════════════════════════════════════════════ */
 @layer components {
 
-  /* Primary CTA button — roots-orange, always parchment text */
+  /* Primary CTA button — roots-orange-dark bg ensures WCAG AA contrast with parchment text */
   .btn-primary {
     display: inline-block;
-    background-color: var(--color-roots-orange);
+    background-color: var(--color-roots-orange-dark);
     color: var(--color-parchment);
     border-radius: 6px;
     padding: 16px 40px;
@@ -132,12 +132,12 @@ body {
 
     &:hover {
       transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(232, 119, 34, 0.35);
+      box-shadow: 0 8px 24px rgba(201, 98, 30, 0.4);
     }
 
     &:active {
       transform: translateY(0);
-      box-shadow: 0 2px 8px rgba(232, 119, 34, 0.2);
+      box-shadow: 0 2px 8px rgba(201, 98, 30, 0.25);
     }
   }
 
@@ -193,7 +193,7 @@ body {
     font-size: 0.6875rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--color-roots-orange);
+    color: var(--color-roots-orange-dark); /* WCAG AA: 6.4:1 on parchment */
     margin-bottom: 0.5rem;
   }
 

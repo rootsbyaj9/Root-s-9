@@ -111,9 +111,9 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-sans text-roots-orange uppercase tracking-widest text-[10px] font-semibold mb-6">
+            <p className="font-sans text-roots-orange uppercase tracking-widest text-[10px] font-semibold mb-6">
               Quick Links
-            </h4>
+            </p>
             <ul className="space-y-3">
               {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
@@ -130,9 +130,9 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
 
           {/* Connect */}
           <div>
-            <h4 className="font-sans text-roots-orange uppercase tracking-widest text-[10px] font-semibold mb-6">
+            <p className="font-sans text-roots-orange uppercase tracking-widest text-[10px] font-semibold mb-6">
               Connect
-            </h4>
+            </p>
             <ul className="space-y-3 font-sans text-sm text-parchment/60">
               <li>
                 <a

@@ -180,7 +180,7 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
                 .getElementById("services")
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="px-8 py-3 rounded-lg font-sans text-xs uppercase tracking-[0.08em] font-medium text-parchment/90 border border-parchment/20 bg-parchment/5 backdrop-blur-sm hover:bg-parchment/10 hover:border-parchment/30 transition-all duration-300 shadow-lg"
+            className="px-8 py-3 rounded-lg font-sans text-xs uppercase tracking-[0.08em] font-medium text-parchment/90 border border-parchment/20 bg-parchment/10 hover:bg-parchment/20 hover:border-parchment/30 transition-all duration-300 shadow-lg"
           >
             View Services
           </a>

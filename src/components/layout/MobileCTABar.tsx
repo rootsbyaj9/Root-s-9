@@ -34,7 +34,7 @@ export default function MobileCTABar({ settings }: { settings?: SiteSettings | n
 
   return (
     <div
-      className={`md:hidden fixed bottom-0 left-0 right-0 z-[9990] bg-parchment/95 backdrop-blur-md border-t border-obsidian/[0.08] px-4 py-3 flex gap-3 transition-transform duration-300 ${
+      className={`md:hidden fixed bottom-0 left-0 right-0 z-[9990] bg-parchment border-t border-obsidian/[0.08] px-4 py-3 flex gap-3 transition-transform duration-300 ${
         visible ? 'translate-y-0' : 'translate-y-full'
       }`}
     >

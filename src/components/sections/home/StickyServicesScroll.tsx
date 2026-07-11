@@ -221,9 +221,9 @@ export default function StickyServicesScroll() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-obsidian/40 via-transparent to-transparent pointer-events-none" />
               <div
-                className="absolute bottom-6 left-6 backdrop-blur-sm text-parchment/90 font-sans uppercase rounded-md"
+                className="absolute bottom-6 left-6 text-parchment/90 font-sans uppercase rounded-md"
                 style={{
-                  background: "rgba(26,16,8,0.72)",
+                  background: "rgba(26,16,8,0.9)",
                   fontSize: "0.625rem",
                   letterSpacing: "0.12em",
                   padding: "0.4rem 0.75rem",
@@ -258,9 +258,9 @@ export default function StickyServicesScroll() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-obsidian/40 via-transparent to-transparent pointer-events-none" />
               <div
-                className="absolute bottom-4 left-4 backdrop-blur-sm text-parchment/90 font-sans uppercase rounded-md"
+                className="absolute bottom-4 left-4 text-parchment/90 font-sans uppercase rounded-md"
                 style={{
-                  background: "rgba(26,16,8,0.72)",
+                  background: "rgba(26,16,8,0.9)",
                   fontSize: "0.625rem",
                   letterSpacing: "0.12em",
                   padding: "0.35rem 0.65rem",

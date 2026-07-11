@@ -31,7 +31,7 @@ interface FilterBarProps {
 
 export default function FilterBar({ active, onSelect }: FilterBarProps) {
   return (
-    <div className="sticky top-[72px] z-30 bg-parchment/90 backdrop-blur-md border-b border-obsidian/[0.06]">
+    <div className="sticky top-[72px] z-30 bg-parchment/90  border-b border-obsidian/[0.06]">
       <div className="container mx-auto px-6 md:px-16 max-w-7xl">
         <div className="flex items-center gap-2 py-4 overflow-x-auto scrollbar-none">
           {CATEGORIES.map((cat) => {

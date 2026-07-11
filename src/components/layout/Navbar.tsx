@@ -141,7 +141,7 @@ export default function Navbar({ settings }: { settings: any }) {
         className={cn(
           "w-full transition-all duration-300 ease-out relative z-50",
           (!isHomePage || scrolled || menuOpen || desktopServicesOpen)
-            ? "bg-parchment/95 backdrop-blur-md border-b border-obsidian/[0.06]"
+            ? "bg-parchment border-b border-obsidian/[0.06]"
             : "bg-transparent"
         )}
         aria-label="Main navigation"

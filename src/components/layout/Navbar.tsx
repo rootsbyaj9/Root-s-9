@@ -158,6 +158,8 @@ export default function Navbar({ settings }: { settings: any }) {
             <img
               src="/logo-nobg1.svg"
               alt="Root's Family Salon"
+              width="160"
+              height="64"
               className={cn(
                 "h-14 md:h-16 w-auto object-contain transition-opacity duration-500 ease-out",
                 isLight ? "opacity-100" : "opacity-0 absolute inset-0"
@@ -309,6 +311,7 @@ export default function Navbar({ settings }: { settings: any }) {
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen || mobileServicesOpen}
+            aria-controls="mobile-menu"
             className="lg:hidden flex flex-col gap-[5px] w-6 py-1 hover:opacity-70 transition-opacity focus-visible:outline-roots-orange z-50"
           >
             <span

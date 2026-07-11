@@ -143,7 +143,7 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
                   {displayValue}
                 </span>
 
-                <span className="font-sans text-xs uppercase tracking-wide text-obsidian/60 font-medium">
+                <span className="font-sans text-xs uppercase tracking-wide text-warm-gray font-medium">
                   {baseStat.label}
                 </span>
               </div>

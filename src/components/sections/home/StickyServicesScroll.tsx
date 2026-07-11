@@ -127,10 +127,9 @@ export default function StickyServicesScroll() {
 
         ScrollTrigger.create({
           trigger: el,
-          start: "top 60%",
-          end: "bottom 40%",
+          start: "top 55%",
           onEnter: () => updateActive(i),
-          onEnterBack: () => updateActive(i),
+          onLeaveBack: () => updateActive(Math.max(0, i - 1)),
         });
       });
 
@@ -141,10 +140,9 @@ export default function StickyServicesScroll() {
 
         ScrollTrigger.create({
           trigger: el,
-          start: "top 55%",
-          end: "bottom 45%",
+          start: "top 60%",
           onEnter: () => updateActive(i),
-          onEnterBack: () => updateActive(i),
+          onLeaveBack: () => updateActive(Math.max(0, i - 1)),
         });
       });
     },
@@ -213,7 +211,7 @@ export default function StickyServicesScroll() {
               >
                 {item.heading}
               </h3>
-              <p className="item-body font-sans text-obsidian/60 leading-relaxed mb-8" style={{ fontSize: "0.9375rem", maxWidth: "400px" }}>
+              <p className="item-body font-sans text-warm-gray leading-relaxed mb-8" style={{ fontSize: "0.9375rem", maxWidth: "400px" }}>
                 {item.body}
               </p>
               <Link
@@ -239,6 +237,7 @@ export default function StickyServicesScroll() {
         >
           {HIGHLIGHTS.map((item, i) => (
             <div
+              key={item.id}
               ref={(el) => { desktopImageRefs.current[i] = el; }}
               className="absolute inset-0"
               style={{ opacity: i === 0 ? 1 : 0 }}
@@ -275,6 +274,7 @@ export default function StickyServicesScroll() {
         >
           {HIGHLIGHTS.map((item, i) => (
             <div
+              key={item.id}
               ref={(el) => { mobileImageRefs.current[i] = el; }}
               className="absolute inset-0"
               style={{ opacity: i === 0 ? 1 : 0 }}
@@ -332,7 +332,7 @@ export default function StickyServicesScroll() {
               <h3 className="font-serif text-obsidian leading-[1.15] mb-3" style={{ fontSize: "1.5rem" }}>
                 {item.heading}
               </h3>
-              <p className="font-sans text-obsidian/60 leading-relaxed mb-5" style={{ fontSize: "0.875rem" }}>
+              <p className="font-sans text-warm-gray leading-relaxed mb-5" style={{ fontSize: "0.875rem" }}>
                 {item.body}
               </p>
               <Link

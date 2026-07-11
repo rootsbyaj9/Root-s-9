@@ -178,8 +178,7 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka'] }: { bran
           ? 'opacity-100 pointer-events-auto'
           : 'opacity-0 pointer-events-none'
       }`}
-      style={{ backgroundColor: 'rgba(26, 16, 8, 0.6)', backdropFilter: 'blur(8px)' }}
-      aria-hidden={!isOpen}
+      style={{ backgroundColor: 'rgba(26, 16, 8, 0.6)' }}
       role="dialog"
       aria-modal="true"
       aria-label="Book an appointment"

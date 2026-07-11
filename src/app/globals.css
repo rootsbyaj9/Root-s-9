@@ -26,7 +26,7 @@
   --color-roots-orange: #E87722;   /* CTAs, logo, active states ONLY */
   --color-roots-orange-dark: #C9621E; /* Hover-darkened state of roots-orange */
   --color-blush: #FFF0E6;          /* Badge tints, offer tags */
-  --color-warm-gray: #6B5E53;      /* Secondary text, captions */
+  --color-warm-gray: #4A3F36;      /* Secondary text, captions — WCAG AA compliant */
 
   /* Typography
      --font-outfit and --font-cormorant are injected by next/font

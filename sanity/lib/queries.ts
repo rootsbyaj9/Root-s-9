@@ -86,6 +86,7 @@ export const getLocationsQuery = groq`
   *[_type == "location" && isActive != false] | order(displayOrder asc) {
     _id,
     name,
+    shortName,
     address,
     phone,
     whatsappNumber,
@@ -93,7 +94,8 @@ export const getLocationsQuery = groq`
     hours,
     googleMapsUrl,
     embedUrl,
-    isActive
+    isActive,
+    isNew
   }
 `
 

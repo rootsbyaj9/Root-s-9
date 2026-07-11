@@ -114,12 +114,12 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
   return (
     <section
       ref={sectionRef}
-      className="bg-linen relative z-20 pb-4"
+      className="bg-linen relative z-20 py-16 md:py-20"
       aria-label="Trust statistics"
     >
-      <div className="container mx-auto px-4 w-full max-w-[92%] md:max-w-[1280px] -mt-32 md:-mt-48">
+      <div className="container mx-auto px-6 max-w-7xl">
         {/* Grid of separate cards */}
-        <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 w-full">
+        <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
           {STATS.map((baseStat, index) => {
             const displayValue = homePageData ? (
               baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
@@ -132,19 +132,18 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
             return (
               <div
                 key={baseStat.id}
-                className="trust-stat flex flex-col items-start text-left p-6 md:p-8 bg-white/95 backdrop-blur-xl rounded-[1.25rem] will-change-transform border border-obsidian/5 shadow-[0_12px_36px_rgba(0,0,0,0.06)]"
+                className="trust-stat flex flex-col items-center text-center p-6 md:p-8 bg-white rounded-xl border border-obsidian/10 shadow-sm transition-all duration-300 md:hover:-translate-y-1 md:hover:shadow-md h-full justify-center will-change-transform"
               >
-                {/* Numeral — Playfair large; textContent driven by GSAP */}
+                {/* Numeral */}
                 <span
                   id={`stat-${baseStat.id}`}
-                  className="block font-serif text-4xl md:text-[2.75rem] text-roots-orange mb-3 tracking-tight tabular-nums drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)] leading-none"
-                  style={{ WebkitTextStroke: "1px #1a1008" }}
+                  className="block font-serif text-4xl md:text-5xl text-roots-orange mb-3 tracking-tight tabular-nums"
                   aria-label={displayValue}
                 >
                   {displayValue}
                 </span>
 
-                <span className="font-sans text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-obsidian/70 font-semibold leading-snug">
+                <span className="font-sans text-xs uppercase tracking-wide text-obsidian/60 font-medium">
                   {baseStat.label}
                 </span>
               </div>

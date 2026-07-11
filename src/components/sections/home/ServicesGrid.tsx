@@ -10,6 +10,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -148,34 +149,13 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
     return { ...base, title, cmsImageUrl, objectPosition: fallbackPosition };
   });
 
-  // Track which accordion panel is active (desktop only).
+  // Desktop accordion state
   const [activeId, setActiveId] = useState<string>(mergedServices[0].id);
-
-  // Lightweight CSS-based entry — no GSAP opacity:0 blocking
-  useGSAP(
-    () => {
-      const panels = document.querySelectorAll(".service-panel");
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              (entry.target as HTMLElement).classList.add("panel-visible");
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.05 }
-      );
-      panels.forEach((panel) => observer.observe(panel));
-      return () => observer.disconnect();
-    },
-    { scope: sectionRef }
-  );
 
   return (
     <section
       ref={sectionRef}
-      className="pt-12 pb-24 md:pt-16 md:pb-32 bg-linen"
+      className="pt-6 pb-24 md:pt-16 md:pb-32 bg-linen"
       id="services"
       aria-label="Our Services"
     >
@@ -207,12 +187,14 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
               {/* Image Layer */}
               <div className="absolute inset-0">
                 {service.cmsImageUrl ? (
-                  <img 
-                    src={service.cmsImageUrl} 
-                    alt={service.title} 
-                    className="w-full h-full object-cover" 
-                    style={{ objectPosition: service.objectPosition }}
+                  <Image
+                    src={service.cmsImageUrl}
+                    alt={service.title}
+                    fill
                     loading="lazy"
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    className="object-cover"
+                    style={{ objectPosition: service.objectPosition }}
                   />
                 ) : (
                   <ImagePlaceholder
@@ -272,10 +254,11 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                 {/* Image Layer */}
                 <div className="absolute inset-0 overflow-hidden">
                   {service.cmsImageUrl ? (
-                    <img 
-                      src={service.cmsImageUrl} 
-                      alt={service.title} 
-                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover pointer-events-none" 
+                    <img
+                      src={service.cmsImageUrl}
+                      alt={service.title}
+                      loading="lazy"
+                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-none object-cover pointer-events-none"
                       style={{ objectPosition: service.objectPosition }}
                     />
                   ) : (

@@ -15,9 +15,10 @@
  *   - Size: 160 × 60 px (landscape)
  *   - Format: PNG or SVG with transparent background
  *   - Color: dark version of your logo (strip background is parchment/linen)
+ *
+ * perf: removed Framer Motion — CSS marquee-horizontal keyframe (globals.css) is zero-JS.
  */
 
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 interface Partner {
@@ -43,7 +44,7 @@ const PLACEHOLDER_SLOTS: Partner[] = [
   { name: 'Partner Brand 08' },
 ];
 
-function LogoSlot({ partner, index }: { partner: Partner; index: number }) {
+function LogoSlot({ partner }: { partner: Partner }) {
   const inner = partner.logoUrl ? (
     <Image
       src={partner.logoUrl}
@@ -86,7 +87,7 @@ function LogoSlot({ partner, index }: { partner: Partner; index: number }) {
 export default function BrandStrip({ partners }: BrandStripProps) {
   const items = partners && partners.length > 0 ? partners : PLACEHOLDER_SLOTS;
 
-  // Duplicate for seamless loop
+  // Duplicate for seamless loop (2× minimum)
   const track = [...items, ...items];
 
   return (
@@ -102,22 +103,22 @@ export default function BrandStrip({ partners }: BrandStripProps) {
         </h2>
       </div>
 
-      {/* Infinite scrolling logo track */}
+      {/* Infinite scrolling logo track — pure CSS, zero JS overhead */}
       <div className="relative flex overflow-hidden">
         {/* Left fade */}
         <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-parchment to-transparent pointer-events-none" />
         {/* Right fade */}
         <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-parchment to-transparent pointer-events-none" />
 
-        <motion.div
+        {/* CSS animation — uses marquee-horizontal keyframe from globals.css */}
+        <div
           className="flex items-center gap-10 w-max"
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ repeat: Infinity, ease: 'linear', duration: 30 }}
+          style={{ animation: 'marquee-horizontal 30s linear infinite' }}
         >
           {track.map((partner, i) => (
-            <LogoSlot key={i} partner={partner} index={i % items.length} />
+            <LogoSlot key={i} partner={partner} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

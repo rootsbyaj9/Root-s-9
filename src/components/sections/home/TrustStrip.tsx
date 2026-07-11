@@ -114,17 +114,13 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
   return (
     <section
       ref={sectionRef}
-      className="bg-linen relative z-20"
+      className="bg-linen relative z-20 pb-4"
       aria-label="Trust statistics"
     >
-      <div className="container mx-auto px-6 md:px-12 max-w-5xl -mt-32 md:-mt-48">
-        <div className="relative bg-white/70 backdrop-blur-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white rounded-2xl py-10 md:py-14 px-4 md:px-0 overflow-hidden">
-          
-          {/* Subtle ambient glow behind the numbers */}
-          <div className="absolute inset-0 bg-gradient-to-br from-parchment/40 to-transparent pointer-events-none" />
-
-          <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-y-0 md:divide-x md:divide-obsidian/10 items-center justify-center">
-            {STATS.map((baseStat, index) => {
+      <div className="container mx-auto px-4 w-full max-w-[92%] md:max-w-[1280px] -mt-32 md:-mt-48">
+        {/* Grid of separate cards */}
+        <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 w-full">
+          {STATS.map((baseStat, index) => {
             const displayValue = homePageData ? (
               baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
               baseStat.id === "rating" && homePageData.statRating ? `${homePageData.statRating}/5` :
@@ -136,24 +132,24 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
             return (
               <div
                 key={baseStat.id}
-                className="trust-stat flex flex-col items-center text-center px-4 md:px-8 opacity-0 will-change-transform"
+                className="trust-stat flex flex-col items-start text-left p-6 md:p-8 bg-white/95 backdrop-blur-xl rounded-[1.25rem] will-change-transform border border-obsidian/5 shadow-[0_12px_36px_rgba(0,0,0,0.06)]"
               >
                 {/* Numeral — Playfair large; textContent driven by GSAP */}
                 <span
                   id={`stat-${baseStat.id}`}
-                  className="block font-serif text-4xl md:text-5xl text-obsidian mb-2 tracking-tight tabular-nums"
+                  className="block font-serif text-4xl md:text-[2.75rem] text-roots-orange mb-3 tracking-tight tabular-nums drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)] leading-none"
+                  style={{ WebkitTextStroke: "1px #1a1008" }}
                   aria-label={displayValue}
                 >
                   {displayValue}
                 </span>
 
-                <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-obsidian/50 font-semibold">
+                <span className="font-sans text-[10px] md:text-[11px] uppercase tracking-[0.15em] text-obsidian/70 font-semibold leading-snug">
                   {baseStat.label}
                 </span>
               </div>
             );
-            })}
-          </div>
+          })}
         </div>
       </div>
     </section>

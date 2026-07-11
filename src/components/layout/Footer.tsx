@@ -83,6 +83,8 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
               <img
                 src="/logo-nobg2.svg"
                 alt="Root's Family Salon"
+                width="200"
+                height="100"
                 className="h-16 md:h-20 lg:h-[100px] w-auto object-contain drop-shadow-[0_2px_8px_rgba(232,119,34,0.15)]"
               />
             </div>

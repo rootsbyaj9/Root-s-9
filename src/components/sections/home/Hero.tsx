@@ -141,7 +141,7 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
       {/* ── Central Typography & CTA ─────────────────────── */}
       <div
         ref={contentRef}
-        className="relative z-20 text-center max-w-5xl px-6 md:px-8 mx-auto flex flex-col items-center pointer-events-auto will-change-transform"
+        className="relative z-20 text-center max-w-5xl px-6 md:px-8 mx-auto flex flex-col items-center pointer-events-auto"
       >
         <span className="eyebrow-text font-sans text-roots-orange uppercase tracking-[0.15em] text-xs md:text-sm font-semibold mb-6 block drop-shadow-md">
           {homePageData?.heroEyebrow || "Hyderabad's Premium Family Salon"}

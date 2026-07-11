@@ -8,6 +8,7 @@
 
 import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
@@ -153,10 +154,13 @@ export default function BeforeAfter({ homePageData = {} as SanityHomePageData }:
           {/* ── AFTER image (full width, visible behind BEFORE) ─────────── */}
           <div className="absolute inset-0">
             {(activeTab === "hair" && homePageData?.beforeAfterHairAfterUrl) || (activeTab === "skin" && homePageData?.beforeAfterSkinAfterUrl) ? (
-              <img 
-                src={activeTab === "hair" ? homePageData.beforeAfterHairAfterUrl : homePageData.beforeAfterSkinAfterUrl} 
-                alt="After Transformation" 
-                className="absolute inset-0 w-full h-full object-cover" 
+              <Image
+                src={activeTab === "hair" ? homePageData.beforeAfterHairAfterUrl! : homePageData.beforeAfterSkinAfterUrl!}
+                alt="After Transformation"
+                fill
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 60vw"
+                className="object-cover"
               />
             ) : (
               <ImagePlaceholder
@@ -184,10 +188,13 @@ export default function BeforeAfter({ homePageData = {} as SanityHomePageData }:
           >
             <div className="relative" style={{ width: `${100 / (position / 100)}%`, height: "100%" }}>
               {(activeTab === "hair" && homePageData?.beforeAfterHairBeforeUrl) || (activeTab === "skin" && homePageData?.beforeAfterSkinBeforeUrl) ? (
-                <img 
-                  src={activeTab === "hair" ? homePageData.beforeAfterHairBeforeUrl : homePageData.beforeAfterSkinBeforeUrl} 
-                  alt="Before Transformation" 
-                  className="absolute inset-0 w-full h-full object-cover" 
+                <Image
+                  src={activeTab === "hair" ? homePageData.beforeAfterHairBeforeUrl! : homePageData.beforeAfterSkinBeforeUrl!}
+                  alt="Before Transformation"
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="object-cover"
                 />
               ) : (
                 <ImagePlaceholder

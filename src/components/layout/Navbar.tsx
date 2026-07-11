@@ -166,6 +166,8 @@ export default function Navbar({ settings }: { settings: any }) {
             <img
               src="/logo-nobg2.svg"
               alt="Root's Family Salon"
+              width="160"
+              height="64"
               className={cn(
                 "h-14 md:h-16 w-auto object-contain transition-opacity duration-500 ease-out",
                 !isLight ? "opacity-100" : "opacity-0 absolute inset-0"

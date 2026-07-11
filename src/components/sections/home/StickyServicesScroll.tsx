@@ -99,27 +99,6 @@ export default function StickyServicesScroll() {
           onEnter: () => setActiveIndex(i),
           onEnterBack: () => setActiveIndex(i),
         });
-
-        // Entry animation
-        const children = el.querySelectorAll(
-          ".item-eyebrow, .item-heading, .item-body, .item-cta"
-        );
-        gsap.fromTo(
-          children,
-          { opacity: 0, y: 28 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.85,
-            stagger: 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 80%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
       });
 
       // Mobile: ScrollTrigger on mobile text items

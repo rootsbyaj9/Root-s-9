@@ -18,11 +18,11 @@ export default function SmoothScroll({
     import("lenis").then((module) => {
       const Lenis = module.default;
       lenisInstance = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential easing
+        duration: 1.0,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         wheelMultiplier: 1,
-        touchMultiplier: 2,
+        touchMultiplier: 1.5,
       });
 
       lenisRef.current = lenisInstance;
@@ -32,16 +32,17 @@ export default function SmoothScroll({
 
       // Sync GSAP's ticker with Lenis' requestAnimationFrame
       updateFn = (time: number) => {
-        lenisInstance?.raf(time * 1000); // GSAP sends time in seconds, Lenis needs ms
+        lenisInstance?.raf(time * 1000);
       };
-      
-      gsap.ticker.add(updateFn);
-      gsap.ticker.lagSmoothing(0); // Prevent GSAP from adjusting time based on lag
 
-      // Delay ScrollTrigger refresh to allow DOM and images to settle, preventing initial scroll jank
-      setTimeout(() => {
+      gsap.ticker.add(updateFn);
+
+      // Refresh after full page load — never mid-scroll like a setTimeout would
+      if (document.readyState === 'complete') {
         ScrollTrigger.refresh();
-      }, 500);
+      } else {
+        window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+      }
     });
 
     return () => {

@@ -117,13 +117,13 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
       className="bg-parchment relative z-20"
       aria-label="Trust statistics"
     >
-      <div className="container mx-auto px-6 md:px-12 max-w-6xl -mt-12 md:-mt-24 mb-8 md:mb-16">
-        <div className="relative bg-[#1A1816] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] border border-roots-orange/20 rounded-3xl py-12 md:py-16 px-4 md:px-0 overflow-hidden">
+      <div className="container mx-auto px-6 md:px-12 max-w-5xl -mt-10 md:-mt-16 mb-12 md:mb-20">
+        <div className="relative bg-white/70 backdrop-blur-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white rounded-2xl py-10 md:py-14 px-4 md:px-0 overflow-hidden">
           
           {/* Subtle ambient glow behind the numbers */}
-          <div className="absolute inset-0 bg-gradient-to-br from-roots-orange/10 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-parchment/40 to-transparent pointer-events-none" />
 
-          <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-y-0 md:divide-x md:divide-parchment/10 items-center justify-center">
+          <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-y-0 md:divide-x md:divide-obsidian/10 items-center justify-center">
             {STATS.map((baseStat, index) => {
             const displayValue = homePageData ? (
               baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
@@ -141,13 +141,13 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
                 {/* Numeral — Playfair large; textContent driven by GSAP */}
                 <span
                   id={`stat-${baseStat.id}`}
-                  className="block font-serif text-4xl md:text-5xl text-roots-orange mb-1 tracking-tight tabular-nums"
+                  className="block font-serif text-4xl md:text-5xl text-obsidian mb-2 tracking-tight tabular-nums"
                   aria-label={displayValue}
                 >
                   {displayValue}
                 </span>
 
-                <span className="font-sans text-[10px] uppercase tracking-widest text-parchment/60">
+                <span className="font-sans text-[9px] uppercase tracking-[0.2em] text-obsidian/50 font-semibold">
                   {baseStat.label}
                 </span>
               </div>

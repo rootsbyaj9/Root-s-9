@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { appendToSheet } from "@/lib/google-calendar";
+import { createCalendarEvent } from "@/lib/google-calendar";
 
 /**
  * POST /api/callbacks
@@ -7,7 +7,7 @@ import { appendToSheet } from "@/lib/google-calendar";
  * Receives a callback request:
  *   { name, phone, preferredTime, note }
  *
- * Appends a row to the "Callbacks" worksheet in Google Sheets.
+ * Creates an event in Google Calendar on the current day.
  */
 export async function POST(request: Request) {
   try {
@@ -29,13 +29,17 @@ export async function POST(request: Request) {
     const sheetTab = `Callbacks - ${branch || "General"}`;
 
     // Await the external API calls to ensure they complete before the serverless function terminates
-    await appendToSheet(`'${sheetTab}'!A:E`, [
+    const today = new Date();
+    const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+    await createCalendarEvent({
       name,
       phone,
-      preferredTime || "Anytime",
-      note || "",
-      submittedAt,
-    ]);
+      service: `Callback Request - ${note || "No note"}`,
+      date,
+      time: preferredTime || "10:00 AM",
+      branch: branch || "General"
+    });
 
     return NextResponse.json({
       success: true,

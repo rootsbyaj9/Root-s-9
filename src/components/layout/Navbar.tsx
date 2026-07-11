@@ -349,7 +349,7 @@ export default function Navbar({ settings }: { settings: any }) {
           aria-hidden={!menuOpen}
           id="mobile-menu"
         >
-          <div className="flex flex-col items-center gap-5 w-full pt-24 pb-12">
+          <div className="flex flex-col items-center gap-5 w-full pt-32 pb-12">
             {[...PRIMARY_LINKS, ...SECONDARY_LINKS].map((link) => {
               if (link.label === "Services") {
                 return (

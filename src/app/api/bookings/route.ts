@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { appendToSheet, createCalendarEvent } from "@/lib/google-calendar";
+import { createCalendarEvent } from "@/lib/google-calendar";
 
 /**
  * POST /api/bookings
@@ -26,21 +26,8 @@ export async function POST(request: Request) {
       timeZone: "Asia/Kolkata",
     });
 
-    const sheetTab = `Bookings - ${branch}`;
-
-    // Await the external API calls to ensure they complete before the serverless function terminates
-    // Do NOT swallow errors with .catch so we can debug production issues
-    await Promise.all([
-      appendToSheet(`'${sheetTab}'!A:F`, [
-        name,
-        phone,
-        service,
-        date,
-        time,
-        submittedAt,
-      ]),
-      createCalendarEvent({ name, phone, service, date, time, branch })
-    ]);
+    // Write only to Google Calendar
+    await createCalendarEvent({ name, phone, service, date, time, branch });
 
     return NextResponse.json({
       success: true,

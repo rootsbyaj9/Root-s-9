@@ -117,9 +117,9 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
       className="py-16 border-b border-obsidian/10 bg-parchment"
       aria-label="Trust statistics"
     >
-      <div className="container mx-auto px-8 md:px-16">
-        <div className="grid grid-cols-2 md:flex md:justify-between gap-y-10 gap-x-6">
-          {STATS.map((baseStat) => {
+      <div className="container mx-auto px-8 md:px-16 max-w-6xl">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 md:gap-y-0 md:divide-x md:divide-obsidian/10 items-center justify-center">
+          {STATS.map((baseStat, index) => {
             const displayValue = homePageData ? (
               baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
               baseStat.id === "rating" && homePageData.statRating ? `${homePageData.statRating}/5` :
@@ -131,7 +131,7 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
             return (
               <div
                 key={baseStat.id}
-                className="trust-stat flex flex-col items-center text-center opacity-0 will-change-transform"
+                className="trust-stat flex flex-col items-center text-center px-4 md:px-8 opacity-0 will-change-transform"
               >
                 {/* Numeral — Playfair large; textContent driven by GSAP */}
                 <span

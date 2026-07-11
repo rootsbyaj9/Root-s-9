@@ -133,7 +133,7 @@ export const location = defineType({
       title: "Google Calendar ID (Optional)",
       type: "string",
       group: "settings",
-      description: "If provided, bookings for this branch will be sent to this specific Google Calendar (e.g. roots.tarnaka@gmail.com). If left empty, it uses the default website calendar.",
+      description: "Paste the raw Calendar ID here (e.g. 9b891e...@group.calendar.google.com). Leave empty to use the default main calendar.",
     }),
   ],
   orderings: [

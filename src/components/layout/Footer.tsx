@@ -169,7 +169,7 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
         </div>
 
         {/* ── Bottom bar ───────────────────────────────────────────────────── */}
-        <div className="border-t border-parchment/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 font-sans text-xs text-parchment/40">
+        <div className="border-t border-parchment/10 pt-8 flex flex-col items-center justify-center gap-3 font-sans text-xs text-parchment/40">
           <p>© {currentYear} Root&apos;s Family Salon. All rights reserved.</p>
 
           {/* Made by Skar — from wireframe */}

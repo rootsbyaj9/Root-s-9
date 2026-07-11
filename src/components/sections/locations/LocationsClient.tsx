@@ -179,13 +179,11 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
                   {/* Embedded Google Map */}
                   <iframe 
                     src={embed} 
-                    className="absolute inset-0 w-full h-full border-0 filter contrast-125 saturate-50 mix-blend-multiply" 
+                    className="absolute inset-0 w-full h-full border-0" 
                     allowFullScreen 
                     loading="lazy" 
                     referrerPolicy="no-referrer-when-downgrade"
                   />
-                  {/* Subtle overlay to fit the parchment branding smoothly */}
-                  <div className="absolute inset-0 bg-parchment/10 pointer-events-none mix-blend-overlay"></div>
                 </div>
               </div>
               );

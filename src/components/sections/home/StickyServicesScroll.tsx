@@ -83,10 +83,43 @@ export default function StickyServicesScroll() {
   const sectionRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const mobileItemRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const desktopImageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const mobileImageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const mobileDotRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const mobileLabelRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
+      const updateActive = (index: number) => {
+        // Desktop updates
+        itemRefs.current.forEach((el, i) => {
+          if (el) gsap.to(el, { opacity: i === index ? 1 : 0.15, duration: 0.5, overwrite: "auto" });
+        });
+        desktopImageRefs.current.forEach((el, i) => {
+          if (el) gsap.to(el, { opacity: i === index ? 1 : 0, duration: 0.7, overwrite: "auto" });
+        });
+
+        // Mobile updates
+        mobileItemRefs.current.forEach((el, i) => {
+          if (el) gsap.to(el, { opacity: i === index ? 1 : 0.4, duration: 0.4, overwrite: "auto" });
+        });
+        mobileImageRefs.current.forEach((el, i) => {
+          if (el) gsap.to(el, { opacity: i === index ? 1 : 0, duration: 0.7, overwrite: "auto" });
+        });
+        mobileDotRefs.current.forEach((el, i) => {
+          if (el) {
+            gsap.to(el, { width: i === index ? 18 : 6, opacity: i === index ? 1 : 0.5, duration: 0.3, overwrite: "auto" });
+          }
+        });
+        
+        if (mobileLabelRef.current) {
+          mobileLabelRef.current.innerText = HIGHLIGHTS[index].eyebrow;
+        }
+      };
+
+      // Set initial state
+      updateActive(0);
+
       // Desktop: ScrollTrigger on left-column items
       HIGHLIGHTS.forEach((_, i) => {
         const el = itemRefs.current[i];
@@ -96,8 +129,8 @@ export default function StickyServicesScroll() {
           trigger: el,
           start: "top 60%",
           end: "bottom 40%",
-          onEnter: () => setActiveIndex(i),
-          onEnterBack: () => setActiveIndex(i),
+          onEnter: () => updateActive(i),
+          onEnterBack: () => updateActive(i),
         });
       });
 
@@ -110,8 +143,8 @@ export default function StickyServicesScroll() {
           trigger: el,
           start: "top 55%",
           end: "bottom 45%",
-          onEnter: () => setActiveIndex(i),
-          onEnterBack: () => setActiveIndex(i),
+          onEnter: () => updateActive(i),
+          onEnterBack: () => updateActive(i),
         });
       });
     },
@@ -171,8 +204,6 @@ export default function StickyServicesScroll() {
               style={{
                 paddingTop: i === 0 ? 0 : "5rem",
                 paddingBottom: i === HIGHLIGHTS.length - 1 ? 0 : "5rem",
-                opacity: activeIndex === i ? 1 : 0.15,
-                transition: "opacity 0.5s ease",
               }}
             >
               <span className="item-eyebrow eyebrow mb-5 block">{item.eyebrow}</span>
@@ -208,10 +239,9 @@ export default function StickyServicesScroll() {
         >
           {HIGHLIGHTS.map((item, i) => (
             <div
-              key={item.id}
-              className="absolute inset-0 transition-opacity duration-700 ease-in-out"
-              style={{ opacity: activeIndex === i ? 1 : 0 }}
-              aria-hidden={activeIndex !== i}
+              ref={(el) => { desktopImageRefs.current[i] = el; }}
+              className="absolute inset-0"
+              style={{ opacity: i === 0 ? 1 : 0 }}
             >
               <ImagePlaceholder
                 label={item.placeholder.label}
@@ -245,10 +275,9 @@ export default function StickyServicesScroll() {
         >
           {HIGHLIGHTS.map((item, i) => (
             <div
-              key={item.id}
-              className="absolute inset-0 transition-opacity duration-700 ease-in-out"
-              style={{ opacity: activeIndex === i ? 1 : 0 }}
-              aria-hidden={activeIndex !== i}
+              ref={(el) => { mobileImageRefs.current[i] = el; }}
+              className="absolute inset-0"
+              style={{ opacity: i === 0 ? 1 : 0 }}
             >
               <ImagePlaceholder
                 label={item.placeholder.label}
@@ -266,7 +295,9 @@ export default function StickyServicesScroll() {
                   padding: "0.35rem 0.65rem",
                 }}
               >
-                {HIGHLIGHTS[activeIndex].eyebrow}
+                <span ref={i === 0 ? mobileLabelRef : undefined}>
+                  {i === 0 ? HIGHLIGHTS[0].eyebrow : ""}
+                </span>
               </div>
             </div>
           ))}
@@ -276,11 +307,12 @@ export default function StickyServicesScroll() {
             {HIGHLIGHTS.map((_, i) => (
               <div
                 key={i}
-                className="rounded-full bg-parchment transition-all duration-300"
+                ref={(el) => { mobileDotRefs.current[i] = el; }}
+                className="rounded-full bg-parchment"
                 style={{
-                  width: activeIndex === i ? "18px" : "6px",
+                  width: i === 0 ? "18px" : "6px",
                   height: "6px",
-                  opacity: activeIndex === i ? 1 : 0.5,
+                  opacity: i === 0 ? 1 : 0.5,
                 }}
               />
             ))}
@@ -294,10 +326,7 @@ export default function StickyServicesScroll() {
               key={item.id}
               ref={(el) => { mobileItemRefs.current[i] = el; }}
               className="px-6 py-10 border-b border-obsidian/[0.06] last:border-0"
-              style={{
-                opacity: activeIndex === i ? 1 : 0.4,
-                transition: "opacity 0.4s ease",
-              }}
+              style={{ opacity: i === 0 ? 1 : 0.4 }}
             >
               <span className="eyebrow mb-3 block">{item.eyebrow}</span>
               <h3 className="font-serif text-obsidian leading-[1.15] mb-3" style={{ fontSize: "1.5rem" }}>

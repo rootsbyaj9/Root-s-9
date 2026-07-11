@@ -117,7 +117,7 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
       className="bg-linen relative z-20"
       aria-label="Trust statistics"
     >
-      <div className="container mx-auto px-6 md:px-12 max-w-5xl -mt-10 md:-mt-16">
+      <div className="container mx-auto px-6 md:px-12 max-w-5xl -mt-32 md:-mt-48">
         <div className="relative bg-white/70 backdrop-blur-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white rounded-2xl py-10 md:py-14 px-4 md:px-0 overflow-hidden">
           
           {/* Subtle ambient glow behind the numbers */}

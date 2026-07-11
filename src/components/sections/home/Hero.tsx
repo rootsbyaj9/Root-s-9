@@ -102,7 +102,7 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden bg-obsidian flex flex-col justify-center"
+      className="relative w-full h-screen overflow-hidden bg-obsidian flex flex-col justify-center pb-32 md:pb-48"
       aria-label="Hero"
     >
       {/* ── Parallax Background Layer ──────────── */}

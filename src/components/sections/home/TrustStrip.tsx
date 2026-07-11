@@ -34,9 +34,10 @@ const STATS = [
 
 type TrustStripProps = {
   homePageData?: SanityHomePageData | null;
+  activeLocationsCount?: number;
 };
 
-export default function TrustStrip({ homePageData = {} as SanityHomePageData }: TrustStripProps) {
+export default function TrustStrip({ homePageData = {} as SanityHomePageData, activeLocationsCount }: TrustStripProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -73,10 +74,10 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData }: 
           } else if (stat.id === "rating" && homePageData.statRating) {
             targetValue = homePageData.statRating || targetValue;
             displayValue = `${targetValue}/5`;
-          } else if (stat.id === "locations" && homePageData.statLocations) {
-            targetValue = homePageData.statLocations || targetValue;
+          } else if (stat.id === "locations") {
+            targetValue = activeLocationsCount || homePageData?.statLocations || targetValue;
             displayValue = `${targetValue}`;
-          } else if (stat.id === "reviews" && homePageData.statReviews) {
+          } else if (stat.id === "reviews" && homePageData?.statReviews) {
             targetValue = homePageData.statReviews || targetValue;
             displayValue = `${targetValue}k+`;
           }
@@ -122,7 +123,7 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData }: 
             const displayValue = homePageData ? (
               baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
               baseStat.id === "rating" && homePageData.statRating ? `${homePageData.statRating}/5` :
-              baseStat.id === "locations" && homePageData.statLocations ? `${homePageData.statLocations}` :
+              baseStat.id === "locations" ? `${activeLocationsCount || homePageData.statLocations || baseStat.target}` :
               baseStat.id === "reviews" && homePageData.statReviews ? `${homePageData.statReviews}k+` :
               baseStat.display
             ) : baseStat.display;

@@ -24,7 +24,7 @@ import CTASection from "@/components/sections/shared/CTASection";
 import { getPlacesReviews } from "@/lib/google-places";
 import reviewsJson from "@/data/reviews.json";
 import { client } from "@/sanity/client";
-import { getHomePageQuery, getServiceCategoriesQuery } from "@/sanity/lib/queries";
+import { getHomePageQuery, getServiceCategoriesQuery, getLocationsQuery } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Root's Family Salon Hyderabad | Hair, Skin, Bridal & Tattoo",
@@ -45,6 +45,7 @@ export default async function HomePage() {
   // Fetch homepage content and service categories from Sanity CMS
   const homePageData = await client?.fetch(getHomePageQuery).catch(() => null) ?? {};
   const servicesData = await client?.fetch(getServiceCategoriesQuery).catch(() => null) ?? [];
+  const locationsData = await client?.fetch(getLocationsQuery).catch(() => null) ?? [];
 
   // Live reviews from Google Places API (auto-refreshes via ISR)
   const apiReviews = await getPlacesReviews();
@@ -62,7 +63,7 @@ export default async function HomePage() {
       <Hero homePageData={homePageData} />
 
       {/* 2 — Trust strip (stat counters count-up on scroll entry) */}
-      <TrustStrip homePageData={homePageData} />
+      <TrustStrip homePageData={homePageData} activeLocationsCount={locationsData.length || undefined} />
 
       {/* 3 — Services bento grid (Hair · Bridal · Skin · Tattoo) */}
       <ServicesGrid cmsServices={servicesData} cmsImages={homePageData} />

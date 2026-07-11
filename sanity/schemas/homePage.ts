@@ -95,6 +95,23 @@ export const homePage = defineType({
       description: "Enter the number in thousands. e.g. enter 1.6 to display 1.6K reviews.",
       initialValue: 1.6,
     }),
+    defineField({
+      name: "partners",
+      title: "Partner Brands",
+      type: "array",
+      group: "stats",
+      description: "Logos shown in the scrolling brand strip (BrandStrip).",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "name", title: "Brand Name", type: "string" },
+            { name: "logo", title: "Logo Image", type: "image" },
+            { name: "websiteUrl", title: "Website URL", type: "url" },
+          ],
+        },
+      ],
+    }),
 
     // ── SERVICE GRID IMAGES ───────────────────────────────────────────────
     defineField({

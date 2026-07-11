@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import Image from "next/image";
+import { gsap } from "@/lib/gsap-config";
+import { useGSAP } from "@gsap/react";import Image from "next/image";
 import { Scissors, Sparkles, Gem, Crown, Droplet, Palette, Star } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -21,19 +21,6 @@ export type ServiceCategory = {
 
 type TabType = "womens" | "mens" | "bridal" | "tattoo";
 
-// ─── Animation variants ───────────────────────────────────────────────────────
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as any },
-  },
-};
-const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
-};
 
 // ─── URL param sync ───────────────────────────────────────────────────────────
 function TabSyncer({ onTab }: { onTab: (t: TabType) => void }) {
@@ -65,9 +52,8 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
     : "center";
 
   return (
-    <motion.div
-      variants={fadeUp}
-      className="group relative flex flex-col bg-parchment border border-obsidian/8 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-obsidian/5 hover:border-roots-orange/30 hover:-translate-y-1"
+    <div
+      className="category-card group relative flex flex-col bg-parchment border border-obsidian/8 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-obsidian/5 hover:border-roots-orange/30 hover:-translate-y-1"
     >
       {/* Image area */}
       {cat.imageUrl ? (
@@ -135,7 +121,7 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
           </svg>
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -200,6 +186,22 @@ export default function ServicesContent({
     router.replace(`?tab=${tab}`, { scroll: false });
   };
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (filtered.length > 0) {
+      gsap.from(".category-card", {
+        y: 24,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.1,
+        delay: 0.05,
+        ease: "power3.out",
+        clearProps: "all"
+      });
+    }
+  }, { scope: containerRef, dependencies: [activeTab, filtered.length] });
+
   return (
     <>
       {/* URL → tab sync */}
@@ -243,23 +245,22 @@ export default function ServicesContent({
           </div>
 
           {/* Category cards grid */}
-          {filtered.length > 0 ? (
-            <motion.div
-              key={activeTab}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-              variants={stagger}
-              initial="hidden"
-              animate="visible"
-            >
-              {filtered.map((cat) => (
-                <CategoryCard key={cat._id} cat={cat} />
-              ))}
-            </motion.div>
-          ) : (
-            <p className="font-sans text-[15px] text-obsidian/40 italic text-center py-20">
-              Services coming soon — check back shortly.
-            </p>
-          )}
+          <div ref={containerRef}>
+            {filtered.length > 0 ? (
+              <div
+                key={activeTab}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+              >
+                {filtered.map((cat) => (
+                  <CategoryCard key={cat._id} cat={cat} />
+                ))}
+              </div>
+            ) : (
+              <p className="font-sans text-[15px] text-obsidian/40 italic text-center py-20">
+                Services coming soon — check back shortly.
+              </p>
+            )}
+          </div>
         </div>
       </section>
     </>

@@ -75,7 +75,7 @@ export default async function HomePage() {
       <BeforeAfter homePageData={homePageData} />
 
       {/* 4.5 — Brand Partner Strip */}
-      <BrandStrip />
+      <BrandStrip partners={homePageData?.partners} />
 
       {/* 5 — Reviews Preview (3-card grid) */}
       <ReviewsPreview reviews={reviewsData} />

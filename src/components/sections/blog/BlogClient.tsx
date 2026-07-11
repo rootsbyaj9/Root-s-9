@@ -3,7 +3,6 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { gsap } from '@/lib/gsap-config';
 import { useGSAP } from '@gsap/react';
 import CTASection from '@/components/sections/shared/CTASection';
@@ -116,7 +115,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
       </section>
 
       {/* ─── FEATURED POST ──────────────────────────────── */}
-      {formattedPosts.length > 0 ? (() => {
+      {formattedPosts.length> 0 ? (() => {
         const [featured, ...rest] = formattedPosts;
         return (
           <section className="bg-linen pt-8 pb-16">
@@ -125,13 +124,13 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
                 <div className="grid md:grid-cols-2">
                   {/* Image Panel */}
                   <div className="relative aspect-square md:aspect-auto">
-                    <motion.div 
+                    < className="fade-element" 
                       className="absolute inset-0 bg-parchment z-10 origin-bottom"
                       initial="hidden"
                       whileInView="visible"
-                      viewport={{ once: true, margin: "-100px" }}
-                      variants={curtainVariants}
-                    />
+                      }
+                      
+ />
                     <Link href={`/blog/${featured.slug}`} className="block w-full h-full group">
                       {featured.mainImageUrl ? (
                         <div className="relative w-full h-full overflow-hidden">
@@ -144,19 +143,19 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
                           description="The main blog post image" 
                           className="w-full h-full" 
                           mood="warm" 
-                        />
+ />
                       )}
                     </Link>
                   </div>
                   
                   {/* Content Panel sliding in from right */}
-                  <motion.div 
+                  < className="fade-element" 
                     className="p-8 md:p-12"
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                    variants={textPanelVariants}
-                  >
+                    }
+                    
+>
                     <CategoryPill label={featured.category} />
                     <Link href={`/blog/${featured.slug}`}>
                       <h2 className="font-serif text-3xl md:text-4xl text-obsidian leading-[1.1] mt-4 mb-5 transition-colors duration-200 hover:text-roots-orange">
@@ -171,7 +170,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
                       <span className="font-sans text-xs text-obsidian/30">·</span>
                       <span className="font-sans text-xs text-warm-gray">{featured.readTime}</span>
                     </div>
-                  </motion.div>
+                  </>
                 </div>
               </div>
             </div>
@@ -189,15 +188,15 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
       {/* ─── POST GRID ────────────────────────────────── */}
       <section className="bg-linen pb-20">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl">
-          <motion.div 
+          < className="fade-element" 
             className="grid md:grid-cols-3 gap-6"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={gridContainerVariants}
-          >
-            {formattedPosts.length > 1 && formattedPosts.slice(1).map((post) => (
-              <motion.div key={post.slug} variants={gridItemVariants}>
+            }
+            
+>
+            {formattedPosts.length> 1 && formattedPosts.slice(1).map((post) => (
+              < className="fade-element" key={post.slug}>
                 <div className="group block h-full cursor-default">
                   <article className="bg-parchment rounded-2xl overflow-hidden border border-obsidian/[0.06] hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
                     
@@ -214,7 +213,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
                             description={`Photo for ${post.category}`} 
                             className="w-full h-full" 
                             mood="warm" 
-                          />
+ />
                         )}
                       </Link>
                       <div className="absolute top-4 left-4 z-10">
@@ -245,9 +244,9 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
                     </div>
                   </article>
                 </div>
-              </motion.div>
+              </>
             ))}
-          </motion.div>
+          </>
         </div>
       </section>
 
@@ -255,7 +254,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
         heading="Questions about your hair or skin?"
         subtext="Chat with our team on WhatsApp — we're happy to advise before you even book."
         ctaLabel="Chat With Us"
-      />
+ />
     </div>
   );
 }

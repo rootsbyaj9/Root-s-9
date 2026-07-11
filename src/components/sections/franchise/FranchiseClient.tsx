@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Trophy, GraduationCap, MapPin } from "lucide-react";
@@ -51,23 +51,31 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
   
   // Hero Animation using GSAP
-  useEffect(() => {
+  useGSAP(() => {
     if (!titleRef.current) return;
     
     // Animate the hero copy elements gracefully
-    const ctx = gsap.context(() => {
-      gsap.from(".hero-element", {
-        y: 40,
-        opacity: 0,
-        duration: 1.2,
-        stagger: 0.15,
-        ease: "power3.out",
-        delay: 0.2
-      });
-    }, heroRef);
-    
-    return () => ctx.revert();
-  }, []);
+    gsap.from(".hero-element", {
+      y: 40,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.15,
+      ease: "power3.out",
+      delay: 0.2
+    });
+
+    gsap.from(".fade-element", {
+      scrollTrigger: {
+        trigger: ".fade-element",
+        start: "top 80%",
+      },
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power3.out"
+    });
+  }, { scope: heroRef });
 
   // CMS Value Fallbacks
   const reasons = cmsData?.reasons?.length ? cmsData.reasons : REASONS;
@@ -121,18 +129,13 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
       {/* ─── WHY ROOT'S ───────────────────────────────── */}
       <section className="bg-parchment py-24 overflow-hidden">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div className="fade-element">
             <SectionHeader
               eyebrow="WHY PARTNER WITH US"
               heading={cmsData?.reasonsHeading || "Built for successful franchise partners."}
               align="center"
             />
-          </motion.div>
+          </div>
           
           <div className="mt-16 grid md:grid-cols-3 gap-8">
             {(reasons as SanityFranchiseReason[]).map((r, idx: number) => {
@@ -140,17 +143,9 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
               const Icon = idx === 0 ? Trophy : idx === 1 ? GraduationCap : MapPin;
               
               return (
-              <motion.div
+              <div
                 key={idx}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ 
-                  duration: 0.8, 
-                  delay: idx * 0.1, 
-                  ease: [0.16, 1, 0.3, 1] 
-                }}
-                className="bg-linen rounded-2xl p-10 border border-obsidian/[0.06] hover:shadow-lg transition-shadow duration-300 relative group overflow-hidden"
+                className="fade-element bg-linen rounded-2xl p-10 border border-obsidian/[0.06] hover:shadow-lg transition-shadow duration-300 relative group overflow-hidden"
               >
                 {/* Background decorative number */}
                 <span className="font-serif text-8xl text-obsidian/[0.03] absolute right-0 bottom-0 translate-x-4 translate-y-4 select-none leading-none z-0">
@@ -158,19 +153,15 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
                 </span>
 
                 <div className="relative z-10 flex flex-col items-start">
-                  <motion.div 
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: (idx * 0.1) + 0.2, duration: 0.5, ease: "backOut" }}
-                    className="mb-6 p-4 rounded-full bg-parchment shadow-sm border border-obsidian/[0.04]"
+                  <div 
+                    className="fade-element mb-6 p-4 rounded-full bg-parchment shadow-sm border border-obsidian/[0.04]"
                   >
                     {r.icon || <Icon className="w-10 h-10 text-roots-orange stroke-1" />}
-                  </motion.div>
+                  </div>
                   <h3 className="font-serif text-2xl text-obsidian mb-4">{r.title}</h3>
                   <p className="font-sans text-warm-gray text-sm leading-relaxed">{r.body}</p>
                 </div>
-              </motion.div>
+              </div>
             )})}
           </div>
         </div>
@@ -179,33 +170,20 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
       {/* ─── MODEL OVERVIEW ───────────────────────────── */}
       <section className="bg-obsidian py-24 overflow-hidden">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div className="fade-element">
             <SectionHeader
               eyebrow="THE NUMBERS"
               heading={cmsData?.modelHeading || "A model built to win."}
               align="center"
               className="[&_.eyebrow]:text-roots-orange/70 [&_h2]:text-parchment"
             />
-          </motion.div>
+          </div>
 
           <div className="mt-16 grid md:grid-cols-2 gap-px bg-parchment/[0.06] rounded-2xl overflow-hidden">
             {(modelPoints as SanityFranchiseModelPoint[]).map((point, idx: number) => (
-              <motion.div 
+              <div 
                 key={idx} 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: idx * 0.08, // Staggering the rows
-                  ease: [0.16, 1, 0.3, 1] 
-                }}
-                className="bg-obsidian px-10 py-8 flex items-start justify-between gap-6 border-b border-parchment/[0.06] group hover:bg-obsidian/80 transition-colors"
+                className="fade-element bg-obsidian px-10 py-8 flex items-start justify-between gap-6 border-b border-parchment/[0.06] group hover:bg-obsidian/80 transition-colors"
               >
                 <span className="font-sans text-sm text-parchment/50 uppercase tracking-widest flex-shrink-0 group-hover:text-roots-orange transition-colors duration-300">
                   {point.label}
@@ -213,49 +191,33 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
                 <span className="font-serif text-lg text-parchment text-right">
                   {point.value}
                 </span>
-              </motion.div>
+              </div>
             ))}
           </div>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="mt-6 font-sans text-parchment/30 text-xs text-center"
+          <p 
+            className="fade-element mt-6 font-sans text-parchment/30 text-xs text-center"
           >
             All figures indicative — final numbers depend on location, size, and market. Detailed projection shared post-enquiry.
-          </motion.p>
+          </p>
         </div>
       </section>
 
       {/* ─── ENQUIRY CTA ──────────────────────────────── */}
       <section className="bg-roots-orange py-20 relative overflow-hidden">
         <div className="container mx-auto px-6 md:px-16 max-w-4xl text-center relative z-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="font-serif text-4xl md:text-6xl text-parchment leading-[1.05] mb-5"
+          <h2 
+            className="fade-element font-serif text-4xl md:text-6xl text-parchment leading-[1.05] mb-5"
           >
             Ready to start the conversation?
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            className="font-sans text-parchment/80 text-base md:text-lg max-w-lg mx-auto mb-10"
+          </h2>
+          <p 
+            className="fade-element font-sans text-parchment/80 text-base md:text-lg max-w-lg mx-auto mb-10"
           >
             Reach out via WhatsApp or email. We&apos;ll share our franchise kit,
             arrange a call with the founder, and walk you through every step.
-          </motion.p>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+          </p>
+          <div 
+            className="fade-element flex flex-col sm:flex-row gap-4 justify-center"
           >
             <a
               href="https://wa.me/919700744357?text=Hi%20Root%27s%20Team!%20I%27m%20interested%20in%20the%20franchise%20opportunity.%20Please%20share%20the%20franchise%20kit."
@@ -272,7 +234,7 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
             >
               Email: rootsbyaj9@gmail.com
             </a>
-          </motion.div>
+          </div>
         </div>
       </section>
 

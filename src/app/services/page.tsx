@@ -16,6 +16,9 @@ export const metadata: Metadata = {
       "Expert hair, skin, bridal, tattoo, and grooming services for the whole family. Two branches in Hyderabad.",
     type: "website",
   },
+  alternates: {
+    canonical: "/services",
+  },
 };
 
 export const revalidate = 60;

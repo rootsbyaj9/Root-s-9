@@ -29,6 +29,11 @@ export const getHomePageQuery = groq`
     statRating,
     statLocations,
     statReviews,
+    partners[] {
+      name,
+      "logoUrl": logo.asset->url,
+      websiteUrl
+    },
     "heroBackgroundImageUrl": heroBackgroundImage.asset->url,
     servicesHeadline,
     servicesSubheadline,

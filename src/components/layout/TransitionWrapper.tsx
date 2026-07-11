@@ -2,8 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
-
+import { gsap } from "@/lib/gsap-config";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 import heroData from "../../../public/animations/hero2.json";
@@ -16,6 +15,8 @@ export default function TransitionWrapper({ children }: { children: React.ReactN
   const [visible, setVisible] = useState(true);
   const lottieRef = useRef<any>(null);
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const hasSeen = sessionStorage.getItem(STORAGE_KEY);
     if (!hasSeen && window.location.pathname === "/") {
@@ -27,17 +28,26 @@ export default function TransitionWrapper({ children }: { children: React.ReactN
     }
   }, []);
 
+  const handleComplete = () => {
+    if (wrapperRef.current) {
+      gsap.to(wrapperRef.current, {
+        yPercent: -100,
+        duration: 1.0,
+        ease: "power3.inOut",
+        onComplete: () => setVisible(false)
+      });
+    } else {
+      setVisible(false);
+    }
+  };
+
   return (
     <>
       <div aria-hidden="true">
-        <AnimatePresence>
           {show && visible && (
-            <motion.div
-              key="hero-loader"
-              initial={{ y: 0 }}
-              exit={{ y: "-100%" }}
-              transition={{ duration: 1.0, ease: [0.76, 0, 0.24, 1] }}
-              className="fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden"
+            <div
+              ref={wrapperRef}
+              className="fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden transform-gpu"
               style={{ background: BRAND_BG }}
               aria-live="polite"
               aria-busy="true"
@@ -53,12 +63,11 @@ export default function TransitionWrapper({ children }: { children: React.ReactN
                   animationData={heroData}
                   loop={false}
                   autoplay
-                  onComplete={() => setVisible(false)}
+                  onComplete={handleComplete}
                 />
               </div>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
       </div>
 
       {children}

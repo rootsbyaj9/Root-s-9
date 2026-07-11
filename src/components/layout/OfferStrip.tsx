@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+
 import { Star } from "lucide-react";
 import type { SiteSettings } from "@/types/sanity";
 
@@ -43,15 +43,14 @@ export default function OfferStrip({ onDismiss, settings }: OfferStripProps) {
       aria-label="Current promotion"
     >
       <div className="flex whitespace-nowrap overflow-hidden items-center">
-        {/* Seamless marquee: animate from 0% to exactly half its width (-50%) */}
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
+        {/* Seamless marquee: animation via global CSS */}
+        <div
+          style={{ animation: 'marquee-horizontal 30s linear infinite' }}
           className="font-sans text-parchment text-[11px] uppercase tracking-[0.12em] font-medium flex items-center w-max"
         >
           {OFFER_ITEMS}
           {OFFER_ITEMS}
-        </motion.div>
+        </div>
       </div>
 
       {/* Dismiss button - positioned absolutely on top of the scrolling text */}

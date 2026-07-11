@@ -12,14 +12,15 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import SectionHeader from "@/components/ui/SectionHeader";
+import type { SanityHomePageData } from "@/types/sanity";
 
 type TransformationType = "hair" | "skin";
 
 type BeforeAfterProps = {
-  homePageData?: any;
+  homePageData?: SanityHomePageData | null;
 };
 
-export default function BeforeAfter({ homePageData = {} }: BeforeAfterProps) {
+export default function BeforeAfter({ homePageData = {} as SanityHomePageData }: BeforeAfterProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState(50); // percentage — 0 to 100

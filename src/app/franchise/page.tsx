@@ -1,5 +1,7 @@
 import FranchiseClient from "@/components/sections/franchise/FranchiseClient";
 import type { Metadata } from "next";
+import { client } from "@/sanity/client";
+import { getFranchisePageQuery } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Franchise Opportunity | Root's Family Salon",
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function FranchisePage() {
-  const franchiseData: Record<string, any> = {}; // Sanity fetching disabled — will be wired at final delivery
+  const franchiseData = await client?.fetch(getFranchisePageQuery).catch(() => null) ?? {};
 
   return (
     <main className="min-h-screen">

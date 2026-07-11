@@ -13,6 +13,8 @@
  */
 import type { Metadata } from 'next';
 import BlogClient from '@/components/sections/blog/BlogClient';
+import { client } from '@/sanity/client';
+import { getPostsQuery } from '@/sanity/lib/queries';
 
 export const metadata: Metadata = {
   title: "Hair & Beauty Tips | Root's Salon Hyderabad Blog",
@@ -28,6 +30,6 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function BlogPage() {
-  const posts: any[] = []; // Sanity fetching disabled — will be wired at final delivery
+  const posts = await client?.fetch(getPostsQuery).catch(() => null) ?? [];
   return <BlogClient posts={posts} />;
 }

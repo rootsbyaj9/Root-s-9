@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 import heroData from "../../../public/animations/hero2.json";
 

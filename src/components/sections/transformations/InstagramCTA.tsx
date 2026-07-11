@@ -54,7 +54,9 @@ export default function InstagramCTA({
       <div className="absolute -left-20 -bottom-20 w-[300px] h-[300px] rounded-full border border-roots-orange/10 pointer-events-none" />
 
       <div className="ig-content container mx-auto px-6 md:px-16 max-w-5xl text-center">
-        {/* Instagram icon */}
+        {/* Instagram icon — bg uses Instagram's official brand gradient.
+             This is a PLATFORM color exception (same pattern as WhatsApp green in
+             WhatsAppButton.tsx) — intentionally not mapped to brand tokens. */}
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f09433] via-[#e6683c] via-[#dc2743] via-[#cc2366] to-[#bc1888] mb-8 shadow-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +85,7 @@ export default function InstagramCTA({
           {handle}
         </p>
 
-        {/* CTA Button */}
+        {/* bg gradient = Instagram brand colors — platform exception, not brand token */}
         <a
           href={profileUrl}
           target="_blank"

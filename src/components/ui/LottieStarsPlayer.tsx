@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Lottie, { LottieRefCurrentProps } from "lottie-react";
+import dynamic from "next/dynamic";
+import type { LottieRefCurrentProps } from "lottie-react";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 interface LottieStarsPlayerProps {
   className?: string;

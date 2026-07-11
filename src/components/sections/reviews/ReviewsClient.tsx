@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import CTASection from '@/components/sections/shared/CTASection';
+import type { SanityReview, ReviewDisplayItem, SiteSettings } from '@/types/sanity';
 
 const GOOGLE_MAPS_URL_1 = 'https://maps.app.goo.gl/ocq8uts9jYaCp3bu8';
 const GOOGLE_MAPS_URL_2 = 'https://maps.app.goo.gl/NSNafg2mqV9acw9m7';
@@ -28,7 +29,7 @@ function StarRating({ count }: { count: number }) {
 }
 
 // Reusable animated column component
-function ReviewColumn({ items, duration, reverse }: { items: any[], duration: string, reverse?: boolean }) {
+function ReviewColumn({ items, duration, reverse }: { items: ReviewDisplayItem[], duration: string, reverse?: boolean }) {
   return (
     <div className="relative h-full w-full marquee-group">
       <div 
@@ -53,7 +54,7 @@ function ReviewColumn({ items, duration, reverse }: { items: any[], duration: st
 }
 
 // Independent physical card
-function ReviewCard({ r }: { r: any }) {
+function ReviewCard({ r }: { r: ReviewDisplayItem }) {
   return (
     <div className="bg-parchment rounded-2xl p-7 flex flex-col border border-obsidian/[0.06] hover:shadow-xl transition-shadow duration-300 w-full">
       <div className="flex items-center justify-between mb-4">
@@ -94,17 +95,17 @@ function ReviewCard({ r }: { r: any }) {
   )
 }
 
-export default function ReviewsClient({ reviews = [], settings }: { reviews?: any[], settings?: any }) {
+export default function ReviewsClient({ reviews = [], settings }: { reviews?: SanityReview[], settings?: SiteSettings | null }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const mappedReviews = (reviews || []).map((r: any) => ({
+  const mappedReviews = (reviews || []).map((r: SanityReview): ReviewDisplayItem => ({
     id: r._id || r.id || Math.random().toString(),
     name: r.name,
     branch: r.branch,
     rating: r.rating || 5,
     date: r.date || 'Recent',
     service: r.service || 'Salon Visit',
-    review: r.reviewText || r.review,
+    review: r.reviewText || r.review || '',
     avatar: r.avatar
   }));
 
@@ -117,7 +118,7 @@ export default function ReviewsClient({ reviews = [], settings }: { reviews?: an
   ];
 
   // Deduplicate reviews to ensure no name appears twice
-  const uniqueReviews: any[] = [];
+  const uniqueReviews: ReviewDisplayItem[] = [];
   const seenNames = new Set();
   for (const r of mappedReviews) {
     if (!seenNames.has(r.name)) {

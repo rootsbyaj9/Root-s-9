@@ -21,6 +21,13 @@ export const location = defineType({
       validation: (Rule) => Rule.required().error("Branch name is required."),
     }),
     defineField({
+      name: "shortName",
+      title: "Short Name (for buttons/tabs)",
+      type: "string",
+      group: "contact",
+      description: 'e.g. "Uppal" or "Tarnaka"',
+    }),
+    defineField({
       name: "address",
       title: "Full Street Address",
       type: "text",
@@ -104,6 +111,14 @@ export const location = defineType({
       group: "settings",
       description: "Turn OFF to temporarily hide a branch (e.g. if it's under renovation). Turning it back ON shows it again immediately.",
       initialValue: true,
+    }),
+    defineField({
+      name: "isNew",
+      title: "Is this a new branch?",
+      type: "boolean",
+      group: "settings",
+      description: "Shows a 'Coming Soon' or 'New' badge on the branch card.",
+      initialValue: false,
     }),
     defineField({
       name: "displayOrder",

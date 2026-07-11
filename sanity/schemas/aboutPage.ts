@@ -2,14 +2,14 @@ import { defineField, defineType } from "sanity";
 
 export const aboutPage = defineType({
   name: "aboutPage",
-  title: "About Page",
+  title: "ℹ️ About Page",
   type: "document",
   // Singleton — enforced via structureTool structure in sanity.config.ts
   groups: [
-    { name: "hero", title: "Hero Section" },
-    { name: "founder", title: "Founder Section" },
-    { name: "timeline", title: "Timeline Section" },
-    { name: "values", title: "Values Section" },
+    { name: "hero", title: "🎬 Hero Section" },
+    { name: "founder", title: "👤 Founder Section" },
+    { name: "timeline", title: "📅 Timeline" },
+    { name: "values", title: "💎 Core Values" },
   ],
   fields: [
     // ── Background ─────────────────────────────────────────────────────────────
@@ -148,7 +148,7 @@ export const aboutPage = defineType({
   ],
   preview: {
     prepare() {
-      return { title: "About Page Content" };
+      return { title: "ℹ️ About Page", subtitle: "Edit the About Us page — founder story, values, timeline" };
     },
   },
 });

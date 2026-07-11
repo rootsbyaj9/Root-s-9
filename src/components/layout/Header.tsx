@@ -27,9 +27,10 @@ import { useState, useEffect } from "react";
 import OfferStrip from "./OfferStrip";
 import Navbar from "./Navbar";
 import { cn } from "@/lib/utils";
+import type { SiteSettings } from "@/types/sanity";
 
 
-export default function Header({ settings }: { settings: any }) {
+export default function Header({ settings }: { settings: SiteSettings | null }) {
   const [stripVisible, setStripVisible] = useState(false);
   const [hidden, setHidden]             = useState(false);
 

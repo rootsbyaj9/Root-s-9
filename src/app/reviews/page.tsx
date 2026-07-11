@@ -11,6 +11,8 @@ import type { Metadata } from 'next';
 import ReviewsClient from '@/components/sections/reviews/ReviewsClient';
 import { getPlacesReviews } from '@/lib/google-places';
 import reviewsJson from '@/data/reviews.json';
+import { client } from '@/sanity/client';
+import { getSiteSettingsQuery } from '@/sanity/lib/queries';
 
 export const metadata: Metadata = {
   title: "Client Reviews | Root's Salon Hyderabad | 1600+ Happy Clients",
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
 export const revalidate = 2592000; // revalidate every 30 days
 
 export default async function ReviewsPage() {
-  const siteSettings: Record<string, any> = {};
+  const siteSettings = await client?.fetch(getSiteSettingsQuery).catch(() => null) ?? {};
 
   // Try Google Places API first (live, auto-updating)
   const apiReviews = await getPlacesReviews();

@@ -15,6 +15,7 @@ import { gsap } from "@/lib/gsap-config";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import { urlForImage } from "@/sanity/lib/image";
+import type { SanityServiceCategory, SanityHomePageData } from "@/types/sanity";
 
 // ── CMS-Compatible Service Data ───────────────────────────────────────────────
 const SERVICES = [
@@ -94,8 +95,8 @@ const SERVICES = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 type ServicesGridProps = {
-  cmsServices?: any[];
-  cmsImages?: any;
+  cmsServices?: SanityServiceCategory[];
+  cmsImages?: Partial<SanityHomePageData>;
 };
 
 export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: ServicesGridProps) {
@@ -131,9 +132,9 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
       const urlField = urlFieldMap[base.id];
       const hotspotField = hotspotFieldMap[base.id];
 
-      if (urlField && cmsImages?.[urlField]) {
-        cmsImageUrl = cmsImages[urlField];
-        hotspot = cmsImages[hotspotField];
+      if (urlField && (cmsImages as Record<string, any>)?.[urlField]) {
+        cmsImageUrl = (cmsImages as Record<string, any>)[urlField];
+        hotspot = (cmsImages as Record<string, any>)[hotspotField];
       }
     } catch(e) {
       // Graceful fallback

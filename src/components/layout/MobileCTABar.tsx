@@ -12,8 +12,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import type { SiteSettings } from '@/types/sanity';
 
-export default function MobileCTABar({ settings }: { settings?: any }) {
+export default function MobileCTABar({ settings }: { settings?: SiteSettings | null }) {
   const WHATSAPP_NUMBER = settings?.contactWhatsApp || '919700744357';
   const [visible, setVisible] = useState(true);
 

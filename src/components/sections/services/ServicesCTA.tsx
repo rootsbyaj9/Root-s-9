@@ -17,7 +17,7 @@ export default function ServicesCTA() {
 
         <button
           onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
-          className="inline-block bg-roots-orange text-parchment font-sans text-[12px] uppercase tracking-[0.08em] px-[40px] py-[16px] rounded-md transition-colors hover:bg-[#C9621E] mt-10"
+          className="inline-block bg-roots-orange text-parchment font-sans text-[12px] uppercase tracking-[0.08em] px-[40px] py-[16px] rounded-md transition-colors hover:bg-roots-orange-dark mt-10"
         >
           Book Appointment
         </button>

@@ -2,12 +2,16 @@
 
 import React, { useRef } from 'react';
 import ImagePlaceholder from '@/components/ui/ImagePlaceholder';
+import type { SanityTransformation } from '@/types/sanity';
 
-// ----------------------------------------------------------------------
-// CMS DATA STRUCTURE
-// This array represents exactly what your CMS (Sanity/Strapi) will return.
-// You can easily swap 'imageUrl' with your CMS image endpoint.
-// ----------------------------------------------------------------------
+export type BentoItem = {
+  id: string;
+  title: string;
+  description: string;
+  aspect: string;
+  mood: 'warm' | 'dark';
+  imageUrl?: string;
+};
 export const BENTO_CMS_DATA = [
   { id: '1', title: 'SKIN GLOW-UP', description: 'Radiant skin transformation.', aspect: 'aspect-[3/4]', mood: 'warm' as const },
   { id: '2', title: 'HAIR COLOUR', description: 'Vibrant balayage blends.', aspect: 'aspect-[4/3]', mood: 'warm' as const },
@@ -20,7 +24,7 @@ export const BENTO_CMS_DATA = [
   { id: '9', title: 'LASH LIFT', description: 'Volume and curl enhancement.', aspect: 'aspect-[4/5]', mood: 'warm' as const },
 ];
 
-function BentoColumn({ items, duration, reverse }: { items: any[], duration: string, reverse?: boolean }) {
+function BentoColumn({ items, duration, reverse }: { items: BentoItem[], duration: string, reverse?: boolean }) {
   return (
     <div className="relative h-full w-full bento-group">
       <div 
@@ -44,7 +48,7 @@ function BentoColumn({ items, duration, reverse }: { items: any[], duration: str
   );
 }
 
-function BentoCard({ item }: { item: any }) {
+function BentoCard({ item }: { item: BentoItem }) {
   return (
     <div className={`relative w-full rounded-2xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 ease-out flex-shrink-0 ${item.aspect} hover:z-50 focus-within:z-50`}>
       <ImagePlaceholder
@@ -65,13 +69,13 @@ function BentoCard({ item }: { item: any }) {
   );
 }
 
-export default function InfiniteBentoScroll({ transformations = [] }: { transformations?: any[] }) {
+export default function InfiniteBentoScroll({ transformations = [] }: { transformations?: SanityTransformation[] }) {
   // We duplicate the items inside the columns directly via the CMS slice mapping
   // to ensure sufficient vertical height to prevent layout voids.
   // Each column contains 6 items, yielding a very long stripe that smoothly loops.
   
-  const mappedTransformation = transformations.length > 0 
-    ? transformations.map((t: any) => ({
+  const mappedTransformation: BentoItem[] = transformations.length > 0
+    ? transformations.map((t: SanityTransformation): BentoItem => ({
         id: t._id,
         title: t.title,
         description: t.description,

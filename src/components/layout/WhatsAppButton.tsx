@@ -13,8 +13,9 @@
  */
 
 import { usePathname } from "next/navigation";
+import type { SiteSettings } from "@/types/sanity";
 
-export default function WhatsAppButton({ settings }: { settings: any }) {
+export default function WhatsAppButton({ settings }: { settings: SiteSettings | null }) {
   const pathname = usePathname();
 
   // Never render inside Sanity Studio

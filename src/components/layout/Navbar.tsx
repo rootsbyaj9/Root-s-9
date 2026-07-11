@@ -141,7 +141,7 @@ export default function Navbar({ settings }: { settings: any }) {
         className={cn(
           "w-full transition-all duration-300 ease-out relative z-50",
           (!isHomePage || scrolled || menuOpen || desktopServicesOpen)
-            ? "bg-[#FEFCF8]/95 backdrop-blur-md border-b border-[#1A1008]/[0.06]"
+            ? "bg-parchment/95 backdrop-blur-md border-b border-obsidian/[0.06]"
             : "bg-transparent"
         )}
         aria-label="Main navigation"
@@ -192,10 +192,10 @@ export default function Navbar({ settings }: { settings: any }) {
                       className={cn(
                         "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative flex items-center justify-center gap-1",
                         (isActive || desktopServicesOpen)
-                          ? "text-[#E87722]"
+                          ? "text-roots-orange"
                           : isLight
-                          ? "text-[#1A1008] hover:text-[#E87722]"
-                          : "text-[#FEFCF8] hover:text-[#E87722]"
+                          ? "text-obsidian hover:text-roots-orange"
+                          : "text-parchment hover:text-roots-orange"
                       )}
                     >
                       {link.label}
@@ -205,7 +205,7 @@ export default function Navbar({ settings }: { settings: any }) {
                       )}>▼</span>
                       <span
                         className={cn(
-                          "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-[#E87722] transition-all duration-200",
+                          "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-roots-orange transition-all duration-200",
                           isActive ? "w-full" : "w-0" // Using custom state for logic
                         )}
                       />
@@ -214,7 +214,7 @@ export default function Navbar({ settings }: { settings: any }) {
                     {/* Simple Dropdown */}
                     <div 
                       className={cn(
-                        "absolute top-[80px] bg-[#FEFCF8] border-t-2 border-[#E87722] border-x border-b border-[#1A1008]/10 shadow-lg z-40 transition-all duration-200 ease-out w-48 flex flex-col p-2",
+                        "absolute top-[80px] bg-parchment border-t-2 border-roots-orange border-x border-b border-obsidian/10 shadow-lg z-40 transition-all duration-200 ease-out w-48 flex flex-col p-2",
                         desktopServicesOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-2"
                       )}
                     >
@@ -223,7 +223,7 @@ export default function Navbar({ settings }: { settings: any }) {
                           <li key={j} className="w-full">
                             <Link 
                               href={sub.href} 
-                              className="font-sans text-[11px] uppercase tracking-widest text-[#1A1008] hover:text-[#E87722] transition-colors duration-150 py-3 px-4 block w-full text-left"
+                              className="font-sans text-[11px] uppercase tracking-widest text-obsidian hover:text-roots-orange transition-colors duration-150 py-3 px-4 block w-full text-left"
                             >
                               {sub.label}
                             </Link>
@@ -243,16 +243,16 @@ export default function Navbar({ settings }: { settings: any }) {
                   className={cn(
                     "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative group",
                     isActive
-                      ? "text-[#E87722]"
+                      ? "text-roots-orange"
                       : isLight
-                      ? "text-[#1A1008] hover:text-[#E87722]"
-                      : "text-[#FEFCF8] hover:text-[#E87722]"
+                      ? "text-obsidian hover:text-roots-orange"
+                      : "text-parchment hover:text-roots-orange"
                   )}
                 >
                   {link.label}
                   <span
                     className={cn(
-                      "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-[#E87722] transition-all duration-200",
+                      "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-roots-orange transition-all duration-200",
                       isActive ? "w-full" : "w-0 group-hover:w-full"
                     )}
                   />
@@ -264,7 +264,7 @@ export default function Navbar({ settings }: { settings: any }) {
             <span
               className={cn(
                 "transition-colors duration-300 select-none",
-                isLight ? "text-[#1A1008]/20" : "text-[#FEFCF8]/25"
+                isLight ? "text-obsidian/20" : "text-parchment/25"
               )}
             >
               |
@@ -277,16 +277,16 @@ export default function Navbar({ settings }: { settings: any }) {
                 className={cn(
                   "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative group",
                   pathname === link.href
-                    ? "text-[#E87722]"
+                    ? "text-roots-orange"
                     : isLight
-                    ? "text-[#1A1008] hover:text-[#E87722]"
-                    : "text-[#FEFCF8] hover:text-[#E87722]"
+                    ? "text-obsidian hover:text-roots-orange"
+                    : "text-parchment hover:text-roots-orange"
                 )}
               >
                 {link.label}
                 <span
                   className={cn(
-                    "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-[#E87722] transition-all duration-200",
+                    "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-px bg-roots-orange transition-all duration-200",
                     pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
                   )}
                 />
@@ -307,26 +307,26 @@ export default function Navbar({ settings }: { settings: any }) {
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen || mobileServicesOpen}
-            className="lg:hidden flex flex-col gap-[5px] w-6 py-1 hover:opacity-70 transition-opacity focus-visible:outline-[#E87722] z-50"
+            className="lg:hidden flex flex-col gap-[5px] w-6 py-1 hover:opacity-70 transition-opacity focus-visible:outline-roots-orange z-50"
           >
             <span
               className={cn(
                 "block w-full h-px transition-all duration-300 origin-center",
-                isLight ? "bg-[#1A1008]" : "bg-[#FEFCF8]",
+                isLight ? "bg-obsidian" : "bg-parchment",
                 (menuOpen || mobileServicesOpen) && "rotate-45 translate-y-[8.5px]"
               )}
             />
             <span
               className={cn(
                 "block w-full h-px transition-all duration-200",
-                isLight ? "bg-[#1A1008]" : "bg-[#FEFCF8]",
+                isLight ? "bg-obsidian" : "bg-parchment",
                 (menuOpen || mobileServicesOpen) && "opacity-0"
               )}
             />
             <span
               className={cn(
                 "block w-full h-px transition-all duration-300 origin-center",
-                isLight ? "bg-[#1A1008]" : "bg-[#FEFCF8]",
+                isLight ? "bg-obsidian" : "bg-parchment",
                 (menuOpen || mobileServicesOpen) && "-rotate-45 -translate-y-[8.5px]"
               )}
             />
@@ -341,7 +341,7 @@ export default function Navbar({ settings }: { settings: any }) {
         <div
           ref={menuRef}
           className={cn(
-            "lg:hidden fixed inset-0 bg-[#FEFCF8] flex flex-col items-center justify-start overflow-y-auto transition-opacity duration-300",
+            "lg:hidden fixed inset-0 bg-parchment flex flex-col items-center justify-start overflow-y-auto transition-opacity duration-300",
             menuOpen
               ? "opacity-100 pointer-events-auto z-[9998]"
               : "opacity-0 pointer-events-none z-[-1]"
@@ -354,7 +354,7 @@ export default function Navbar({ settings }: { settings: any }) {
               if (link.label === "Services") {
                 return (
                   <div key="services" className="mobile-nav-link flex flex-col items-center w-full">
-                    <div className="font-serif text-3xl text-[#1A1008] mb-3">
+                    <div className="font-serif text-3xl text-obsidian mb-3">
                       {link.label}
                     </div>
                     <div className="flex flex-col items-center gap-2">
@@ -363,7 +363,7 @@ export default function Navbar({ settings }: { settings: any }) {
                           key={j}
                           href={sub.href}
                           onClick={() => setMenuOpen(false)}
-                          className="font-sans text-[12px] uppercase tracking-widest text-[#1A1008]/80 hover:text-[#E87722] transition-colors"
+                          className="font-sans text-[12px] uppercase tracking-widest text-obsidian/80 hover:text-roots-orange transition-colors"
                           tabIndex={menuOpen ? 0 : -1}
                         >
                           {sub.label}
@@ -379,8 +379,8 @@ export default function Navbar({ settings }: { settings: any }) {
                   href={link.href}
                   onClick={() => { handleNavClick(link.href); setMenuOpen(false); }}
                   className={cn(
-                    "mobile-nav-link font-serif text-3xl text-[#1A1008] hover:text-[#E87722] transition-colors duration-200",
-                    pathname === link.href && "text-[#E87722]"
+                    "mobile-nav-link font-serif text-3xl text-obsidian hover:text-roots-orange transition-colors duration-200",
+                    pathname === link.href && "text-roots-orange"
                   )}
                   tabIndex={menuOpen ? 0 : -1}
                 >

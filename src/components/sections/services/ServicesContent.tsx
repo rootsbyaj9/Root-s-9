@@ -85,6 +85,8 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
         </div>
       ) : (
         <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-linen to-[#EDE3D5] flex items-center justify-center overflow-hidden">
+          {/* #EDE3D5 is a slightly deeper linen shade used only for this placeholder gradient.
+               Not a global brand token — it appears only in this one context. */}
           {/* Decorative circle */}
           <div className="absolute w-32 h-32 rounded-full bg-roots-orange/5 -top-8 -right-8" />
           <div className="absolute w-24 h-24 rounded-full bg-roots-orange/5 -bottom-6 -left-6" />
@@ -115,7 +117,7 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
             e.preventDefault();
             window.dispatchEvent(new CustomEvent("open-booking-modal"));
           }}
-          className="inline-flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.08em] text-roots-orange font-medium mt-5 transition-colors hover:text-[#C9621E] group/link text-left"
+          className="inline-flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.08em] text-roots-orange font-medium mt-5 transition-colors hover:text-roots-orange-dark group/link text-left"
         >
           Book Now
           <svg
@@ -216,6 +218,8 @@ export default function ServicesContent({
                 activeTab === tab
                   ? "bg-roots-orange text-parchment border border-roots-orange"
                   : "border border-[#E8D4BE] text-obsidian/60 hover:text-obsidian hover:border-obsidian/30"
+                  /* #E8D4BE is a warm-tinted border used only for inactive service tabs.
+                     Not a global brand token — it appears only in this one context. */
               }`}
             >
               {TAB_META[tab].label}

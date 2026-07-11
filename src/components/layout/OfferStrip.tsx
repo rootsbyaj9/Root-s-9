@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import type { SiteSettings } from "@/types/sanity";
 
 /**
  * OfferStrip.tsx
@@ -12,7 +13,7 @@ import { Star } from "lucide-react";
 
 interface OfferStripProps {
   onDismiss: () => void;
-  settings: any;
+  settings: SiteSettings | null;
 }
 
 export default function OfferStrip({ onDismiss, settings }: OfferStripProps) {

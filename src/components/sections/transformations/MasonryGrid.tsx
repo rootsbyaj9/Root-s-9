@@ -15,6 +15,7 @@ import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import ImagePlaceholder from '@/components/ui/ImagePlaceholder';
 import { urlForImage } from '@/sanity/lib/image';
+import type { SanityTransformation } from '@/types/sanity';
 
 interface TransformationItem {
   id: string;
@@ -160,7 +161,7 @@ function BentoColumn({
 
 /* ── Main Component ────────────────────────── */
 interface MasonryGridProps {
-  cmsTransformations?: any[];
+  cmsTransformations?: SanityTransformation[];
 }
 
 export default function MasonryGrid({ cmsTransformations = [] }: MasonryGridProps) {
@@ -169,7 +170,7 @@ export default function MasonryGrid({ cmsTransformations = [] }: MasonryGridProp
   // Merge CMS data if available
   let data = ITEMS;
   if (cmsTransformations && cmsTransformations.length > 0) {
-    data = cmsTransformations.map((cmsItem: any, index: number) => {
+    data = cmsTransformations.map((cmsItem: SanityTransformation, index: number) => {
       let imageUrl;
       let objectPosition = 'center';
       try {

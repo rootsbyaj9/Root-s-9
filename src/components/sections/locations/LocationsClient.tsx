@@ -4,33 +4,34 @@ import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import CTASection from '@/components/sections/shared/CTASection';
+import type { SanityLocation } from '@/types/sanity';
 
 // Fallback data (will be replaced by CMS props at final delivery)
 const BRANCHES = [
   {
-    id: 'branch-1',
+    _id: 'branch-1',
     shortName: 'Uppal',
     name: "Root's The Family Salon — Uppal",
     address: '#10-25/7, Taj Mahal Colony, Peerzadiguda Road, opp. Global Indian International School, Uppal, Hyderabad 500039',
     hours: 'Mon–Sun: 10 AM – 9 PM',
-    mapUrl: 'https://maps.app.goo.gl/ocq8uts9jYaCp3bu8',
+    googleMapsUrl: 'https://maps.app.goo.gl/ocq8uts9jYaCp3bu8',
     embedUrl: 'https://www.google.com/maps?q=17.397388,78.5885877&hl=en&z=15&output=embed',
     phone: '+919700744357',
     description: 'Experience premium styling at our signature Uppal location. Let our experts craft your perfect look.',
   },
   {
-    id: 'branch-2',
+    _id: 'branch-2',
     shortName: 'Tarnaka',
     name: "Root's The Family Salon — Tarnaka",
     address: "#12-5-16/4, Vijayapuri Colony, opp. St Ann's School, Chenna Reddy Lane, Tarnaka South Lallaguda, Secunderabad 500017",
     hours: 'Mon–Sun: 10 AM – 9 PM',
-    mapUrl: 'https://maps.app.goo.gl/HtxnUPQ9b9a4f5Qv7',
+    googleMapsUrl: 'https://maps.app.goo.gl/HtxnUPQ9b9a4f5Qv7',
     embedUrl: 'https://www.google.com/maps?q=17.4304751,78.5329607&hl=en&z=15&output=embed',
     phone: '+919700744357',
     description: "Our second branch offering the identical luxurious Root's experience in Tarnaka.",
   },
   {
-    id: 'branch-3',
+    _id: 'branch-3',
     shortName: 'New Branch',
     name: "Root's The Family Salon — Coming Soon",
     address: 'Hyderabad',
@@ -39,7 +40,7 @@ const BRANCHES = [
     description: "Our third branch is opening soon! We are bringing the premium Root's experience to a new neighborhood in just 3 days.",
     isNew: true,
   },
-];
+] as SanityLocation[];
 
 function WhatsAppIcon() {
   return (
@@ -50,7 +51,7 @@ function WhatsAppIcon() {
   );
 }
 
-export default function LocationsClient({ locationsData = [] }: { locationsData?: any[] }) {
+export default function LocationsClient({ locationsData = [] }: { locationsData?: SanityLocation[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // If CMS returns data, merge or replace. We'll replace it entirely if it exists.
@@ -98,18 +99,18 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
       <section className="bg-linen py-16">
         <div className="container mx-auto px-6 md:px-16 max-w-5xl">
           <div className="flex flex-col gap-12">
-            {activeBranches.map((branch: any, idx: number) => {
+            {activeBranches.map((branch, idx: number) => {
               const name = branch.name;
               const addr = branch.address;
               const phone = branch.phone;
               const whatsapp = branch.whatsappNumber;
               const hours = branch.hours;
-              const mapUrl = branch.googleMapsUrl || branch.mapUrl;
+              const mapUrl = branch.googleMapsUrl;
               const embed = branch.embedUrl || "https://www.google.com/maps?q=17.397388,78.5885877&hl=en&z=15&output=embed";
 
               return (
               <div 
-                key={branch._id || branch.id || idx} 
+                key={branch._id || idx} 
                 className="location-card bg-parchment rounded-2xl overflow-hidden border border-obsidian/[0.06] flex flex-col md:flex-row hover:shadow-2xl transition-shadow duration-500 relative"
               >
                 {branch.isNew && (

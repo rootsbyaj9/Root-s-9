@@ -68,6 +68,8 @@ export const franchisePage = defineType({
           fields: [
             defineField({ name: "title", title: "Benefit Title",       type: "string", description: 'e.g. "A Brand People Trust"' }),
             defineField({ name: "body",  title: "Benefit Description", type: "text",   rows: 3, description: "Explain this benefit in 2–3 sentences." }),
+            defineField({ name: "number", title: "Step Number", type: "string", description: 'e.g. "01", "02"' }),
+            defineField({ name: "icon", title: "Icon Name", type: "string", description: 'Optional icon identifier' }),
           ],
           preview: {
             select: { title: "title" },

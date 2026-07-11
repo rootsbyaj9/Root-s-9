@@ -24,6 +24,7 @@
   --color-linen: #F5EDE0;          /* Section alternates, cards */
   --color-obsidian: #1A1008;       /* Primary text — NOT pure black */
   --color-roots-orange: #E87722;   /* CTAs, logo, active states ONLY */
+  --color-roots-orange-dark: #C9621E; /* Hover-darkened state of roots-orange */
   --color-blush: #FFF0E6;          /* Badge tints, offer tags */
   --color-warm-gray: #6B5E53;      /* Secondary text, captions */
 

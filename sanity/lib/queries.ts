@@ -170,6 +170,7 @@ export const getPostsQuery = groq`
     "slug": slug.current,
     excerpt,
     "mainImageUrl": mainImage.asset->url,
+    "mainImageAlt": mainImage.alt,
     category,
     publishedAt,
     readTime
@@ -184,6 +185,7 @@ export const getPostBySlugQuery = groq`
     excerpt,
     body,
     "mainImageUrl": mainImage.asset->url,
+    "mainImageAlt": mainImage.alt,
     category,
     publishedAt,
     readTime

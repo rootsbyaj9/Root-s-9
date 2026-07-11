@@ -21,6 +21,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
+import type { SanityHomePageData } from "@/types/sanity";
 
 // ── Stat data ──────────────────────────────────────────────────────────────
 const STATS = [
@@ -28,14 +29,14 @@ const STATS = [
   { id: "rating",          target: 4.8, display: "4.8/5", suffix: "/5", label: "Client Rating",       decimals: 1 },
   { id: "locations",       target: 2,   display: "2",     suffix: "",   label: "Salon Locations",     decimals: 0 },
   { id: "reviews",         target: 1.6, display: "1.6k+", suffix: "k+", label: "Happy Reviews",       decimals: 1 },
-] as const;
+];
 // ──────────────────────────────────────────────────────────────────────────
 
 type TrustStripProps = {
-  homePageData?: any;
+  homePageData?: SanityHomePageData | null;
 };
 
-export default function TrustStrip({ homePageData = {} }: TrustStripProps) {
+export default function TrustStrip({ homePageData = {} as SanityHomePageData }: TrustStripProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -67,16 +68,16 @@ export default function TrustStrip({ homePageData = {} }: TrustStripProps) {
         let displayValue: string = stat.display;
         if (homePageData) {
           if (stat.id === "years" && homePageData.statYears) {
-            targetValue = homePageData.statYears;
+            targetValue = homePageData.statYears || targetValue;
             displayValue = `${targetValue}+`;
           } else if (stat.id === "rating" && homePageData.statRating) {
-            targetValue = homePageData.statRating;
+            targetValue = homePageData.statRating || targetValue;
             displayValue = `${targetValue}/5`;
           } else if (stat.id === "locations" && homePageData.statLocations) {
-            targetValue = homePageData.statLocations;
+            targetValue = homePageData.statLocations || targetValue;
             displayValue = `${targetValue}`;
           } else if (stat.id === "reviews" && homePageData.statReviews) {
-            targetValue = homePageData.statReviews;
+            targetValue = homePageData.statReviews || targetValue;
             displayValue = `${targetValue}k+`;
           }
         }

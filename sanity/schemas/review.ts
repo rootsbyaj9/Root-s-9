@@ -57,6 +57,12 @@ export const review = defineType({
       description: "The full review written by the customer.",
       validation: (Rule) => Rule.required().error("Review text is required."),
     }),
+    defineField({
+      name: "avatar",
+      title: "Reviewer Avatar URL",
+      type: "url",
+      description: "Profile picture URL from Google Reviews.",
+    }),
   ],
   preview: {
     select: { title: "name", subtitle: "reviewText" },

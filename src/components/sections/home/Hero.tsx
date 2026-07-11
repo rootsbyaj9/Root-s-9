@@ -17,16 +17,17 @@ import { gsap } from "@/lib/gsap-config";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
+import type { SanityHomePageData } from "@/types/sanity";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const WHATSAPP_NUMBER = "919700744357";
 
 type HeroProps = {
-  homePageData?: any;
+  homePageData?: SanityHomePageData | null;
 };
 
-export default function Hero({ homePageData = {} }: HeroProps) {
+export default function Hero({ homePageData = {} as SanityHomePageData }: HeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);

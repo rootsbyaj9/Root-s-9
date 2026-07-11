@@ -6,6 +6,7 @@ import { gsap } from "@/lib/gsap-config";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Trophy, GraduationCap, MapPin } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import type { SanityFranchisePageData, SanityFranchiseReason, SanityFranchiseModelPoint } from "@/types/sanity";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -42,10 +43,10 @@ const MODEL_POINTS = [
 
 
 type FranchiseClientProps = {
-  cmsData?: any;
+  cmsData?: SanityFranchisePageData | null;
 };
 
-export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) {
+export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   
@@ -79,7 +80,7 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
     <>
       {/* ─── HERO ─────────────────────────────────────── */}
       <section ref={heroRef} className="relative min-h-[65vh] flex items-end bg-obsidian pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[#1A1008]">
+        <div className="absolute inset-0 bg-obsidian">
           {cmsImageUrl && (
             <img
               src={cmsImageUrl}
@@ -134,7 +135,7 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
           </motion.div>
           
           <div className="mt-16 grid md:grid-cols-3 gap-8">
-            {reasons.map((r: any, idx: number) => {
+            {(reasons as SanityFranchiseReason[]).map((r, idx: number) => {
               const num = typeof r.number === 'string' ? r.number : `0${idx + 1}`.slice(-2);
               const Icon = idx === 0 ? Trophy : idx === 1 ? GraduationCap : MapPin;
               
@@ -162,7 +163,7 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: (idx * 0.1) + 0.2, duration: 0.5, ease: "backOut" }}
-                    className="mb-6 p-4 rounded-full bg-[#FEFCF8] shadow-sm border border-obsidian/[0.04]"
+                    className="mb-6 p-4 rounded-full bg-parchment shadow-sm border border-obsidian/[0.04]"
                   >
                     {r.icon || <Icon className="w-10 h-10 text-roots-orange stroke-1" />}
                   </motion.div>
@@ -193,7 +194,7 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
           </motion.div>
 
           <div className="mt-16 grid md:grid-cols-2 gap-px bg-parchment/[0.06] rounded-2xl overflow-hidden">
-            {modelPoints.map((point: any, idx: number) => (
+            {(modelPoints as SanityFranchiseModelPoint[]).map((point, idx: number) => (
               <motion.div 
                 key={idx} 
                 initial={{ opacity: 0, y: 20 }}
@@ -204,7 +205,7 @@ export default function FranchiseClient({ cmsData = {} }: FranchiseClientProps) 
                   delay: idx * 0.08, // Staggering the rows
                   ease: [0.16, 1, 0.3, 1] 
                 }}
-                className="bg-obsidian px-10 py-8 flex items-start justify-between gap-6 border-b border-parchment/[0.06] group hover:bg-[#1A1008]/80 transition-colors"
+                className="bg-obsidian px-10 py-8 flex items-start justify-between gap-6 border-b border-parchment/[0.06] group hover:bg-obsidian/80 transition-colors"
               >
                 <span className="font-sans text-sm text-parchment/50 uppercase tracking-widest flex-shrink-0 group-hover:text-roots-orange transition-colors duration-300">
                   {point.label}

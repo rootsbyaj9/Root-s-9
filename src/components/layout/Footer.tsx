@@ -10,8 +10,9 @@
  */
 
 import Link from "next/link";
+import type { SiteSettings } from "@/types/sanity";
 
-export default function Footer({ settings }: { settings: any }) {
+export default function Footer({ settings }: { settings: SiteSettings | null }) {
   const currentYear = new Date().getFullYear();
 
   const QUICK_LINKS = [
@@ -65,7 +66,7 @@ export default function Footer({ settings }: { settings: any }) {
   ];
 
   return (
-    <footer className="relative bg-gradient-to-br from-zinc-900 via-[#1A1008] to-black text-parchment pt-20 pb-10 overflow-hidden border-t border-roots-orange/20">
+    <footer className="relative bg-gradient-to-br from-zinc-900 via-obsidian to-black text-parchment pt-20 pb-10 overflow-hidden border-t border-roots-orange/20">
       {/* ── Subtle background glow ── */}
       <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[600px] h-[300px] bg-roots-orange/10 blur-[100px] pointer-events-none rounded-full" />
       <div className="absolute bottom-0 right-1/4 translate-x-1/2 w-[500px] h-[250px] bg-sky-900/10 blur-[100px] pointer-events-none rounded-full" />

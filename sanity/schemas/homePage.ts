@@ -110,6 +110,7 @@ export const homePage = defineType({
       title: "Services Section Subheadline",
       type: "text",
       group: "services",
+      description: 'Optional smaller text shown under the services headline. e.g. "Expert stylists. Premium products. Every visit."',
     }),
     defineField({
       name: "hairServiceImage",

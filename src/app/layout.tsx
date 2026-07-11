@@ -5,21 +5,13 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import MobileCTABar from "@/components/layout/MobileCTABar";
-import ScrollToTop from "@/components/layout/ScrollToTop";
+import RouteScrollReset from "@/components/layout/RouteScrollReset";
 import BookingModal from "@/components/layout/BookingModal";
+import SiteChrome from "@/components/layout/SiteChrome";
 import Script from "next/script";
+import { client } from "@/sanity/client";
+import { getSiteSettingsQuery } from "@/sanity/lib/queries";
 
-/**
- * Fonts are self-hosted via next/font (no Google CDN call at runtime).
- * Each font injects a CSS custom property onto the <html> element:
- *   --font-playfair and --font-dm-sans
- *
- * In globals.css @theme:
- *   --font-serif: var(--font-playfair)  → font-serif utility class
- *   --font-sans:  var(--font-dm-sans)   → font-sans utility class
- *
- * This chain resolves correctly at render time.
- */
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -141,11 +133,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = null; // Sanity fetching disabled per user request
+  const settings = await client?.fetch(getSiteSettingsQuery).catch(() => null) ?? null;
 
   return (
     <html lang="en" className={`${cormorant.variable} ${outfit.variable}`}>
       <head>
+        {/* ── Preconnect to external origins ── */}
+        <link rel="preconnect" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://lh3.googleusercontent.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
         {/* ── JSON-LD Structured Data: Local Business (both branches) ── */}
         <script
           type="application/ld+json"
@@ -173,24 +169,27 @@ export default async function RootLayout({
         )}
         
         <SmoothScroll>
-          <ScrollToTop />
-          {/* ── Fixed header shell (OfferStrip + Navbar) ── */}
-          <Header settings={settings} />
-
           {/* ── Page content ── */}
           <main>{children}</main>
 
-          {/* ── Global footer ── */}
-          <Footer settings={settings} />
+          {/* ── Site chrome — hidden on /studio ── */}
+          <SiteChrome>
+            <RouteScrollReset />
+            {/* ── Fixed header shell (OfferStrip + Navbar) ── */}
+            <Header settings={settings} />
 
-          {/* ── Persistent sticky WhatsApp button ── */}
-          <WhatsAppButton settings={settings} />
+            {/* ── Global footer ── */}
+            <Footer settings={settings} />
 
-          {/* ── Mobile-only sticky booking bar ── */}
-          <MobileCTABar settings={settings} />
+            {/* ── Persistent sticky WhatsApp button ── */}
+            <WhatsAppButton settings={settings} />
 
-          {/* ── Booking Modal (global, triggered via CustomEvent) ── */}
-          <BookingModal />
+            {/* ── Mobile-only sticky booking bar ── */}
+            <MobileCTABar settings={settings} />
+
+            {/* ── Booking Modal (global, triggered via CustomEvent) ── */}
+            <BookingModal />
+          </SiteChrome>
         </SmoothScroll>
       </body>
     </html>

@@ -14,6 +14,7 @@ import AboutHero from '@/components/sections/about/AboutHero';
 import AboutFounder from '@/components/sections/about/AboutFounder';
 import AboutValues from '@/components/sections/about/AboutValues';
 import AboutTimeline from '@/components/sections/about/AboutTimeline';
+import type { SanityAboutPageData } from '@/types/sanity';
 
 export const revalidate = 3600;
 
@@ -30,9 +31,8 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  // Fetch CMS singleton temporarily disabled per user request
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const about: any = null;
+  // Fetch CMS singleton — falls back to each component's built-in defaults if null
+  const about: SanityAboutPageData | null = await client?.fetch(getAboutPageQuery).catch(() => null) ?? null;
 
   return (
     <>

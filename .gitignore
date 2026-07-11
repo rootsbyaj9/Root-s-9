@@ -69,3 +69,5 @@ AGENTS.md
 # Untracked scratch files
 .cgcignore
 scratch-*
+# Added by code-review-graph
+.code-review-graph/

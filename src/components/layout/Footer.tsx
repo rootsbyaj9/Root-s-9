@@ -191,15 +191,6 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
               skar
             </a>
           </p>
-
-          <div className="flex gap-6">
-            <a href="/privacy" className="hover:text-parchment transition-colors">
-              Privacy Policy
-            </a>
-            <a href="/terms" className="hover:text-parchment transition-colors">
-              Terms of Service
-            </a>
-          </div>
         </div>
       </div>
     </footer>

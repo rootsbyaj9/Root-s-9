@@ -26,7 +26,7 @@ export default function CTASection({
   const resolvedCtaLabel = ctaLabel || "Book Appointment";
 
   return (
-    <section className="py-24 md:py-32 bg-obsidian text-parchment">
+    <section data-theme="dark" className="py-24 md:py-32 bg-obsidian text-parchment">
       <div className="container mx-auto px-6 md:px-16 flex flex-col items-center text-center max-w-3xl">
         <h2 className="font-sans font-bold uppercase tracking-widest text-4xl md:text-5xl text-parchment mb-6 leading-[1.15]">
           {resolvedHeading}

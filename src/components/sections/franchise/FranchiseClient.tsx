@@ -87,7 +87,7 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
   return (
     <>
       {/* ─── HERO ─────────────────────────────────────── */}
-      <section ref={heroRef} className="relative min-h-[65vh] flex items-end bg-obsidian pt-32 pb-20 overflow-hidden">
+      <section ref={heroRef} data-theme="dark" className="relative min-h-[65vh] flex items-end bg-obsidian pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-obsidian">
           {cmsImageUrl && (
             <img
@@ -168,7 +168,7 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
       </section>
 
       {/* ─── MODEL OVERVIEW ───────────────────────────── */}
-      <section className="bg-obsidian py-24 overflow-hidden">
+      <section data-theme="dark" className="bg-obsidian py-24 overflow-hidden">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl">
           <div className="fade-element">
             <SectionHeader

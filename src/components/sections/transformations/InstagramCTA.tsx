@@ -47,6 +47,7 @@ export default function InstagramCTA({
   return (
     <section
       ref={ref}
+      data-theme="dark"
       className="bg-obsidian py-20 md:py-28 overflow-hidden relative"
     >
       {/* Subtle texture ring */}

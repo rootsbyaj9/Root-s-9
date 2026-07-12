@@ -33,7 +33,7 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
 
   const socialIg = settings?.socialInstagram || "https://www.instagram.com/roots_by_aj";
   const socialFb = settings?.socialFacebook || "https://www.facebook.com/anikanth.jadhav.1";
-  const tagline = settings?.footerTagline || "Hyderabad's family salon — premium hair, skin, and beauty services across 2 branches, with a 3rd opening soon. Crafted for every generation.";
+  const tagline = settings?.footerTagline || "Hyderabad's family salon premium hair, skin, and beauty. Crafted for every generation.";
 
   const SOCIAL = [
     {
@@ -66,7 +66,7 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
   ];
 
   return (
-    <footer className="relative bg-gradient-to-br from-zinc-900 via-obsidian to-black text-parchment pt-20 pb-10 overflow-hidden border-t border-roots-orange/20">
+    <footer data-theme="dark" className="relative bg-gradient-to-br from-zinc-900 via-obsidian to-black text-parchment pt-20 pb-10 overflow-hidden border-t border-roots-orange/20">
       {/* ── Subtle background glow ── */}
       <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[600px] h-[300px] bg-roots-orange/10 blur-[100px] pointer-events-none rounded-full" />
       <div className="absolute bottom-0 right-1/4 translate-x-1/2 w-[500px] h-[250px] bg-sky-900/10 blur-[100px] pointer-events-none rounded-full" />

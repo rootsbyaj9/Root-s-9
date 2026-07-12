@@ -49,7 +49,7 @@ const SERVICES_SECTIONS = [
 
 export default function Navbar({ settings }: { settings: any }) {
   const WHATSAPP_NUMBER = settings?.contactWhatsApp || "919700744357";
-  const [scrolled, setScrolled] = useState(false);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -60,18 +60,43 @@ export default function Navbar({ settings }: { settings: any }) {
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   
+  const [isOverDark, setIsOverDark] = useState(true);
+  const [isTop, setIsTop] = useState(true);
+  
   const pathname = usePathname();
   const desktopDropdownRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // ── Scroll & Keyboard event listeners ──────────────────────────────────────
+  // ── Scroll & Resize listeners ───────────────────────────────────────────────
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 80);
+      // Find all dark theme elements globally
+      const darkElements = document.querySelectorAll('[data-theme="dark"]');
+      let currentlyOverDark = false;
+      const logoY = 40; // Approx vertical center of the logo in the viewport
+
+      darkElements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= logoY && rect.bottom >= logoY) {
+          currentlyOverDark = true;
+        }
+      });
+
+      // Fallback: If we are at the very top of the homepage, it's guaranteed to be the dark hero
+      if (pathname === "/" && window.scrollY < 50) {
+        currentlyOverDark = true;
+      }
+
+      setIsOverDark(currentlyOverDark);
+      setIsTop(window.scrollY < 10);
+      
       /* Close desktop menu on scroll for UX */
       if (window.scrollY > 150) setDesktopServicesOpen(false);
     };
-    onScroll();
+
+    const onResize = () => {
+      onScroll(); // Re-evaluate on resize
+    };
 
     const handleClickOutside = (e: MouseEvent) => {
       if (desktopDropdownRef.current && !desktopDropdownRef.current.contains(e.target as Node)) {
@@ -87,15 +112,20 @@ export default function Navbar({ settings }: { settings: any }) {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleEsc);
     
+    // Initial check
+    onScroll();
+
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleEsc);
     };
-  }, []);
+  }, [pathname]);
 
   // ── Close menus on route change ───────────────────────────────────────────
   useEffect(() => {
@@ -124,8 +154,7 @@ export default function Navbar({ settings }: { settings: any }) {
     }
   }, { dependencies: [menuOpen], scope: menuRef });
 
-  const isHomePage = pathname === "/";
-  const isLight = !isHomePage || scrolled || menuOpen || desktopServicesOpen;
+  const isLight = !isOverDark || menuOpen || desktopServicesOpen;
 
   /** Scroll to top when clicking nav link for the current page */
   const handleNavClick = (href: string) => {
@@ -136,46 +165,49 @@ export default function Navbar({ settings }: { settings: any }) {
 
   return (
     <>
-      {/* ── Main nav bar ───────────────────────────────────────────────────── */}
-      <nav
-        className={cn(
-          "w-full transition-all duration-300 ease-out relative z-50",
-          (!isHomePage || scrolled || menuOpen || desktopServicesOpen)
-            ? "bg-parchment border-b border-obsidian/[0.06]"
-            : "bg-transparent"
-        )}
-        aria-label="Main navigation"
-      >
-        <div className="flex items-center justify-between px-6 md:px-12 h-[80px]">
+      {/* ── Header row: logo left, pill nav right ─────────────────────── */}
+      <div className="w-full px-4 sm:px-6 py-0 relative z-50 flex items-center justify-between gap-4 pointer-events-none">
 
-          {/* Logo */}
-          <Link
-            href="/"
-            onClick={() => handleNavClick("/")}
-            className="relative flex items-center transition-all duration-500 hover:opacity-85 z-50 group"
-            aria-label="Root's — Home"
-          >
-            <img
-              src="/logo-nobg1.svg"
-              alt="Root's Family Salon"
-              width="160"
-              height="64"
-              className={cn(
-                "h-14 md:h-16 w-auto object-contain transition-opacity duration-500 ease-out",
-                isLight ? "opacity-100" : "opacity-0 absolute inset-0"
-              )}
-            />
-            <img
-              src="/logo-nobg2.svg"
-              alt="Root's Family Salon"
-              width="160"
-              height="64"
-              className={cn(
-                "h-14 md:h-16 w-auto object-contain transition-opacity duration-500 ease-out",
-                !isLight ? "opacity-100" : "opacity-0 absolute inset-0"
-              )}
-            />
-          </Link>
+        {/* Logo — switches light/dark based on background */}
+        <Link
+          href="/"
+          onClick={() => handleNavClick("/")}
+          className="pointer-events-auto relative flex items-center shrink-0 z-50 group"
+          aria-label="Root's — Home"
+        >
+          {/* Logo on dark bg — white+orange text */}
+          <img
+            src="/logo-nobg2.svg"
+            alt="Root's Family Salon"
+            width="480"
+            height="135"
+            className={cn(
+              "w-52 md:w-72 h-auto object-contain drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] transition-all duration-500 group-hover:opacity-85",
+              isLight ? "opacity-0 absolute" : "opacity-100 relative"
+            )}
+          />
+          {/* Logo on light bg — dark+orange text */}
+          <img
+            src="/logo-nobg1.svg"
+            alt="Root's Family Salon"
+            width="480"
+            height="135"
+            className={cn(
+              "w-52 md:w-72 h-auto object-contain drop-shadow-[0_1px_6px_rgba(0,0,0,0.25)] transition-all duration-500 group-hover:opacity-85",
+              isLight ? "opacity-100 relative" : "opacity-0 absolute"
+            )}
+          />
+        </Link>
+
+        {/* Pill nav */}
+        <nav
+          className={cn(
+            "transition-all duration-300 ease-out rounded-full pointer-events-auto",
+            "bg-parchment/95 backdrop-blur-md shadow-lg border border-obsidian/[0.08]"
+          )}
+          aria-label="Main navigation"
+        >
+          <div className="flex items-center px-5 md:px-7 h-[64px] gap-4 md:gap-6">
 
           {/* ── Desktop links ─────────────────────────────────────────────── */}
           <div className="hidden lg:flex items-center gap-5 xl:gap-7 h-full">
@@ -194,12 +226,10 @@ export default function Navbar({ settings }: { settings: any }) {
                     <Link
                       href={link.href}
                       className={cn(
-                        "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative flex items-center justify-center gap-1",
+                        "font-serif text-[15px] capitalize font-medium transition-colors duration-200 relative flex items-center justify-center gap-1",
                         (isActive || desktopServicesOpen)
                           ? "text-roots-orange"
-                          : isLight
-                          ? "text-obsidian hover:text-roots-orange"
-                          : "text-parchment hover:text-roots-orange"
+                          : "text-obsidian hover:text-roots-orange"
                       )}
                     >
                       {link.label}
@@ -227,7 +257,7 @@ export default function Navbar({ settings }: { settings: any }) {
                           <li key={j} className="w-full">
                             <Link 
                               href={sub.href} 
-                              className="font-sans text-[11px] uppercase tracking-widest text-obsidian hover:text-roots-orange transition-colors duration-150 py-3 px-4 block w-full text-left"
+                              className="font-serif text-[14px] capitalize font-medium text-obsidian hover:text-roots-orange transition-colors duration-150 py-3 px-4 block w-full text-left"
                             >
                               {sub.label}
                             </Link>
@@ -245,12 +275,10 @@ export default function Navbar({ settings }: { settings: any }) {
                   href={link.href}
                   onClick={() => handleNavClick(link.href)}
                   className={cn(
-                    "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative group",
+                    "font-serif text-[15px] capitalize font-medium transition-colors duration-200 relative group",
                     isActive
                       ? "text-roots-orange"
-                      : isLight
-                      ? "text-obsidian hover:text-roots-orange"
-                      : "text-parchment hover:text-roots-orange"
+                      : "text-obsidian hover:text-roots-orange"
                   )}
                 >
                   {link.label}
@@ -279,12 +307,10 @@ export default function Navbar({ settings }: { settings: any }) {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "font-sans text-[11px] uppercase tracking-widest transition-colors duration-200 relative group",
+                  "font-serif text-[15px] capitalize font-medium transition-colors duration-200 relative group",
                   pathname === link.href
                     ? "text-roots-orange"
-                    : isLight
-                    ? "text-obsidian hover:text-roots-orange"
-                    : "text-parchment hover:text-roots-orange"
+                    : "text-obsidian hover:text-roots-orange"
                 )}
               >
                 {link.label}
@@ -316,28 +342,26 @@ export default function Navbar({ settings }: { settings: any }) {
           >
             <span
               className={cn(
-                "block w-full h-px transition-all duration-300 origin-center",
-                isLight ? "bg-obsidian" : "bg-parchment",
+                "block w-full h-px transition-all duration-300 origin-center bg-obsidian",
                 (menuOpen || mobileServicesOpen) && "rotate-45 translate-y-[8.5px]"
               )}
             />
             <span
               className={cn(
-                "block w-full h-px transition-all duration-200",
-                isLight ? "bg-obsidian" : "bg-parchment",
+                "block w-full h-px transition-all duration-200 bg-obsidian",
                 (menuOpen || mobileServicesOpen) && "opacity-0"
               )}
             />
             <span
               className={cn(
-                "block w-full h-px transition-all duration-300 origin-center",
-                isLight ? "bg-obsidian" : "bg-parchment",
+                "block w-full h-px transition-all duration-300 origin-center bg-obsidian",
                 (menuOpen || mobileServicesOpen) && "-rotate-45 -translate-y-[8.5px]"
               )}
             />
           </button>
-        </div>
-      </nav>
+          </div>
+        </nav>
+      </div>
 
       {/* ── Mobile overlay — portalled to document.body so it escapes
            the Header's CSS transform stacking context. Without this,

@@ -224,7 +224,7 @@ export default function ReviewsClient({ reviews = [], settings }: { reviews?: Sa
       </section>
 
       {/* ─── STATS BAR ────────────────────────────────── */}
-      <section className="bg-obsidian py-12 stats-container">
+      <section data-theme="dark" className="bg-obsidian py-12 stats-container">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-parchment/[0.08] rounded-2xl overflow-hidden shadow-2xl">
             {STATS.map((s) => (

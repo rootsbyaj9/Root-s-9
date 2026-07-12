@@ -1,4 +1,3 @@
-import { Cormorant_Garamond, Outfit } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Header from "@/components/layout/Header";
@@ -11,21 +10,6 @@ import SiteChrome from "@/components/layout/SiteChrome";
 import Script from "next/script";
 import { client } from "@/sanity/client";
 import { getSiteSettingsQuery, getLocationsQuery } from "@/sanity/lib/queries";
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
-  display: "swap",
-});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-outfit",
-  display: "swap",
-});
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://root-s-9.vercel.app";
@@ -143,9 +127,12 @@ export default async function RootLayout({
     : ["Uppal", "Tarnaka"];
 
   return (
-    <html lang="en" className={`${cormorant.variable} ${outfit.variable}`}>
+    <html lang="en" className="scroll-smooth">
       <head>
         {/* ── Preconnect to external origins ── */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Italianno&family=Montaga&display=swap" rel="stylesheet" />
         <link rel="preconnect" href="https://cdn.sanity.io" />
         <link rel="preconnect" href="https://lh3.googleusercontent.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />

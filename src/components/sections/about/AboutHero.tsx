@@ -79,7 +79,7 @@ export default function AboutHero({
   );
 
   return (
-    <section 
+    <section data-theme="dark" 
       ref={sectionRef} 
       className="relative min-h-[85vh] flex items-end bg-obsidian overflow-hidden pt-32 pb-20"
     >

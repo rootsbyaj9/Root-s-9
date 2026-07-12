@@ -102,15 +102,16 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen overflow-hidden bg-obsidian flex flex-col justify-center pb-32 md:pb-48"
+      data-theme="dark"
+      className="relative w-full h-screen overflow-hidden bg-obsidian flex flex-col items-center justify-center pt-24 pb-12 md:pt-32"
       aria-label="Hero"
     >
       {/* ── Parallax Background Layer ──────────── */}
       <div
         ref={bgRef}
-        className="absolute inset-0 z-0 will-change-transform origin-center"
+        className="absolute inset-0 z-0 scale-105 will-change-transform bg-obsidian"
       >
-        {homePageData?.heroBackgroundImageUrl ? (
+        {homePageData?.heroBackgroundImageUrl && (
           <div className="absolute inset-0">
             <Image
               src={homePageData.heroBackgroundImageUrl}
@@ -121,14 +122,6 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
               sizes="100vw"
             />
           </div>
-        ) : (
-          <ImagePlaceholder
-            label="HERO IMAGE"
-            aspectRatio="1920 × 1080 px · 16:9"
-            description="Cinematic shot of premium salon interior or beautiful styling."
-            mood="dark"
-            className="w-full h-full object-cover"
-          />
         )}
       </div>
 
@@ -143,21 +136,24 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
         ref={contentRef}
         className="relative z-20 text-center max-w-5xl px-6 md:px-8 mx-auto flex flex-col items-center pointer-events-auto"
       >
-        <span className="eyebrow-text font-sans text-roots-orange uppercase tracking-[0.15em] text-xs md:text-sm font-semibold mb-6 block drop-shadow-md">
+        <span className="eyebrow-text font-sans text-roots-orange uppercase tracking-[0.2em] text-xs md:text-sm font-semibold mb-6 block drop-shadow-md">
           {homePageData?.heroEyebrow || "Hyderabad's Premium Family Salon"}
         </span>
 
-        <h1 className="font-sans font-bold uppercase tracking-widest text-[clamp(48px,6.5vw,80px)] text-parchment leading-[1.1] mb-10 tracking-tight">
-          <span className="block mb-1 md:mb-2">
+        <h1 className="flex flex-col items-center mb-6 drop-shadow-lg">
+          <span className="font-serif italic font-medium text-[clamp(48px,6vw,72px)] text-parchment leading-tight tracking-tight text-center max-w-4xl">
             {homePageData?.heroHeadline || "Your Complete Destination for"}
           </span>
-          <span className="text-parchment/90 block">
-            {homePageData?.heroHeadlineItalic || "Hair, Skin, Bridal & Tattoo in Hyderabad"}
+          <span className="font-script text-[clamp(80px,12vw,130px)] text-roots-orange leading-none mt-2 mb-2 drop-shadow-md">
+            Hair, Skin & Bridal
+          </span>
+          <span className="font-serif italic font-medium text-[clamp(36px,4vw,56px)] text-parchment/90 leading-tight">
+            {homePageData?.heroHeadlineItalic || "& Tattoo in Hyderabad"}
           </span>
         </h1>
 
-        <p className="subtitle-text font-sans text-parchment/70 text-sm md:text-base max-w-2xl mb-10 drop-shadow-md leading-relaxed">
-          Two premium locations serving your entire family.
+        <p className="subtitle-text font-sans text-parchment/70 text-sm md:text-base max-w-2xl mb-12 drop-shadow-md leading-relaxed font-light">
+          Root's at your locations serves your entire family.
         </p>
 
         <div className="cta-wrapper flex flex-col sm:flex-row items-center gap-4">

@@ -77,7 +77,7 @@ export default function AboutTimeline({
   );
 
   return (
-    <section ref={sectionRef} className="bg-obsidian py-24">
+    <section ref={sectionRef} data-theme="dark" className="bg-obsidian py-24">
       <div className="container mx-auto px-6 md:px-16 max-w-7xl">
         <SectionHeader
           eyebrow="OUR JOURNEY"

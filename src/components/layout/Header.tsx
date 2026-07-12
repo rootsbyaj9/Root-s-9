@@ -36,41 +36,16 @@ export default function Header({ settings }: { settings: SiteSettings | null }) 
 
   // ── OfferStrip visibility ────────────────────────────────────────────────
   useEffect(() => {
-    if (settings && settings.offerBannerEnabled === false) {
-      setStripVisible(false);
-      return;
-    }
-    setStripVisible(true);
+    // Only show the strip when Sanity explicitly enables it
+    setStripVisible(settings?.offerBannerEnabled === true);
   }, [settings]);
 
-  // ── Direction-aware scroll detection ─────────────────────────────────────
+  // ── Direction-aware scroll detection (Removed as per user request) ───────
+  // The header is now always sticky and never hides on scroll down.
   useEffect(() => {
-    const THRESHOLD  = 80;  // px — below this, always show
-    const HIDE_DELTA = 8;   // min px movement to trigger hide/show
-
-    let lastY = window.scrollY;
-
-    const onScroll = () => {
-      const currentY = window.scrollY;
-      const delta    = currentY - lastY;
-
-      if (currentY <= THRESHOLD) {
-        // At the top — always show
-        setHidden(false);
-      } else if (delta > HIDE_DELTA) {
-        // Scrolling DOWN → hide
-        setHidden(true);
-      } else if (delta < -HIDE_DELTA) {
-        // Scrolling UP → reveal
-        setHidden(false);
-      }
-
-      lastY = currentY;
-    };
-
-    onScroll(); // run once on mount
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    // Only keeping a simple scroll listener if we need to track if we're at the top,
+    // but the actual hiding logic is removed so `hidden` is always false.
+    setHidden(false);
   }, []);
 
   const handleDismiss = () => {
@@ -86,7 +61,9 @@ export default function Header({ settings }: { settings: SiteSettings | null }) 
       )}
     >
       {stripVisible && <OfferStrip onDismiss={handleDismiss} settings={settings} />}
-      <Navbar settings={settings} />
+      <div className="flex-none pt-0 pb-0">
+        <Navbar settings={settings} />
+      </div>
     </div>
   );
 }

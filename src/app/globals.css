@@ -28,13 +28,10 @@
   --color-blush: #FFF0E6;          /* Badge tints, offer tags */
   --color-warm-gray: #4A3F36;      /* Secondary text, captions — WCAG AA compliant */
 
-  /* Typography
-     --font-outfit and --font-cormorant are injected by next/font
-     as CSS vars on the <html> element at runtime. Referencing them
-     here lets Tailwind's font-sans / font-serif utilities resolve
-     correctly through the CSS custom property chain. */
-  --font-sans: var(--font-outfit);
-  --font-serif: var(--font-cormorant);
+  /* Typography */
+  --font-sans: 'Montaga', serif;
+  --font-serif: 'Cardo', serif;
+  --font-script: 'Italianno', cursive;
 
   /* Border Radius */
   --radius-md: 12px;
@@ -297,6 +294,17 @@ body {
   }
 }
 
+@keyframes flow-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 /* ═══════════════════════════════════════════════════════════
    SCROLLBAR HIDE — cross-browser utility
    Used on horizontally scrollable tab bars (services page)

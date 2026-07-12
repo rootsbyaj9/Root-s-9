@@ -66,18 +66,20 @@ function LogoSlot({ partner }: { partner: Partner }) {
     </div>
   );
 
+  const wrapperClass = "flex items-center justify-center w-[160px] h-[60px] opacity-70 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0";
+
   const wrapper = partner.websiteUrl ? (
     <a
       href={partner.websiteUrl}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Visit ${partner.name}`}
-      className="block w-[160px] h-[60px] opacity-50 hover:opacity-80 transition-opacity duration-300 grayscale hover:grayscale-0"
+      className={`block ${wrapperClass}`}
     >
       {inner}
     </a>
   ) : (
-    <div className="w-[160px] h-[60px] opacity-40">
+    <div className={wrapperClass}>
       {inner}
     </div>
   );

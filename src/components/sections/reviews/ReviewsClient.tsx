@@ -63,7 +63,7 @@ function ReviewCard({ r }: { r: ReviewDisplayItem }) {
           {r.service}
         </span>
       </div>
-      <p className="font-serif text-base text-obsidian leading-relaxed mb-5 flex-1">
+      <p className="font-sans font-bold uppercase tracking-widest text-base text-obsidian leading-relaxed mb-5 flex-1">
         &ldquo;{r.review}&rdquo;
       </p>
       <div className="border-t border-obsidian/[0.06] pt-4 flex items-center justify-between mt-auto">
@@ -213,9 +213,9 @@ export default function ReviewsClient({ reviews = [], settings }: { reviews?: Sa
       <section className="pt-36 pb-16 bg-parchment">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl text-center">
           <span className="eyebrow hero-text">CLIENT STORIES</span>
-          <h1 className="hero-text font-serif text-5xl md:text-7xl text-obsidian leading-[1.0] mt-2 mb-4">
+          <h1 className="hero-text font-sans font-bold uppercase tracking-widest text-5xl md:text-7xl text-obsidian leading-[1.0] mt-2 mb-4">
             Heard it from{' '}
-            <em className="italic font-normal text-roots-orange">them.</em>
+            <em className="text-roots-orange">them.</em>
           </h1>
           <p className="hero-text font-sans text-warm-gray text-base md:text-lg max-w-xl mx-auto leading-relaxed">
             Every review below is real from our Google Maps. We don&apos;t cherry-pick — we earn them.
@@ -229,7 +229,7 @@ export default function ReviewsClient({ reviews = [], settings }: { reviews?: Sa
           <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-parchment/[0.08] rounded-2xl overflow-hidden shadow-2xl">
             {STATS.map((s) => (
               <div key={s.label} className="stat-box bg-obsidian py-10 px-4 md:px-8 text-center relative overflow-hidden">
-                <div className="font-serif text-4xl md:text-5xl text-roots-orange mb-1">{s.value}</div>
+                <div className="font-sans font-bold uppercase tracking-widest text-4xl md:text-5xl text-roots-orange mb-1">{s.value}</div>
                 <div className="font-sans text-parchment/50 text-[10px] uppercase tracking-[0.15em] relative z-10">{s.label}</div>
               </div>
             ))}
@@ -251,7 +251,7 @@ export default function ReviewsClient({ reviews = [], settings }: { reviews?: Sa
       {/* ─── GOOGLE CTA ───────────────────────────────── */}
       <section className="cta-banner bg-parchment py-20 border-t border-obsidian/[0.06]">
         <div className="cta-banner-content container mx-auto px-6 md:px-16 max-w-7xl text-center">
-          <h2 className="font-serif text-3xl md:text-5xl text-obsidian mb-4">
+          <h2 className="font-sans font-bold uppercase tracking-widest text-3xl md:text-5xl text-obsidian mb-4">
             Read all our reviews on Google.
           </h2>
           <p className="font-sans text-warm-gray text-base max-w-md mx-auto mb-8">

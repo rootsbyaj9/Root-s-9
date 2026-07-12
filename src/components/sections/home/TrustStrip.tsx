@@ -137,7 +137,7 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
                 {/* Numeral */}
                 <span
                   id={`stat-${baseStat.id}`}
-                  className="block font-serif text-4xl md:text-5xl text-roots-orange mb-3 tracking-tight tabular-nums"
+                  className="block font-sans font-bold uppercase tracking-widest text-4xl md:text-5xl text-roots-orange mb-3 tabular-nums"
                   aria-label={displayValue}
                 >
                   {displayValue}

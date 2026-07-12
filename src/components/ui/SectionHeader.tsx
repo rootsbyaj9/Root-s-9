@@ -5,7 +5,7 @@
  *
  * Implements the Steal List item #1 (from Salon64):
  *   First word: bold upright Playfair
- *   Second word: italic Playfair on same line
+ *   Second word: Playfair on same line
  *   Example: <h2>Curated <em>Services</em></h2>
  *
  * Usage:
@@ -24,7 +24,7 @@ interface SectionHeaderProps {
   eyebrow: string;
   /** Main heading — bold Playfair */
   heading: string;
-  /** Optional italic emphasis appended to heading on the same line */
+  /** Optional emphasis appended to heading on the same line */
   headingEmphasis?: string;
   /** Optional subheading paragraph below the heading */
   subheading?: string;
@@ -68,7 +68,7 @@ export default function SectionHeader({
         {/* Heading */}
         <Tag
           className={cn(
-            "font-serif text-obsidian leading-[1.1]",
+            "font-sans font-bold uppercase tracking-widest text-obsidian leading-[1.1]",
             Tag === "h1"
               ? "text-5xl md:text-6xl lg:text-7xl"
               : "text-4xl md:text-5xl"
@@ -78,7 +78,7 @@ export default function SectionHeader({
           {headingEmphasis && (
             <>
               {" "}
-              <em className="italic font-normal text-obsidian/80 not-italic">
+              <em className="text-obsidian/80 not-italic">
                 {headingEmphasis}
               </em>
             </>

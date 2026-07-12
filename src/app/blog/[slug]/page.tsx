@@ -60,27 +60,27 @@ const portableTextComponents: any = {
       </p>
     ),
     h1: ({ children }: any) => (
-      <h1 className="font-serif text-4xl md:text-5xl text-obsidian mt-12 mb-6 leading-[1.1]">
+      <h1 className="font-sans font-bold uppercase tracking-widest text-4xl md:text-5xl text-obsidian mt-12 mb-6 leading-[1.1]">
         {children}
       </h1>
     ),
     h2: ({ children }: any) => (
-      <h2 className="font-serif text-3xl md:text-4xl text-obsidian mt-10 mb-5 leading-[1.15]">
+      <h2 className="font-sans font-bold uppercase tracking-widest text-3xl md:text-4xl text-obsidian mt-10 mb-5 leading-[1.15]">
         {children}
       </h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="font-serif text-2xl md:text-3xl text-obsidian mt-8 mb-4 leading-[1.2]">
+      <h3 className="font-sans font-bold uppercase tracking-widest text-2xl md:text-3xl text-obsidian mt-8 mb-4 leading-[1.2]">
         {children}
       </h3>
     ),
     h4: ({ children }: any) => (
-      <h4 className="font-serif text-xl md:text-2xl text-obsidian mt-6 mb-3">
+      <h4 className="font-sans font-bold uppercase tracking-widest text-xl md:text-2xl text-obsidian mt-6 mb-3">
         {children}
       </h4>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-2 border-roots-orange pl-6 my-8 py-2 font-serif italic text-xl md:text-2xl text-warm-gray leading-relaxed">
+      <blockquote className="border-l-2 border-roots-orange pl-6 my-8 py-2 font-sans font-bold uppercase tracking-widest text-xl md:text-2xl text-warm-gray leading-relaxed">
         {children}
       </blockquote>
     ),
@@ -105,7 +105,7 @@ const portableTextComponents: any = {
     strong: ({ children }: any) => (
       <strong className="font-semibold text-obsidian">{children}</strong>
     ),
-    em: ({ children }: any) => <em className="italic text-obsidian">{children}</em>,
+    em: ({ children }: any) => <em className="text-obsidian">{children}</em>,
     link: ({ children, value }: any) => {
       const rel = !value?.href?.startsWith('/') ? 'noreferrer noopener' : undefined;
       return (
@@ -140,7 +140,7 @@ export default async function BlogPostPage({
       <section className="pt-32 pb-0 bg-parchment">
         <div className="container mx-auto px-6 md:px-16 max-w-4xl">
           <span className="eyebrow">{sanityPost.category || "General"}</span>
-          <h1 className="font-serif text-4xl md:text-6xl text-obsidian leading-[1.05] mt-3 mb-6">
+          <h1 className="font-sans font-bold uppercase tracking-widest text-4xl md:text-6xl text-obsidian leading-[1.05] mt-3 mb-6">
             {sanityPost.title}
           </h1>
           <div className="flex items-center gap-4 mb-10">
@@ -175,7 +175,7 @@ export default async function BlogPostPage({
           <div className="mt-16 border-t border-obsidian/[0.08] pt-10 flex items-center gap-6">
             <div className="w-14 h-14 rounded-full overflow-hidden bg-linen flex-shrink-0">
               <div className="w-full h-full bg-roots-orange/20 flex items-center justify-center">
-                <span className="font-serif text-roots-orange text-xl">R</span>
+                <span className="font-sans font-bold uppercase tracking-widest text-roots-orange text-xl">R</span>
               </div>
             </div>
             <div>

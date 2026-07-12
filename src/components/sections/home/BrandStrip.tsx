@@ -97,9 +97,9 @@ export default function BrandStrip({ partners }: BrandStripProps) {
     >
       <div className="container mx-auto px-6 md:px-16 mb-10 text-center">
         <span className="eyebrow block mb-3">Our Trusted Partners</span>
-        <h2 className="font-serif text-3xl md:text-4xl text-obsidian leading-[1.1]">
+        <h2 className="font-sans font-bold uppercase tracking-widest text-3xl md:text-4xl text-obsidian leading-[1.1]">
           Brands That Trust{' '}
-          <em className="font-normal italic text-roots-orange">Root's</em>
+          <em className="text-roots-orange">Root's</em>
         </h2>
       </div>
 

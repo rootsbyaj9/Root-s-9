@@ -6,7 +6,7 @@
  *
  * Design:
  * - Dark obsidian background (contrasts with parchment gallery above)
- * - Large italic heading with orange accent
+ * - Large heading with orange accent
  * - Instagram logo + handle + CTA button
  */
 
@@ -69,9 +69,9 @@ export default function InstagramCTA({
         </div>
 
         {/* Heading */}
-        <h2 className="font-serif text-4xl md:text-5xl text-parchment leading-[1.1] mb-4">
+        <h2 className="font-sans font-bold uppercase tracking-widest text-4xl md:text-5xl text-parchment leading-[1.1] mb-4">
           Want to see{' '}
-          <em className="italic font-normal text-roots-orange">more?</em>
+          <em className="text-roots-orange">more?</em>
         </h2>
 
         <p className="font-sans text-warm-gray/80 text-base md:text-lg max-w-lg mx-auto leading-relaxed mb-8">

@@ -114,74 +114,90 @@ body {
 ═══════════════════════════════════════════════════════════ */
 @layer components {
 
-  /* Primary CTA button — roots-orange-dark bg ensures WCAG AA contrast with parchment text */
+  /* Primary CTA button — modern animated gradient glow using roots colors */
   .btn-primary {
     display: inline-block;
-    background-color: var(--color-roots-orange-dark);
+    position: relative;
+    background: linear-gradient(135deg, var(--color-roots-orange), var(--color-roots-orange-dark), var(--color-roots-orange));
+    background-size: 200% 200%;
+    animation: flow-gradient 3s ease infinite;
     color: var(--color-parchment);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 16px 40px;
     font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: 0.75rem;
+    font-weight: 600;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition: transform 150ms ease, box-shadow 150ms ease;
+    letter-spacing: 0.1em;
+    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     white-space: nowrap;
+    border: 1px solid rgba(254, 252, 248, 0.1);
+    box-shadow: 0 4px 15px rgba(232, 119, 34, 0.3);
 
     &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(201, 98, 30, 0.4);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(232, 119, 34, 0.5), 0 0 15px rgba(232, 119, 34, 0.3) inset;
     }
 
     &:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 8px rgba(201, 98, 30, 0.25);
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 2px 10px rgba(232, 119, 34, 0.4);
     }
   }
 
-  /* Outline button — obsidian border, transparent bg */
+  /* Outline button — modern glassmorphism */
   .btn-outline {
     display: inline-block;
-    border: 1px solid var(--color-obsidian);
+    border: 1px solid rgba(26, 16, 8, 0.2);
+    background-color: rgba(254, 252, 248, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: var(--color-obsidian);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 16px 40px;
     font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: 0.75rem;
+    font-weight: 600;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+    letter-spacing: 0.1em;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     white-space: nowrap;
 
     &:hover {
       background-color: var(--color-obsidian);
       color: var(--color-parchment);
+      border-color: var(--color-obsidian);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(26, 16, 8, 0.15);
     }
   }
 
-  /* Outline button — light variant for dark section backgrounds */
+  /* Outline button light — glassmorphism for dark backgrounds */
   .btn-outline-light {
     display: inline-block;
-    border: 1px solid var(--color-parchment);
+    border: 1px solid rgba(254, 252, 248, 0.3);
+    background-color: rgba(254, 252, 248, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: var(--color-parchment);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 16px 40px;
     font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: 0.75rem;
+    font-weight: 600;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+    letter-spacing: 0.1em;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     white-space: nowrap;
 
     &:hover {
       background-color: var(--color-parchment);
       color: var(--color-obsidian);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(254, 252, 248, 0.2);
     }
   }
 
@@ -266,6 +282,18 @@ body {
   }
   50% {
     background-position: 100% 50%;
+  }
+}
+
+@keyframes flow-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 

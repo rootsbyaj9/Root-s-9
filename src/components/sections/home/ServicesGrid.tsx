@@ -215,14 +215,14 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                   <span className="font-sans text-parchment/50 text-[10px] uppercase tracking-widest block">
                     {service.number}
                   </span>
-                  <h3 className="font-serif text-parchment text-xl mt-1">
+                  <h3 className="font-sans font-bold uppercase tracking-widest text-parchment text-xl mt-1">
                     {service.title}
                   </h3>
                 </div>
                 
                 {/* Bottom: Tagline + Arrow */}
                 <div className="flex items-end justify-between">
-                  <p className="font-sans text-parchment/70 text-[11px] italic leading-snug max-w-[70%]">
+                  <p className="font-sans text-parchment/70 text-[11px] leading-snug max-w-[70%]">
                     {service.tagline}
                   </p>
                   <span className="text-roots-orange text-lg group-hover:translate-x-1 transition-transform">→</span>
@@ -295,7 +295,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                     </span>
                     <h3 
                       className={`
-                        font-serif text-parchment whitespace-nowrap
+                        font-sans font-bold uppercase tracking-widest text-parchment whitespace-nowrap
                         transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
                         ${isActive ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"}
                       `}
@@ -312,7 +312,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                       ${isActive ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"}
                     `}
                   >
-                    <p className="font-sans text-parchment/70 text-[12px] italic max-w-[60%] leading-snug">
+                    <p className="font-sans text-parchment/70 text-[12px] max-w-[60%] leading-snug">
                       {service.tagline}
                     </p>
                     <Link

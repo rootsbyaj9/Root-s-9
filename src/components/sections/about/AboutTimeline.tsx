@@ -101,7 +101,7 @@ export default function AboutTimeline({
                 }`}
               >
                 <div className={`md:[direction:ltr] ${i % 2 === 0 ? "md:text-right" : ""}`}>
-                  <span className="font-serif text-6xl md:text-8xl text-roots-orange/20 leading-none block drop-shadow-md">
+                  <span className="font-sans font-bold uppercase tracking-widest text-6xl md:text-8xl text-roots-orange/20 leading-none block drop-shadow-md">
                     {m.year}
                   </span>
                 </div>

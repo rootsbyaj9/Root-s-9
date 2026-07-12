@@ -147,7 +147,7 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
           {homePageData?.heroEyebrow || "Hyderabad's Premium Family Salon"}
         </span>
 
-        <h1 className="font-serif italic font-normal text-[clamp(48px,6.5vw,80px)] text-parchment leading-[1.1] mb-10 tracking-tight">
+        <h1 className="font-sans font-bold uppercase tracking-widest text-[clamp(48px,6.5vw,80px)] text-parchment leading-[1.1] mb-10 tracking-tight">
           <span className="block mb-1 md:mb-2">
             {homePageData?.heroHeadline || "Your Complete Destination for"}
           </span>

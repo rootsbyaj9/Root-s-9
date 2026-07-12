@@ -70,7 +70,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
       <section className="pt-36 pb-16 bg-parchment overflow-hidden">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl text-center">
           <span className="eyebrow inline-block mb-3">OUR JOURNAL</span>
-          <h1 className="font-serif text-5xl md:text-7xl text-obsidian italic leading-[1.0] mb-4 flex justify-center flex-wrap">
+          <h1 className="font-sans font-bold uppercase tracking-widest text-5xl md:text-7xl text-obsidian leading-[1.0] mb-4 flex justify-center flex-wrap">
             {titleLetters.map((char, i) => (
               <span key={i} className="inline-block overflow-hidden py-1">
                 <span className="blog-title-char inline-block translate-y-[120%]">
@@ -118,7 +118,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
                   <div className="fade-element p-8 md:p-12">
                     <CategoryPill label={featured.category} />
                     <Link href={`/blog/${featured.slug}`}>
-                      <h2 className="font-serif text-3xl md:text-4xl text-obsidian leading-[1.1] mt-4 mb-5 transition-colors duration-200 hover:text-roots-orange">
+                      <h2 className="font-sans font-bold uppercase tracking-widest text-3xl md:text-4xl text-obsidian leading-[1.1] mt-4 mb-5 transition-colors duration-200 hover:text-roots-orange">
                         {featured.title}
                       </h2>
                     </Link>
@@ -139,7 +139,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
       })() : (
         <section className="bg-linen pt-8 pb-16">
           <div className="container mx-auto px-6 md:px-16 max-w-7xl text-center py-20">
-            <h2 className="font-serif text-3xl text-obsidian mb-4">New content coming soon.</h2>
+            <h2 className="font-sans font-bold uppercase tracking-widest text-3xl text-obsidian mb-4">New content coming soon.</h2>
             <p className="font-sans text-warm-gray max-w-md mx-auto">We are currently curating our best hair, skin, and bridal tips. Check back shortly for our first post!</p>
           </div>
         </section>
@@ -177,7 +177,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
 
                     <div className="p-6 flex flex-col flex-grow">
                       <Link href={`/blog/${post.slug}`} className="block mb-3">
-                        <h3 className="font-serif text-2xl text-obsidian leading-snug transition-colors duration-200 group-hover:text-roots-orange">
+                        <h3 className="font-sans font-bold uppercase tracking-widest text-2xl text-obsidian leading-snug transition-colors duration-200 group-hover:text-roots-orange">
                           {post.title}
                         </h3>
                       </Link>

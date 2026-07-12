@@ -86,10 +86,10 @@ export default function AboutValues({
               key={v.number}
               className="bg-linen p-10 group hover:bg-parchment transition-colors duration-500 flex flex-col"
             >
-              <span className="font-serif text-7xl text-obsidian/[0.06] group-hover:text-roots-orange/20 transition-colors duration-500 leading-none block mb-4">
+              <span className="font-sans font-bold uppercase tracking-widest text-7xl text-obsidian/[0.06] group-hover:text-roots-orange/20 transition-colors duration-500 leading-none block mb-4">
                 {v.number}
               </span>
-              <h3 className="font-serif text-2xl text-obsidian mb-4">{v.title}</h3>
+              <h3 className="font-sans font-bold uppercase tracking-widest text-2xl text-obsidian mb-4">{v.title}</h3>
               <p className="font-sans text-warm-gray text-sm leading-relaxed">{v.body}</p>
             </div>
           ))}

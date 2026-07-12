@@ -526,7 +526,7 @@ function SuccessMessage({
         </svg>
       </div>
       <div>
-        <h3 className="font-serif text-2xl text-obsidian mb-2">
+        <h3 className="font-sans font-bold uppercase tracking-widest text-2xl text-obsidian mb-2">
           {tab === 'booking' ? 'Appointment Requested!' : 'Callback Requested!'}
         </h3>
         <p className="font-sans text-sm text-warm-gray leading-relaxed max-w-xs mx-auto">

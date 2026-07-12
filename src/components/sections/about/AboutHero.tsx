@@ -99,8 +99,8 @@ export default function AboutHero({
 
       <div ref={contentRef} className="relative z-10 container mx-auto px-6 md:px-16 max-w-7xl">
         <span className="eyebrow text-roots-orange/80 mb-3 block">{eyebrow}</span>
-        <h1 className="font-serif text-6xl md:text-8xl text-parchment leading-[0.95] max-w-3xl">
-          Where Craft <em className="italic font-normal text-roots-orange">Meets</em> Care.
+        <h1 className="font-sans font-bold uppercase tracking-widest text-6xl md:text-8xl text-parchment leading-[0.95] max-w-3xl">
+          Where Craft <em className="text-roots-orange">Meets</em> Care.
         </h1>
         <p className="mt-6 font-sans text-parchment/70 text-base md:text-lg max-w-md leading-relaxed">
           {subtext}

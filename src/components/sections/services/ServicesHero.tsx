@@ -50,7 +50,7 @@ export default function ServicesHero() {
 
         {/* H1 */}
         <div className="overflow-hidden pb-4 -mb-4">
-          <h1 ref={headlineRef} className="font-serif text-5xl md:text-[72px] leading-tight text-obsidian">
+          <h1 ref={headlineRef} className="font-sans font-bold uppercase tracking-widest text-5xl md:text-[72px] leading-tight text-obsidian">
             Our Services<span className="italic">.</span>
           </h1>
         </div>

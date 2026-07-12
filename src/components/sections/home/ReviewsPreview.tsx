@@ -31,7 +31,7 @@ function Avatar({ name, avatar, initial }: { name: string; avatar?: string; init
 
   if (!avatar || error) {
     return (
-      <div className="w-10 h-10 rounded-full bg-obsidian text-parchment flex items-center justify-center font-serif font-bold shrink-0">
+      <div className="w-10 h-10 rounded-full bg-obsidian text-parchment flex items-center justify-center font-sans font-bold uppercase tracking-widest font-bold shrink-0">
         {initial}
       </div>
     );
@@ -113,7 +113,7 @@ export default function ReviewsPreview({ reviews = [] }: { reviews?: any[] }) {
                 </div>
                 
                 {/* Quote */}
-                <p className="font-serif text-base text-obsidian leading-relaxed mb-5 flex-1 line-clamp-5">
+                <p className="font-sans font-bold uppercase tracking-widest text-base text-obsidian leading-relaxed mb-5 flex-1 line-clamp-5">
                   &ldquo;{review.quote}&rdquo;
                 </p>
 

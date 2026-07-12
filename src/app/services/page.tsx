@@ -39,7 +39,7 @@ export default async function ServicesPage() {
         <span className="font-sans text-[11px] uppercase tracking-[0.15em] text-roots-orange block mb-2">
           MENU
         </span>
-        <p className="font-serif text-4xl text-obsidian" role="heading" aria-level={2}>
+        <p className="font-sans font-bold uppercase tracking-widest text-4xl text-obsidian" role="heading" aria-level={2}>
           Our Services<span className="italic">.</span>
         </p>
       </div>

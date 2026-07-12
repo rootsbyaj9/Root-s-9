@@ -61,7 +61,7 @@ function BentoCard({ item }: { item: BentoItem }) {
       {/* Dark overlay focuses the picture and makes text pop */}
       <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/40 -[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center pointer-events-none">
         <div className="text-parchment text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-          <span className="font-serif text-2xl md:text-3xl block mb-2">{item.title}</span>
+          <span className="font-sans font-bold uppercase tracking-widest text-2xl md:text-3xl block mb-2">{item.title}</span>
           <span className="font-sans text-xs uppercase tracking-widest">{item.description}</span>
         </div>
       </div>
@@ -140,7 +140,7 @@ export default function InfiniteBentoScroll({ transformations = [] }: { transfor
         <span className="font-sans text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-obsidian mb-4 bg-parchment/80 px-4 py-1.5 rounded-full ">
           Before & After
         </span>
-        <h1 className="font-serif text-4xl md:text-6xl text-obsidian px-8 py-3 bg-parchment/80 rounded-2xl  shadow-soft max-w-2xl text-center">
+        <h1 className="font-sans font-bold uppercase tracking-widest text-4xl md:text-6xl text-obsidian px-8 py-3 bg-parchment/80 rounded-2xl  shadow-soft max-w-2xl text-center">
           The Roots Gallery
         </h1>
       </div>

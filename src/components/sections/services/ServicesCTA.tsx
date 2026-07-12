@@ -6,7 +6,7 @@ export default function ServicesCTA() {
   return (
     <section className="bg-obsidian py-24 md:py-32 px-8">
       <div className="container mx-auto max-w-[1400px] text-center flex flex-col items-center">
-        <h2 className="font-serif text-[40px] md:text-[48px] text-parchment">
+        <h2 className="font-sans font-bold uppercase tracking-widest text-[40px] md:text-[48px] text-parchment">
           Ready to book your look?
         </h2>
 

@@ -85,9 +85,9 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
       <section className="pt-36 pb-16 bg-parchment">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl text-center">
           <span className="eyebrow hero-text">FIND US</span>
-          <h1 className="hero-text font-serif text-5xl md:text-7xl text-obsidian leading-[1.0] mt-2 mb-4">
+          <h1 className="hero-text font-sans font-bold uppercase tracking-widest text-5xl md:text-7xl text-obsidian leading-[1.0] mt-2 mb-4">
             Root&apos;s is{' '}
-            <em className="italic font-normal text-roots-orange">near you.</em>
+            <em className="text-roots-orange">near you.</em>
           </h1>
           <p className="hero-text font-sans text-warm-gray text-base md:text-lg max-w-xl mx-auto leading-relaxed">
             Leading salons across Hyderabad — pick the branch closest to your home and step into your best version.
@@ -120,7 +120,7 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
                 )}
                 {/* Content Side */}
                 <div className="p-8 md:p-12 flex flex-col flex-1 order-2 md:order-1 justify-center">
-                  <h2 className="font-serif text-3xl text-obsidian mb-4">{name}</h2>
+                  <h2 className="font-sans font-bold uppercase tracking-widest text-3xl text-obsidian mb-4">{name}</h2>
                   <p className="font-sans text-warm-gray text-sm md:text-base leading-relaxed mb-8">
                     {branch.description || "Experience premium styling at our signature location. Let our experts craft your perfect look."}
                   </p>

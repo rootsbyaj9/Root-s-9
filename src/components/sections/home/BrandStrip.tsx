@@ -90,8 +90,14 @@ function LogoSlot({ partner }: { partner: Partner }) {
 export default function BrandStrip({ partners }: BrandStripProps) {
   const items = partners && partners.length > 0 ? partners : PLACEHOLDER_SLOTS;
 
+  // Ponytail: ensure enough items to fill ultrawide monitors before doubling.
+  let baseItems = [...items];
+  while (baseItems.length < 12) {
+    baseItems = [...baseItems, ...items];
+  }
+
   // Duplicate for seamless loop (2× minimum)
-  const track = [...items, ...items];
+  const track = [...baseItems, ...baseItems];
 
   return (
     <section

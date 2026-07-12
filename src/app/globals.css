@@ -29,9 +29,9 @@
   --color-warm-gray: #4A3F36;      /* Secondary text, captions — WCAG AA compliant */
 
   /* Typography */
-  --font-sans: 'Montaga', serif;
-  --font-serif: 'Cardo', serif;
-  --font-script: 'Italianno', cursive;
+  --font-sans: var(--font-montaga);
+  --font-serif: var(--font-cardo);
+  --font-script: var(--font-italianno);
 
   /* Border Radius */
   --radius-md: 12px;

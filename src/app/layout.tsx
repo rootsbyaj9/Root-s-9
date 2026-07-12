@@ -10,6 +10,29 @@ import SiteChrome from "@/components/layout/SiteChrome";
 import Script from "next/script";
 import { client } from "@/sanity/client";
 import { getSiteSettingsQuery, getLocationsQuery } from "@/sanity/lib/queries";
+import { Montaga, Cardo, Italianno } from "next/font/google";
+
+const montaga = Montaga({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-montaga",
+  display: "swap",
+});
+
+const cardo = Cardo({
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-cardo",
+  display: "swap",
+});
+
+const italianno = Italianno({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-italianno",
+  display: "swap",
+});
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://root-s-9.vercel.app";
@@ -127,12 +150,9 @@ export default async function RootLayout({
     : ["Uppal", "Tarnaka"];
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`scroll-smooth ${montaga.variable} ${cardo.variable} ${italianno.variable}`}>
       <head>
         {/* ── Preconnect to external origins ── */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Italianno&family=Montaga&display=swap" rel="stylesheet" />
         <link rel="preconnect" href="https://cdn.sanity.io" />
         <link rel="preconnect" href="https://lh3.googleusercontent.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />

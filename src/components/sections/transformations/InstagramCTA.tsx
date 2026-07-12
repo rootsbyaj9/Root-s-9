@@ -70,7 +70,7 @@ export default function InstagramCTA({
         </div>
 
         {/* Heading */}
-        <h2 className="font-sans font-bold uppercase tracking-widest text-4xl md:text-5xl text-parchment leading-[1.1] mb-4">
+        <h2 className="font-serif text-4xl md:text-5xl text-parchment leading-[1.1] mb-4">
           Want to see{' '}
           <em className="text-roots-orange">more?</em>
         </h2>

@@ -152,13 +152,13 @@ export default function AboutFounder({
         {/* Text column */}
         <div ref={textRef} className="order-1 md:order-2 flex flex-col items-start gap-4">
           <span className="eyebrow block">FOUNDER&apos;S NOTE</span>
-          <h2 className="font-sans font-bold uppercase tracking-widest text-4xl md:text-5xl text-obsidian leading-[1.05] mt-3 mb-4">
+          <h2 className="font-serif text-4xl md:text-5xl text-obsidian leading-[1.05] mt-3 mb-4">
             {founderHeadline}
           </h2>
 
           {/* Pull quote */}
           <blockquote className="border-l-2 border-roots-orange pl-6 my-4 py-2 transition-colors">
-            <p className="font-sans font-bold uppercase tracking-widest text-xl text-warm-gray leading-relaxed mb-3">
+            <p className="font-serif text-xl text-warm-gray leading-relaxed mb-3">
               &ldquo;{founderQuote}&rdquo;
             </p>
             <footer className="font-sans text-xs font-semibold uppercase tracking-widest text-roots-orange block">

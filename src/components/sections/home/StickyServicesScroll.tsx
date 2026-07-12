@@ -163,7 +163,7 @@ export default function StickyServicesScroll() {
       >
         <span className="eyebrow">FEATURED SERVICES</span>
         <div className="mt-3 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-          <h2 className="font-sans font-bold uppercase tracking-widest text-obsidian leading-[1.1]" style={{ fontSize: "clamp(2.2rem, 4vw, 3.25rem)" }}>
+          <h2 className="font-serif text-obsidian leading-[1.1]" style={{ fontSize: "clamp(2.2rem, 4vw, 3.25rem)" }}>
             Crafted for{" "}
             <em className="text-roots-orange">Every Look.</em>
           </h2>
@@ -206,7 +206,7 @@ export default function StickyServicesScroll() {
             >
               <span className="item-eyebrow eyebrow mb-5 block">{item.eyebrow}</span>
               <h3
-                className="item-heading font-sans font-bold uppercase tracking-widest text-obsidian whitespace-pre-line mb-6"
+                className="item-heading font-serif text-obsidian whitespace-pre-line mb-6"
                 style={{ fontSize: "clamp(1.75rem, 2.5vw, 2.75rem)", lineHeight: 1.1 }}
               >
                 {item.heading}
@@ -329,7 +329,7 @@ export default function StickyServicesScroll() {
               style={{ opacity: i === 0 ? 1 : 0.4 }}
             >
               <span className="eyebrow mb-3 block">{item.eyebrow}</span>
-              <h3 className="font-sans font-bold uppercase tracking-widest text-obsidian leading-[1.15] mb-3" style={{ fontSize: "1.5rem" }}>
+              <h3 className="font-serif text-obsidian leading-[1.15] mb-3" style={{ fontSize: "1.5rem" }}>
                 {item.heading}
               </h3>
               <p className="font-sans text-warm-gray leading-relaxed mb-5" style={{ fontSize: "0.875rem" }}>

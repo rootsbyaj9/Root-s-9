@@ -383,7 +383,7 @@ export default function Navbar({ settings }: { settings: any }) {
               if (link.label === "Services") {
                 return (
                   <div key="services" className="mobile-nav-link flex flex-col items-center w-full">
-                    <div className="font-sans font-bold uppercase tracking-widest text-3xl text-obsidian mb-3">
+                    <div className="font-serif text-3xl text-obsidian mb-3">
                       {link.label}
                     </div>
                     <div className="flex flex-col items-center gap-2">
@@ -408,7 +408,7 @@ export default function Navbar({ settings }: { settings: any }) {
                   href={link.href}
                   onClick={() => { handleNavClick(link.href); setMenuOpen(false); }}
                   className={cn(
-                    "mobile-nav-link font-sans font-bold uppercase tracking-widest text-3xl text-obsidian hover:text-roots-orange transition-colors duration-200",
+                    "mobile-nav-link font-serif text-3xl text-obsidian hover:text-roots-orange transition-colors duration-200",
                     pathname === link.href && "text-roots-orange"
                   )}
                   tabIndex={menuOpen ? 0 : -1}

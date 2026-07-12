@@ -86,7 +86,7 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
       {/* Content */}
       <div className="flex flex-col flex-1 p-6 md:p-7">
         {/* Title */}
-        <h3 className="font-sans font-bold uppercase tracking-widest text-[22px] md:text-[24px] text-obsidian leading-snug">
+        <h3 className="font-serif text-[22px] md:text-[24px] text-obsidian leading-snug">
           {cat.title}
         </h3>
 
@@ -236,7 +236,7 @@ export default function ServicesContent({
           {/* Section header */}
           <div className="mb-12 md:mb-16 text-center md:text-left">
             <span className="eyebrow">{meta.eyebrow}</span>
-            <h2 className="font-sans font-bold uppercase tracking-widest text-[40px] md:text-[52px] text-obsidian mt-2">
+            <h2 className="font-serif text-[40px] md:text-[52px] text-obsidian mt-2">
               {meta.heading}
             </h2>
             <p className="font-sans text-[16px] text-obsidian/55 max-w-[560px] mt-4 mx-auto md:mx-0 leading-relaxed">

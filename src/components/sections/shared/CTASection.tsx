@@ -28,7 +28,7 @@ export default function CTASection({
   return (
     <section data-theme="dark" className="py-24 md:py-32 bg-obsidian text-parchment">
       <div className="container mx-auto px-6 md:px-16 flex flex-col items-center text-center max-w-3xl">
-        <h2 className="font-sans font-bold uppercase tracking-widest text-4xl md:text-5xl text-parchment mb-6 leading-[1.15]">
+        <h2 className="font-serif text-4xl md:text-5xl text-parchment mb-6 leading-[1.15]">
           {resolvedHeading}
         </h2>
         <p className="font-sans text-parchment/70 text-base md:text-lg leading-relaxed mb-10 max-w-xl">

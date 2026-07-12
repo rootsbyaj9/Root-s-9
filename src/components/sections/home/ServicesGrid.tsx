@@ -215,7 +215,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                   <span className="font-sans text-parchment/50 text-[10px] uppercase tracking-widest block">
                     {service.number}
                   </span>
-                  <h3 className="font-sans font-bold uppercase tracking-widest text-parchment text-xl mt-1">
+                  <h3 className="font-serif text-parchment text-xl mt-1">
                     {service.title}
                   </h3>
                 </div>
@@ -295,7 +295,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                     </span>
                     <h3 
                       className={`
-                        font-sans font-bold uppercase tracking-widest text-parchment whitespace-nowrap
+                        font-serif text-parchment whitespace-nowrap
                         transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
                         ${isActive ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"}
                       `}

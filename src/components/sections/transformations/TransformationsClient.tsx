@@ -24,7 +24,7 @@ export default function TransformationsClient({ cmsTransformations = [] }: Trans
       <section className="pt-36 pb-12 bg-parchment">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl text-center">
           <span className="eyebrow block mb-4 text-roots-orange tracking-[0.2em]">OUR PORTFOLIO</span>
-          <h1 className="font-sans font-bold uppercase tracking-widest text-5xl md:text-7xl text-obsidian leading-[1.0] mt-2 mb-5">
+          <h1 className="font-serif text-5xl md:text-7xl text-obsidian leading-[1.0] mt-2 mb-5">
             Real{' '}
             <em className="text-obsidian/70">Results.</em>
           </h1>

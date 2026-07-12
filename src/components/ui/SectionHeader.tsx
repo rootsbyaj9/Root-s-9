@@ -68,7 +68,7 @@ export default function SectionHeader({
         {/* Heading */}
         <Tag
           className={cn(
-            "font-sans font-bold uppercase tracking-widest text-obsidian leading-[1.1]",
+            "font-serif text-obsidian leading-[1.1]",
             Tag === "h1"
               ? "text-5xl md:text-6xl lg:text-7xl"
               : "text-4xl md:text-5xl"

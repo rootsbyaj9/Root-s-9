@@ -103,7 +103,7 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
           <span className="hero-element eyebrow text-roots-orange/80 mb-3 block">
             {cmsData?.heroEyebrow || "FRANCHISE OPPORTUNITY"}
           </span>
-          <h1 ref={titleRef} className="hero-element font-sans font-bold uppercase tracking-widest text-6xl md:text-8xl text-parchment leading-[0.95] max-w-3xl">
+          <h1 ref={titleRef} className="hero-element font-serif text-6xl md:text-8xl text-parchment leading-[0.95] max-w-3xl">
             {cmsData?.heroHeadline ? (
               <span dangerouslySetInnerHTML={{ __html: cmsData.heroHeadline.replace("Root's", "<em class='text-roots-orange'>Root&apos;s</em>") }} />
             ) : (
@@ -148,7 +148,7 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
                 className="fade-element bg-linen rounded-2xl p-10 border border-obsidian/[0.06] hover:shadow-lg transition-shadow duration-300 relative group overflow-hidden"
               >
                 {/* Background decorative number */}
-                <span className="font-sans font-bold uppercase tracking-widest text-8xl text-obsidian/[0.03] absolute right-0 bottom-0 translate-x-4 translate-y-4 select-none leading-none z-0">
+                <span className="font-serif text-8xl text-obsidian/[0.03] absolute right-0 bottom-0 translate-x-4 translate-y-4 select-none leading-none z-0">
                   {num}
                 </span>
 
@@ -158,7 +158,7 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
                   >
                     {r.icon || <Icon className="w-10 h-10 text-roots-orange stroke-1" />}
                   </div>
-                  <h3 className="font-sans font-bold uppercase tracking-widest text-2xl text-obsidian mb-4">{r.title}</h3>
+                  <h3 className="font-serif text-2xl text-obsidian mb-4">{r.title}</h3>
                   <p className="font-sans text-warm-gray text-sm leading-relaxed">{r.body}</p>
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
                 <span className="font-sans text-sm text-parchment/50 uppercase tracking-widest flex-shrink-0 group-hover:text-roots-orange transition-colors duration-300">
                   {point.label}
                 </span>
-                <span className="font-sans font-bold uppercase tracking-widest text-lg text-parchment text-right">
+                <span className="font-serif text-lg text-parchment text-right">
                   {point.value}
                 </span>
               </div>
@@ -206,7 +206,7 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
       <section className="bg-roots-orange py-20 relative overflow-hidden">
         <div className="container mx-auto px-6 md:px-16 max-w-4xl text-center relative z-10">
           <h2 
-            className="fade-element font-sans font-bold uppercase tracking-widest text-4xl md:text-6xl text-parchment leading-[1.05] mb-5"
+            className="fade-element font-serif text-4xl md:text-6xl text-parchment leading-[1.05] mb-5"
           >
             Ready to start the conversation?
           </h2>

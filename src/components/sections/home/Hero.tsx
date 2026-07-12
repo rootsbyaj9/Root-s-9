@@ -136,7 +136,7 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
         ref={contentRef}
         className="relative z-20 text-center max-w-5xl px-6 md:px-8 mx-auto flex flex-col items-center pointer-events-auto"
       >
-        <span className="eyebrow-text font-sans text-roots-orange uppercase tracking-[0.2em] text-xs md:text-sm font-semibold mb-6 block drop-shadow-md">
+        <span className="eyebrow-text font-serif text-roots-orange uppercase tracking-[0.2em] text-xs md:text-sm font-semibold mb-6 block drop-shadow-md">
           {homePageData?.heroEyebrow || "Hyderabad's Premium Family Salon"}
         </span>
 
@@ -148,7 +148,7 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
             Hair, Skin & Bridal
           </span>
           <span className="font-serif italic font-medium text-[clamp(36px,4vw,56px)] text-parchment/90 leading-tight">
-            {homePageData?.heroHeadlineItalic || "& Tattoo in Hyderabad"}
+            {homePageData?.heroHeadlineItalic || "& Tattoo"}
           </span>
         </h1>
 

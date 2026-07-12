@@ -34,14 +34,14 @@ interface BrandStripProps {
 
 // ─── Placeholder slots (8 brand slots) ───────────────────────────────────────
 const PLACEHOLDER_SLOTS: Partner[] = [
-  { name: 'Partner Brand 01' },
-  { name: 'Partner Brand 02' },
-  { name: 'Partner Brand 03' },
-  { name: 'Partner Brand 04' },
-  { name: 'Partner Brand 05' },
-  { name: 'Partner Brand 06' },
-  { name: 'Partner Brand 07' },
-  { name: 'Partner Brand 08' },
+  { name: 'Certificate 01' },
+  { name: 'Certificate 02' },
+  { name: 'Certificate 03' },
+  { name: 'Certificate 04' },
+  { name: 'Certificate 05' },
+  { name: 'Certificate 06' },
+  { name: 'Certificate 07' },
+  { name: 'Certificate 08' },
 ];
 
 function LogoSlot({ partner }: { partner: Partner }) {
@@ -56,8 +56,9 @@ function LogoSlot({ partner }: { partner: Partner }) {
   ) : (
     /* Placeholder — exactly 160×60, shows slot number + expected spec */
     <div className="w-full h-full flex flex-col items-center justify-center gap-1 rounded border border-dashed border-obsidian/15 bg-obsidian/[0.03] select-none">
-      <span className="font-sans text-[8px] uppercase tracking-[0.18em] text-obsidian/25 font-semibold leading-none">
-        Partner Logo
+      <span className="font-sans text-[8px] uppercase tracking-[0.18em] text-obsidian/25 font-semibold leading-none text-center px-2">
+        Certificate
+
       </span>
       <span className="font-sans text-[7px] text-obsidian/20 leading-none">
         160 × 60 px · PNG / SVG
@@ -93,13 +94,13 @@ export default function BrandStrip({ partners }: BrandStripProps) {
   return (
     <section
       className="py-16 md:py-20 bg-parchment border-y border-obsidian/[0.06] overflow-hidden"
-      aria-label="Our partner brands"
+      aria-label="Certificates and achievements"
     >
       <div className="container mx-auto px-6 md:px-16 mb-10 text-center">
-        <span className="eyebrow block mb-3">Our Trusted Partners</span>
-        <h2 className="font-sans font-bold uppercase tracking-widest text-3xl md:text-4xl text-obsidian leading-[1.1]">
-          Brands That Trust{' '}
-          <em className="text-roots-orange">Root's</em>
+        <span className="eyebrow block mb-3">Our Credentials</span>
+        <h2 className="font-serif text-3xl md:text-4xl text-obsidian leading-[1.1]">
+          Certificates &{' '}
+          <em className="font-normal italic text-roots-orange">Achievements</em>
         </h2>
       </div>
 

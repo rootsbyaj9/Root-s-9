@@ -66,7 +66,7 @@ function LogoSlot({ partner }: { partner: Partner }) {
     </div>
   );
 
-  const wrapperClass = "flex items-center justify-center w-[160px] h-[60px] opacity-70 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0";
+  const wrapperClass = "flex items-center justify-center w-[160px] h-[60px]";
 
   const wrapper = partner.websiteUrl ? (
     <a

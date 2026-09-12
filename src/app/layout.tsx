@@ -10,7 +10,7 @@ import SiteChrome from "@/components/layout/SiteChrome";
 import Script from "next/script";
 import { client } from "@/sanity/client";
 import { getSiteSettingsQuery, getLocationsQuery } from "@/sanity/lib/queries";
-import { Montaga, Cardo, Italianno } from "next/font/google";
+import { Montaga, Cardo, Italianno, Outfit } from "next/font/google";
 
 const montaga = Montaga({
   weight: "400",
@@ -31,6 +31,13 @@ const italianno = Italianno({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-italianno",
+  display: "swap",
+});
+
+const outfit = Outfit({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-outfit",
   display: "swap",
 });
 
@@ -131,6 +138,36 @@ const jsonLd = [
     },
     "url": `${BASE_URL}/locations`,
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "HairSalon",
+    "name": "Root's The Family Salon - Brahmanpally",
+    "image": `${BASE_URL}/logo-nobg1.svg`,
+    "telephone": "+919700744357",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Brahmanpally",
+      "addressLocality": "Hyderabad",
+      "addressRegion": "Telangana",
+      "addressCountry": "IN",
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      "opens": "10:00",
+      "closes": "21:00",
+    },
+    "priceRange": "₹₹",
+    "url": `${BASE_URL}/locations`,
+  },
 ];
 
 export const revalidate = 60;
@@ -147,10 +184,10 @@ export default async function RootLayout({
   
   const branches = (locations || []).length > 0 
     ? locations.map((l: any) => l.shortName).filter(Boolean) 
-    : ["Uppal", "Tarnaka"];
+    : ["Uppal", "Tarnaka", "Brahmanpally"];
 
   return (
-    <html lang="en" className={`scroll-smooth ${montaga.variable} ${cardo.variable} ${italianno.variable}`}>
+    <html lang="en" className={`${montaga.variable} ${cardo.variable} ${italianno.variable} ${outfit.variable}`}>
       <head>
         {/* ── Preconnect to external origins ── */}
         <link rel="preconnect" href="https://cdn.sanity.io" />

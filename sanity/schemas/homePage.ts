@@ -4,245 +4,304 @@ export const homePage = defineType({
   name: "homePage",
   title: "🏠 Home Page",
   type: "document",
-  groups: [
-    { name: "hero",      title: "🎬 Hero Section",           default: true },
-    { name: "stats",     title: "📊 Stats Strip"                          },
-    { name: "services",  title: "💇 Service Grid Images"                  },
-    { name: "transform", title: "🔁 Before & After Slider"               },
-  ],
   fields: [
-    // ── HERO ─────────────────────────────────────────────────────────────
     defineField({
-      name: "heroEyebrow",
-      title: "Hero Small Label (above headline)",
-      type: "string",
-      group: "hero",
-      description: 'Small uppercase text shown above the main headline. e.g. "The Premium Experience"',
-      initialValue: "Hyderabad's premium family salon for hair, skin, bridal & tattoo artistry",
-    }),
-    defineField({
-      name: "heroHeadline",
-      title: "Hero Headline — Normal Text",
-      type: "string",
-      group: "hero",
-      description: 'First line of the big heading. e.g. "Walk in."',
-      initialValue: "Walk in.",
-    }),
-    defineField({
-      name: "heroHeadlineItalic",
-      title: "Hero Headline — Italic Text",
-      type: "string",
-      group: "hero",
-      description: 'Second line of the big heading, displayed in italic. e.g. "Walk out different."',
-      initialValue: "Walk out different.",
-    }),
-    defineField({
-      name: "heroCtaText",
-      title: "Hero Button Label",
-      type: "string",
-      group: "hero",
-      description: 'Text on the main call-to-action button. e.g. "Reserve Your Time" or "Book Your Appointment"',
-      initialValue: "Book Your Appointment",
-    }),
-    defineField({
-      name: "heroBackgroundImage",
-      title: "Hero Background Photo",
-      type: "image",
-      group: "hero",
-      options: { hotspot: true },
-      description: "📸 HERO BACKGROUND — fills the entire screen on load. Required Size: exactly 1920 × 1080 px (16:9). Max file size: 500KB. Format: WEBP (or JPG). 📱 MOBILE FIRST: Ensure the subject is centred so it crops well on mobile screens automatically.",
-      fields: [
-        defineField({
-          name: "alt",
-          title: "Image Description",
-          type: "string",
-          description: 'e.g. "Stylist doing a bridal hairstyle at Root\'s The Family Salon"',
-        }),
-      ],
-    }),
-
-
-    // ── STATS ─────────────────────────────────────────────────────────────
-    defineField({
-      name: "statYears",
-      title: "Years in Business",
-      type: "number",
-      group: "stats",
-      description: "Displayed in the stats strip on the homepage. Just enter the number, e.g. 8",
-      initialValue: 8,
-    }),
-    defineField({
-      name: "statRating",
-      title: "Google Rating",
-      type: "number",
-      group: "stats",
-      description: "Your star rating out of 5. e.g. 4.8",
-      initialValue: 4.8,
-    }),
-    defineField({
-      name: "statLocations",
-      title: "Number of Branches",
-      type: "number",
-      group: "stats",
-      description: "How many active branch locations you have. e.g. 2",
-      initialValue: 2,
-    }),
-    defineField({
-      name: "statReviews",
-      title: "Total Reviews (in thousands)",
-      type: "number",
-      group: "stats",
-      description: "Enter the number in thousands. e.g. enter 1.6 to display 1.6K reviews.",
-      initialValue: 1.6,
-    }),
-    defineField({
-      name: "partners",
-      title: "Partner Brands",
+      name: "pageBuilder",
+      title: "Page Sections (Page Builder)",
+      description: "Add, edit, and reorder sections exactly as they appear on the live site.",
       type: "array",
-      group: "stats",
-      description: "Logos shown in the scrolling brand strip (BrandStrip).",
       of: [
+        // ── 1. HERO SECTION ─────────────────────────────────────────────────────────────
         {
+          name: "heroSection",
+          title: "🎬 Hero Section",
           type: "object",
           fields: [
-            { name: "name", title: "Brand Name", type: "string" },
-            { name: "logo", title: "Logo Image", type: "image" },
-            { name: "websiteUrl", title: "Website URL", type: "url" },
+            defineField({
+              name: "heroEyebrow",
+              title: "Small Label (above headline)",
+              type: "string",
+              description: 'e.g. "Hyderabad\'s premium family salon"',
+              initialValue: "Hyderabad's premium family salon for hair, skin, bridal & tattoo artistry",
+            }),
+            defineField({
+              name: "heroHeadline",
+              title: "Headline — Normal Text",
+              type: "string",
+              description: 'e.g. "Walk in."',
+              initialValue: "Walk in.",
+            }),
+            defineField({
+              name: "heroHeadlineItalic",
+              title: "Headline — Italic Text",
+              type: "string",
+              description: 'e.g. "Walk out different."',
+              initialValue: "Walk out different.",
+            }),
+            defineField({
+              name: "heroCtaText",
+              title: "Button Label",
+              type: "string",
+              description: 'e.g. "Book Your Appointment"',
+              initialValue: "Book Your Appointment",
+            }),
+            defineField({
+              name: "heroBackgroundImage",
+              title: "Background Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: exactly 1920 × 1080 px (16:9). Format: WEBP or JPG.",
+              fields: [
+                defineField({ name: "alt", title: "Alt Text", type: "string" }),
+              ],
+            }),
           ],
+          preview: {
+            select: { title: "heroHeadline", subtitle: "heroHeadlineItalic", media: "heroBackgroundImage" },
+            prepare({ title, subtitle, media }) {
+              return { title: "Hero Section", subtitle: `${title} ${subtitle}`, media };
+            },
+          },
+        },
+
+        // ── 2. TRUST STRIP ──────────────────────────────────────────────────────────────
+        {
+          name: "trustStripSection",
+          title: "📊 Trust Stats Strip",
+          type: "object",
+          fields: [
+            defineField({
+              name: "statYears",
+              title: "Years in Business",
+              type: "number",
+              initialValue: 8,
+            }),
+            defineField({
+              name: "statRating",
+              title: "Google Rating",
+              type: "number",
+              initialValue: 4.8,
+            }),
+            defineField({
+              name: "statLocations",
+              title: "Number of Branches",
+              type: "number",
+              initialValue: 2,
+            }),
+            defineField({
+              name: "statReviews",
+              title: "Total Reviews (in thousands, e.g. 1.6)",
+              type: "number",
+              initialValue: 1.6,
+            }),
+            defineField({
+              name: "partners",
+              title: "Partner Brands (Marquee)",
+              type: "array",
+              of: [
+                {
+                  type: "object",
+                  fields: [
+                    { name: "name", title: "Brand Name", type: "string" },
+                    { name: "logo", title: "Logo Image", type: "image" },
+                    { name: "websiteUrl", title: "Website URL", type: "url" },
+                  ],
+                },
+              ],
+            }),
+          ],
+          preview: {
+            prepare() { return { title: "Trust Stats & Brands Strip" }; },
+          },
+        },
+
+        // ── 3. SERVICES GRID ────────────────────────────────────────────────────────────
+        {
+          name: "servicesGridSection",
+          title: "💇 Services Grid (Bento)",
+          type: "object",
+          fields: [
+            defineField({
+              name: "servicesHeadline",
+              title: "Headline",
+              type: "string",
+              initialValue: "Curated Services",
+            }),
+            defineField({
+              name: "servicesSubheadline",
+              title: "Subheadline",
+              type: "text",
+            }),
+            defineField({
+              name: "hairServiceImage",
+              title: "Hair Card Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+            }),
+            defineField({
+              name: "bridalServiceImage",
+              title: "Bridal Card Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+            }),
+            defineField({
+              name: "skinServiceImage",
+              title: "Skin Card Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+            }),
+            defineField({
+              name: "tattooServiceImage",
+              title: "Tattoo Card Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+            }),
+            defineField({
+              name: "nailsServiceImage",
+              title: "Nails Card Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+            }),
+            defineField({
+              name: "piercingServiceImage",
+              title: "Piercing Card Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+            }),
+          ],
+          preview: {
+            prepare() { return { title: "Services Grid (Bento)" }; },
+          },
+        },
+
+        // ── 4. STICKY FEATURED SCROLL ───────────────────────────────────────────────────
+        {
+          name: "featuredScrollSection",
+          title: "✨ Featured Services (Sticky Scroll)",
+          type: "object",
+          fields: [
+            defineField({
+              name: "featuredHairImage",
+              title: "Hair Portrait Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+              fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+            }),
+            defineField({
+              name: "featuredBridalImage",
+              title: "Bridal Portrait Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+              fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+            }),
+            defineField({
+              name: "featuredSkinImage",
+              title: "Skin Portrait Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+              fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+            }),
+            defineField({
+              name: "featuredTattooImage",
+              title: "Tattoo Portrait Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "Required Size: 600 × 800 px (3:4).",
+              fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+            }),
+          ],
+          preview: {
+            prepare() { return { title: "Featured Services (Sticky Scroll)" }; },
+          },
+        },
+
+        // ── 5. BEFORE & AFTER ───────────────────────────────────────────────────────────
+        {
+          name: "beforeAfterSection",
+          title: "🔁 Before & After Slider",
+          type: "object",
+          fields: [
+            defineField({
+              name: "transformationsHeadline",
+              title: "Headline",
+              type: "string",
+              initialValue: "Visible Transformations",
+            }),
+            defineField({
+              name: "transformationsSubheadline",
+              title: "Subheadline",
+              type: "text",
+            }),
+            defineField({
+              name: "beforeAfterHairBefore",
+              title: "Hair — BEFORE Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "MUST exactly match AFTER size.",
+            }),
+            defineField({
+              name: "beforeAfterHairAfter",
+              title: "Hair — AFTER Photo",
+              type: "image",
+              options: { hotspot: true },
+              description: "MUST exactly match BEFORE size.",
+            }),
+            defineField({
+              name: "beforeAfterSkinBefore",
+              title: "Skin — BEFORE Photo",
+              type: "image",
+              options: { hotspot: true },
+            }),
+            defineField({
+              name: "beforeAfterSkinAfter",
+              title: "Skin — AFTER Photo",
+              type: "image",
+              options: { hotspot: true },
+            }),
+          ],
+          preview: {
+            prepare() { return { title: "Before & After Slider" }; },
+          },
+        },
+
+        // ── 6. CALL TO ACTION ───────────────────────────────────────────────────────────
+        {
+          name: "ctaSection",
+          title: "⚡ Call To Action",
+          type: "object",
+          fields: [
+            defineField({
+              name: "ctaHeadline",
+              title: "Bottom CTA Headline",
+              type: "string",
+              description: 'e.g. "Ready for your Look?"',
+            }),
+            defineField({
+              name: "ctaButtonText",
+              title: "Bottom CTA Button Text",
+              type: "string",
+              description: 'e.g. "Book Consultation"',
+            }),
+          ],
+          preview: {
+            prepare() { return { title: "Call To Action (CTA)" }; },
+          },
         },
       ],
     }),
-
-    // ── SERVICE GRID IMAGES ───────────────────────────────────────────────
-    defineField({
-      name: "servicesHeadline",
-      title: "Services Section Headline",
-      type: "string",
-      group: "services",
-      description: 'e.g. "Curated Services"',
-      initialValue: "Curated Services",
-    }),
-    defineField({
-      name: "servicesSubheadline",
-      title: "Services Section Subheadline",
-      type: "text",
-      group: "services",
-      description: 'Optional smaller text shown under the services headline. e.g. "Expert stylists. Premium products. Every visit."',
-    }),
-    defineField({
-      name: "hairServiceImage",
-      title: "Hair — Grid Card Photo",
-      type: "image",
-      group: "services",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Hair card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP (preferred) or JPG. 📱 Crops from centre on mobile — keep the subject centered.",
-    }),
-    defineField({
-      name: "bridalServiceImage",
-      title: "Bridal — Grid Card Photo",
-      type: "image",
-      group: "services",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Bridal card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG. 📱 Keep the subject (face/hair) centred for mobile.",
-    }),
-    defineField({
-      name: "skinServiceImage",
-      title: "Skin — Grid Card Photo",
-      type: "image",
-      group: "services",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Skin card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG. 📱 Close-up facial or treatment photos work best (keep focal point centered).",
-    }),
-    defineField({
-      name: "tattooServiceImage",
-      title: "Tattoo — Grid Card Photo",
-      type: "image",
-      group: "services",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Tattoo card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG. 📱 Ensure the focal point is centered for mobile displays.",
-    }),
-    defineField({
-      name: "nailsServiceImage",
-      title: "Nails — Grid Card Photo",
-      type: "image",
-      group: "services",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Nails card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG.",
-    }),
-    defineField({
-      name: "piercingServiceImage",
-      title: "Piercing — Grid Card Photo",
-      type: "image",
-      group: "services",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Piercing card in the Services Grid. Required Size: exactly 600 × 800 px (3:4 portrait). Max file size: 300KB. Format: WEBP or JPG.",
-    }),
-
-    // ── BEFORE & AFTER ────────────────────────────────────────────────────
-    defineField({
-      name: "transformationsHeadline",
-      title: "Before & After Headline",
-      type: "string",
-      group: "transform",
-      description: 'e.g. "Visible Transformations"',
-      initialValue: "Visible Transformations",
-    }),
-    defineField({
-      name: "transformationsSubheadline",
-      title: "Before & After Subheadline",
-      type: "text",
-      group: "transform",
-    }),
-    defineField({
-      name: "beforeAfterHairBefore",
-      title: "Hair Transformation — BEFORE Photo",
-      type: "image",
-      group: "transform",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Before/After Slider, hair BEFORE photo (left side). Required Size: exactly 800 × 800 px (Square 1:1) OR exactly 800 × 1000 px (Portrait 4:5). Max file size: 300KB. Format: WEBP or JPG. ⚠️ The BEFORE and AFTER photos must be identical in size to prevent slider misalignment.",
-    }),
-    defineField({
-      name: "beforeAfterHairAfter",
-      title: "Hair Transformation — AFTER Photo",
-      type: "image",
-      group: "transform",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Before/After Slider, hair AFTER photo (right side). Required Size: must exactly match the BEFORE photo (800 × 800 px or 800 × 1000 px). Max file size: 300KB. Format: WEBP or JPG.",
-    }),
-    defineField({
-      name: "beforeAfterSkinBefore",
-      title: "Skin Transformation — BEFORE Photo",
-      type: "image",
-      group: "transform",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Before/After Slider, skin BEFORE photo (left side). Required Size: exactly 800 × 800 px (Square 1:1) OR exactly 800 × 1000 px (Portrait 4:5). Max file size: 300KB. Format: WEBP or JPG. ⚠️ Must be identical in size to the AFTER photo to prevent slider bugs.",
-    }),
-    defineField({
-      name: "beforeAfterSkinAfter",
-      title: "Skin Transformation — AFTER Photo",
-      type: "image",
-      group: "transform",
-      options: { hotspot: true },
-      description: "📸 HOME PAGE — Before/After Slider, skin AFTER photo (right side). Required Size: must exactly match the BEFORE photo. Max file size: 300KB. Format: WEBP or JPG.",
-    }),
-    // ── CTA ───────────────────────────────────────────────────────────────
-    defineField({
-      name: 'ctaHeadline',
-      title: 'Bottom CTA Headline',
-      type: 'string',
-      description: 'e.g. "Ready for your Look?"',
-    }),
-    defineField({
-      name: 'ctaButtonText',
-      title: 'Bottom CTA Button Text',
-      type: 'string',
-      description: 'e.g. "Book Consultation via WhatsApp"',
-    }),
   ],
   preview: {
-    select: { media: "heroBackgroundImage" },
-    prepare({ media }) {
-      return { title: "🏠 Home Page", subtitle: "Edit homepage content & photos", media };
+    prepare() {
+      return { title: "🏠 Home Page Builder", subtitle: "Edit homepage layout & content blocks" };
     },
   },
 });

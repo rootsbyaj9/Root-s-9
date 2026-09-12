@@ -186,21 +186,75 @@ export default function ServicesContent({
     router.replace(`?tab=${tab}`, { scroll: false });
   };
 
+  const tabKeys: TabType[] = ["womens", "mens", "bridal", "tattoo"];
+  const tabButtonRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const panelRef = React.useRef<HTMLDivElement>(null);
+
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
+    let nextIndex = index;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      nextIndex = (index + 1) % tabKeys.length;
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      nextIndex = (index - 1 + tabKeys.length) % tabKeys.length;
+    } else if (e.key === "Home") {
+      nextIndex = 0;
+    } else if (e.key === "End") {
+      nextIndex = tabKeys.length - 1;
+    } else {
+      return;
+    }
+    e.preventDefault();
+    const nextTab = tabKeys[nextIndex];
+    handleTabClick(nextTab);
+    tabButtonRefs.current[nextIndex]?.focus();
+  };
 
   useGSAP(() => {
-    if (filtered.length > 0) {
-      gsap.from(".category-card", {
-        y: 24,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.1,
-        delay: 0.05,
-        ease: "power3.out",
-        clearProps: "all"
+    if (!panelRef.current) return;
+
+    const isReduced = typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (isReduced) {
+      gsap.set(panelRef.current, { opacity: 1, y: 0, clearProps: "all" });
+      if (containerRef.current) containerRef.current.style.minHeight = "";
+      return;
+    }
+
+    // Kill ongoing tweens to prevent queued stale transitions on rapid clicks
+    gsap.killTweensOf(panelRef.current);
+    if (containerRef.current) {
+      gsap.killTweensOf(containerRef.current);
+    }
+
+    // Measure new panel height and smoothly adjust container to prevent layout jump
+    const newHeight = panelRef.current.offsetHeight;
+    if (containerRef.current && containerRef.current.offsetHeight > 0) {
+      const prevHeight = containerRef.current.offsetHeight;
+      containerRef.current.style.minHeight = `${prevHeight}px`;
+      gsap.to(containerRef.current, {
+        minHeight: newHeight,
+        duration: 0.28,
+        ease: "power2.out",
+        onComplete: () => {
+          if (containerRef.current) containerRef.current.style.minHeight = "";
+        },
       });
     }
-  }, { scope: containerRef, dependencies: [activeTab, filtered.length] });
+
+    gsap.fromTo(
+      panelRef.current,
+      { opacity: 0, y: 8 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.28,
+        ease: "power2.out",
+        clearProps: "transform",
+      }
+    );
+  }, { scope: containerRef, dependencies: [activeTab] });
 
   return (
     <>
@@ -211,22 +265,34 @@ export default function ServicesContent({
 
       {/* Tab toggles */}
       <div className="bg-parchment pt-8 pb-12 border-b border-obsidian/10">
-        <div className="flex overflow-x-auto scrollbar-hide gap-3 px-6 md:px-16 max-w-[1400px] mx-auto">
-          {(Object.keys(TAB_META) as TabType[]).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => handleTabClick(tab)}
-              className={`inline-flex items-center justify-center font-sans text-[12px] uppercase tracking-[0.05em] px-6 py-[10px] rounded-md transition-colors whitespace-nowrap flex-shrink-0 ${
-                activeTab === tab
-                  ? "bg-roots-orange text-parchment border border-roots-orange"
-                  : "border border-[#E8D4BE] text-obsidian/60 hover:text-obsidian hover:border-obsidian/30"
-                  /* #E8D4BE is a warm-tinted border used only for inactive service tabs.
-                     Not a global brand token — it appears only in this one context. */
-              }`}
-            >
-              {TAB_META[tab].label}
-            </button>
-          ))}
+        <div
+          role="tablist"
+          aria-label="Service categories"
+          className="flex overflow-x-auto scrollbar-hide gap-3 px-6 md:px-16 max-w-[1400px] mx-auto"
+        >
+          {tabKeys.map((tab, idx) => {
+            const isSelected = activeTab === tab;
+            return (
+              <button
+                key={tab}
+                ref={(el) => { tabButtonRefs.current[idx] = el; }}
+                role="tab"
+                id={`tab-${tab}`}
+                aria-selected={isSelected}
+                aria-controls={`panel-${tab}`}
+                tabIndex={isSelected ? 0 : -1}
+                onKeyDown={(e) => handleKeyDown(e, idx)}
+                onClick={() => handleTabClick(tab)}
+                className={`inline-flex items-center justify-center font-sans text-[12px] uppercase tracking-[0.05em] px-6 py-[10px] rounded-md transition-colors whitespace-nowrap flex-shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-roots-orange ${
+                  isSelected
+                    ? "bg-roots-orange text-parchment border border-roots-orange shadow-sm"
+                    : "border border-[#E8D4BE] text-obsidian/60 hover:text-obsidian hover:border-obsidian/30"
+                }`}
+              >
+                {TAB_META[tab].label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -244,22 +310,28 @@ export default function ServicesContent({
             </p>
           </div>
 
-          {/* Category cards grid */}
-          <div ref={containerRef}>
-            {filtered.length > 0 ? (
-              <div
-                key={activeTab}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
-              >
-                {filtered.map((cat) => (
-                  <CategoryCard key={cat._id} cat={cat} />
-                ))}
-              </div>
-            ) : (
-              <p className="font-sans text-[15px] text-obsidian/40 text-center py-20">
-                Services coming soon — check back shortly.
-              </p>
-            )}
+          {/* Category cards grid container with measured smooth transition */}
+          <div
+            ref={containerRef}
+            role="tabpanel"
+            id={`panel-${activeTab}`}
+            aria-labelledby={`tab-${activeTab}`}
+            tabIndex={0}
+            className="transition-[min-height] duration-280 focus:outline-none"
+          >
+            <div ref={panelRef}>
+              {filtered.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                  {filtered.map((cat) => (
+                    <CategoryCard key={cat._id} cat={cat} />
+                  ))}
+                </div>
+              ) : (
+                <p className="font-sans text-[15px] text-obsidian/40 text-center py-20">
+                  Services coming soon — check back shortly.
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </section>

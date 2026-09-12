@@ -69,29 +69,44 @@ export default function Navbar({ settings }: { settings: any }) {
 
   // ── Scroll & Resize listeners ───────────────────────────────────────────────
   useEffect(() => {
+    let ticking = false;
+
     const onScroll = () => {
-      // Find all dark theme elements globally
-      const darkElements = document.querySelectorAll('[data-theme="dark"]');
-      let currentlyOverDark = false;
-      const logoY = 40; // Approx vertical center of the logo in the viewport
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          // Find all dark theme elements globally
+          const darkElements = document.querySelectorAll('[data-theme="dark"]');
+          let currentlyOverDark = false;
+          const logoY = 40; // Approx vertical center of the logo in the viewport
 
-      darkElements.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= logoY && rect.bottom >= logoY) {
-          currentlyOverDark = true;
-        }
-      });
+          for (let i = 0; i < darkElements.length; i++) {
+            const rect = darkElements[i].getBoundingClientRect();
+            if (rect.top <= logoY && rect.bottom >= logoY) {
+              currentlyOverDark = true;
+              break;
+            }
+          }
 
-      // Fallback: If we are at the very top of the homepage, it's guaranteed to be the dark hero
-      if (pathname === "/" && window.scrollY < 50) {
-        currentlyOverDark = true;
+          // Fallback: If we are at the very top of the homepage, it's guaranteed to be the dark hero
+          if (pathname === "/" && window.scrollY < 50) {
+            currentlyOverDark = true;
+          }
+
+          setIsOverDark((prev) => (prev !== currentlyOverDark ? currentlyOverDark : prev));
+          setIsTop((prev) => {
+            const next = window.scrollY < 10;
+            return prev !== next ? next : prev;
+          });
+          
+          /* Close desktop menu on scroll for UX */
+          if (window.scrollY > 150) {
+            setDesktopServicesOpen((prev) => (prev ? false : prev));
+          }
+
+          ticking = false;
+        });
+        ticking = true;
       }
-
-      setIsOverDark(currentlyOverDark);
-      setIsTop(window.scrollY < 10);
-      
-      /* Close desktop menu on scroll for UX */
-      if (window.scrollY > 150) setDesktopServicesOpen(false);
     };
 
     const onResize = () => {
@@ -203,7 +218,7 @@ export default function Navbar({ settings }: { settings: any }) {
         <nav
           className={cn(
             "transition-all duration-300 ease-out rounded-full pointer-events-auto",
-            "bg-parchment/95 backdrop-blur-md shadow-lg border border-obsidian/[0.08]"
+            "bg-parchment shadow-md border border-obsidian/[0.08]"
           )}
           aria-label="Main navigation"
         >

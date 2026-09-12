@@ -42,48 +42,48 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function HomePage() {
-  // Fetch homepage content and service categories from Sanity CMS
-  const homePageData = await client?.fetch(getHomePageQuery).catch(() => null) ?? {};
+  // Fetch homepage content — getHomePageQuery now returns a flat object
+  // (GROQ inline filters extract each section directly from pageBuilder[])
+  const cmsData = await client?.fetch(getHomePageQuery).catch(() => null) ?? {};
   const servicesData = await client?.fetch(getServiceCategoriesQuery).catch(() => null) ?? [];
   const locationsData = await client?.fetch(getLocationsQuery).catch(() => null) ?? [];
 
   // Live reviews from Google Places API (auto-refreshes via ISR)
   const apiReviews = await getPlacesReviews();
-  
+
   // Merge manual/pinned reviews from JSON with live API reviews
   let reviewsData = [...(reviewsJson as any[])];
   if (apiReviews && apiReviews.length > 0) {
     reviewsData = [...reviewsData, ...apiReviews];
   }
 
-
   return (
     <>
       {/* 1 — Cinematic hero */}
-      <Hero homePageData={homePageData} />
+      <Hero homePageData={cmsData} />
 
       {/* 2 — Trust strip (stat counters count-up on scroll entry) */}
-      <TrustStrip homePageData={homePageData} activeLocationsCount={locationsData.length || undefined} />
+      <TrustStrip homePageData={cmsData} activeLocationsCount={locationsData.length || undefined} />
 
       {/* 3 — Services bento grid (Hair · Bridal · Skin · Tattoo) */}
-      <ServicesGrid cmsServices={servicesData} cmsImages={homePageData} />
+      <ServicesGrid cmsServices={servicesData} cmsImages={cmsData} />
 
       {/* 3.5 — Sticky scroll feature section (Ally21-style) */}
-      <StickyServicesScroll />
+      <StickyServicesScroll cmsImages={cmsData} />
 
       {/* 4 — Before/After drag slider */}
-      <BeforeAfter homePageData={homePageData} />
+      <BeforeAfter homePageData={cmsData} />
 
       {/* 4.5 — Brand Partner Strip */}
-      <BrandStrip partners={homePageData?.partners} />
+      <BrandStrip partners={cmsData?.partners} />
 
       {/* 5 — Reviews Preview (3-card grid) */}
       <ReviewsPreview reviews={reviewsData} />
 
-      {/* 5 — Dark CTA (shared component, ends every page) */}
-      <CTASection 
-        heading={homePageData?.ctaHeadline || undefined}
-        ctaLabel={homePageData?.ctaButtonText || undefined}
+      {/* 6 — Dark CTA (shared component, ends every page) */}
+      <CTASection
+        heading={cmsData?.ctaHeadline || undefined}
+        ctaLabel={cmsData?.ctaButtonText || undefined}
       />
     </>
   );

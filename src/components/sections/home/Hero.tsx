@@ -3,25 +3,26 @@
 /**
  * Hero.tsx — Cinematic Full-Screen Hero
  *
- * Effect:
+ * Design (Ally 21 benchmark):
+ *   - Near-black (#17120f) background with a separate dark overlay div
+ *     so the source image stays crisp (no opacity on the img itself).
+ *   - Single editorial serif headline — no three-part script/serif split.
+ *   - Two equal-height CTAs: BOOK NOW (orange solid) + VIEW SERVICES (ivory outline).
+ *   - Bottom gradient fade protects the section boundary.
+ *
+ * GSAP:
  *   - Background image zooms in on load (1.15 → 1.0 "opening curtains")
  *   - Text and CTA fade in with staggered entrance animations
- *   - Rainbow-glow CTA button for premium feel
- *   - No parallax scroll — clean static hero
  */
 
 import { useRef } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitType from "split-type";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 import type { SanityHomePageData } from "@/types/sanity";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const WHATSAPP_NUMBER = "919700744357";
 
 type HeroProps = {
   homePageData?: SanityHomePageData | null;
@@ -94,7 +95,6 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
           0.65
         );
       }
-
     },
     { scope: sectionRef }
   );
@@ -103,87 +103,95 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
     <section
       ref={sectionRef}
       data-theme="dark"
-      className="relative w-full h-screen overflow-hidden bg-obsidian flex flex-col items-center justify-center pt-24 pb-12 md:pt-32"
+      className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center pt-24 pb-12 md:pt-32"
+      style={{ backgroundColor: "#17120f" }}
       aria-label="Hero"
     >
-      {/* ── Parallax Background Layer ──────────── */}
+      {/* ── Background image — source stays crisp; overlay is separate ── */}
       <div
         ref={bgRef}
-        className="absolute inset-0 z-0 scale-105 will-change-transform bg-obsidian"
+        className="absolute inset-0 z-0 scale-105 will-change-transform"
       >
-        {homePageData?.heroBackgroundImageUrl && (
-          <div className="absolute inset-0">
-            <Image
-              src={homePageData.heroBackgroundImageUrl}
-              alt="Hero Background"
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
-          </div>
+        {homePageData?.heroBackgroundImageUrl ? (
+          <Image
+            src={homePageData.heroBackgroundImageUrl}
+            alt="Root's salon interior"
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
+        ) : (
+          <ImagePlaceholder
+            label="Hero · Salon Interior"
+            description="Premium salon interior, warm lighting, high contrast."
+            mood="dark"
+            className="w-full h-full object-cover"
+          />
         )}
       </div>
 
-      {/* ── Dark Veil ── */}
-      <div className="absolute inset-0 z-10 bg-obsidian/35" />
-      <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-obsidian/70 to-transparent z-10" />
+      {/* ── Dark overlay — separate div keeps source image crisp ── */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/65 via-black/50 to-black/70" />
 
-
-
-      {/* ── Central Typography & CTA ─────────────────────── */}
+      {/* ── Central Typography & CTA ─────────────────────────────── */}
       <div
         ref={contentRef}
-        className="relative z-20 text-center max-w-5xl px-6 md:px-8 mx-auto flex flex-col items-center pointer-events-auto"
+        className="relative z-20 text-center max-w-4xl px-6 md:px-8 mx-auto flex flex-col items-center pointer-events-auto"
       >
-        <span className="eyebrow-text font-serif text-roots-orange uppercase tracking-[0.2em] text-xs md:text-sm font-semibold mb-6 block drop-shadow-md">
-          {homePageData?.heroEyebrow || "Hyderabad's Premium Family Salon"}
+        {/* Eyebrow */}
+        <span className="eyebrow-text font-sans uppercase tracking-[0.18em] text-[11px] font-semibold mb-7 block"
+          style={{ color: "#f0a46c" }}>
+          {homePageData?.heroEyebrow || "Hyderabad's Premier Family Salon"}
         </span>
 
-        <h1 className="flex flex-col items-center mb-6 drop-shadow-lg">
-          <span className="font-serif italic font-medium text-[clamp(48px,6vw,72px)] text-parchment leading-tight tracking-tight text-center max-w-4xl">
-            {homePageData?.heroHeadline || "Your Complete Destination for"}
-          </span>
-          <span className="font-script text-[clamp(80px,12vw,130px)] text-roots-orange leading-none mt-2 mb-2 drop-shadow-md">
-            Hair, Skin & Bridal
-          </span>
-          <span className="font-serif italic font-medium text-[clamp(36px,4vw,56px)] text-parchment/90 leading-tight">
-            {homePageData?.heroHeadlineItalic || "& Tattoo"}
+        {/* Single editorial headline — no script font */}
+        <h1 className="font-serif italic font-medium text-[clamp(38px,5vw,68px)] leading-tight tracking-tight mb-5"
+          style={{ color: "#fffdf9" }}>
+          {homePageData?.heroHeadline || "Hair, Skin & Bridal,"}
+          <br />
+          <span style={{ color: "#fffdf9", opacity: 0.9 }}>
+            {homePageData?.heroHeadlineItalic || "beautifully done."}
           </span>
         </h1>
 
-        <p className="subtitle-text font-sans text-parchment/70 text-sm md:text-base max-w-2xl mb-12 drop-shadow-md leading-relaxed font-light">
-          Root's at your locations serves your entire family.
+        {/* Supporting line */}
+        <p className="subtitle-text font-sans text-sm md:text-base max-w-xl mb-10 leading-relaxed"
+          style={{ color: "rgba(255,253,249,0.6)" }}>
+          {"Three locations across Hyderabad — Uppal, Tarnaka & Brahmanpally"}
         </p>
 
+        {/* Equal-height CTAs */}
         <div className="cta-wrapper flex flex-col sm:flex-row items-center gap-4">
-          {/* ── Primary CTA ── */}
+          {/* Primary CTA — orange solid */}
           <button
+            id="hero-book-now"
             onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
-            className="relative"
+            className="btn-primary"
           >
-            <span className="relative btn-primary block shadow-2xl">
-              {homePageData?.heroCtaText || "Book Your Appointment"}
-            </span>
+            Book Now
           </button>
 
-          {/* ── Glassmorphic secondary CTA ── */}
+          {/* Secondary CTA — ivory outline */}
           <a
+            id="hero-view-services"
             href="#services"
             onClick={(e) => {
               e.preventDefault();
-              document
-                .getElementById("services")
-                ?.scrollIntoView({ behavior: "smooth" });
+              document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="px-8 py-3 rounded-lg font-sans text-xs uppercase tracking-[0.08em] font-medium text-parchment/90 border border-parchment/20 bg-parchment/10 hover:bg-parchment/20 hover:border-parchment/30 transition-all duration-300 shadow-lg"
+            className="btn-outline-light"
           >
             View Services
           </a>
         </div>
       </div>
 
-
+      {/* ── Bottom fade — protects section boundary ── */}
+      <div
+        className="absolute bottom-0 left-0 right-0 z-20 h-32 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, #17120f)" }}
+      />
     </section>
   );
 }

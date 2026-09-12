@@ -19,17 +19,30 @@
      --spacing-*    → all spacing utilities (p-, m-, gap-, w-, h-)
 ═══════════════════════════════════════════════════════════ */
 @theme {
-  /* Brand Colors */
-  --color-parchment: #FEFCF8;      /* Primary bg — NOT pure white */
-  --color-linen: #F5EDE0;          /* Section alternates, cards */
-  --color-obsidian: #1A1008;       /* Primary text — NOT pure black */
-  --color-roots-orange: #E87722;   /* CTAs, logo, active states ONLY */
-  --color-roots-orange-dark: #C9621E; /* Hover-darkened state of roots-orange */
-  --color-blush: #FFF0E6;          /* Badge tints, offer tags */
-  --color-warm-gray: #4A3F36;      /* Secondary text, captions — WCAG AA compliant */
+  /* ── Guide token set (Ally 21 benchmark) ── */
+  --root-ink:        #17120f;           /* Near-black — primary text / hero bg */
+  --root-ink-soft:   #2a211c;           /* Slightly lifted ink — section backgrounds */
+  --root-ivory:      #f7f3ee;           /* Warm surface — cards, inputs, modal */
+  --root-paper:      #fffdf9;           /* Page background */
+  --root-muted:      #8a7d72;           /* Captions, secondary labels */
+  --root-line:       rgba(23,18,15,.14); /* Hairline borders */
+  --root-orange:     #d96b1f;           /* Restrained accent — CTAs, active states */
+  --root-orange-dark: #b95112;          /* Hover/pressed orange */
+  --root-orange-soft: #f2c19f;          /* Tints, badge backgrounds */
+  --root-focus:      #f0a46c;           /* Focus rings */
+
+  /* ── Backward-compat aliases (no class renames needed) ── */
+  --color-parchment:        #fffdf9;    /* = --root-paper  */
+  --color-linen:            #f7f3ee;    /* = --root-ivory  */
+  --color-obsidian:         #17120f;    /* = --root-ink    */
+  --color-roots-orange:     #d96b1f;    /* = --root-orange */
+  --color-roots-orange-dark: #b95112;   /* = --root-orange-dark */
+  --color-blush:            #f2c19f;    /* = --root-orange-soft */
+  --color-warm-gray:        #8a7d72;    /* = --root-muted  */
 
   /* Typography */
-  --font-sans: var(--font-montaga), sans-serif;
+  --font-sans: var(--font-outfit), sans-serif;  /* body, UI, buttons, labels — clean geometric */
+  --font-ui:   var(--font-outfit), sans-serif;  /* buttons, labels, nav — clean geometric */
   --font-serif: var(--font-cardo), serif;
   --font-script: var(--font-italianno), cursive;
 
@@ -37,10 +50,9 @@
   --radius-md: 12px;
 
   /* Shadows — warm-tinted, never cool grey */
-  --shadow-soft: 0 20px 40px rgba(26, 16, 8, 0.06);
+  --shadow-soft: 0 20px 40px rgba(23, 18, 15, 0.06);
 
-  /* Section Spacing
-     Usage: py-section, px-section, py-section-md */
+  /* Section Spacing */
   --spacing-section: 120px;
   --spacing-section-md: 80px;
 
@@ -59,7 +71,7 @@
   body {
     background-color: var(--color-parchment);
     color: var(--color-obsidian);
-    font-family: var(--font-sans);
+    font-family: var(--font-ui);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -71,6 +83,10 @@
   ─────────────────────────────────────────────────────────── */
   *:not(:focus-visible) {
     border-color: transparent;
+  }
+
+  [id] {
+    scroll-margin-top: 96px;
   }
 }
 
@@ -111,49 +127,46 @@ body {
 ═══════════════════════════════════════════════════════════ */
 @layer components {
 
-  /* Primary CTA button — modern animated gradient glow using roots colors */
+  /* Primary CTA button — solid orange, no animated glow */
   .btn-primary {
     display: inline-block;
     position: relative;
-    background: linear-gradient(135deg, var(--color-roots-orange), var(--color-roots-orange-dark), var(--color-roots-orange));
-    background-size: 200% 200%;
-    animation: flow-gradient 3s ease infinite;
-    color: var(--color-parchment);
+    background: var(--root-orange);
+    color: var(--root-paper);
     border-radius: 8px;
     padding: 16px 40px;
-    font-family: var(--font-sans);
-    font-weight: 600;
+    font-family: var(--font-ui);
+    font-weight: 700;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background 200ms ease, transform 200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     white-space: nowrap;
-    border: 1px solid rgba(254, 252, 248, 0.1);
-    box-shadow: 0 4px 15px rgba(232, 119, 34, 0.3);
+    border: none;
+    box-shadow: 0 4px 14px rgba(217, 107, 31, 0.35), 0 1px 4px rgba(0,0,0,0.12);
 
     &:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 8px 25px rgba(232, 119, 34, 0.5), 0 0 15px rgba(232, 119, 34, 0.3) inset;
+      background: var(--root-orange-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(217, 107, 31, 0.40), 0 2px 6px rgba(0,0,0,0.14);
     }
 
     &:active {
       transform: translateY(0) scale(0.98);
-      box-shadow: 0 2px 10px rgba(232, 119, 34, 0.4);
+      box-shadow: 0 3px 10px rgba(217, 107, 31, 0.30);
     }
   }
 
-  /* Outline button — modern glassmorphism */
+  /* Outline button — sharp solid border, high contrast */
   .btn-outline {
     display: inline-block;
-    border: 1px solid rgba(26, 16, 8, 0.2);
-    background-color: rgba(254, 252, 248, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: var(--color-obsidian);
+    border: 1.5px solid var(--root-ink);
+    background-color: transparent;
+    color: var(--root-ink);
     border-radius: 8px;
     padding: 16px 40px;
-    font-family: var(--font-sans);
+    font-family: var(--font-ui);
     font-weight: 600;
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -163,25 +176,23 @@ body {
     white-space: nowrap;
 
     &:hover {
-      background-color: var(--color-obsidian);
-      color: var(--color-parchment);
-      border-color: var(--color-obsidian);
+      background-color: var(--root-ink);
+      color: var(--root-paper);
+      border-color: var(--root-ink);
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(26, 16, 8, 0.15);
+      box-shadow: 0 8px 22px rgba(23, 18, 15, 0.22);
     }
   }
 
-  /* Outline button light — glassmorphism for dark backgrounds */
+  /* Outline button light — ivory border for dark/hero backgrounds */
   .btn-outline-light {
     display: inline-block;
-    border: 1px solid rgba(254, 252, 248, 0.3);
-    background-color: rgba(254, 252, 248, 0.05);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: var(--color-parchment);
+    border: 1.5px solid rgba(255, 253, 249, 0.65);
+    background-color: transparent;
+    color: var(--root-paper);
     border-radius: 8px;
     padding: 16px 40px;
-    font-family: var(--font-sans);
+    font-family: var(--font-ui);
     font-weight: 600;
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -191,22 +202,23 @@ body {
     white-space: nowrap;
 
     &:hover {
-      background-color: var(--color-parchment);
-      color: var(--color-obsidian);
+      background-color: var(--root-paper);
+      color: var(--root-ink);
+      border-color: var(--root-paper);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(254, 252, 248, 0.2);
+      box-shadow: 0 8px 24px rgba(255, 253, 249, 0.18);
     }
   }
 
   /* Eyebrow label — used above every section heading */
   .eyebrow {
     display: block;
-    font-family: var(--font-sans);
+    font-family: var(--font-ui);
     font-weight: 600;
     font-size: 0.6875rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--color-roots-orange-dark); /* WCAG AA: 6.4:1 on parchment */
+    color: #7A3410;
     margin-bottom: 0.5rem;
   }
 
@@ -282,29 +294,9 @@ body {
   }
 }
 
-@keyframes flow-gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
+/* flow-gradient removed — btn-primary uses solid color now */
 
-@keyframes flow-gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
+
 /* ═══════════════════════════════════════════════════════════
    SCROLLBAR HIDE — cross-browser utility
    Used on horizontally scrollable tab bars (services page)
@@ -352,9 +344,10 @@ body {
     /* Desktop: panels side by side. 
        Fixed wide width ensures the image acts as a mask during the flex transition, 
        rather than squishing/stretching. */
-    width: 60vw;
-    height: 100%;
-    max-width: none;
+    width: 50vw !important;
+    min-width: 520px !important;
+    height: 100% !important;
+    max-width: none !important;
   }
 }
 

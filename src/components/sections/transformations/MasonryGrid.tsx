@@ -232,13 +232,12 @@ export default function MasonryGrid({ cmsTransformations = [] }: MasonryGridProp
 
   useGSAP(
     () => {
-      gsap.from('.bento-container', {
-        opacity: 0,
-        y: 40,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: '.bento-container', start: 'top 75%' },
-      });
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      gsap.fromTo(
+        '.bento-container',
+        { opacity: 0.5, y: 20 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', clearProps: 'all' }
+      );
     },
     { scope: containerRef }
   );

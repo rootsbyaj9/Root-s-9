@@ -8,10 +8,10 @@
  *   4. Embedded map section (iframe or Google Maps link CTA)
  *   5. CTASection
  *
- * Branch data pulled from CLAUDE.md:
- *  - Kondapur: https://maps.app.goo.gl/KhgoKHXQ1poNibB27
- *  - Manikonda: https://maps.app.goo.gl/DVKd2j2KB39Ubmat6
- *  - New Branch (opening soon — address TBC by client)
+ * Branch data:
+ *  - Uppal: https://maps.app.goo.gl/ocq8uts9jYaCp3bu8
+ *  - Tarnaka: https://maps.app.goo.gl/HtxnUPQ9b9a4f5Qv7
+ *  - Brahmanpally: Hyderabad
  */
 
 import type { Metadata } from 'next';
@@ -20,13 +20,13 @@ import { client } from '@/sanity/client';
 import { getLocationsQuery } from '@/sanity/lib/queries';
 
 export const metadata: Metadata = {
-  title: "Salon Near Me in Uppal & Tarnaka Hyderabad | Root's",
+  title: "Salon Near Me in Uppal, Tarnaka & Brahmanpally Hyderabad | Root's",
   description:
-    "Find Root's Family Salon near you. Two premium branches in Hyderabad — Uppal (Peerzadiguda Road) and Tarnaka (South Lallaguda). Open Mon–Sun 10AM–9PM.",
+    "Find Root's Family Salon near you. Three premium branches in Hyderabad — Uppal (Peerzadiguda Road), Tarnaka (South Lallaguda), and Brahmanpally. Open Mon–Sun 10AM–9PM.",
   openGraph: {
-    title: "Salon Near Me in Uppal & Tarnaka Hyderabad | Root's",
+    title: "Salon Near Me in Uppal, Tarnaka & Brahmanpally Hyderabad | Root's",
     description:
-      "Two premium branches in Hyderabad — Uppal and Tarnaka. Open Mon–Sun 10AM–9PM.",
+      "Three premium branches in Hyderabad — Uppal, Tarnaka, and Brahmanpally. Open Mon–Sun 10AM–9PM.",
     type: 'website',
   },
 };

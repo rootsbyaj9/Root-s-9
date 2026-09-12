@@ -32,13 +32,14 @@ const BRANCHES = [
   },
   {
     _id: 'branch-3',
-    shortName: 'New Branch',
-    name: "Root's The Family Salon — Coming Soon",
-    address: 'Hyderabad',
-    hours: 'Opening in 3 Days',
+    shortName: 'Brahmanpally',
+    name: "Root's The Family Salon — Brahmanpally",
+    address: 'Brahmanpally, Hyderabad, Telangana',
+    hours: 'Mon–Sun: 10 AM – 9 PM',
     phone: '+919700744357',
-    description: "Our third branch is opening soon! We are bringing the premium Root's experience to a new neighborhood in just 3 days.",
-    isNew: true,
+    googleMapsUrl: 'https://maps.google.com/?q=Root%27s+Family+Salon+Brahmanpally+Hyderabad',
+    embedUrl: 'https://www.google.com/maps?q=Brahmanpally,Hyderabad,Telangana&hl=en&z=15&output=embed',
+    description: "Our third location bringing the premium Root's experience to Brahmanpally. The same expert stylists, the same warm family atmosphere.",
   },
 ] as SanityLocation[];
 
@@ -58,25 +59,29 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
   const activeBranches = locationsData.length > 0 ? locationsData : BRANCHES;
 
   useGSAP(() => {
-    // Cards: fade up on scroll
-    gsap.from('.location-card', {
-      autoAlpha: 0,
-      y: 30,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 90%',
-      }
-    });
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    gsap.from('.hero-text', {
-      autoAlpha: 0,
-      y: -20,
-      duration: 0.8,
-      ease: 'power2.out'
-    });
+    gsap.fromTo('.hero-text', 
+      { autoAlpha: 0.3, y: -12 },
+      { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out', clearProps: 'all' }
+    );
+
+    // Cards: fade up on scroll safely
+    gsap.fromTo('.location-card', 
+      { autoAlpha: 0.4, y: 20 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power3.out',
+        clearProps: 'all',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 95%',
+        }
+      }
+    );
   }, { scope: containerRef });
 
   return (

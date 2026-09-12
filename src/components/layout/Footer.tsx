@@ -11,6 +11,7 @@
 
 import Link from "next/link";
 import type { SiteSettings } from "@/types/sanity";
+import SkarCredit from "@/components/ui/SkarCredit";
 
 export default function Footer({ settings }: { settings: SiteSettings | null }) {
   const currentYear = new Date().getFullYear();
@@ -169,30 +170,23 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
         </div>
 
         {/* ── Bottom bar ───────────────────────────────────────────────────── */}
-        <div className="border-t border-parchment/10 pt-8 flex flex-col items-center justify-center gap-3 font-sans text-xs text-parchment/40">
-          <p>© {currentYear} Root&apos;s Family Salon. All rights reserved.</p>
-
-          {/* Made by Skar — from wireframe */}
-          <p className="flex items-center gap-1.5 group">
-            Made with{" "}
-            <span className="sr-only">love</span>
-            <svg
-              className="w-3 h-3 text-roots-orange fill-current transition-transform group-hover:scale-125"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-            </svg>
-            by{" "}
-            <a
-              href="https://www.skarcreation.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-parchment/60 hover:text-roots-orange transition-colors border-b border-parchment/20 hover:border-roots-orange pb-px ml-0.5 font-medium"
-            >
-              skar
-            </a>
+        <div className="border-t border-parchment/10 pt-8 mt-2 flex flex-col md:grid md:grid-cols-3 items-center gap-4 text-xs font-sans text-parchment/60">
+          {/* Left: Copyright */}
+          <p className="text-center md:text-left">
+            © {currentYear} Root&apos;s Family Salon. All rights reserved.
           </p>
+
+          {/* Center: Skar Credit */}
+          <div className="flex justify-center w-full">
+            <SkarCredit
+              accentColor="#d96b1f"
+              words={["<3", "love", "❤️", "care", "passion"]}
+              className="py-0 text-parchment/70 text-xs sm:text-sm font-medium"
+            />
+          </div>
+
+          {/* Right: Balance spacer */}
+          <div className="hidden md:block" />
         </div>
       </div>
     </footer>

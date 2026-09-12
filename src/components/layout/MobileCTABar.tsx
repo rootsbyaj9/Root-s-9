@@ -40,7 +40,7 @@ export default function MobileCTABar({ settings }: { settings?: SiteSettings | n
     >
       <button
         onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
-        className="flex-1 flex items-center justify-center gap-2 bg-roots-orange text-parchment font-sans text-[11px] font-semibold uppercase tracking-[0.08em] py-3 rounded-md transition-transform active:scale-[0.97]"
+        className="flex-1 flex items-center justify-center gap-2 bg-roots-orange text-parchment font-[family-name:var(--font-ui)] text-[11px] font-semibold uppercase tracking-[0.08em] py-3 rounded-md transition-transform active:scale-[0.97]"
       >
         {/* Calendar icon */}
         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -51,7 +51,7 @@ export default function MobileCTABar({ settings }: { settings?: SiteSettings | n
       </button>
       <Link
         href="/services"
-        className="flex-1 flex items-center justify-center border border-obsidian/20 text-obsidian font-sans text-[11px] font-semibold uppercase tracking-[0.08em] py-3 rounded-md transition-colors active:bg-obsidian/5"
+        className="flex-1 flex items-center justify-center border border-obsidian/20 text-obsidian font-[family-name:var(--font-ui)] text-[11px] font-semibold uppercase tracking-[0.08em] py-3 rounded-md transition-colors active:bg-obsidian/5"
       >
         View Services
       </Link>

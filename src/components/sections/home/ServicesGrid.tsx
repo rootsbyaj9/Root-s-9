@@ -8,11 +8,9 @@
  * - F-reading pattern: name at top-left, catchy tagline at bottom, CTA at bottom-right.
  */
 
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap-config";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
 
@@ -103,51 +101,53 @@ type ServicesGridProps = {
 export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: ServicesGridProps) {
   const sectionRef = useRef<HTMLElement>(null);
   
-  const mergedServices = SERVICES.map((base) => {
-    const cmsMatch = cmsServices.find((s) => s.slug === base.id);
-    const title = cmsMatch?.title || base.title;
+  const mergedServices = useMemo(() => {
+    return SERVICES.map((base) => {
+      const cmsMatch = cmsServices.find((s) => s.slug === base.id);
+      const title = cmsMatch?.title || base.title;
 
-    let cmsImageUrl;
-    let fallbackPosition = "center";
-    let hotspot;
-    
-    try {
-      // Map base service IDs to the projected URL and hotspot fields
-      const urlFieldMap: Record<string, string> = {
-        hair: "hairImageUrl",
-        bridal: "bridalImageUrl",
-        skin: "skinImageUrl",
-        tattoo: "tattooImageUrl",
-        nails: "nailsImageUrl",
-        piercing: "piercingImageUrl",
-      };
-      const hotspotFieldMap: Record<string, string> = {
-        hair: "hairImageHotspot",
-        bridal: "bridalImageHotspot",
-        skin: "skinImageHotspot",
-        tattoo: "tattooImageHotspot",
-        nails: "nailsImageHotspot",
-        piercing: "piercingImageHotspot",
-      };
+      let cmsImageUrl;
+      let fallbackPosition = "center";
+      let hotspot;
       
-      const urlField = urlFieldMap[base.id];
-      const hotspotField = hotspotFieldMap[base.id];
+      try {
+        // Map base service IDs to the projected URL and hotspot fields
+        const urlFieldMap: Record<string, string> = {
+          hair: "hairImageUrl",
+          bridal: "bridalImageUrl",
+          skin: "skinImageUrl",
+          tattoo: "tattooImageUrl",
+          nails: "nailsImageUrl",
+          piercing: "piercingImageUrl",
+        };
+        const hotspotFieldMap: Record<string, string> = {
+          hair: "hairImageHotspot",
+          bridal: "bridalImageHotspot",
+          skin: "skinImageHotspot",
+          tattoo: "tattooImageHotspot",
+          nails: "nailsImageHotspot",
+          piercing: "piercingImageHotspot",
+        };
+        
+        const urlField = urlFieldMap[base.id];
+        const hotspotField = hotspotFieldMap[base.id];
 
-      if (urlField && (cmsImages as Record<string, any>)?.[urlField]) {
-        cmsImageUrl = (cmsImages as Record<string, any>)[urlField];
-        hotspot = (cmsImages as Record<string, any>)[hotspotField];
+        if (urlField && (cmsImages as Record<string, any>)?.[urlField]) {
+          cmsImageUrl = (cmsImages as Record<string, any>)[urlField];
+          hotspot = (cmsImages as Record<string, any>)[hotspotField];
+        }
+      } catch(e) {
+        // Graceful fallback
+        console.error(e);
       }
-    } catch(e) {
-      // Graceful fallback
-      console.error(e);
-    }
 
-    if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
-      fallbackPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
-    }
+      if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
+        fallbackPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
+      }
 
-    return { ...base, title, cmsImageUrl, objectPosition: fallbackPosition };
-  });
+      return { ...base, title, cmsImageUrl, objectPosition: fallbackPosition };
+    });
+  }, [cmsServices, cmsImages]);
 
   // Desktop accordion state
   const [activeId, setActiveId] = useState<string>(mergedServices[0].id);
@@ -155,7 +155,8 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
   return (
     <section
       ref={sectionRef}
-      className="pt-6 pb-24 md:pt-16 md:pb-32 bg-linen"
+      className="pt-6 pb-24 md:pt-16 md:pb-32"
+      style={{ backgroundColor: "#f7f3ee" }}
       id="services"
       aria-label="Our Services"
     >
@@ -208,24 +209,30 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                 <div className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/25 to-transparent" />
               </div>
 
-              {/* Content: F-Pattern — name top-left, tagline + CTA at bottom */}
+                {/* Content: F-Pattern — name top-left, action at bottom */}
               <div className="absolute inset-0 p-4 flex flex-col justify-between z-10">
                 {/* Top: Number + Name */}
                 <div>
-                  <span className="font-sans text-parchment/50 text-[10px] uppercase tracking-widest block">
+                  <span className="font-sans text-[10px] uppercase tracking-widest block"
+                    style={{ color: "rgba(255,253,249,0.45)" }}>
                     {service.number}
                   </span>
-                  <h3 className="font-serif text-parchment text-xl mt-1">
+                  <h3 className="font-serif text-xl mt-1" style={{ color: "#fffdf9" }}>
                     {service.title}
                   </h3>
                 </div>
-                
-                {/* Bottom: Tagline + Arrow */}
+
+                {/* Bottom: DISCOVER link */}
                 <div className="flex items-end justify-between">
-                  <p className="font-sans text-parchment/70 text-[11px] leading-snug max-w-[70%]">
+                  <p className="font-sans text-[11px] leading-snug max-w-[65%]"
+                    style={{ color: "rgba(255,253,249,0.65)" }}>
                     {service.tagline}
                   </p>
-                  <span className="text-roots-orange text-lg group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="font-sans text-[10px] uppercase tracking-widest flex items-center gap-1.5 transition-transform group-hover:translate-x-0.5"
+                    style={{ color: "#f0a46c" }}>
+                    Discover
+                    <span className="text-sm">→</span>
+                  </span>
                 </div>
               </div>
             </Link>
@@ -242,13 +249,13 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                 key={service.id}
                 onMouseEnter={() => setActiveId(service.id)}
                 onClick={() => setActiveId(service.id)}
-                className={`
-                  service-panel relative overflow-hidden bg-parchment rounded-sm cursor-pointer
-                `}
+                className="service-panel relative overflow-hidden bg-parchment rounded-sm cursor-pointer"
                 style={{
-                  minWidth: "3rem",
-                  flex: isActive ? 4 : 1,
-                  transition: "flex 0.7s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, transform 0.5s ease"
+                  minWidth: "3.5rem",
+                  flex: isActive ? 5 : 1,
+                  willChange: "flex",
+                  // Spring curve: fast out, soft settle—no rebound
+                  transition: "flex 0.28s cubic-bezier(0.25, 1, 0.5, 1)",
                 }}
               >
                 {/* Image Layer */}
@@ -258,7 +265,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                       src={service.cmsImageUrl}
                       alt={service.title}
                       loading="lazy"
-                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-none object-cover pointer-events-none"
+                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] min-w-[520px] h-full max-w-none object-cover pointer-events-none"
                       style={{ objectPosition: service.objectPosition }}
                     />
                   ) : (
@@ -266,58 +273,66 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                       label={service.placeholder.label}
                       description={service.placeholder.description}
                       mood={service.dark ? "dark" : "warm"}
-                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover"
+                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] min-w-[520px] h-full object-cover"
                     />
                   )}
                   
-                  {/* Dynamic Darkening Overlay */}
-                  <div 
-                    className={`absolute inset-0 transition-colors duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
-                      isActive ? "bg-obsidian/10" : "bg-obsidian/60"
-                    }`}
+                  {/* Overlay: use opacity not transition-colors to stay compositor-only */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      backgroundColor: "#17120f",
+                      opacity: isActive ? 0.1 : 0.6,
+                      transition: "opacity 0.28s ease-out",
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent pointer-events-none" />
                 </div>
 
                 {/* Content Layer — F-Pattern */}
                 <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 pointer-events-none">
-                  
+
                   {/* Top: Number + Name */}
                   <div>
-                    <span 
-                      className={`
-                        font-sans text-parchment/60 text-[10px] uppercase tracking-widest block mb-1
-                        transition-all duration-500 transform
-                        ${isActive ? "translate-y-0 opacity-100 delay-100" : "translate-y-4 opacity-0"}
-                      `}
+                    <span
+                      className="font-sans text-[10px] uppercase tracking-widest block mb-1"
+                      style={{
+                        color: "rgba(255,253,249,0.50)",
+                        opacity: isActive ? 1 : 0,
+                        transform: isActive ? "translateY(0)" : "translateY(6px)",
+                        transition: "opacity 0.22s ease-out, transform 0.22s ease-out",
+                      }}
                     >
                       {service.number}
                     </span>
-                    <h3 
-                      className={`
-                        font-serif text-parchment whitespace-nowrap
-                        transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-                        ${isActive ? "text-3xl md:text-4xl" : "text-xl md:text-2xl"}
-                      `}
+                    <h3
+                      className="font-serif text-2xl md:text-3xl whitespace-nowrap"
+                      style={{ color: "#fffdf9" }}
                     >
                       {service.title}
                     </h3>
                   </div>
 
-                  {/* Bottom: Tagline + CTA — revealed when active */}
-                  <div 
-                    className={`
-                      flex items-end justify-between
-                      transition-all duration-700 ease-in-out
-                      ${isActive ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-4 pointer-events-none"}
-                    `}
+                  {/* Bottom: Tagline + DISCOVER link — revealed when active */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-end",
+                      justifyContent: "space-between",
+                      opacity: isActive ? 1 : 0,
+                      transform: isActive ? "translateY(0)" : "translateY(6px)",
+                      transition: "opacity 0.25s ease-out, transform 0.25s ease-out",
+                      pointerEvents: isActive ? "auto" : "none",
+                    }}
                   >
-                    <p className="font-sans text-parchment/70 text-[12px] max-w-[60%] leading-snug">
+                    <p className="font-sans text-[12px] max-w-[60%] leading-snug"
+                      style={{ color: "rgba(255,253,249,0.70)" }}>
                       {service.tagline}
                     </p>
                     <Link
                       href={service.href}
-                      className="text-roots-orange-dark uppercase text-[10px] tracking-widest font-sans flex items-center gap-2 hover:gap-3 transition-all"
+                      className="font-sans uppercase text-[10px] tracking-widest flex items-center gap-2 hover:gap-3 transition-all"
+                      style={{ color: "#f0a46c" }}
                     >
                       Discover <span className="text-base">→</span>
                     </Link>

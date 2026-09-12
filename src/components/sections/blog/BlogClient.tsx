@@ -54,13 +54,18 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
 
   // 1. Hero Title GSAP Animation
   useGSAP(() => {
-    gsap.to('.blog-title-char', {
-      y: 0,
-      duration: 0.7,
-      stagger: 0.015,
-      ease: "power3.out",
-      delay: 0.1
-    });
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    gsap.fromTo('.blog-title-char',
+      { y: 16, opacity: 0.3 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.5,
+        stagger: 0.015,
+        ease: "power3.out",
+        clearProps: "all"
+      }
+    );
   }, { scope: containerRef });
 
 
@@ -73,7 +78,7 @@ export default function BlogClient({ posts = [] }: BlogClientProps) {
           <h1 className="font-serif text-5xl md:text-7xl text-obsidian leading-[1.0] mb-4 flex justify-center flex-wrap">
             {titleLetters.map((char, i) => (
               <span key={i} className="inline-block overflow-hidden py-1">
-                <span className="blog-title-char inline-block translate-y-[120%]">
+                <span className="blog-title-char inline-block">
                   {char === ' ' ? '\u00A0' : char}
                 </span>
               </span>

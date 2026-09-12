@@ -40,86 +40,86 @@ type TrustStripProps = {
 export default function TrustStrip({ homePageData = {} as SanityHomePageData, activeLocationsCount }: TrustStripProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      // ── Cards stagger in ─────────────────────────────────────────────────
-      gsap.fromTo(
-        ".trust-stat",
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      // ── Count-up for each stat numeral ───────────────────────────────────
-      // Correct GSAP pattern: gsap.to(proxyObject, toVars)
-      // gsap.fromTo needs 3 args (target, fromVars, toVars)
-      // gsap.to on a plain {val:0} object is the clean way to drive counters.
-      const activeStats = STATS.map(stat => {
-        let targetValue = stat.target;
-        let displayValue: string = stat.display;
-        if (homePageData) {
-          if (stat.id === "years" && homePageData.statYears) {
-            targetValue = homePageData.statYears || targetValue;
-            displayValue = `${targetValue}+`;
-          } else if (stat.id === "rating" && homePageData.statRating) {
-            targetValue = homePageData.statRating || targetValue;
-            displayValue = `${targetValue}/5`;
-          } else if (stat.id === "locations") {
-            targetValue = activeLocationsCount || homePageData?.statLocations || targetValue;
-            displayValue = `${targetValue}`;
-          } else if (stat.id === "reviews" && homePageData?.statReviews) {
-            targetValue = homePageData.statReviews || targetValue;
-            displayValue = `${targetValue}k+`;
+    useGSAP(
+      () => {
+        // ── Cards stagger in ─────────────────────────────────────────────────
+        gsap.fromTo(
+          ".trust-stat",
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
           }
-        }
-        return { ...stat, target: targetValue, display: displayValue };
-      });
-
-      activeStats.forEach((stat) => {
-        const el = document.getElementById(`stat-${stat.id}`);
-        if (!el) return;
-        const proxy = { val: 0 };
-        gsap.to(proxy, {
-          val: stat.target,
-          duration: 2,
-          ease: "power2.out",
-          onUpdate() {
-            if (stat.decimals > 0) {
-              el.textContent = proxy.val.toFixed(stat.decimals) + stat.suffix;
-            } else {
-              el.textContent = Math.floor(proxy.val) + stat.suffix;
+        );
+  
+        // ── Count-up for each stat numeral ───────────────────────────────────
+        const activeStats = STATS.map(stat => {
+          let targetValue = stat.target;
+          let displayValue: string = stat.display;
+          if (homePageData) {
+            if (stat.id === "years" && homePageData.statYears) {
+              targetValue = homePageData.statYears || targetValue;
+              displayValue = `${targetValue}+`;
+            } else if (stat.id === "rating" && homePageData.statRating) {
+              targetValue = homePageData.statRating || targetValue;
+              displayValue = `${targetValue}/5`;
+            } else if (stat.id === "locations") {
+              targetValue = activeLocationsCount || homePageData?.statLocations || targetValue;
+              displayValue = `${targetValue}`;
+            } else if (stat.id === "reviews" && homePageData?.statReviews) {
+              targetValue = homePageData.statReviews || targetValue;
+              displayValue = `${targetValue}k+`;
             }
-          },
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
+          }
+          return { ...stat, target: targetValue, display: displayValue };
         });
-      });
-    },
-    { scope: sectionRef, dependencies: [] }
-  );
+  
+        const numElements = gsap.utils.toArray<HTMLElement>(".trust-stat-num");
+        
+        numElements.forEach((el, index) => {
+          const stat = activeStats[index];
+          if (!stat) return;
+          
+          const proxy = { val: 0 };
+          gsap.to(proxy, {
+            val: stat.target,
+            duration: 2.5,
+            ease: "power2.out",
+            onUpdate() {
+              if (stat.decimals > 0) {
+                el.innerText = proxy.val.toFixed(stat.decimals) + stat.suffix;
+              } else {
+                el.innerText = Math.floor(proxy.val) + stat.suffix;
+              }
+            },
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          });
+        });
+      },
+      { scope: sectionRef, dependencies: [] }
+    );
 
   return (
     <section
       ref={sectionRef}
-      className="bg-linen relative z-20 py-16 md:py-20"
+      className="bg-obsidian relative z-20 py-16 md:py-24"
       aria-label="Trust statistics"
     >
       <div className="container mx-auto px-6 max-w-7xl">
-        {/* Grid of separate cards */}
-        <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+        {/* Grid of seamless stats */}
+        <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 w-full">
           {STATS.map((baseStat, index) => {
             const displayValue = homePageData ? (
               baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
@@ -129,21 +129,35 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
               baseStat.display
             ) : baseStat.display;
 
+            // Border logic:
+            // Mobile (2x2): item 0 has R+B, item 1 has B, item 2 has R, item 3 has nothing.
+            // Desktop (4x1): items 0,1,2 have R, item 3 has nothing.
+            // We use an explicit border color class to ensure it's visible but subtle against the dark background.
+            const borderClasses = 
+              index === 0 ? "border-white/5 border-r border-b md:border-b-0" :
+              index === 1 ? "border-white/5 border-b md:border-b-0 md:border-r" :
+              index === 2 ? "border-white/5 border-r" :
+              "";
+
             return (
               <div
                 key={baseStat.id}
-                className="trust-stat flex flex-col items-center text-center p-6 md:p-8 bg-white rounded-xl border border-obsidian/10 shadow-sm transition-all duration-300 md:hover:-translate-y-1 md:hover:shadow-md h-full justify-center will-change-transform"
+                className={`trust-stat flex flex-col items-center text-center p-8 transition-opacity duration-300 h-full justify-center will-change-transform ${borderClasses}`}
               >
+                {/* Orange Accent Line */}
+                <div className="w-8 h-[2px] bg-roots-orange mb-5 md:mb-6 opacity-80" />
+
                 {/* Numeral */}
                 <span
                   id={`stat-${baseStat.id}`}
-                  className="block font-serif text-4xl md:text-5xl text-roots-orange mb-3 tabular-nums"
+                  className="trust-stat-num block font-serif text-4xl md:text-5xl text-parchment mb-4 tabular-nums leading-none"
                   aria-label={displayValue}
                 >
                   {displayValue}
                 </span>
 
-                <span className="font-sans text-xs uppercase tracking-wide text-warm-gray font-medium">
+                {/* Label */}
+                <span className="font-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/50 font-medium">
                   {baseStat.label}
                 </span>
               </div>

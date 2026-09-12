@@ -40,7 +40,7 @@ const TIME_SLOTS = [
 type Tab = 'booking' | 'callback';
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-export default function BookingModal({ branches = ['Uppal', 'Tarnaka'] }: { branches?: string[] }) {
+export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Brahmanpally'] }: { branches?: string[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>('booking');
@@ -90,10 +90,40 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka'] }: { bran
     return () => window.removeEventListener('open-booking-modal', openModal);
   }, [openModal]);
 
-  // ── Lock body scroll ───────────────────────────────────────────────────────
+  // ── Lock body scroll & Pause Lenis without scroll jump ───────────────────────
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    if (isOpen) {
+      if (typeof window !== 'undefined') {
+        (window as any).__lenis?.stop();
+        const scrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+      }
+    } else {
+      if (typeof window !== 'undefined') {
+        const top = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        if (top) {
+          const scrollY = parseInt(top || '0', 10) * -1;
+          window.scrollTo(0, scrollY);
+        }
+        (window as any).__lenis?.start();
+      }
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        (window as any).__lenis?.start();
+      }
+    };
   }, [isOpen]);
 
   // ── Close on Escape ────────────────────────────────────────────────────────
@@ -173,29 +203,35 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka'] }: { bran
     <div
       ref={overlayRef}
       onClick={handleOverlayClick}
+      data-lenis-prevent="true"
       className={`fixed inset-0 z-[9999] flex items-center justify-center p-4 transition-all duration-300 ${
         isOpen
           ? 'opacity-100 pointer-events-auto'
           : 'opacity-0 pointer-events-none'
       }`}
-      style={{ backgroundColor: 'rgba(26, 16, 8, 0.6)' }}
+      style={{ backgroundColor: 'rgba(23,18,15,0.72)', backdropFilter: 'blur(4px)' }}
       role="dialog"
       aria-modal="true"
       aria-label="Book an appointment"
     >
       <div
         ref={cardRef}
-        className={`relative w-full max-w-lg bg-parchment rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
+        className={`relative w-full max-w-[600px] rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
           isOpen ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'
         }`}
+        style={{ backgroundColor: '#f7f3ee' }}
       >
-        {/* ── Close button ─────────────────────────────── */}
+        {/* ── Close button ── */}
         <button
           onClick={() => setIsOpen(false)}
-          className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-obsidian/5 hover:bg-obsidian/10 transition-colors"
+          className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+          style={{ background: 'rgba(23,18,15,0.07)' }}
+          onMouseEnter={e => (e.currentTarget.style.background = 'rgba(23,18,15,0.13)')}
+          onMouseLeave={e => (e.currentTarget.style.background = 'rgba(23,18,15,0.07)')}
           aria-label="Close modal"
         >
-          <svg className="w-4 h-4 text-obsidian" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+            style={{ color: '#17120f' }}>
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         </button>
@@ -204,7 +240,7 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka'] }: { bran
         <div className="flex border-b border-obsidian/[0.06]">
           <button
             onClick={() => { setActiveTab('booking'); setStatus('idle'); }}
-            className={`flex-1 py-4 font-sans text-[11px] uppercase tracking-[0.12em] font-semibold transition-colors relative ${
+            className={`flex-1 py-4 font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.12em] font-semibold transition-colors relative ${
               activeTab === 'booking'
                 ? 'text-roots-orange'
                 : 'text-obsidian/40 hover:text-obsidian/60'
@@ -217,7 +253,7 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka'] }: { bran
           </button>
           <button
             onClick={() => { setActiveTab('callback'); setStatus('idle'); }}
-            className={`flex-1 py-4 font-sans text-[11px] uppercase tracking-[0.12em] font-semibold transition-colors relative ${
+            className={`flex-1 py-4 font-[family-name:var(--font-ui)] text-[11px] uppercase tracking-[0.12em] font-semibold transition-colors relative ${
               activeTab === 'callback'
                 ? 'text-roots-orange'
                 : 'text-obsidian/40 hover:text-obsidian/60'
@@ -230,8 +266,8 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka'] }: { bran
           </button>
         </div>
 
-        {/* ── Form content ─────────────────────────────── */}
-        <div className="p-6 md:p-8">
+        {/* ── Form content ── */}
+        <div data-lenis-prevent="true" className="p-6 md:p-8 max-h-[72vh] overflow-y-auto overscroll-contain" style={{ overscrollBehavior: 'contain' }}>
           {status === 'success' ? (
             <SuccessMessage
               tab={activeTab}
@@ -365,8 +401,8 @@ function FormField({
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="font-sans text-[11px] uppercase tracking-[0.1em] text-obsidian/60 font-semibold">
-        {label} {required && <span className="text-roots-orange">*</span>}
+      <span className="font-sans text-[11px] uppercase tracking-[0.1em] font-semibold" style={{ color: 'rgba(23,18,15,0.55)' }}>
+        {label} {required && <span style={{ color: '#d96b1f' }}>*</span>}
       </span>
       <input
         type={type}
@@ -377,7 +413,21 @@ function FormField({
         pattern={pattern}
         title={title}
         min={min}
-        className="w-full px-4 py-3 bg-linen border border-obsidian/[0.08] rounded-lg font-sans text-sm text-obsidian placeholder:text-obsidian/30 focus:outline-none focus:border-roots-orange/40 focus:ring-2 focus:ring-roots-orange/10 transition-all"
+        className="w-full px-4 rounded-xl font-sans text-sm transition-all outline-none"
+        style={{
+          height: '50px',
+          backgroundColor: '#f7f3ee',
+          border: '1px solid rgba(23,18,15,0.14)',
+          color: '#17120f',
+        }}
+        onFocus={e => {
+          e.currentTarget.style.borderColor = '#f0a46c';
+          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(240,164,108,0.18)';
+        }}
+        onBlur={e => {
+          e.currentTarget.style.borderColor = 'rgba(23,18,15,0.14)';
+          e.currentTarget.style.boxShadow = 'none';
+        }}
       />
     </label>
   );
@@ -396,7 +446,7 @@ function TextAreaField({
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="font-sans text-[11px] uppercase tracking-[0.1em] text-obsidian/60 font-semibold">
+      <span className="font-sans text-[11px] uppercase tracking-[0.1em] font-semibold" style={{ color: 'rgba(23,18,15,0.55)' }}>
         {label}
       </span>
       <textarea
@@ -404,7 +454,20 @@ function TextAreaField({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={3}
-        className="w-full px-4 py-3 bg-linen border border-obsidian/[0.08] rounded-lg font-sans text-sm text-obsidian placeholder:text-obsidian/30 focus:outline-none focus:border-roots-orange/40 focus:ring-2 focus:ring-roots-orange/10 transition-all resize-none"
+        className="w-full px-4 py-3.5 rounded-xl font-sans text-sm transition-all outline-none resize-none"
+        style={{
+          backgroundColor: '#f7f3ee',
+          border: '1px solid rgba(23,18,15,0.14)',
+          color: '#17120f',
+        }}
+        onFocus={e => {
+          e.currentTarget.style.borderColor = '#f0a46c';
+          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(240,164,108,0.18)';
+        }}
+        onBlur={e => {
+          e.currentTarget.style.borderColor = 'rgba(23,18,15,0.14)';
+          e.currentTarget.style.boxShadow = 'none';
+        }}
       />
     </label>
   );
@@ -427,20 +490,30 @@ function SelectField({
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="font-sans text-[11px] uppercase tracking-[0.1em] text-obsidian/60 font-semibold">
-        {label} {required && <span className="text-roots-orange">*</span>}
+      <span className="font-sans text-[11px] uppercase tracking-[0.1em] font-semibold" style={{ color: 'rgba(23,18,15,0.55)' }}>
+        {label} {required && <span style={{ color: '#d96b1f' }}>*</span>}
       </span>
       <select
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`w-full px-4 py-3 bg-linen border border-obsidian/[0.08] rounded-lg font-sans text-sm text-obsidian focus:outline-none focus:border-roots-orange/40 focus:ring-2 focus:ring-roots-orange/10 transition-all appearance-none cursor-pointer ${
-          !value ? 'text-obsidian/30' : ''
-        }`}
+        className="w-full px-4 rounded-xl font-sans text-sm transition-all outline-none appearance-none cursor-pointer"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B5E53' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
+          height: '50px',
+          backgroundColor: '#f7f3ee',
+          border: '1px solid rgba(23,18,15,0.14)',
+          color: value ? '#17120f' : 'rgba(23,18,15,0.35)',
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a7d72' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'right 12px center',
+          backgroundPosition: 'right 14px center',
+        }}
+        onFocus={e => {
+          e.currentTarget.style.borderColor = '#f0a46c';
+          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(240,164,108,0.18)';
+        }}
+        onBlur={e => {
+          e.currentTarget.style.borderColor = 'rgba(23,18,15,0.14)';
+          e.currentTarget.style.boxShadow = 'none';
         }}
       >
         {placeholder && <option value="">{placeholder}</option>}
@@ -463,20 +536,21 @@ function BranchSelector({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="font-sans text-[11px] uppercase tracking-[0.1em] text-obsidian/60 font-semibold">
-        Branch <span className="text-roots-orange">*</span>
+      <span className="font-sans text-[11px] uppercase tracking-[0.1em] font-semibold" style={{ color: 'rgba(23,18,15,0.55)' }}>
+        Branch <span style={{ color: '#d96b1f' }}>*</span>
       </span>
-      <div className="grid grid-cols-2 gap-3" style={{ gridTemplateColumns: `repeat(${Math.min(branches.length, 3)}, 1fr)` }}>
+      <div className="grid gap-2.5" style={{ gridTemplateColumns: `repeat(${Math.min(branches.length, 3)}, 1fr)` }}>
         {branches.map((branch) => (
           <button
             key={branch}
             type="button"
             onClick={() => onChange(branch)}
-            className={`py-3 rounded-lg font-sans text-sm font-medium transition-all border ${
-              value === branch
-                ? 'bg-roots-orange text-parchment border-roots-orange shadow-md'
-                : 'bg-linen text-obsidian border-obsidian/[0.08] hover:border-roots-orange/30'
-            }`}
+            className="py-3 rounded-xl font-sans text-sm font-medium transition-all"
+            style={{
+              backgroundColor: value === branch ? '#d96b1f' : '#f7f3ee',
+              color: value === branch ? '#fffdf9' : '#17120f',
+              border: value === branch ? '1px solid #d96b1f' : '1px solid rgba(23,18,15,0.14)',
+            }}
           >
             {branch}
           </button>
@@ -491,7 +565,14 @@ function SubmitButton({ loading, label }: { loading: boolean; label: string }) {
     <button
       type="submit"
       disabled={loading}
-      className="mt-2 w-full py-4 bg-roots-orange text-parchment rounded-lg font-sans text-xs uppercase tracking-[0.1em] font-semibold transition-all hover:shadow-lg hover:shadow-roots-orange/25 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+      className="mt-2 w-full py-4 rounded-xl font-[family-name:var(--font-ui)] text-xs uppercase tracking-[0.1em] font-semibold transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+      style={{
+        backgroundColor: '#d96b1f',
+        color: '#fffdf9',
+        boxShadow: '0 3px 10px rgba(217,107,31,0.28)',
+      }}
+      onMouseEnter={e => !loading && (e.currentTarget.style.backgroundColor = '#b95112')}
+      onMouseLeave={e => !loading && (e.currentTarget.style.backgroundColor = '#d96b1f')}
     >
       {loading ? (
         <>

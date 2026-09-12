@@ -13,47 +13,55 @@ export default function SmoothScroll({
 
   useEffect(() => {
     let lenisInstance: LenisType | null = null;
-    let updateFn: (time: number) => void;
+    let reqId: number;
 
-    // Ponytail: Disable smooth scroll on mobile entirely. Destroys mobile PageSpeed (TBT) and ruins native scroll feel.
-    if (window.innerWidth < 768) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const isMobile = window.innerWidth < 768;
 
     import("lenis").then((module) => {
       const Lenis = module.default;
+
       lenisInstance = new Lenis({
-        duration: 1.0,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        lerp: isMobile ? 0.08 : 0.1,
         smoothWheel: true,
-        wheelMultiplier: 1,
-        touchMultiplier: 1.5,
+        wheelMultiplier: isMobile ? 1.2 : 1,
+        // syncTouch enables Lenis on mobile touch devices for smooth inertia
+        syncTouch: isMobile,
+        touchMultiplier: isMobile ? 2.0 : 1,
       });
 
       lenisRef.current = lenisInstance;
+      (window as any).__lenis = lenisInstance;
 
-      // Sync Lenis with GSAP ScrollTrigger
+      // Sync Lenis scroll position → GSAP ScrollTrigger
       lenisInstance.on("scroll", ScrollTrigger.update);
 
-      // Sync GSAP's ticker with Lenis' requestAnimationFrame
-      updateFn = (time: number) => {
-        lenisInstance?.raf(time * 1000);
-      };
+      // Give GSAP's ticker and Lenis's rAF their own breathing room.
+      gsap.ticker.lagSmoothing(1000, 16);
 
-      gsap.ticker.add(updateFn);
+      function raf(time: number) {
+        lenisInstance?.raf(time);
+        reqId = requestAnimationFrame(raf);
+      }
+      reqId = requestAnimationFrame(raf);
 
-      // Refresh after full page load — never mid-scroll like a setTimeout would
-      if (document.readyState === 'complete') {
-        ScrollTrigger.refresh();
+      // Refresh after full page load to ensure GSAP knows all heights
+      const doRefresh = () => requestAnimationFrame(() => ScrollTrigger.refresh());
+      if (document.readyState === "complete") {
+        doRefresh();
       } else {
-        window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+        window.addEventListener("load", doRefresh, { once: true });
       }
     });
 
     return () => {
       if (lenisInstance) {
         lenisInstance.destroy();
+        (window as any).__lenis = null;
       }
-      if (updateFn) {
-        gsap.ticker.remove(updateFn);
+      if (reqId) {
+        cancelAnimationFrame(reqId);
       }
     };
   }, []);

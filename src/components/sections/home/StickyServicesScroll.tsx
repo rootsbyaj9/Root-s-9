@@ -124,14 +124,13 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
     { scope: sectionRef }
   );
 
-  // ── Mobile: IntersectionObserver crossfade ─────────────────────────────────
-  // IntersectionObserver is used instead of GSAP ScrollTrigger on mobile because
-  // ScrollTrigger mis-measures positions when elements slide under a sticky header.
+  // ── Mobile: Scroll-based crossfade ─────────────────────────────────────────
+  // Uses responsive focal-point distance check on scroll to ensure cards change
+  // smoothly and deterministically as user scrolls past each section.
   useEffect(() => {
     const root = sectionRef.current;
     if (!root) return;
 
-    // Only run on mobile
     const mq = window.matchMedia("(max-width: 767px)");
     if (!mq.matches) return;
 
@@ -140,7 +139,11 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
     const dots = Array.from(root.querySelectorAll<HTMLElement>('.mobile-dot'));
     const contents = Array.from(root.querySelectorAll<HTMLElement>('.mobile-text-content'));
 
+    let currentIndex = 0;
+
     function activate(index: number) {
+      if (index === currentIndex && images[index]?.style.opacity === '1') return;
+      currentIndex = index;
       images.forEach((el, i) => {
         el.style.transition = 'opacity 0.45s ease';
         el.style.opacity = i === index ? '1' : '0';
@@ -156,21 +159,34 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
       });
     }
 
-    // Threshold 0.5 = fire when 50% of the text block is visible
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = textBlocks.indexOf(entry.target as HTMLElement);
-            if (idx !== -1) activate(idx);
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const focalPoint = window.innerHeight * 0.55;
+        let closestIdx = 0;
+        let minDistance = Infinity;
+
+        textBlocks.forEach((el, i) => {
+          const rect = el.getBoundingClientRect();
+          const center = (rect.top + rect.bottom) / 2;
+          const dist = Math.abs(center - focalPoint);
+          if (dist < minDistance) {
+            minDistance = dist;
+            closestIdx = i;
           }
         });
-      },
-      { threshold: 0.5 }
-    );
 
-    textBlocks.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+        activate(closestIdx);
+        ticking = false;
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const getImageUrl = (key: string) => {

@@ -34,13 +34,13 @@ export default function MobileCTABar({ settings }: { settings?: SiteSettings | n
 
   return (
     <div
-      className={`md:hidden fixed bottom-0 left-0 right-0 z-[9990] bg-parchment border-t border-obsidian/[0.08] px-4 py-3 flex gap-3 transition-transform duration-300 ${
+      className={`md:hidden fixed bottom-0 left-0 right-0 z-[9990] bg-parchment/95 backdrop-blur-md border-t border-obsidian/[0.08] px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] flex gap-3 transition-transform duration-300 ${
         visible ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
       <button
         onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
-        className="flex-1 flex items-center justify-center gap-2 bg-roots-orange text-parchment font-[family-name:var(--font-ui)] text-[11px] font-semibold uppercase tracking-[0.08em] py-3 rounded-md transition-transform active:scale-[0.97]"
+        className="flex-1 min-h-[44px] flex items-center justify-center gap-2 bg-roots-orange text-parchment font-[family-name:var(--font-ui)] text-[11px] font-semibold uppercase tracking-[0.08em] py-2.5 px-3 rounded-md transition-transform active:scale-[0.97]"
       >
         {/* Calendar icon */}
         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -51,7 +51,7 @@ export default function MobileCTABar({ settings }: { settings?: SiteSettings | n
       </button>
       <Link
         href="/services"
-        className="flex-1 flex items-center justify-center border border-obsidian/20 text-obsidian font-[family-name:var(--font-ui)] text-[11px] font-semibold uppercase tracking-[0.08em] py-3 rounded-md transition-colors active:bg-obsidian/5"
+        className="flex-1 min-h-[44px] flex items-center justify-center border border-obsidian/20 text-obsidian font-[family-name:var(--font-ui)] text-[11px] font-semibold uppercase tracking-[0.08em] py-2.5 px-3 rounded-md transition-colors active:bg-obsidian/5"
       >
         View Services
       </Link>

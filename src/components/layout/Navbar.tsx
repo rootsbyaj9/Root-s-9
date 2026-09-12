@@ -121,6 +121,7 @@ export default function Navbar({ settings }: { settings: any }) {
 
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        setMenuOpen(false);
         setDesktopServicesOpen(false);
         setMobileServicesOpen(false);
       }
@@ -149,11 +150,18 @@ export default function Navbar({ settings }: { settings: any }) {
     setDesktopServicesOpen(false);
   }, [pathname]);
 
-  // ── Lock body scroll when any mobile menu is open ────────────────────────
+  // ── Lock body scroll & pause Lenis when mobile menu is open ──────────────
   useEffect(() => {
-    document.body.style.overflow = (menuOpen || mobileServicesOpen) ? "hidden" : "";
+    const isAnyMenuOpen = menuOpen || mobileServicesOpen;
+    document.body.style.overflow = isAnyMenuOpen ? "hidden" : "";
+    if (isAnyMenuOpen) {
+      (window as any).__lenis?.stop();
+    } else {
+      (window as any).__lenis?.start();
+    }
     return () => {
       document.body.style.overflow = "";
+      (window as any).__lenis?.start();
     };
   }, [menuOpen, mobileServicesOpen]);
 

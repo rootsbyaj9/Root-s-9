@@ -29,7 +29,7 @@ export default function WhatsAppButton({ settings }: { settings: SiteSettings | 
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with us on WhatsApp"
-      className="fixed bottom-[80px] md:bottom-6 right-4 md:right-6 z-[9999] group"
+      className="fixed bottom-[calc(76px+env(safe-area-inset-bottom,0px))] md:bottom-6 right-4 md:right-6 z-[9999] group"
     >
       {/* Slow-pulse ring — draws attention without visual noise */}
       <span

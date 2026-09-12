@@ -146,14 +146,41 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Brahmanp
   // ── Submit booking ─────────────────────────────────────────────────────────
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('submitting');
     setErrorMessage('');
 
+    const cleanPhone = bookingForm.phone.replace(/\D/g, '');
+    if (!bookingForm.name.trim()) {
+      setErrorMessage('Please enter your name.');
+      setStatus('error');
+      return;
+    }
+    if (cleanPhone.length < 10) {
+      setErrorMessage('Please enter a valid 10-digit mobile number.');
+      setStatus('error');
+      return;
+    }
+    if (!bookingForm.service) {
+      setErrorMessage('Please select a service category.');
+      setStatus('error');
+      return;
+    }
+    if (!bookingForm.date) {
+      setErrorMessage('Please select an appointment date.');
+      setStatus('error');
+      return;
+    }
+    if (!bookingForm.time) {
+      setErrorMessage('Please select a preferred time slot.');
+      setStatus('error');
+      return;
+    }
+
+    setStatus('submitting');
     try {
       const res = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bookingForm),
+        body: JSON.stringify({ ...bookingForm, phone: cleanPhone }),
       });
 
       const data = await res.json();
@@ -173,14 +200,26 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Brahmanp
   // ── Submit callback ────────────────────────────────────────────────────────
   const handleCallbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('submitting');
     setErrorMessage('');
 
+    const cleanPhone = callbackForm.phone.replace(/\D/g, '');
+    if (!callbackForm.name.trim()) {
+      setErrorMessage('Please enter your name.');
+      setStatus('error');
+      return;
+    }
+    if (cleanPhone.length < 10) {
+      setErrorMessage('Please enter a valid 10-digit mobile number.');
+      setStatus('error');
+      return;
+    }
+
+    setStatus('submitting');
     try {
       const res = await fetch('/api/callbacks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(callbackForm),
+        body: JSON.stringify({ ...callbackForm, phone: cleanPhone }),
       });
 
       const data = await res.json();

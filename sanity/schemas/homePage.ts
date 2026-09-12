@@ -4,304 +4,340 @@ export const homePage = defineType({
   name: "homePage",
   title: "🏠 Home Page",
   type: "document",
+  groups: [
+    { name: "hero", title: "🎬 1. Hero", default: true },
+    { name: "trust", title: "📊 2. Trust Numbers & Brands" },
+    { name: "grid", title: "💇 3. Curated Services Grid" },
+    { name: "sticky", title: "✨ 4. Sticky Scroll (7 Services)" },
+    { name: "slider", title: "🔁 5. Before & After" },
+    { name: "cta", title: "⚡ 6. Call To Action" },
+  ],
   fields: [
+    // ── 1. HERO SECTION ─────────────────────────────────────────────────────────────
     defineField({
-      name: "pageBuilder",
-      title: "Page Sections (Page Builder)",
-      description: "Add, edit, and reorder sections exactly as they appear on the live site.",
+      name: "heroEyebrow",
+      title: "Small Eyebrow Label",
+      type: "string",
+      group: "hero",
+      description: 'e.g. "Hyderabad\'s premium family salon"',
+      initialValue: "Hyderabad's premium family salon for hair, skin, bridal & tattoo artistry",
+    }),
+    defineField({
+      name: "heroHeadline",
+      title: "Headline (Normal Font)",
+      type: "string",
+      group: "hero",
+      description: 'e.g. "Walk in."',
+      initialValue: "Walk in.",
+    }),
+    defineField({
+      name: "heroHeadlineItalic",
+      title: "Headline (Serif Italic Accent)",
+      type: "string",
+      group: "hero",
+      description: 'e.g. "Walk out different."',
+      initialValue: "Walk out different.",
+    }),
+    defineField({
+      name: "heroSubtitle",
+      title: "Subtitle Description",
+      type: "text",
+      rows: 2,
+      group: "hero",
+      description: "Appears below the main headline.",
+      initialValue: "Crafted styling, precision treatments, and bespoke artistry across our 3 luxury Hyderabad locations.",
+    }),
+    defineField({
+      name: "heroCtaText",
+      title: "Primary Button Label",
+      type: "string",
+      group: "hero",
+      initialValue: "Book Appointment",
+    }),
+    defineField({
+      name: "heroBackgroundImage",
+      title: "Hero Background Photo",
+      type: "image",
+      group: "hero",
+      options: { hotspot: true },
+      description: "Recommended: 1920 × 1080 px (16:9). Format: WEBP or JPG.",
+      fields: [
+        defineField({ name: "alt", title: "Alt Text", type: "string" }),
+      ],
+    }),
+
+    // ── 2. TRUST NUMBERS & BRANDS ───────────────────────────────────────────────────
+    defineField({
+      name: "statYears",
+      title: "Years in Business",
+      type: "number",
+      group: "trust",
+      initialValue: 8,
+    }),
+    defineField({
+      name: "statRating",
+      title: "Google Rating",
+      type: "number",
+      group: "trust",
+      initialValue: 4.8,
+    }),
+    defineField({
+      name: "statLocations",
+      title: "Number of Branches",
+      type: "number",
+      group: "trust",
+      initialValue: 3,
+    }),
+    defineField({
+      name: "statReviews",
+      title: "Total Reviews (in thousands, e.g. 1.6)",
+      type: "number",
+      group: "trust",
+      initialValue: 1.6,
+    }),
+    defineField({
+      name: "partners",
+      title: "Partner Brand Logos (Marquee Strip)",
       type: "array",
+      group: "trust",
       of: [
-        // ── 1. HERO SECTION ─────────────────────────────────────────────────────────────
         {
-          name: "heroSection",
-          title: "🎬 Hero Section",
           type: "object",
           fields: [
-            defineField({
-              name: "heroEyebrow",
-              title: "Small Label (above headline)",
-              type: "string",
-              description: 'e.g. "Hyderabad\'s premium family salon"',
-              initialValue: "Hyderabad's premium family salon for hair, skin, bridal & tattoo artistry",
-            }),
-            defineField({
-              name: "heroHeadline",
-              title: "Headline — Normal Text",
-              type: "string",
-              description: 'e.g. "Walk in."',
-              initialValue: "Walk in.",
-            }),
-            defineField({
-              name: "heroHeadlineItalic",
-              title: "Headline — Italic Text",
-              type: "string",
-              description: 'e.g. "Walk out different."',
-              initialValue: "Walk out different.",
-            }),
-            defineField({
-              name: "heroCtaText",
-              title: "Button Label",
-              type: "string",
-              description: 'e.g. "Book Your Appointment"',
-              initialValue: "Book Your Appointment",
-            }),
-            defineField({
-              name: "heroBackgroundImage",
-              title: "Background Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: exactly 1920 × 1080 px (16:9). Format: WEBP or JPG.",
-              fields: [
-                defineField({ name: "alt", title: "Alt Text", type: "string" }),
-              ],
-            }),
+            { name: "name", title: "Brand Name", type: "string" },
+            { name: "logo", title: "Logo Image", type: "image" },
+            { name: "websiteUrl", title: "Website URL", type: "url" },
           ],
-          preview: {
-            select: { title: "heroHeadline", subtitle: "heroHeadlineItalic", media: "heroBackgroundImage" },
-            prepare({ title, subtitle, media }) {
-              return { title: "Hero Section", subtitle: `${title} ${subtitle}`, media };
-            },
-          },
-        },
-
-        // ── 2. TRUST STRIP ──────────────────────────────────────────────────────────────
-        {
-          name: "trustStripSection",
-          title: "📊 Trust Stats Strip",
-          type: "object",
-          fields: [
-            defineField({
-              name: "statYears",
-              title: "Years in Business",
-              type: "number",
-              initialValue: 8,
-            }),
-            defineField({
-              name: "statRating",
-              title: "Google Rating",
-              type: "number",
-              initialValue: 4.8,
-            }),
-            defineField({
-              name: "statLocations",
-              title: "Number of Branches",
-              type: "number",
-              initialValue: 2,
-            }),
-            defineField({
-              name: "statReviews",
-              title: "Total Reviews (in thousands, e.g. 1.6)",
-              type: "number",
-              initialValue: 1.6,
-            }),
-            defineField({
-              name: "partners",
-              title: "Partner Brands (Marquee)",
-              type: "array",
-              of: [
-                {
-                  type: "object",
-                  fields: [
-                    { name: "name", title: "Brand Name", type: "string" },
-                    { name: "logo", title: "Logo Image", type: "image" },
-                    { name: "websiteUrl", title: "Website URL", type: "url" },
-                  ],
-                },
-              ],
-            }),
-          ],
-          preview: {
-            prepare() { return { title: "Trust Stats & Brands Strip" }; },
-          },
-        },
-
-        // ── 3. SERVICES GRID ────────────────────────────────────────────────────────────
-        {
-          name: "servicesGridSection",
-          title: "💇 Services Grid (Bento)",
-          type: "object",
-          fields: [
-            defineField({
-              name: "servicesHeadline",
-              title: "Headline",
-              type: "string",
-              initialValue: "Curated Services",
-            }),
-            defineField({
-              name: "servicesSubheadline",
-              title: "Subheadline",
-              type: "text",
-            }),
-            defineField({
-              name: "hairServiceImage",
-              title: "Hair Card Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-            }),
-            defineField({
-              name: "bridalServiceImage",
-              title: "Bridal Card Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-            }),
-            defineField({
-              name: "skinServiceImage",
-              title: "Skin Card Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-            }),
-            defineField({
-              name: "tattooServiceImage",
-              title: "Tattoo Card Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-            }),
-            defineField({
-              name: "nailsServiceImage",
-              title: "Nails Card Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-            }),
-            defineField({
-              name: "piercingServiceImage",
-              title: "Piercing Card Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-            }),
-          ],
-          preview: {
-            prepare() { return { title: "Services Grid (Bento)" }; },
-          },
-        },
-
-        // ── 4. STICKY FEATURED SCROLL ───────────────────────────────────────────────────
-        {
-          name: "featuredScrollSection",
-          title: "✨ Featured Services (Sticky Scroll)",
-          type: "object",
-          fields: [
-            defineField({
-              name: "featuredHairImage",
-              title: "Hair Portrait Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-              fields: [{ name: "alt", title: "Alt Text", type: "string" }],
-            }),
-            defineField({
-              name: "featuredBridalImage",
-              title: "Bridal Portrait Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-              fields: [{ name: "alt", title: "Alt Text", type: "string" }],
-            }),
-            defineField({
-              name: "featuredSkinImage",
-              title: "Skin Portrait Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-              fields: [{ name: "alt", title: "Alt Text", type: "string" }],
-            }),
-            defineField({
-              name: "featuredTattooImage",
-              title: "Tattoo Portrait Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "Required Size: 600 × 800 px (3:4).",
-              fields: [{ name: "alt", title: "Alt Text", type: "string" }],
-            }),
-          ],
-          preview: {
-            prepare() { return { title: "Featured Services (Sticky Scroll)" }; },
-          },
-        },
-
-        // ── 5. BEFORE & AFTER ───────────────────────────────────────────────────────────
-        {
-          name: "beforeAfterSection",
-          title: "🔁 Before & After Slider",
-          type: "object",
-          fields: [
-            defineField({
-              name: "transformationsHeadline",
-              title: "Headline",
-              type: "string",
-              initialValue: "Visible Transformations",
-            }),
-            defineField({
-              name: "transformationsSubheadline",
-              title: "Subheadline",
-              type: "text",
-            }),
-            defineField({
-              name: "beforeAfterHairBefore",
-              title: "Hair — BEFORE Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "MUST exactly match AFTER size.",
-            }),
-            defineField({
-              name: "beforeAfterHairAfter",
-              title: "Hair — AFTER Photo",
-              type: "image",
-              options: { hotspot: true },
-              description: "MUST exactly match BEFORE size.",
-            }),
-            defineField({
-              name: "beforeAfterSkinBefore",
-              title: "Skin — BEFORE Photo",
-              type: "image",
-              options: { hotspot: true },
-            }),
-            defineField({
-              name: "beforeAfterSkinAfter",
-              title: "Skin — AFTER Photo",
-              type: "image",
-              options: { hotspot: true },
-            }),
-          ],
-          preview: {
-            prepare() { return { title: "Before & After Slider" }; },
-          },
-        },
-
-        // ── 6. CALL TO ACTION ───────────────────────────────────────────────────────────
-        {
-          name: "ctaSection",
-          title: "⚡ Call To Action",
-          type: "object",
-          fields: [
-            defineField({
-              name: "ctaHeadline",
-              title: "Bottom CTA Headline",
-              type: "string",
-              description: 'e.g. "Ready for your Look?"',
-            }),
-            defineField({
-              name: "ctaButtonText",
-              title: "Bottom CTA Button Text",
-              type: "string",
-              description: 'e.g. "Book Consultation"',
-            }),
-          ],
-          preview: {
-            prepare() { return { title: "Call To Action (CTA)" }; },
-          },
         },
       ],
     }),
+
+    // ── 3. CURATED SERVICES GRID (BENTO) ────────────────────────────────────────────
+    defineField({
+      name: "servicesHeadline",
+      title: "Services Section Headline",
+      type: "string",
+      group: "grid",
+      initialValue: "Curated Services",
+    }),
+    defineField({
+      name: "servicesSubheadline",
+      title: "Services Section Subheadline",
+      type: "text",
+      rows: 2,
+      group: "grid",
+      initialValue: "Specialized beauty, precision haircutting, and artistic body styling tailored to your persona.",
+    }),
+    defineField({
+      name: "hairServiceImage",
+      title: "1. Hair Service Photo",
+      type: "image",
+      group: "grid",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "bridalServiceImage",
+      title: "2. Bridal Studio Photo",
+      type: "image",
+      group: "grid",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "skinServiceImage",
+      title: "3. Skin Rituals Photo",
+      type: "image",
+      group: "grid",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "tattooServiceImage",
+      title: "4. Tattoo Artistry Photo",
+      type: "image",
+      group: "grid",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "nailsServiceImage",
+      title: "5. Nails & Art Photo",
+      type: "image",
+      group: "grid",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "piercingServiceImage",
+      title: "6. Piercing Photo",
+      type: "image",
+      group: "grid",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+
+    // ── 4. STICKY SCROLL (7 CURATED SERVICES) ───────────────────────────────────────
+    defineField({
+      name: "stickyEyebrow",
+      title: "Eyebrow Label",
+      type: "string",
+      group: "sticky",
+      initialValue: "Why Choose Root's",
+    }),
+    defineField({
+      name: "stickyHeadline",
+      title: "Headline (Normal Font)",
+      type: "string",
+      group: "sticky",
+      initialValue: "Defining Beauty Standards in",
+    }),
+    defineField({
+      name: "stickyHeadlineAccent",
+      title: "Headline Accent (Italic Font)",
+      type: "string",
+      group: "sticky",
+      initialValue: "Hyderabad.",
+    }),
+    defineField({
+      name: "scrollHairCutImage",
+      title: "1. Precision Haircuts & Styling Photo",
+      type: "image",
+      group: "sticky",
+      options: { hotspot: true },
+      description: "Recommended: 3:4 portrait (800 × 1066 px or 1200 × 1600 px).",
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "scrollHairColorImage",
+      title: "2. Expert Hair Coloring & Highlights Photo",
+      type: "image",
+      group: "sticky",
+      options: { hotspot: true },
+      description: "Recommended: 3:4 portrait. Shows balayage, global color, or highlights.",
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "scrollHairTextureImage",
+      title: "3. Advanced Texture Treatments Photo",
+      type: "image",
+      group: "sticky",
+      options: { hotspot: true },
+      description: "Recommended: 3:4 portrait. Shows smooth hair (Keratin/Nanoplastia/Botox).",
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "scrollNailArtImage",
+      title: "4. Luxury Nail Extensions & Art Photo",
+      type: "image",
+      group: "sticky",
+      options: { hotspot: true },
+      description: "Recommended: 3:4 portrait. Shows nail extensions or art.",
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "scrollPedicureImage",
+      title: "5. Relaxing Manicure & Pedicure Photo",
+      type: "image",
+      group: "sticky",
+      options: { hotspot: true },
+      description: "Recommended: 3:4 portrait. Shows manicure/pedicure session.",
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "scrollFacialsImage",
+      title: "6. Premium Facials & Skincare Photo",
+      type: "image",
+      group: "sticky",
+      options: { hotspot: true },
+      description: "Recommended: 3:4 portrait. Shows radiant glowing skin / facial ritual.",
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "scrollBridalImage",
+      title: "7. Elite Bridal & Party Makeup Photo",
+      type: "image",
+      group: "sticky",
+      options: { hotspot: true },
+      description: "Recommended: 3:4 portrait. Shows bridal glam makeup / celebration look.",
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+
+    // ── 5. BEFORE & AFTER SLIDER ────────────────────────────────────────────────────
+    defineField({
+      name: "transformationsHeadline",
+      title: "Slider Headline",
+      type: "string",
+      group: "slider",
+      initialValue: "Visible Transformations",
+    }),
+    defineField({
+      name: "transformationsSubheadline",
+      title: "Slider Subheadline",
+      type: "text",
+      rows: 2,
+      group: "slider",
+      initialValue: "Drag the slider to reveal real before and after results achieved at Root's Family Salon.",
+    }),
+    defineField({
+      name: "beforeAfterHairBefore",
+      title: "Hair — BEFORE Photo",
+      type: "image",
+      group: "slider",
+      options: { hotspot: true },
+      description: "Aspect ratio must exactly match the AFTER photo.",
+    }),
+    defineField({
+      name: "beforeAfterHairAfter",
+      title: "Hair — AFTER Photo",
+      type: "image",
+      group: "slider",
+      options: { hotspot: true },
+      description: "Aspect ratio must exactly match the BEFORE photo.",
+    }),
+    defineField({
+      name: "beforeAfterSkinBefore",
+      title: "Skin — BEFORE Photo",
+      type: "image",
+      group: "slider",
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: "beforeAfterSkinAfter",
+      title: "Skin — AFTER Photo",
+      type: "image",
+      group: "slider",
+      options: { hotspot: true },
+    }),
+
+    // ── 6. CALL TO ACTION (CTA) ─────────────────────────────────────────────────────
+    defineField({
+      name: "ctaHeadline",
+      title: "Bottom CTA Headline",
+      type: "string",
+      group: "cta",
+      initialValue: "Ready to Transform Your Look?",
+    }),
+    defineField({
+      name: "ctaSubtitle",
+      title: "Bottom CTA Subtitle",
+      type: "text",
+      rows: 2,
+      group: "cta",
+      initialValue: "Walk in to any of our 3 Hyderabad branches or schedule your consultation online today.",
+    }),
+    defineField({
+      name: "ctaButtonText",
+      title: "Bottom CTA Button Label",
+      type: "string",
+      group: "cta",
+      initialValue: "Book Consultation",
+    }),
   ],
   preview: {
-    prepare() {
-      return { title: "🏠 Home Page Builder", subtitle: "Edit homepage layout & content blocks" };
+    select: { title: "heroHeadline", subtitle: "heroHeadlineItalic", media: "heroBackgroundImage" },
+    prepare({ title, subtitle, media }) {
+      return { title: "🏠 Home Page", subtitle: `${title || ""} ${subtitle || ""}`, media };
     },
   },
 });

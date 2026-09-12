@@ -125,6 +125,8 @@ export interface SanityLocation {
   mapUrl?: string;
   googleMapsUrl?: string;
   embedUrl?: string;
+  photoUrl?: string;
+  photoAlt?: string;
   isActive?: boolean;
   isNew?: boolean;
 }

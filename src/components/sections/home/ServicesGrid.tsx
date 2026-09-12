@@ -24,6 +24,7 @@ const SERVICES = [
     title: "Hair",
     tagline: "Where your signature look begins.",
     href: "/services?tab=womens",
+    fallbackImage: "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=1200&q=80",
     placeholder: {
       label: "Hair · High-Res Image",
       description: "Close-up of styled hair. Warm background.",
@@ -36,6 +37,7 @@ const SERVICES = [
     title: "Bridal",
     tagline: "The spotlight, perfected.",
     href: "/services?tab=bridal",
+    fallbackImage: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=1200&q=80",
     placeholder: {
       label: "Bridal · High-Res Image",
       description: "Bridal full look. Golden hour.",
@@ -48,6 +50,7 @@ const SERVICES = [
     title: "Skin",
     tagline: "Radiance redefined.",
     href: "/services?tab=womens",
+    fallbackImage: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1200&q=80",
     placeholder: {
       label: "Skin · High-Res Image",
       description: "Glowing skin close-up. Radiant.",
@@ -60,6 +63,7 @@ const SERVICES = [
     title: "Tattoo",
     tagline: "Art styled for your skin.",
     href: "/services?tab=tattoo",
+    fallbackImage: "https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?auto=format&fit=crop&w=1200&q=80",
     placeholder: {
       label: "Tattoo · High-Res Image",
       description: "Fine-line tattoo. High contrast.",
@@ -72,6 +76,7 @@ const SERVICES = [
     title: "Nails",
     tagline: "Elegance at your fingertips.",
     href: "/services?tab=womens",
+    fallbackImage: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=1200&q=80",
     placeholder: {
       label: "Nails · High-Res Image",
       description: "Manicured nails, elegant style.",
@@ -84,6 +89,7 @@ const SERVICES = [
     title: "Piercing",
     tagline: "Bold accents. Safely done.",
     href: "/services?tab=womens",
+    fallbackImage: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=1200&q=80",
     placeholder: {
       label: "Piercing · High-Res Image",
       description: "Ear piercing, modern jewelry.",
@@ -135,10 +141,12 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
         if (urlField && (cmsImages as Record<string, any>)?.[urlField]) {
           cmsImageUrl = (cmsImages as Record<string, any>)[urlField];
           hotspot = (cmsImages as Record<string, any>)[hotspotField];
+        } else {
+          cmsImageUrl = (base as any).fallbackImage;
         }
       } catch(e) {
         // Graceful fallback
-        console.error(e);
+        cmsImageUrl = (base as any).fallbackImage;
       }
 
       if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
@@ -187,24 +195,15 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
             >
               {/* Image Layer */}
               <div className="absolute inset-0">
-                {service.cmsImageUrl ? (
-                  <Image
-                    src={service.cmsImageUrl}
-                    alt={service.title}
-                    fill
-                    loading="lazy"
-                    sizes="(max-width: 768px) 45vw, 33vw"
-                    className="object-cover"
-                    style={{ objectPosition: service.objectPosition }}
-                  />
-                ) : (
-                  <ImagePlaceholder
-                    label={service.placeholder.label}
-                    description={service.placeholder.description}
-                    mood={service.dark ? "dark" : "warm"}
-                    className="w-full h-full object-cover"
-                  />
-                )}
+                <Image
+                  src={service.cmsImageUrl || (service as any).fallbackImage}
+                  alt={service.title}
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 768px) 45vw, 33vw"
+                  className="object-cover"
+                  style={{ objectPosition: service.objectPosition }}
+                />
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-obsidian/25 to-transparent" />
               </div>
@@ -260,22 +259,14 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
               >
                 {/* Image Layer */}
                 <div className="absolute inset-0 overflow-hidden">
-                  {service.cmsImageUrl ? (
-                    <img
-                      src={service.cmsImageUrl}
-                      alt={service.title}
-                      loading="lazy"
-                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] min-w-[520px] h-full max-w-none object-cover pointer-events-none"
-                      style={{ objectPosition: service.objectPosition }}
-                    />
-                  ) : (
-                    <ImagePlaceholder
-                      label={service.placeholder.label}
-                      description={service.placeholder.description}
-                      mood={service.dark ? "dark" : "warm"}
-                      className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] min-w-[520px] h-full object-cover"
-                    />
-                  )}
+                  <img
+                    src={service.cmsImageUrl || (service as any).fallbackImage}
+                    alt={service.title}
+                    loading="lazy"
+                    decoding="async"
+                    className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] min-w-[520px] h-full max-w-none object-cover pointer-events-none"
+                    style={{ objectPosition: service.objectPosition }}
+                  />
                   
                   {/* Overlay: use opacity not transition-colors to stay compositor-only */}
                   <div

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from '@/lib/gsap-config';
 import CTASection from '@/components/sections/shared/CTASection';
@@ -52,11 +53,64 @@ function WhatsAppIcon() {
   );
 }
 
+function BranchMedia({ branch }: { branch: SanityLocation }) {
+  const [showMap, setShowMap] = useState(!branch.photoUrl);
+  const embed = branch.embedUrl || "https://www.google.com/maps?q=17.397388,78.5885877&hl=en&z=15&output=embed";
+
+  return (
+    <div className="w-full md:w-1/2 aspect-square md:aspect-auto relative min-h-[350px] order-1 md:order-2 bg-obsidian/[0.03] overflow-hidden group">
+      {branch.photoUrl && !showMap ? (
+        <div className="relative w-full h-full min-h-[350px]">
+          <Image
+            src={branch.photoUrl}
+            alt={branch.photoAlt || branch.name}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-obsidian/40 via-transparent to-transparent pointer-events-none" />
+          <button
+            type="button"
+            onClick={() => setShowMap(true)}
+            className="absolute bottom-4 right-4 z-10 bg-parchment/95 hover:bg-parchment text-obsidian text-xs font-sans font-medium px-3.5 py-2 rounded-full shadow-md backdrop-blur-sm flex items-center gap-1.5 transition-all cursor-pointer"
+          >
+            <span>🗺️</span> View Map
+          </button>
+        </div>
+      ) : (
+        <div className="relative w-full h-full min-h-[350px]">
+          <iframe
+            src={embed}
+            className="absolute inset-0 w-full h-full border-0"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+          {branch.photoUrl && (
+            <button
+              type="button"
+              onClick={() => setShowMap(false)}
+              className="absolute bottom-4 right-4 z-10 bg-parchment/95 hover:bg-parchment text-obsidian text-xs font-sans font-medium px-3.5 py-2 rounded-full shadow-md backdrop-blur-sm flex items-center gap-1.5 transition-all cursor-pointer"
+            >
+              <span>📸</span> View Photo
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function LocationsClient({ locationsData = [] }: { locationsData?: SanityLocation[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // If CMS returns data, merge or replace. We'll replace it entirely if it exists.
   const activeBranches = locationsData.length > 0 ? locationsData : BRANCHES;
+
+  // Derive shortName from name if CMS doesn't provide one
+  // e.g. "Root's The Family Salon - Uppal" → "Uppal"
+  const getShortName = (branch: SanityLocation) =>
+    branch.shortName || branch.name.split(/[-—]/).pop()?.trim() || branch.name;
 
   useGSAP(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -155,7 +209,7 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
                   {/* Buttons */}
                   <div className="flex flex-wrap gap-4 mt-auto">
                     <button
-                      onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking', branch: branch.shortName } }))}
+                      onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking', branch: getShortName(branch) } }))}
                       className="btn-primary flex items-center justify-center gap-2 text-xs w-full sm:w-auto"
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -177,17 +231,8 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
                   </div>
                 </div>
 
-                {/* Map Side */}
-                <div className="w-full md:w-1/2 aspect-square md:aspect-auto relative min-h-[350px] order-1 md:order-2 bg-obsidian/[0.03]">
-                  {/* Embedded Google Map */}
-                  <iframe 
-                    src={embed} 
-                    className="absolute inset-0 w-full h-full border-0" 
-                    allowFullScreen 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
+                {/* Media Side (Photo or Map) */}
+                <BranchMedia branch={branch} />
               </div>
               );
             })}

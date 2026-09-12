@@ -43,7 +43,9 @@
   /* Typography */
   --font-sans: var(--font-outfit), sans-serif;  /* body, UI, buttons, labels — clean geometric */
   --font-ui:   var(--font-outfit), sans-serif;  /* buttons, labels, nav — clean geometric */
-  --font-serif: var(--font-cardo), serif;
+  --font-serif: var(--font-cormorant), var(--font-cardo), Georgia, serif;
+  --font-runethia: var(--font-runethia), cursive;
+  --font-runiga: var(--font-runiga), serif;
   --font-script: var(--font-italianno), cursive;
 
   /* Border Radius */
@@ -176,9 +178,9 @@ body {
     white-space: nowrap;
 
     &:hover {
-      background-color: var(--root-ink);
-      color: var(--root-paper);
-      border-color: var(--root-ink);
+      background-color: var(--root-ink) !important;
+      color: var(--root-paper) !important;
+      border-color: var(--root-ink) !important;
       transform: translateY(-2px);
       box-shadow: 0 8px 22px rgba(23, 18, 15, 0.22);
     }

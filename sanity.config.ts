@@ -19,15 +19,15 @@ export default defineConfig({
   title: "Root's Salon — Content Manager",
   schema: {
     types: [
-      siteSettings,
-      aboutPage,
       homePage,
-      franchisePage,
+      aboutPage,
       serviceCategory,
-      post,
       location,
-      review,
       transformation,
+      review,
+      post,
+      franchisePage,
+      siteSettings,
     ],
   },
   plugins: [
@@ -35,97 +35,102 @@ export default defineConfig({
       title: "📂 Content",
       structure: (S) =>
         S.list()
-          .title("What would you like to update?")
+          .title("Root's Content Manager")
           .items([
-
-            // ── SERVICES MENU ─────────────────────────────────────────────
+            // ── 1. HOME PAGE ──────────────────────────────────────────────
             S.listItem()
-              .title("✂️ Services Menu")
-              .icon(() => "✂️")
-              .child(
-                S.documentTypeList("serviceCategory")
-                  .title("Select a category to edit")
-                  .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
-              ),
-
-            // ── BLOG POSTS ────────────────────────────────────────────────
-            S.listItem()
-              .title("📝 Blog Posts")
-              .icon(() => "📝")
-              .child(
-                S.documentTypeList("post")
-                  .title("Blog Posts")
-                  .defaultOrdering([{ field: "publishedAt", direction: "desc" }])
-              ),
-
-            // ── CLIENT REVIEWS ────────────────────────────────────────────
-            S.listItem()
-              .title("⭐ Client Reviews")
-              .icon(() => "⭐")
-              .child(
-                S.documentTypeList("review")
-                  .title("Client Reviews")
-              ),
-
-            // ── TRANSFORMATIONS ───────────────────────────────────────────
-            S.listItem()
-              .title("🪞 Transformations Gallery")
-              .icon(() => "🪞")
-              .child(
-                S.documentTypeList("transformation")
-                  .title("Transformation Photos")
-              ),
-
-            S.divider(),
-
-            // ── PAGE CONTENT ──────────────────────────────────────────────
-            S.listItem()
-              .title("🏠 Home Page — Edit Text & Photos")
+              .title("🏠 1. Home Page")
               .icon(() => "🏠")
               .child(
                 S.document()
                   .schemaType("homePage")
                   .documentId("homePage")
-                  .title("Home Page")
+                  .title("Home Page — All Sections in Scroll Order")
               ),
+
+            // ── 2. ABOUT PAGE ─────────────────────────────────────────────
             S.listItem()
-              .title("ℹ️ About Page — Edit Text & Photos")
+              .title("ℹ️ 2. About Page")
               .icon(() => "ℹ️")
               .child(
                 S.document()
                   .schemaType("aboutPage")
                   .documentId("aboutPage")
-                  .title("About Page")
+                  .title("About Page — Story, Philosophy & Principles")
               ),
+
+            // ── 3. SERVICES MENU ──────────────────────────────────────────
             S.listItem()
-              .title("🤝 Franchise Page — Edit Text & Photos")
+              .title("✂️ 3. Services Menu")
+              .icon(() => "✂️")
+              .child(
+                S.documentTypeList("serviceCategory")
+                  .title("Service Menus (Women, Men, Bridal, Tattoo)")
+                  .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
+              ),
+
+            // ── 4. BRANCH LOCATIONS ───────────────────────────────────────
+            S.listItem()
+              .title("📍 4. Branch Locations")
+              .icon(() => "📍")
+              .child(
+                S.documentTypeList("location")
+                  .title("Branches (Uppal, Tarnaka, Brahmanpally)")
+                  .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
+              ),
+
+            S.divider(),
+
+            // ── 5. TRANSFORMATIONS GALLERY ────────────────────────────────
+            S.listItem()
+              .title("🪞 5. Transformations Gallery")
+              .icon(() => "🪞")
+              .child(
+                S.documentTypeList("transformation")
+                  .title("Real Client Transformation Photos")
+              ),
+
+            // ── 6. CLIENT REVIEWS ─────────────────────────────────────────
+            S.listItem()
+              .title("⭐ 6. Client Reviews")
+              .icon(() => "⭐")
+              .child(
+                S.documentTypeList("review")
+                  .title("Verified Client Reviews")
+              ),
+
+            // ── 7. BLOG POSTS ─────────────────────────────────────────────
+            S.listItem()
+              .title("📝 7. Blog Articles")
+              .icon(() => "📝")
+              .child(
+                S.documentTypeList("post")
+                  .title("Blog Posts & Hair/Skin Care Guides")
+                  .defaultOrdering([{ field: "publishedAt", direction: "desc" }])
+              ),
+
+            // ── 8. FRANCHISE PAGE ─────────────────────────────────────────
+            S.listItem()
+              .title("🤝 8. Franchise Page")
               .icon(() => "🤝")
               .child(
                 S.document()
                   .schemaType("franchisePage")
                   .documentId("franchisePage")
-                  .title("Franchise Page")
+                  .title("Franchise Page — Model & Information")
               ),
 
             S.divider(),
 
-            // ── LOCATIONS & GLOBAL ────────────────────────────────────────
+            // ── 9. GLOBAL SITE SETTINGS ───────────────────────────────────
             S.listItem()
-              .title("📍 Branch Locations — Addresses & Hours")
-              .icon(() => "📍")
-              .child(
-                S.documentTypeList("location")
-                  .title("Branch Locations")
-                  .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
-              ),
-            S.listItem()
-              .title("⚙️ Site Settings — Contact, Banner & Social Links")
+              .title("⚙️ 9. Site Settings")
               .icon(() => "⚙️")
               .child(
                 S.document()
                   .schemaType("siteSettings")
                   .documentId("siteSettings")
-                  .title("Site Settings")
+                  .title("Global Contact, Hours, Social & Banner")
               ),
           ]),
     }),

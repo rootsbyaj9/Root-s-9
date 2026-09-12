@@ -36,6 +36,8 @@ interface ImagePlaceholderProps {
   mood?: 'warm' | 'dark';
   /** Optional URL of the image from CMS to replace the placeholder */
   imageUrl?: string | null;
+  /** Optional object-position CSS property, e.g. "center 20%" */
+  objectPosition?: string;
 }
 
 export default function ImagePlaceholder({
@@ -45,6 +47,7 @@ export default function ImagePlaceholder({
   className,
   mood = 'warm',
   imageUrl,
+  objectPosition,
 }: ImagePlaceholderProps) {
   const isWarm = mood === 'warm';
 
@@ -57,6 +60,7 @@ export default function ImagePlaceholder({
           alt={label || description || ''}
           fill
           className="object-cover"
+          style={objectPosition ? { objectPosition } : undefined}
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>

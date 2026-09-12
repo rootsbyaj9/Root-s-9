@@ -112,23 +112,14 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
         ref={bgRef}
         className="absolute inset-0 z-0 scale-105 will-change-transform"
       >
-        {homePageData?.heroBackgroundImageUrl ? (
-          <Image
-            src={homePageData.heroBackgroundImageUrl}
-            alt="Root's salon interior"
-            fill
-            priority
-            className="object-cover"
-            sizes="100vw"
-          />
-        ) : (
-          <ImagePlaceholder
-            label="Hero · Salon Interior"
-            description="Premium salon interior, warm lighting, high contrast."
-            mood="dark"
-            className="w-full h-full object-cover"
-          />
-        )}
+        <Image
+          src={homePageData?.heroBackgroundImageUrl || "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1920&q=80"}
+          alt="Root's salon interior"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
       </div>
 
       {/* ── Dark overlay — separate div keeps source image crisp ── */}
@@ -145,13 +136,16 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
           {homePageData?.heroEyebrow || "Hyderabad's Premier Family Salon"}
         </span>
 
-        {/* Single editorial headline — no script font */}
-        <h1 className="font-serif italic font-medium text-[clamp(38px,5vw,68px)] leading-tight tracking-tight mb-5"
-          style={{ color: "#fffdf9" }}>
-          {homePageData?.heroHeadline || "Hair, Skin & Bridal,"}
-          <br />
-          <span style={{ color: "#fffdf9", opacity: 0.9 }}>
-            {homePageData?.heroHeadlineItalic || "beautifully done."}
+        {/* Single editorial headline — Italianno calligraphy script from live site */}
+        <h1
+          className="font-script font-normal text-[clamp(68px,10.5vw,130px)] leading-[1.02] tracking-wide mb-6 drop-shadow-lg"
+          style={{ color: "#fffdf9" }}
+        >
+          <span className="block whitespace-nowrap">
+            {homePageData?.heroHeadline || "Luxury Hair, Nail"}
+          </span>
+          <span className="block whitespace-nowrap" style={{ color: "#fffdf9", opacity: 0.95 }}>
+            {homePageData?.heroHeadlineItalic || "& Beauty Salon"}
           </span>
         </h1>
 

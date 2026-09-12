@@ -10,12 +10,33 @@ import SiteChrome from "@/components/layout/SiteChrome";
 import Script from "next/script";
 import { client } from "@/sanity/client";
 import { getSiteSettingsQuery, getLocationsQuery } from "@/sanity/lib/queries";
-import { Montaga, Cardo, Italianno, Outfit } from "next/font/google";
+import { Montaga, Cardo, Italianno, Outfit, Cormorant_Garamond } from "next/font/google";
+import localFont from "next/font/local";
+
+const runethia = localFont({
+  src: "./fonts/Runethia.otf",
+  variable: "--font-runethia",
+  display: "swap",
+});
+
+const runiga = localFont({
+  src: "./fonts/Runiga.otf",
+  variable: "--font-runiga",
+  display: "swap",
+});
 
 const montaga = Montaga({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-montaga",
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -182,12 +203,13 @@ export default async function RootLayout({
     client?.fetch(getLocationsQuery).catch(() => null)
   ]);
   
-  const branches = (locations || []).length > 0 
-    ? locations.map((l: any) => l.shortName).filter(Boolean) 
+  const rawBranches = (locations || []).length > 0 
+    ? locations.map((l: any) => l.shortName || l.name.split(/[-—]/).pop()?.trim() || l.name).filter(Boolean) 
     : ["Uppal", "Tarnaka", "Brahmanpally"];
+  const branches = Array.from(new Set(rawBranches)) as string[];
 
   return (
-    <html lang="en" className={`${montaga.variable} ${cardo.variable} ${italianno.variable} ${outfit.variable}`}>
+    <html lang="en" className={`${runethia.variable} ${runiga.variable} ${montaga.variable} ${cormorant.variable} ${cardo.variable} ${italianno.variable} ${outfit.variable}`}>
       <head>
         {/* ── Preconnect to external origins ── */}
         <link rel="preconnect" href="https://cdn.sanity.io" />

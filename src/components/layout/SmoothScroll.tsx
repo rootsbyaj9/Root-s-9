@@ -13,7 +13,8 @@ export default function SmoothScroll({
 
   useEffect(() => {
     let lenisInstance: LenisType | null = null;
-    let reqId: number;
+    // Store ticker fn ref so we can remove the exact same fn on cleanup
+    let tickerFn: ((time: number) => void) | null = null;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -23,45 +24,46 @@ export default function SmoothScroll({
       const Lenis = module.default;
 
       lenisInstance = new Lenis({
-        lerp: isMobile ? 0.08 : 0.1,
+        lerp: isMobile ? 0.09 : 0.1,
         smoothWheel: true,
-        wheelMultiplier: isMobile ? 1.2 : 1,
-        // syncTouch enables Lenis on mobile touch devices for smooth inertia
-        syncTouch: isMobile,
-        touchMultiplier: isMobile ? 2.0 : 1,
+        wheelMultiplier: 1,
+        syncTouch: false, // Allow native touch momentum scroll on mobile
+        autoRaf: false, // We drive Lenis via GSAP ticker
       });
 
       lenisRef.current = lenisInstance;
       (window as any).__lenis = lenisInstance;
 
+      // ── Single RAF loop: hand Lenis off to GSAP's ticker ──────────────
+      tickerFn = (time: number) => lenisInstance?.raf(time * 1000);
+      gsap.ticker.add(tickerFn);
+
+      // Default lagSmoothing prevents animation teleporting/jerking during heavy image decodes
+      gsap.ticker.lagSmoothing(500, 33);
+
       // Sync Lenis scroll position → GSAP ScrollTrigger
       lenisInstance.on("scroll", ScrollTrigger.update);
 
-      // Give GSAP's ticker and Lenis's rAF their own breathing room.
-      gsap.ticker.lagSmoothing(1000, 16);
+      // Refresh ScrollTrigger as images load to prevent layout-shift jitter
+      const doRefresh = () => {
+        ScrollTrigger.refresh();
+      };
 
-      function raf(time: number) {
-        lenisInstance?.raf(time);
-        reqId = requestAnimationFrame(raf);
-      }
-      reqId = requestAnimationFrame(raf);
-
-      // Refresh after full page load to ensure GSAP knows all heights
-      const doRefresh = () => requestAnimationFrame(() => ScrollTrigger.refresh());
       if (document.readyState === "complete") {
         doRefresh();
       } else {
         window.addEventListener("load", doRefresh, { once: true });
       }
+
+      // Re-measure after initial images mount
+      const refreshTimeout = setTimeout(doRefresh, 1000);
     });
 
     return () => {
+      if (tickerFn) gsap.ticker.remove(tickerFn);
       if (lenisInstance) {
         lenisInstance.destroy();
         (window as any).__lenis = null;
-      }
-      if (reqId) {
-        cancelAnimationFrame(reqId);
       }
     };
   }, []);

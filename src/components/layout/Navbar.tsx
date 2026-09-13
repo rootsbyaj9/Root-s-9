@@ -66,6 +66,7 @@ export default function Navbar({ settings }: { settings: any }) {
   const pathname = usePathname();
   const desktopDropdownRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLAnchorElement>(null);
 
   // ── Scroll & Resize listeners ───────────────────────────────────────────────
   useEffect(() => {
@@ -74,21 +75,27 @@ export default function Navbar({ settings }: { settings: any }) {
     const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
+          // Dynamic measurement of logo vertical center in viewport
+          const logoRect = logoRef.current?.getBoundingClientRect();
+          const checkY = logoRect ? logoRect.top + logoRect.height / 2 : 40;
+
           // Find all dark theme elements globally
-          const darkElements = document.querySelectorAll('[data-theme="dark"]');
+          const darkElements = document.querySelectorAll('[data-theme="dark"], section.bg-obsidian, footer');
           let currentlyOverDark = false;
-          const logoY = 40; // Approx vertical center of the logo in the viewport
 
           for (let i = 0; i < darkElements.length; i++) {
-            const rect = darkElements[i].getBoundingClientRect();
-            if (rect.top <= logoY && rect.bottom >= logoY) {
+            const el = darkElements[i];
+            if (el.closest('header') || el.closest('nav')) continue;
+            const rect = el.getBoundingClientRect();
+            // Buffer to prevent any subpixel gap or dead zone between adjacent dark sections
+            if (rect.top <= checkY + 15 && rect.bottom >= checkY - 15) {
               currentlyOverDark = true;
               break;
             }
           }
 
-          // Fallback: If we are at the very top of the homepage, it's guaranteed to be the dark hero
-          if (pathname === "/" && window.scrollY < 50) {
+          // Fallback: If we are near the top of pages with dark heroes
+          if ((pathname === "/" || pathname === "/about" || pathname === "/franchise") && window.scrollY < 50) {
             currentlyOverDark = true;
           }
 
@@ -189,10 +196,18 @@ export default function Navbar({ settings }: { settings: any }) {
   return (
     <>
       {/* ── Header row: logo left, pill nav right ─────────────────────── */}
-      <div className="w-full px-4 sm:px-6 py-0 relative z-50 flex items-center justify-between gap-4 pointer-events-none">
+      <div className={cn(
+        "w-full px-4 sm:px-6 relative z-50 flex items-center justify-between gap-4 pointer-events-none transition-all duration-300",
+        !isTop 
+          ? (isLight 
+              ? "py-2 bg-parchment/95 backdrop-blur-md shadow-sm border-b border-obsidian/[0.08]" 
+              : "py-2 bg-obsidian/95 backdrop-blur-md shadow-sm border-b border-white/[0.08]")
+          : "py-0 bg-transparent border-b border-transparent"
+      )}>
 
         {/* Logo — switches light/dark based on background */}
         <Link
+          ref={logoRef}
           href="/"
           onClick={() => handleNavClick("/")}
           className="pointer-events-auto relative flex items-center shrink-0 z-50 group"
@@ -205,7 +220,8 @@ export default function Navbar({ settings }: { settings: any }) {
             width="480"
             height="135"
             className={cn(
-              "w-52 md:w-72 h-auto object-contain drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] transition-all duration-500 group-hover:opacity-85",
+              "h-auto object-contain drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] transition-all duration-300 group-hover:opacity-85",
+              !isTop ? "w-44 sm:w-52 md:w-64" : "w-52 md:w-72",
               isLight ? "opacity-0 absolute" : "opacity-100 relative"
             )}
           />
@@ -216,7 +232,8 @@ export default function Navbar({ settings }: { settings: any }) {
             width="480"
             height="135"
             className={cn(
-              "w-52 md:w-72 h-auto object-contain drop-shadow-[0_1px_6px_rgba(0,0,0,0.25)] transition-all duration-500 group-hover:opacity-85",
+              "h-auto object-contain drop-shadow-[0_1px_6px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:opacity-85",
+              !isTop ? "w-44 sm:w-52 md:w-64" : "w-52 md:w-72",
               isLight ? "opacity-100 relative" : "opacity-0 absolute"
             )}
           />

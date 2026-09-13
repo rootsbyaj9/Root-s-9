@@ -103,21 +103,23 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
     <section
       ref={sectionRef}
       data-theme="dark"
-      className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center pt-24 pb-12 md:pt-32"
+      className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center pt-24 pb-4 sm:pb-12 md:pt-32"
       style={{ backgroundColor: "#17120f" }}
       aria-label="Hero"
     >
-      {/* ── Background image — source stays crisp; overlay is separate ── */}
+      {/* ── Background image — object-position shifts focal point on mobile ── */}
       <div
         ref={bgRef}
         className="absolute inset-0 z-0 scale-105 will-change-transform"
       >
+        {/* Mobile: object-[82%_center] shows the right side where ROOT'S reception desk is.
+            Desktop: object-center shows the full balanced scene. */}
         <Image
           src={homePageData?.heroBackgroundImageUrl || "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1920&q=80"}
           alt="Root's salon interior"
           fill
           priority
-          className="object-cover"
+          className="object-cover object-[82%_center] md:object-center"
           sizes="100vw"
         />
       </div>
@@ -136,16 +138,16 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
           {homePageData?.heroEyebrow || "Hyderabad's Premier Family Salon"}
         </span>
 
-        {/* Single editorial headline — Italianno calligraphy script from live site */}
+        {/* Single editorial headline — Italianno calligraphy script */}
         <h1
-          className="font-script font-normal text-[clamp(68px,10.5vw,130px)] leading-[1.02] tracking-wide mb-6 drop-shadow-lg"
+          className="font-script font-normal text-[clamp(44px,10.5vw,130px)] leading-[1.05] tracking-wide mb-6 drop-shadow-lg px-2"
           style={{ color: "#fffdf9" }}
         >
-          <span className="block whitespace-nowrap">
+          <span className="block">
             {homePageData?.heroHeadline || "Luxury Hair, Nail"}
           </span>
-          <span className="block whitespace-nowrap" style={{ color: "#fffdf9", opacity: 0.95 }}>
-            {homePageData?.heroHeadlineItalic || "& Beauty Salon"}
+          <span className="block" style={{ color: "#fffdf9", opacity: 0.95 }}>
+            {homePageData?.heroHeadlineItalic || "Bridal & Beauty Salon"}
           </span>
         </h1>
 
@@ -155,8 +157,8 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
           {"Three locations across Hyderabad — Uppal, Tarnaka & Brahmanpally"}
         </p>
 
-        {/* Equal-height CTAs */}
-        <div className="cta-wrapper flex flex-col sm:flex-row items-center gap-4">
+        {/* Equal-height CTAs — hidden on mobile (bottom bar handles them) */}
+        <div className="cta-wrapper hidden sm:flex flex-col sm:flex-row items-center gap-4">
           {/* Primary CTA — orange solid */}
           <button
             id="hero-book-now"

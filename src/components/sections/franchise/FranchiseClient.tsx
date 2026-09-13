@@ -93,7 +93,7 @@ export default function FranchiseClient({ cmsData }: FranchiseClientProps) {
             <img
               src={cmsImageUrl}
               alt="Root's Franchise"
-              className="absolute inset-0 w-full h-full object-cover opacity-60"
+              className="absolute inset-0 w-full h-full object-cover object-[70%_center] md:object-center opacity-60"
             />
           )}
         </div>

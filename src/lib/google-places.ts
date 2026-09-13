@@ -10,9 +10,10 @@ const BRANCHES = [
   { placeId: "ChIJKQLmj22ZyzsRZBtjdELdvHk", branch: "Tarnaka" },
 ];
 
-// In-memory cache — revalidation is handled by Next.js ISR
+// In-memory cache — revalidation handled by Next.js ISR
 let cache: { data: SheetReview[]; ts: number } | null = null;
-const CACHE_TTL_MS = 60 * 1000; // 1 minute cache in memory
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24h — quota is per-day anyway
+let quotaExhausted = false; // avoid hammering after 429
 
 /**
  * Fetch 5-star reviews from Google Places API (New) for all branches.
@@ -35,6 +36,11 @@ export async function getPlacesReviews(): Promise<SheetReview[]> {
     return [];
   }
 
+  // Quota exhausted for today — skip API entirely, return cache or empty
+  if (quotaExhausted) {
+    return cache?.data ?? [];
+  }
+
   const allReviews: SheetReview[] = [];
 
   for (const { placeId, branch } of BRANCHES) {
@@ -54,9 +60,14 @@ export async function getPlacesReviews(): Promise<SheetReview[]> {
       );
 
       if (!response.ok) {
-        console.error(
-          `[google-places] Failed to fetch reviews for ${branch}:`,
-          await response.text()
+        if (response.status === 429) {
+          // Quota exhausted — flip flag, warn once, and stop retrying today
+          quotaExhausted = true;
+          console.warn(`[google-places] Daily quota exhausted. Falling back to static reviews.`);
+          return cache?.data ?? [];
+        }
+        console.warn(
+          `[google-places] Failed to fetch reviews for ${branch}: HTTP ${response.status}`
         );
         continue;
       }

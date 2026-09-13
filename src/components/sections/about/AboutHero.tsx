@@ -84,12 +84,12 @@ export default function AboutHero({
       className="relative min-h-[85vh] flex items-end bg-obsidian overflow-hidden pt-32 pb-20"
     >
       {/* Background founder portrait mock */}
-      <div ref={bgRef} className="absolute inset-0 opacity-30 will-change-transform bg-obsidian">
+      <div ref={bgRef} className="absolute inset-0 opacity-45 will-change-transform bg-obsidian">
         {bgImageUrl && (
           <img
             src={bgImageUrl}
             alt="Premium Salon Ambience"
-            className="w-full h-full object-cover object-center grayscale mix-blend-luminosity"
+            className="w-full h-full object-cover object-[20%_center] md:object-center"
           />
         )}
       </div>

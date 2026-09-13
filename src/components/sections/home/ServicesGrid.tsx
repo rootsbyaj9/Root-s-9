@@ -113,7 +113,15 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
       const title = cmsMatch?.title || base.title;
 
       let cmsImageUrl;
-      let fallbackPosition = "center";
+      const DEFAULT_FOCALS: Record<string, string> = {
+        bridal: "center 18%",
+        hair: "center 28%",
+        skin: "center 32%",
+        tattoo: "center 50%",
+        nails: "center 50%",
+        piercing: "center 40%",
+      };
+      let fallbackPosition = DEFAULT_FOCALS[base.id] || "center";
       let hotspot;
       
       try {

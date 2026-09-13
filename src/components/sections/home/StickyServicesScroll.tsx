@@ -217,7 +217,7 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           
           {/* LEFT COLUMN: Section heading + 7 scrolling text blocks */}
-          <div className="flex flex-col lg:gap-24 lg:py-12 -mt-[10vh] lg:mt-0">
+          <div className="flex flex-col lg:gap-24 lg:py-12 -mt-[4vh] lg:mt-0">
             
             {/* Header Block */}
             <div className="mb-8 lg:mb-0 bg-parchment/95 backdrop-blur-sm lg:bg-transparent p-6 lg:p-0 rounded-2xl shadow-sm lg:shadow-none border border-obsidian/[0.08] lg:border-none">
@@ -233,8 +233,8 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
             {/* 7 Service Cards */}
             {SERVICES.map((service) => (
               <div key={service.id} className="relative">
-                {/* Mobile spacer: keeps sticky image visible for 30vh before card slides up */}
-                <div className="h-[30vh] lg:hidden w-full pointer-events-none" aria-hidden="true" />
+                {/* Mobile spacer: keeps sticky image visible before card slides up */}
+                <div className="h-[10vh] lg:hidden w-full pointer-events-none" aria-hidden="true" />
                 
                 {/* Service Card */}
                 <div
@@ -257,7 +257,7 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
             ))}
 
             {/* Mobile bottom buffer */}
-            <div className="h-[20vh] lg:hidden" />
+            <div className="h-[8vh] lg:hidden" />
           </div>
 
           {/* RIGHT COLUMN: DESKTOP STICKY IMAGE (hidden lg:block) ───────── */}

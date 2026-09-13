@@ -45,11 +45,19 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   "tattoo-artistry": <Palette className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
 };
 
+const CATEGORY_DEFAULT_FOCAL: Record<string, string> = {
+  "bridal-studio": "center 16%",
+  "hair-masterclass": "center 28%",
+  "skin-rituals": "center 32%",
+  "mens-grooming": "center 25%",
+  "mens-skin": "center 30%",
+};
+
 function CategoryCard({ cat }: { cat: ServiceCategory }) {
   const icon = CATEGORY_ICONS[cat.slug] || <Star className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />;
   const objectPosition = cat.imageHotspot
     ? `${cat.imageHotspot.x * 100}% ${cat.imageHotspot.y * 100}%`
-    : "center";
+    : CATEGORY_DEFAULT_FOCAL[cat.slug] || "center";
 
   return (
     <div

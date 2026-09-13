@@ -114,6 +114,7 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
   return (
     <section
       ref={sectionRef}
+      data-theme="dark"
       className="bg-obsidian relative z-20 py-16 md:py-24"
       aria-label="Trust statistics"
     >

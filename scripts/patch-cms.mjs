@@ -19,7 +19,7 @@ async function main() {
   const locs = [
     { id: 'uppal', shortName: 'Uppal' },
     { id: 'tarnaka', shortName: 'Tarnaka' },
-    { id: 'new-branch', shortName: 'Brahmanpally' },
+    { id: 'new-branch', shortName: 'Yamjal' },
   ];
 
   for (const loc of locs) {

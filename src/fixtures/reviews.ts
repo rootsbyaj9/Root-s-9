@@ -5,7 +5,7 @@ export const REVIEWS_FIXTURE: ReviewRecord[] = (rawReviews as any[]).map((r, i) 
   _id: r._id || r.id || `rev-${i}`,
   id: r.id || `rev-${i}`,
   name: r.name || 'Verified Guest',
-  branch: r.branch === 'Tarnaka' ? 'Tarnaka' : r.branch === 'Brahmanpally' ? 'Brahmanpally' : 'Uppal',
+  branch: r.branch === 'Tarnaka' ? 'Tarnaka' : r.branch === 'Yamjal' ? 'Yamjal' : 'Uppal',
   rating: Number(r.rating) || 5,
   date: r.date || 'Recent',
   service: r.service || 'Salon Service',

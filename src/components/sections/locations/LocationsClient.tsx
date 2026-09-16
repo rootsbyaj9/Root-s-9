@@ -33,14 +33,14 @@ const BRANCHES = [
   },
   {
     _id: 'branch-3',
-    shortName: 'Brahmanpally',
-    name: "Root's The Family Salon — Brahmanpally",
-    address: 'Brahmanpally, Hyderabad, Telangana',
+    shortName: 'Yamjal',
+    name: "Root's The Family Salon — Yamjal",
+    address: 'Yamjal, Hyderabad, Telangana',
     hours: 'Mon–Sun: 10 AM – 9 PM',
     phone: '+919700744357',
-    googleMapsUrl: 'https://maps.google.com/?q=Root%27s+Family+Salon+Brahmanpally+Hyderabad',
-    embedUrl: 'https://www.google.com/maps?q=Brahmanpally,Hyderabad,Telangana&hl=en&z=15&output=embed',
-    description: "Our third location bringing the premium Root's experience to Brahmanpally. The same expert stylists, the same warm family atmosphere.",
+    googleMapsUrl: 'https://maps.google.com/?q=Root%27s+Family+Salon+Yamjal+Hyderabad',
+    embedUrl: 'https://www.google.com/maps?q=Yamjal,Hyderabad,Telangana&hl=en&z=15&output=embed',
+    description: "Our third location bringing the premium Root's experience to Yamjal. The same expert stylists, the same warm family atmosphere.",
   },
 ] as SanityLocation[];
 

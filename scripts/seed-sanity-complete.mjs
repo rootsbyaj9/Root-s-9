@@ -37,7 +37,7 @@ async function seedSanity() {
     contactWhatsApp: "919700744357",
     socialInstagram: "https://www.instagram.com/roots_by_aj",
     socialFacebook: "https://www.facebook.com/anikanth.jadhav.1",
-    footerTagline: "Hyderabad's family salon — Uppal, Tarnaka & Brahmanpally. Crafted for every generation.",
+    footerTagline: "Hyderabad's family salon — Uppal, Tarnaka & Yamjal. Crafted for every generation.",
   });
 
   // ── 2. HOME PAGE ───────────────────────────────────────────────────────────
@@ -111,7 +111,7 @@ async function seedSanity() {
     milestones: [
       { _key: "m1", year: "2016", event: "First flagship salon opened in Uppal." },
       { _key: "m2", year: "2019", event: "Expanded to Tarnaka with full bridal studio and tattoo artistry." },
-      { _key: "m3", year: "2024", event: "Opened our premier Brahmanpally branch serving families across Hyderabad." },
+      { _key: "m3", year: "2024", event: "Opened our premier Yamjal branch serving families across Hyderabad." },
     ],
     valuesHeading: "Our Four Principles.",
     values: [
@@ -180,19 +180,19 @@ async function seedSanity() {
       description: "Our signature second location delivering the same warm family hospitality and premium hair and skin rituals in Tarnaka.",
     },
     {
-      _id: "branch-brahmanpally",
+      _id: "branch-yamjal",
       _type: "location",
-      name: "Root's The Family Salon — Brahmanpally",
-      shortName: "Brahmanpally",
-      slug: { _type: "slug", current: "brahmanpally" },
+      name: "Root's The Family Salon — Yamjal",
+      shortName: "Yamjal",
+      slug: { _type: "slug", current: "yamjal" },
       displayOrder: 3,
-      address: "Plot No 42, Sagar Ring Road, Near RTO Office, Brahmanpally, Hyderabad 500079",
+      address: "Plot No 42, Sagar Ring Road, Near RTO Office, Yamjal, Hyderabad 500079",
       phone: "+919700744357",
       whatsappNumber: "919700744357",
       hours: "Mon–Sun: 10:00 AM – 9:00 PM",
       googleMapsUrl: "https://maps.app.goo.gl/j3aU9t2HkKkWL7Qy7",
       embedUrl: "https://www.google.com/maps?q=17.3374,78.5529&hl=en&z=15&output=embed",
-      description: "Our newest luxury family salon location in Brahmanpally with dedicated hair, bridal, and men's grooming lounges.",
+      description: "Our newest luxury family salon location in Yamjal with dedicated hair, bridal, and men's grooming lounges.",
     },
   ];
 

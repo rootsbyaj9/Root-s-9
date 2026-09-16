@@ -4,7 +4,7 @@ export const FAQS_FIXTURE: FaqRecord[] = [
   {
     _id: "faq-1",
     question: "Do I need an appointment, or do you accept walk-ins?",
-    answer: "We warmly accept walk-ins across our Uppal, Tarnaka, and Brahmanpally branches. However, for specialized services like Balayage, Hair Botox, and Bridal consultations, we strongly recommend reserving a slot online or via WhatsApp to avoid wait times.",
+    answer: "We warmly accept walk-ins across our Uppal, Tarnaka, and Yamjal branches. However, for specialized services like Balayage, Hair Botox, and Bridal consultations, we strongly recommend reserving a slot online or via WhatsApp to avoid wait times.",
     category: "Booking",
     sortOrder: 1,
   },

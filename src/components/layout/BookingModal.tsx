@@ -40,7 +40,7 @@ const TIME_SLOTS = [
 type Tab = 'booking' | 'callback';
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
 
-export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Brahmanpally'] }: { branches?: string[] }) {
+export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Yamjal'] }: { branches?: string[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>('booking');

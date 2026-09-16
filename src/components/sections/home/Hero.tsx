@@ -154,7 +154,7 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
         {/* Supporting line */}
         <p className="subtitle-text font-sans text-sm md:text-base max-w-xl mb-10 leading-relaxed"
           style={{ color: "rgba(255,253,249,0.6)" }}>
-          {"Three locations across Hyderabad — Uppal, Tarnaka & Brahmanpally"}
+          {"Three locations across Hyderabad — Uppal, Tarnaka & Yamjal"}
         </p>
 
         {/* Equal-height CTAs — hidden on mobile (bottom bar handles them) */}

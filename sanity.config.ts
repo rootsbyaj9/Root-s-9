@@ -75,7 +75,7 @@ export default defineConfig({
               .icon(() => "📍")
               .child(
                 S.documentTypeList("location")
-                  .title("Branches (Uppal, Tarnaka, Brahmanpally)")
+                  .title("Branches (Uppal, Tarnaka, Yamjal)")
                   .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
               ),
 

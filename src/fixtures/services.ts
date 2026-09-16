@@ -76,7 +76,7 @@ export const SERVICES_FIXTURE: ServiceRecord[] = [
     summary: "Personalized hair analysis, stress-relief wash, precision cut suited to face shape, and signature blowout.",
     durationMinutes: 45,
     durationLabel: "45 mins",
-    branches: ["branch-uppal", "branch-tarnaka", "branch-brahmanpally"],
+    branches: ["branch-uppal", "branch-tarnaka", "branch-yamjal"],
   },
   {
     _id: "srv-balayage-colour",

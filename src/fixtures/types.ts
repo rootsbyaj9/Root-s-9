@@ -121,7 +121,7 @@ export interface ReviewRecord {
   _id: string;
   id: string;
   name: string;
-  branch: 'Uppal' | 'Tarnaka' | 'Brahmanpally' | 'General';
+  branch: 'Uppal' | 'Tarnaka' | 'Yamjal' | 'General';
   rating: number;
   date: string;
   service: string;

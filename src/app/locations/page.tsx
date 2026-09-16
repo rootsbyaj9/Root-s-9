@@ -11,7 +11,7 @@
  * Branch data:
  *  - Uppal: https://maps.app.goo.gl/ocq8uts9jYaCp3bu8
  *  - Tarnaka: https://maps.app.goo.gl/HtxnUPQ9b9a4f5Qv7
- *  - Brahmanpally: Hyderabad
+ *  - Yamjal: Hyderabad
  */
 
 import type { Metadata } from 'next';
@@ -20,13 +20,13 @@ import { client } from '@/sanity/client';
 import { getLocationsQuery } from '@/sanity/lib/queries';
 
 export const metadata: Metadata = {
-  title: "Salon Near Me in Uppal, Tarnaka & Brahmanpally Hyderabad | Root's",
+  title: "Salon Near Me in Uppal, Tarnaka & Yamjal Hyderabad | Root's",
   description:
-    "Find Root's Family Salon near you. Three premium branches in Hyderabad — Uppal (Peerzadiguda Road), Tarnaka (South Lallaguda), and Brahmanpally. Open Mon–Sun 10AM–9PM.",
+    "Find Root's Family Salon near you. Three premium branches in Hyderabad — Uppal (Peerzadiguda Road), Tarnaka (South Lallaguda), and Yamjal. Open Mon–Sun 10AM–9PM.",
   openGraph: {
-    title: "Salon Near Me in Uppal, Tarnaka & Brahmanpally Hyderabad | Root's",
+    title: "Salon Near Me in Uppal, Tarnaka & Yamjal Hyderabad | Root's",
     description:
-      "Three premium branches in Hyderabad — Uppal, Tarnaka, and Brahmanpally. Open Mon–Sun 10AM–9PM.",
+      "Three premium branches in Hyderabad — Uppal, Tarnaka, and Yamjal. Open Mon–Sun 10AM–9PM.",
     type: 'website',
   },
 };

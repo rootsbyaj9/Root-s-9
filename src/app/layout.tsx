@@ -162,12 +162,12 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "HairSalon",
-    "name": "Root's The Family Salon - Brahmanpally",
+    "name": "Root's The Family Salon - Yamjal",
     "image": `${BASE_URL}/logo-nobg1.svg`,
     "telephone": "+919700744357",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Brahmanpally",
+      "streetAddress": "Yamjal",
       "addressLocality": "Hyderabad",
       "addressRegion": "Telangana",
       "addressCountry": "IN",
@@ -205,7 +205,7 @@ export default async function RootLayout({
   
   const rawBranches = (locations || []).length > 0 
     ? locations.map((l: any) => l.shortName || l.name.split(/[-—]/).pop()?.trim() || l.name).filter(Boolean) 
-    : ["Uppal", "Tarnaka", "Brahmanpally"];
+    : ["Uppal", "Tarnaka", "Yamjal"];
   const branches = Array.from(new Set(rawBranches)) as string[];
 
   return (

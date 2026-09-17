@@ -52,6 +52,10 @@ export const getHomePageQuery = groq`
     "tattooImageUrl": coalesce(pageBuilder[_type == "servicesGridSection"][0].tattooServiceImage.asset->url, tattooServiceImage.asset->url),
     "nailsImageUrl": coalesce(pageBuilder[_type == "servicesGridSection"][0].nailsServiceImage.asset->url, nailsServiceImage.asset->url),
     "piercingImageUrl": coalesce(pageBuilder[_type == "servicesGridSection"][0].piercingServiceImage.asset->url, piercingServiceImage.asset->url),
+    "hairExtensionsImageUrl": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairExtensionsServiceImage.asset->url, hairExtensionsServiceImage.asset->url),
+    "hairWeavingImageUrl": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairWeavingServiceImage.asset->url, hairWeavingServiceImage.asset->url),
+    "hairExtensionsImageHotspot": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairExtensionsServiceImage.hotspot, hairExtensionsServiceImage.hotspot),
+    "hairWeavingImageHotspot": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairWeavingServiceImage.hotspot, hairWeavingServiceImage.hotspot),
 
     // Featured services scroll (8 services)
     "scrollHairCutImageUrl": coalesce(scrollHairCutImage.asset->url, pageBuilder[_type == "featuredScrollSection"][0].scrollHairCutImage.asset->url, featuredHairImage.asset->url, hairServiceImage.asset->url),

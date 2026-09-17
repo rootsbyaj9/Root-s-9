@@ -96,6 +96,32 @@ const SERVICES = [
     },
     dark: true,
   },
+  {
+    id: "hair-extensions",
+    number: "07",
+    title: "Hair Extensions",
+    tagline: "Instant length. Seamless volume.",
+    href: "/services?tab=hair-extensions",
+    fallbackImage: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&w=1200&q=80",
+    placeholder: {
+      label: "Hair Extensions · High-Res Image",
+      description: "Long flowing styled hair extensions.",
+    },
+    dark: false,
+  },
+  {
+    id: "hair-weaving",
+    number: "08",
+    title: "Hair Weaving",
+    tagline: "Natural fullness. Undetectable finish.",
+    href: "/services?tab=hair-weaving",
+    fallbackImage: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80",
+    placeholder: {
+      label: "Hair Weaving · High-Res Image",
+      description: "Hair restoration and custom hair weaving.",
+    },
+    dark: false,
+  },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -108,8 +134,20 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
   const sectionRef = useRef<HTMLElement>(null);
   
   const mergedServices = useMemo(() => {
+    const SLUG_ALIASES: Record<string, string[]> = {
+      hair: ["hair", "hair-masterclass"],
+      bridal: ["bridal", "bridal-studio"],
+      skin: ["skin", "skin-rituals"],
+      tattoo: ["tattoo", "tattoo-artistry"],
+      nails: ["nails", "artistic-nails"],
+      piercing: ["piercing", "ear-piercing"],
+      "hair-extensions": ["hair-extensions"],
+      "hair-weaving": ["hair-weaving", "hair-weaving-men"],
+    };
+
     return SERVICES.map((base) => {
-      const cmsMatch = cmsServices.find((s) => s.slug === base.id);
+      const allowedSlugs = SLUG_ALIASES[base.id] || [base.id];
+      const cmsMatch = cmsServices.find((s) => allowedSlugs.includes(s.slug));
       const title = cmsMatch?.title || base.title;
 
       let cmsImageUrl;
@@ -120,6 +158,8 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
         tattoo: "center 50%",
         nails: "center 50%",
         piercing: "center 40%",
+        "hair-extensions": "center 30%",
+        "hair-weaving": "center 35%",
       };
       let fallbackPosition = DEFAULT_FOCALS[base.id] || "center";
       let hotspot;
@@ -133,6 +173,8 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
           tattoo: "tattooImageUrl",
           nails: "nailsImageUrl",
           piercing: "piercingImageUrl",
+          "hair-extensions": "hairExtensionsImageUrl",
+          "hair-weaving": "hairWeavingImageUrl",
         };
         const hotspotFieldMap: Record<string, string> = {
           hair: "hairImageHotspot",
@@ -141,6 +183,8 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
           tattoo: "tattooImageHotspot",
           nails: "nailsImageHotspot",
           piercing: "piercingImageHotspot",
+          "hair-extensions": "hairExtensionsImageHotspot",
+          "hair-weaving": "hairWeavingImageHotspot",
         };
         
         const urlField = urlFieldMap[base.id];
@@ -149,12 +193,14 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
         if (urlField && (cmsImages as Record<string, any>)?.[urlField]) {
           cmsImageUrl = (cmsImages as Record<string, any>)[urlField];
           hotspot = (cmsImages as Record<string, any>)[hotspotField];
+        } else if (cmsMatch?.imageUrl) {
+          cmsImageUrl = cmsMatch.imageUrl;
+          hotspot = cmsMatch.imageHotspot;
         } else {
           cmsImageUrl = (base as any).fallbackImage;
         }
       } catch(e) {
-        // Graceful fallback
-        cmsImageUrl = (base as any).fallbackImage;
+        cmsImageUrl = cmsMatch?.imageUrl || (base as any).fallbackImage;
       }
 
       if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
@@ -258,7 +304,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                 onClick={() => setActiveId(service.id)}
                 className="service-panel relative overflow-hidden bg-parchment rounded-sm cursor-pointer"
                 style={{
-                  minWidth: "3.5rem",
+                  minWidth: "2.5rem",
                   flex: isActive ? 5 : 1,
                   willChange: "flex",
                   // Spring curve: fast out, soft settle—no rebound

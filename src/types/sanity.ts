@@ -62,6 +62,10 @@ export interface SanityHomePageData {
   nailsImageHotspot: SanityImageHotspot | undefined;
   piercingImageUrl: string | undefined;
   piercingImageHotspot: SanityImageHotspot | undefined;
+  hairExtensionsImageUrl?: string | undefined;
+  hairExtensionsImageHotspot?: SanityImageHotspot | undefined;
+  hairWeavingImageUrl?: string | undefined;
+  hairWeavingImageHotspot?: SanityImageHotspot | undefined;
   featuredHairImageUrl: string | undefined;
   featuredHairImageAlt: string | undefined;
   featuredBridalImageUrl: string | undefined;

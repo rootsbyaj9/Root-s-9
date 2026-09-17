@@ -176,6 +176,22 @@ export const homePage = defineType({
       options: { hotspot: true },
       fields: [{ name: "alt", title: "Alt Text", type: "string" }],
     }),
+    defineField({
+      name: "hairExtensionsServiceImage",
+      title: "7. Hair Extensions Photo",
+      type: "image",
+      group: "grid",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
+    defineField({
+      name: "hairWeavingServiceImage",
+      title: "8. Hair Weaving Photo",
+      type: "image",
+      group: "grid",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Alt Text", type: "string" }],
+    }),
 
     // ── 4. STICKY SCROLL (7 CURATED SERVICES) ───────────────────────────────────────
     defineField({

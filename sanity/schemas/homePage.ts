@@ -138,7 +138,7 @@ export const homePage = defineType({
     }),
     defineField({
       name: "bridalServiceImage",
-      title: "2. Bridal Studio Photo",
+      title: "2. Bridal Makeover Photo",
       type: "image",
       group: "grid",
       options: { hotspot: true },

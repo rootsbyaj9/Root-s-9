@@ -30,7 +30,7 @@ export const FALLBACK_CATEGORIES: ServiceCategory[] = [
   },
   {
     _id: "serviceCategory-bridal",
-    title: "Bridal Studio",
+    title: "Bridal Makeover",
     slug: "bridal-studio",
     gender: "bridal",
     displayOrder: 1,
@@ -66,7 +66,7 @@ export const FALLBACK_CATEGORIES: ServiceCategory[] = [
   },
   {
     _id: "serviceCategory-nails",
-    title: "Artistic Nails",
+    title: "Nail Art",
     slug: "artistic-nails",
     gender: "nails",
     displayOrder: 1,
@@ -75,7 +75,7 @@ export const FALLBACK_CATEGORIES: ServiceCategory[] = [
   },
   {
     _id: "serviceCategory-piercing",
-    title: "Piercing Studio",
+    title: "Piercing",
     slug: "piercing",
     gender: "piercing",
     displayOrder: 1,

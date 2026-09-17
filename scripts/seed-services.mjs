@@ -187,13 +187,13 @@ const categories = [
   },
 
   // ══════════════════════════════════════════════════════════════════
-  //  BRIDAL STUDIO
+  //  BRIDAL MAKEOVER
   // ══════════════════════════════════════════════════════════════════
 
   {
     _id: "serviceCategory-bridal",
     _type: "serviceCategory",
-    title: "Bridal Studio",
+    title: "Bridal Makeover",
     slug: { _type: "slug", current: "bridal-studio" },
     gender: "bridal",
     displayOrder: 1,
@@ -337,7 +337,7 @@ const categories = [
   {
     _id: "serviceCategory-nails",
     _type: "serviceCategory",
-    title: "Artistic Nails",
+    title: "Nail Art",
     slug: { _type: "slug", current: "artistic-nails" },
     gender: "nails",
     displayOrder: 1,
@@ -358,7 +358,7 @@ const categories = [
   {
     _id: "serviceCategory-piercing",
     _type: "serviceCategory",
-    title: "Piercing Studio",
+    title: "Piercing",
     slug: { _type: "slug", current: "piercing" },
     gender: "piercing",
     displayOrder: 1,

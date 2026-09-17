@@ -30,7 +30,7 @@ export const SERVICE_CATEGORIES_FIXTURE: ServiceCategoryRecord[] = [
   },
   {
     _id: "cat-bridal",
-    title: "Bridal Studio",
+    title: "Bridal Makeover",
     slug: "bridal-studio",
     gender: "bridal",
     displayOrder: 1,

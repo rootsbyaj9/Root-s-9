@@ -161,9 +161,9 @@ const TAB_META: Record<
       "Tailored cuts, precision shaves, and advanced skincare designed specifically for men.",
   },
   bridal: {
-    label: "Bridal Studio",
+    label: "Bridal Makeover",
     eyebrow: "THE BIG DAY",
-    heading: "Bridal Studio.",
+    heading: "Bridal Makeover.",
     description:
       "Complete bridal transformations tailored for your special day — from HD makeup to elegant hairstyles and nail art.",
   },
@@ -175,16 +175,16 @@ const TAB_META: Record<
       "Fine-line precision. Realism artistry. Permanent marks worth wearing.",
   },
   nails: {
-    label: "Nails",
-    eyebrow: "NAIL ARTISTRY",
-    heading: "Nail Studio.",
+    label: "Nail Art",
+    eyebrow: "NAIL ART",
+    heading: "Nail Art.",
     description:
       "Gel extensions, custom nail art, Russian manicures, and indulgent spa pedicures.",
   },
   piercing: {
     label: "Piercing",
     eyebrow: "PRECISION & HYGIENE",
-    heading: "Piercing Studio.",
+    heading: "Piercing.",
     description:
       "Ear, nose, and body piercings performed with surgical-grade precision and sterile protocols.",
   },

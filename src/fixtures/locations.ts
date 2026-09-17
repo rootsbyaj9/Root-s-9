@@ -24,7 +24,7 @@ export const BRANCHES_FIXTURE: BranchRecord[] = [
     embedUrl: 'https://www.google.com/maps?q=17.397388,78.5885877&hl=en&z=15&output=embed',
     description: 'Our flagship Hyderabad branch. Complete hair masterclass, skin rituals, bridal suite, and sterile tattoo artistry in Uppal.',
     accessNotes: 'Convenient parking right outside the salon. Located 5 minutes from Uppal Metro Station.',
-    servicesAvailable: ['Hair Cuts & Styling', 'Hair Colour & Balayage', 'Advanced Facials', 'Bridal Studio', 'Tattoo Artistry', 'Nail Art', 'Ear & Nose Piercing'],
+    servicesAvailable: ['Hair Cuts & Styling', 'Hair Colour & Balayage', 'Advanced Facials', 'Bridal Makeover', 'Tattoo Artistry', 'Nail Art', 'Ear & Nose Piercing'],
     isSignature: true,
   },
   {

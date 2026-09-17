@@ -31,11 +31,14 @@ async function main() {
   const currentCats = await client.fetch('*[_type == "serviceCategory"]{ _id, title, "slug": slug.current, gender }');
   console.log("Found existing categories in CMS:", currentCats.map(c => `${c.title} (_id: ${c._id}, gender: ${c.gender})`));
 
-  // 2. Update existing Artistic Nails, Piercing, Ear Piercing
+  // 2. Update existing Bridal Studio, Nails, Piercing titles and tabs
   for (const cat of currentCats) {
-    if (cat.slug === "artistic-nails" || cat.title.toLowerCase().includes("nail")) {
-      console.log(`Updating ${cat.title} (${cat._id}) gender -> 'nails'`);
-      await client.patch(cat._id).set({ gender: "nails" }).commit();
+    if (cat._id === "serviceCategory-bridal" || cat.title.toLowerCase().includes("bridal")) {
+      console.log(`Updating ${cat.title} (${cat._id}) title -> 'Bridal Makeover'`);
+      await client.patch(cat._id).set({ title: "Bridal Makeover" }).commit();
+    } else if (cat.slug === "artistic-nails" || cat.title.toLowerCase().includes("nail")) {
+      console.log(`Updating ${cat.title} (${cat._id}) title -> 'Nail Art', gender -> 'nails'`);
+      await client.patch(cat._id).set({ title: "Nail Art", gender: "nails" }).commit();
     } else if (cat.slug === "piercing" || cat.slug === "ear-piercing" || cat.title.toLowerCase().includes("piercing")) {
       console.log(`Updating ${cat.title} (${cat._id}) gender -> 'piercing'`);
       await client.patch(cat._id).set({ gender: "piercing" }).commit();

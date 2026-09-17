@@ -56,6 +56,14 @@ export const getHomePageQuery = groq`
     "hairWeavingImageUrl": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairWeavingServiceImage.asset->url, hairWeavingServiceImage.asset->url),
     "hairExtensionsImageHotspot": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairExtensionsServiceImage.hotspot, hairExtensionsServiceImage.hotspot),
     "hairWeavingImageHotspot": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairWeavingServiceImage.hotspot, hairWeavingServiceImage.hotspot),
+    "hairServiceImage": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairServiceImage, hairServiceImage),
+    "bridalServiceImage": coalesce(pageBuilder[_type == "servicesGridSection"][0].bridalServiceImage, bridalServiceImage),
+    "skinServiceImage": coalesce(pageBuilder[_type == "servicesGridSection"][0].skinServiceImage, skinServiceImage),
+    "tattooServiceImage": coalesce(pageBuilder[_type == "servicesGridSection"][0].tattooServiceImage, tattooServiceImage),
+    "nailsServiceImage": coalesce(pageBuilder[_type == "servicesGridSection"][0].nailsServiceImage, nailsServiceImage),
+    "piercingServiceImage": coalesce(pageBuilder[_type == "servicesGridSection"][0].piercingServiceImage, piercingServiceImage),
+    "hairExtensionsServiceImage": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairExtensionsServiceImage, hairExtensionsServiceImage),
+    "hairWeavingServiceImage": coalesce(pageBuilder[_type == "servicesGridSection"][0].hairWeavingServiceImage, hairWeavingServiceImage),
 
     // Featured services scroll (8 services)
     "scrollHairCutImageUrl": coalesce(scrollHairCutImage.asset->url, pageBuilder[_type == "featuredScrollSection"][0].scrollHairCutImage.asset->url, featuredHairImage.asset->url, hairServiceImage.asset->url),
@@ -168,6 +176,7 @@ export const getServiceCategoriesQuery = groq`
     "slug": slug.current,
     gender,
     displayOrder,
+    image,
     "imageUrl": image.asset->url,
     "imageHotspot": image.hotspot,
     "imageAlt": image.alt,

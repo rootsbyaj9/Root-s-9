@@ -13,6 +13,7 @@ import Link from "next/link";
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ImagePlaceholder from "@/components/ui/ImagePlaceholder";
+import { urlForImage } from "@/sanity/lib/image";
 
 import type { SanityServiceCategory, SanityHomePageData } from "@/types/sanity";
 
@@ -150,7 +151,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
       const cmsMatch = cmsServices.find((s) => allowedSlugs.includes(s.slug));
       const title = cmsMatch?.title || base.title;
 
-      let cmsImageUrl;
+      let cmsImageUrl: string | undefined;
       const DEFAULT_FOCALS: Record<string, string> = {
         bridal: "center 18%",
         hair: "center 28%",
@@ -165,39 +166,73 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
       let hotspot;
       
       try {
-        // Map base service IDs to the projected URL and hotspot fields
-        const urlFieldMap: Record<string, string> = {
-          hair: "hairImageUrl",
-          bridal: "bridalImageUrl",
-          skin: "skinImageUrl",
-          tattoo: "tattooImageUrl",
-          nails: "nailsImageUrl",
-          piercing: "piercingImageUrl",
-          "hair-extensions": "hairExtensionsImageUrl",
-          "hair-weaving": "hairWeavingImageUrl",
+        const rawImageFieldMap: Record<string, string> = {
+          hair: "hairServiceImage",
+          bridal: "bridalServiceImage",
+          skin: "skinServiceImage",
+          tattoo: "tattooServiceImage",
+          nails: "nailsServiceImage",
+          piercing: "piercingServiceImage",
+          "hair-extensions": "hairExtensionsServiceImage",
+          "hair-weaving": "hairWeavingServiceImage",
         };
-        const hotspotFieldMap: Record<string, string> = {
-          hair: "hairImageHotspot",
-          bridal: "bridalImageHotspot",
-          skin: "skinImageHotspot",
-          tattoo: "tattooImageHotspot",
-          nails: "nailsImageHotspot",
-          piercing: "piercingImageHotspot",
-          "hair-extensions": "hairExtensionsImageHotspot",
-          "hair-weaving": "hairWeavingImageHotspot",
-        };
-        
-        const urlField = urlFieldMap[base.id];
-        const hotspotField = hotspotFieldMap[base.id];
+        const rawImageField = rawImageFieldMap[base.id];
+        const rawImg = (cmsImages as Record<string, any>)?.[rawImageField] || cmsMatch?.image;
 
-        if (urlField && (cmsImages as Record<string, any>)?.[urlField]) {
-          cmsImageUrl = (cmsImages as Record<string, any>)[urlField];
-          hotspot = (cmsImages as Record<string, any>)[hotspotField];
-        } else if (cmsMatch?.imageUrl) {
-          cmsImageUrl = cmsMatch.imageUrl;
-          hotspot = cmsMatch.imageHotspot;
-        } else {
-          cmsImageUrl = (base as any).fallbackImage;
+        if (rawImg?.asset) {
+          try {
+            cmsImageUrl = urlForImage(rawImg)?.url();
+          } catch {
+            // fallback if builder fails
+          }
+          if (rawImg.crop) {
+            // User explicitly cropped the image in Sanity Studio:
+            // CDN serves the cropped rectangle; center alignment preserves exact framing.
+            fallbackPosition = "center";
+          } else if (rawImg.hotspot?.x !== undefined && rawImg.hotspot?.y !== undefined) {
+            fallbackPosition = `${rawImg.hotspot.x * 100}% ${rawImg.hotspot.y * 100}%`;
+          }
+        }
+
+        if (!cmsImageUrl) {
+          // Map base service IDs to the projected URL and hotspot fields
+          const urlFieldMap: Record<string, string> = {
+            hair: "hairImageUrl",
+            bridal: "bridalImageUrl",
+            skin: "skinImageUrl",
+            tattoo: "tattooImageUrl",
+            nails: "nailsImageUrl",
+            piercing: "piercingImageUrl",
+            "hair-extensions": "hairExtensionsImageUrl",
+            "hair-weaving": "hairWeavingImageUrl",
+          };
+          const hotspotFieldMap: Record<string, string> = {
+            hair: "hairImageHotspot",
+            bridal: "bridalImageHotspot",
+            skin: "skinImageHotspot",
+            tattoo: "tattooImageHotspot",
+            nails: "nailsImageHotspot",
+            piercing: "piercingImageHotspot",
+            "hair-extensions": "hairExtensionsImageHotspot",
+            "hair-weaving": "hairWeavingImageHotspot",
+          };
+          
+          const urlField = urlFieldMap[base.id];
+          const hotspotField = hotspotFieldMap[base.id];
+
+          if (urlField && (cmsImages as Record<string, any>)?.[urlField]) {
+            cmsImageUrl = (cmsImages as Record<string, any>)[urlField];
+            hotspot = (cmsImages as Record<string, any>)[hotspotField];
+          } else if (cmsMatch?.imageUrl) {
+            cmsImageUrl = cmsMatch.imageUrl;
+            hotspot = cmsMatch.imageHotspot;
+          } else {
+            cmsImageUrl = (base as any).fallbackImage;
+          }
+
+          if (hotspot && hotspot.x !== undefined && hotspot.y !== undefined) {
+            fallbackPosition = `${hotspot.x * 100}% ${hotspot.y * 100}%`;
+          }
         }
       } catch(e) {
         cmsImageUrl = cmsMatch?.imageUrl || (base as any).fallbackImage;
@@ -318,7 +353,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                     alt={service.title}
                     loading="lazy"
                     decoding="async"
-                    className="accordion-img absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] min-w-[520px] h-full max-w-none object-cover pointer-events-none"
+                    className="accordion-img absolute inset-0 w-full h-full object-cover pointer-events-none"
                     style={{ objectPosition: service.objectPosition }}
                   />
                   

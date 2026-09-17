@@ -66,6 +66,14 @@ export interface SanityHomePageData {
   hairExtensionsImageHotspot?: SanityImageHotspot | undefined;
   hairWeavingImageUrl?: string | undefined;
   hairWeavingImageHotspot?: SanityImageHotspot | undefined;
+  hairServiceImage?: any;
+  bridalServiceImage?: any;
+  skinServiceImage?: any;
+  tattooServiceImage?: any;
+  nailsServiceImage?: any;
+  piercingServiceImage?: any;
+  hairExtensionsServiceImage?: any;
+  hairWeavingServiceImage?: any;
   featuredHairImageUrl: string | undefined;
   featuredHairImageAlt: string | undefined;
   featuredBridalImageUrl: string | undefined;
@@ -242,6 +250,7 @@ export interface SanityServiceCategory {
   slug: string;
   gender: 'mens' | 'womens' | 'bridal' | 'tattoo' | 'nails' | 'piercing' | 'hair-extensions' | 'hair-weaving' | 'both' | 'unisex';
   displayOrder: number;
+  image?: any;
   imageUrl: string | undefined;
   imageHotspot: SanityImageHotspot | undefined;
   imageAlt: string | undefined;

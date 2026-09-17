@@ -328,7 +328,88 @@ const categories = [
       { _key: "ta-4", name: "Cover-Up Tattoo",             price: "₹5,000 onwards" },
       { _key: "ta-5", name: "Touch-Up Session",            price: "₹800" },
       { _key: "ta-6", name: "Custom Design Consultation",  price: "Free", isHighlighted: true },
-      { _key: "ta-7", name: "Ear Piercing",                price: "₹500" },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════════════════
+  //  NAILS
+  // ══════════════════════════════════════════════════════════════════
+  {
+    _id: "serviceCategory-nails",
+    _type: "serviceCategory",
+    title: "Artistic Nails",
+    slug: { _type: "slug", current: "artistic-nails" },
+    gender: "nails",
+    displayOrder: 1,
+    items: [
+      { _key: "nl-1", name: "Gel Nail Extensions",         price: "₹2,500 onwards", isHighlighted: true },
+      { _key: "nl-2", name: "Acrylic Nail Extensions",     price: "₹2,800 onwards" },
+      { _key: "nl-3", name: "Custom Nail Art (Per Finger)", price: "₹150 onwards" },
+      { _key: "nl-4", name: "Russian Manicure",            price: "₹1,200" },
+      { _key: "nl-5", name: "Gel Polish Overlay",          price: "₹999" },
+      { _key: "nl-6", name: "Crystal Spa Pedicure",        price: "₹1,500" },
+      { _key: "nl-7", name: "Nail Extension Removal",      price: "₹500" },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════════════════
+  //  PIERCING
+  // ══════════════════════════════════════════════════════════════════
+  {
+    _id: "serviceCategory-piercing",
+    _type: "serviceCategory",
+    title: "Piercing Studio",
+    slug: { _type: "slug", current: "piercing" },
+    gender: "piercing",
+    displayOrder: 1,
+    items: [
+      { _key: "pc-1", name: "Ear Lobe Piercing (Pair)",    price: "₹600", isHighlighted: true },
+      { _key: "pc-2", name: "Single Lobe Piercing",        price: "₹350" },
+      { _key: "pc-3", name: "Cartilage / Helix Piercing",  price: "₹800" },
+      { _key: "pc-4", name: "Tragus Piercing",             price: "₹900" },
+      { _key: "pc-5", name: "Nose Piercing",               price: "₹700" },
+      { _key: "pc-6", name: "Belly / Navel Piercing",      price: "₹1,500" },
+      { _key: "pc-7", name: "Sterile Stud Replacement",    price: "₹300" },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════════════════
+  //  HAIR EXTENSIONS
+  // ══════════════════════════════════════════════════════════════════
+  {
+    _id: "serviceCategory-hair-extensions",
+    _type: "serviceCategory",
+    title: "Hair Extensions",
+    slug: { _type: "slug", current: "hair-extensions" },
+    gender: "hair-extensions",
+    displayOrder: 1,
+    items: [
+      { _key: "he-1", name: "Clip-In Human Hair Extensions",         price: "from ₹8,000", isHighlighted: true },
+      { _key: "he-2", name: "Tape-In Extensions Installation",       price: "from ₹12,000" },
+      { _key: "he-3", name: "Micro-Ring / Nano-Ring Extensions",     price: "from ₹15,000" },
+      { _key: "he-4", name: "Keratin Fusion Bond Extensions",        price: "from ₹18,000" },
+      { _key: "he-5", name: "Extension Re-Taping & Maintenance",     price: "₹2,500" },
+      { _key: "he-6", name: "Custom Extension Blending Cut & Style", price: "₹1,500" },
+    ],
+  },
+
+  // ══════════════════════════════════════════════════════════════════
+  //  HAIR WEAVING
+  // ══════════════════════════════════════════════════════════════════
+  {
+    _id: "serviceCategory-hair-weaving",
+    _type: "serviceCategory",
+    title: "Hair Weaving",
+    slug: { _type: "slug", current: "hair-weaving" },
+    gender: "hair-weaving",
+    displayOrder: 1,
+    items: [
+      { _key: "hw-1", name: "Non-Surgical Hair Weaving System",      price: "from ₹15,000", isHighlighted: true },
+      { _key: "hw-2", name: "Custom Hair Patch Integration",         price: "from ₹12,000" },
+      { _key: "hw-3", name: "Lace Front Hair Patch Fixing",          price: "from ₹18,000" },
+      { _key: "hw-4", name: "Hair Patch Monthly Servicing & Cleaning", price: "₹1,200" },
+      { _key: "hw-5", name: "Hair Bonding & Re-Attachment",          price: "₹1,500" },
+      { _key: "hw-6", name: "Scalp Prep & Consultation",             price: "Free" },
     ],
   },
 ];

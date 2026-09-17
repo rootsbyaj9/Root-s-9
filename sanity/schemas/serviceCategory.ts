@@ -40,6 +40,10 @@ export const serviceCategory = defineType({
           { title: "💈 Men's",                  value: "mens"    },
           { title: "👰 Bridal Studio",           value: "bridal"  },
           { title: "🖋 Tattoo Artistry",          value: "tattoo"  },
+          { title: "💅 Nails",                  value: "nails"   },
+          { title: "👂 Piercing",               value: "piercing"},
+          { title: "✨ Hair Extensions",         value: "hair-extensions" },
+          { title: "🧵 Hair Weaving",            value: "hair-weaving" },
           { title: "👫 Both (Women & Men)",       value: "both"    },
         ],
         layout: "radio",
@@ -136,7 +140,17 @@ export const serviceCategory = defineType({
   preview: {
     select: { title: "title", subtitle: "gender", media: "image" },
     prepare({ title, subtitle, media }) {
-      const tab = { womens: "Women's", mens: "Men's", bridal: "Bridal", tattoo: "Tattoo", both: "Both" } as Record<string,string>;
+      const tab = {
+        womens: "Women's",
+        mens: "Men's",
+        bridal: "Bridal",
+        tattoo: "Tattoo",
+        nails: "Nails",
+        piercing: "Piercing",
+        "hair-extensions": "Hair Extensions",
+        "hair-weaving": "Hair Weaving",
+        both: "Both",
+      } as Record<string, string>;
       return { title: title || "Untitled", subtitle: tab[subtitle] ?? subtitle, media };
     },
   },

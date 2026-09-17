@@ -18,6 +18,7 @@ import { createPortal } from 'react-dom';
 const SERVICES = [
   'Hair Styling',
   'Hair Color',
+  'Hair Weaving',
   'Skin Care & Facial',
   'Bridal Makeup',
   'Tattoo',

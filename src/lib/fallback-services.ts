@@ -64,4 +64,40 @@ export const FALLBACK_CATEGORIES: ServiceCategory[] = [
     description:
       "Fine-line, realism, cover-ups, and custom designs — permanent art worth wearing.",
   },
+  {
+    _id: "serviceCategory-nails",
+    title: "Artistic Nails",
+    slug: "artistic-nails",
+    gender: "nails",
+    displayOrder: 1,
+    description:
+      "Gel extensions, chrome finishes, custom nail art, Russian manicures, and indulgent spa pedicures.",
+  },
+  {
+    _id: "serviceCategory-piercing",
+    title: "Piercing Studio",
+    slug: "piercing",
+    gender: "piercing",
+    displayOrder: 1,
+    description:
+      "Hygienic ear, nose, and body piercings performed with surgical-grade sterilized equipment and premium studs.",
+  },
+  {
+    _id: "serviceCategory-hair-extensions",
+    title: "Hair Extensions",
+    slug: "hair-extensions",
+    gender: "hair-extensions",
+    displayOrder: 1,
+    description:
+      "100% Remy human hair clip-on, tape-in, and micro-ring extensions tailored for volume and length.",
+  },
+  {
+    _id: "serviceCategory-hair-weaving",
+    title: "Hair Weaving",
+    slug: "hair-weaving",
+    gender: "hair-weaving",
+    displayOrder: 1,
+    description:
+      "Non-surgical hair systems, custom lace front patches, and undetectable weaving for natural fullness.",
+  },
 ];

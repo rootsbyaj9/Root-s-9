@@ -11,7 +11,7 @@ export type ServiceCategory = {
   _id: string;
   title: string;
   slug: string;
-  gender: "womens" | "mens" | "bridal" | "tattoo" | "both";
+  gender: "womens" | "mens" | "bridal" | "tattoo" | "nails" | "piercing" | "hair-extensions" | "hair-weaving" | "both";
   displayOrder?: number;
   imageUrl?: string;
   imageHotspot?: { x: number; y: number };
@@ -19,15 +19,17 @@ export type ServiceCategory = {
   description?: string;
 };
 
-type TabType = "womens" | "mens" | "bridal" | "tattoo";
+type TabType = "womens" | "mens" | "bridal" | "tattoo" | "nails" | "piercing" | "hair-extensions" | "hair-weaving";
 
 
 // ─── URL param sync ───────────────────────────────────────────────────────────
+const VALID_TABS: TabType[] = ["womens", "mens", "bridal", "tattoo", "nails", "piercing", "hair-extensions", "hair-weaving"];
+
 function TabSyncer({ onTab }: { onTab: (t: TabType) => void }) {
   const searchParams = useSearchParams();
   const rawTab = searchParams.get("tab") as TabType;
   useEffect(() => {
-    if (rawTab && ["womens", "mens", "bridal", "tattoo"].includes(rawTab)) {
+    if (rawTab && VALID_TABS.includes(rawTab)) {
       onTab(rawTab);
     }
   }, [rawTab, onTab]);
@@ -43,6 +45,12 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   "mens-grooming": <Scissors className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
   "mens-skin": <Droplet className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
   "tattoo-artistry": <Palette className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "artistic-nails": <Sparkles className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "nails": <Sparkles className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "piercing": <Gem className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "ear-piercing": <Gem className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "hair-extensions": <Scissors className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
+  "hair-weaving": <Scissors className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />,
 };
 
 const CATEGORY_DEFAULT_FOCAL: Record<string, string> = {
@@ -166,6 +174,34 @@ const TAB_META: Record<
     description:
       "Fine-line precision. Realism artistry. Permanent marks worth wearing.",
   },
+  nails: {
+    label: "Nails",
+    eyebrow: "NAIL ARTISTRY",
+    heading: "Nail Studio.",
+    description:
+      "Gel extensions, custom nail art, Russian manicures, and indulgent spa pedicures.",
+  },
+  piercing: {
+    label: "Piercing",
+    eyebrow: "PRECISION & HYGIENE",
+    heading: "Piercing Studio.",
+    description:
+      "Ear, nose, and body piercings performed with surgical-grade precision and sterile protocols.",
+  },
+  "hair-extensions": {
+    label: "Hair Extensions",
+    eyebrow: "LENGTH & VOLUME",
+    heading: "Hair Extensions.",
+    description:
+      "100% human hair extensions, seamless blending, and bespoke styling for instant length and volume.",
+  },
+  "hair-weaving": {
+    label: "Hair Weaving",
+    eyebrow: "NATURAL RESTORATION",
+    heading: "Hair Weaving.",
+    description:
+      "Non-surgical hair weaving, customized hair patches, and seamless integration for a full, natural look.",
+  },
 };
 
 import { FALLBACK_CATEGORIES } from "@/lib/fallback-services";
@@ -194,7 +230,16 @@ export default function ServicesContent({
     router.replace(`?tab=${tab}`, { scroll: false });
   };
 
-  const tabKeys: TabType[] = ["womens", "mens", "bridal", "tattoo"];
+  const tabKeys: TabType[] = [
+    "womens",
+    "mens",
+    "bridal",
+    "tattoo",
+    "nails",
+    "piercing",
+    "hair-extensions",
+    "hair-weaving",
+  ];
   const tabButtonRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);

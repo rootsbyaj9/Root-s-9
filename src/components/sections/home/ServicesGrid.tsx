@@ -75,7 +75,7 @@ const SERVICES = [
     number: "05",
     title: "Nails",
     tagline: "Elegance at your fingertips.",
-    href: "/services?tab=womens",
+    href: "/services?tab=nails",
     fallbackImage: "https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=1200&q=80",
     placeholder: {
       label: "Nails · High-Res Image",
@@ -88,7 +88,7 @@ const SERVICES = [
     number: "06",
     title: "Piercing",
     tagline: "Bold accents. Safely done.",
-    href: "/services?tab=womens",
+    href: "/services?tab=piercing",
     fallbackImage: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=1200&q=80",
     placeholder: {
       label: "Piercing · High-Res Image",

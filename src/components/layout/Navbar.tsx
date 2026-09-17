@@ -43,7 +43,11 @@ const SERVICES_SECTIONS = [
   { label: "Women's Menu", href: "/services?tab=womens" },
   { label: "Men's Menu", href: "/services?tab=mens" },
   { label: "Bridal Studio", href: "/services?tab=bridal" },
-  { label: "Tattoo Artistry", href: "/services?tab=tattoo" }
+  { label: "Tattoo Artistry", href: "/services?tab=tattoo" },
+  { label: "Nails", href: "/services?tab=nails" },
+  { label: "Piercing", href: "/services?tab=piercing" },
+  { label: "Hair Extensions", href: "/services?tab=hair-extensions" },
+  { label: "Hair Weaving", href: "/services?tab=hair-weaving" },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -288,7 +292,7 @@ export default function Navbar({ settings }: { settings: any }) {
                     {/* Simple Dropdown */}
                     <div 
                       className={cn(
-                        "absolute top-[80px] bg-parchment border-t-2 border-roots-orange border-x border-b border-obsidian/10 shadow-lg z-40 transition-all duration-200 ease-out w-48 flex flex-col p-2",
+                        "absolute top-[80px] bg-parchment border-t-2 border-roots-orange border-x border-b border-obsidian/10 shadow-lg z-40 transition-all duration-200 ease-out w-52 flex flex-col p-2",
                         desktopServicesOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-2"
                       )}
                     >
@@ -297,7 +301,7 @@ export default function Navbar({ settings }: { settings: any }) {
                           <li key={j} className="w-full">
                             <Link 
                               href={sub.href} 
-                              className="font-serif text-[14px] capitalize font-medium text-obsidian hover:text-roots-orange transition-colors duration-150 py-3 px-4 block w-full text-left"
+                              className="font-serif text-[14px] capitalize font-medium text-obsidian hover:text-roots-orange transition-colors duration-150 py-2.5 px-4 block w-full text-left"
                             >
                               {sub.label}
                             </Link>

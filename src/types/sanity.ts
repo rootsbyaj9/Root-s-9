@@ -236,7 +236,7 @@ export interface SanityServiceCategory {
   _id: string;
   title: string;
   slug: string;
-  gender: 'mens' | 'womens' | 'unisex';
+  gender: 'mens' | 'womens' | 'bridal' | 'tattoo' | 'nails' | 'piercing' | 'hair-extensions' | 'hair-weaving' | 'both' | 'unisex';
   displayOrder: number;
   imageUrl: string | undefined;
   imageHotspot: SanityImageHotspot | undefined;

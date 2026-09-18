@@ -12,6 +12,7 @@ export type ServiceCategory = {
   title: string;
   slug: string;
   gender: "womens" | "mens" | "bridal" | "tattoo" | "nails" | "piercing" | "hair-extensions" | "hair-weaving" | "both";
+  displayTabs?: string[];
   displayOrder?: number;
   imageUrl?: string;
   imageHotspot?: { x: number; y: number };
@@ -175,9 +176,9 @@ const TAB_META: Record<
       "Fine-line precision. Realism artistry. Permanent marks worth wearing.",
   },
   nails: {
-    label: "Nail Art",
-    eyebrow: "NAIL ART",
-    heading: "Nail Art.",
+    label: "Nail Art & Styling",
+    eyebrow: "NAIL ART & STYLING",
+    heading: "Nail Art & Styling.",
     description:
       "Gel extensions, custom nail art, Russian manicures, and indulgent spa pedicures.",
   },
@@ -221,9 +222,12 @@ export default function ServicesContent({
   const dataToUse =
     cmsCategories.length > 0 ? cmsCategories : FALLBACK_CATEGORIES;
 
-  const filtered = dataToUse.filter(
-    (c) => c.gender === activeTab || c.gender === "both"
-  );
+  const filtered = dataToUse.filter((c) => {
+    if (c.displayTabs && c.displayTabs.length > 0) {
+      return c.displayTabs.includes(activeTab);
+    }
+    return c.gender === activeTab || c.gender === "both";
+  });
 
   const handleTabClick = (tab: TabType) => {
     setActiveTab(tab);

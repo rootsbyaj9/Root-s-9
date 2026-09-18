@@ -249,6 +249,7 @@ export interface SanityServiceCategory {
   title: string;
   slug: string;
   gender: 'mens' | 'womens' | 'bridal' | 'tattoo' | 'nails' | 'piercing' | 'hair-extensions' | 'hair-weaving' | 'both' | 'unisex';
+  displayTabs?: string[];
   displayOrder: number;
   image?: any;
   imageUrl: string | undefined;

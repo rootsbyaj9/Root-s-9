@@ -92,6 +92,48 @@ const ITEMS: TransformationItem[] = [
     aspectClass: 'aspect-[3/4]',
     mood: 'warm',
   },
+  {
+    id: 't10',
+    label: 'NAIL ART & STYLING',
+    description: 'Sculpted gel extensions with chrome and foil accents. 1:1 square, 600×600px.',
+    aspectClass: 'aspect-square',
+    mood: 'dark',
+  },
+  {
+    id: 't11',
+    label: 'PRECISION FADE & BEARD',
+    description: 'Clean fade, razor-sharp beard shaping. 3:4, 600×800px.',
+    aspectClass: 'aspect-[3/4]',
+    mood: 'warm',
+  },
+  {
+    id: 't12',
+    label: 'STERILE PIERCING',
+    description: 'Curated ear piercing constellation with surgical titanium. 3:4, 600×800px.',
+    aspectClass: 'aspect-[3/4]',
+    mood: 'warm',
+  },
+  {
+    id: 't13',
+    label: 'NANOPLASTIA GLOSS',
+    description: 'Mirror-shine organic hair straightening. 4:3, 600×450px.',
+    aspectClass: 'aspect-[4/3]',
+    mood: 'warm',
+  },
+  {
+    id: 't14',
+    label: 'HAIR WEAVING CROWN',
+    description: 'Seamless non-surgical hair integration. 3:4, 600×800px.',
+    aspectClass: 'aspect-[3/4]',
+    mood: 'warm',
+  },
+  {
+    id: 't15',
+    label: 'BOTANICAL FINE-LINE',
+    description: 'Delicate botanical fine-line wrist ink. 2:3, 600×900px.',
+    aspectClass: 'aspect-[2/3]',
+    mood: 'dark',
+  },
 ];
 
 /* ── Single Image Card ──────────────────────── */
@@ -225,10 +267,12 @@ export default function MasonryGrid({ cmsTransformations = [] }: MasonryGridProp
     }
   }
 
-  // Distribute items across 3 columns (disjoint sets)
-  const col1 = data.filter((_, i) => i % 3 === 0);
-  const col2 = data.filter((_, i) => i % 3 === 1);
-  const col3 = data.filter((_, i) => i % 3 === 2);
+  // Distribute items across 5 columns (disjoint sets)
+  const col1 = data.filter((_, i) => i % 5 === 0);
+  const col2 = data.filter((_, i) => i % 5 === 1);
+  const col3 = data.filter((_, i) => i % 5 === 2);
+  const col4 = data.filter((_, i) => i % 5 === 3);
+  const col5 = data.filter((_, i) => i % 5 === 4);
 
   useGSAP(
     () => {
@@ -269,12 +313,14 @@ export default function MasonryGrid({ cmsTransformations = [] }: MasonryGridProp
         }
       `}</style>
 
-      <div className="py-16 bento-container">
-        <div className="container mx-auto px-6 md:px-10 max-w-[1400px]">
-          <div className="h-[80vh] overflow-hidden bento-fade-edges grid grid-cols-2 md:grid-cols-3 gap-2">
-            <BentoColumn items={col1} duration="45s" />
-            <BentoColumn items={col2} duration="55s" reverse />
-            <BentoColumn items={col3} duration="50s" />
+      <div className="py-12 md:py-16 bento-container">
+        <div className="w-full px-3 sm:px-6 lg:px-10 max-w-[1920px] mx-auto">
+          <div className="h-[88vh] min-h-[640px] overflow-hidden bento-fade-edges grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3 md:gap-4">
+            <div className="h-full"><BentoColumn items={col1} duration="42s" /></div>
+            <div className="h-full"><BentoColumn items={col2} duration="52s" reverse /></div>
+            <div className="h-full hidden sm:block"><BentoColumn items={col3} duration="46s" /></div>
+            <div className="h-full hidden md:block"><BentoColumn items={col4} duration="56s" reverse /></div>
+            <div className="h-full hidden lg:block"><BentoColumn items={col5} duration="48s" /></div>
           </div>
 
           {data.length === 0 && (

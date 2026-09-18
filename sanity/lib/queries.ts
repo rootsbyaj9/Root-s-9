@@ -175,6 +175,7 @@ export const getServiceCategoriesQuery = groq`
     title,
     "slug": slug.current,
     gender,
+    displayTabs,
     displayOrder,
     image,
     "imageUrl": image.asset->url,

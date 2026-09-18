@@ -136,11 +136,11 @@ export default function BeforeAfter({ homePageData = {} as SanityHomePageData }:
       {/* ── Slider container ─────────────────────────────────────────────── */}
       <div
         ref={sliderRef}
-        className="w-full max-w-7xl mx-auto px-4 md:px-16 opacity-0"
+        className="w-full max-w-[1600px] mx-auto px-4 md:px-8 opacity-0"
       >
         <div
           className="relative w-full overflow-hidden select-none touch-none rounded-sm"
-          style={{ height: "60vh", minHeight: "320px", maxHeight: "640px" }}
+          style={{ height: "68vh", minHeight: "360px", maxHeight: "720px" }}
           onMouseDown={handlePointerDown}
           onMouseMove={handlePointerMove}
           onMouseUp={handlePointerUp}

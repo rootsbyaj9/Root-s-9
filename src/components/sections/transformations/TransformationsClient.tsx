@@ -21,14 +21,14 @@ export default function TransformationsClient({ cmsTransformations = [] }: Trans
   return (
     <>
       {/* 1 — Page header */}
-      <section className="pt-36 pb-12 bg-parchment">
+      <section className="pt-28 md:pt-32 pb-0 bg-parchment">
         <div className="container mx-auto px-6 md:px-16 max-w-7xl text-center">
-          <span className="eyebrow block mb-4 text-roots-orange tracking-[0.2em]">OUR PORTFOLIO</span>
-          <h1 className="font-serif text-5xl md:text-7xl text-obsidian leading-[1.0] mt-2 mb-5">
+          <span className="eyebrow block mb-3 text-roots-orange tracking-[0.2em]">OUR PORTFOLIO</span>
+          <h1 className="font-serif text-5xl md:text-7xl text-obsidian leading-[1.0] mt-1 mb-3">
             Real{' '}
             <em className="text-obsidian/70">Results.</em>
           </h1>
-          <p className="font-sans text-warm-gray text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="font-sans text-warm-gray text-base md:text-lg max-w-xl mx-auto leading-relaxed mb-3">
             Browse our gallery of stunning client transformations — each one a
             story of craft, care, and confidence.
           </p>

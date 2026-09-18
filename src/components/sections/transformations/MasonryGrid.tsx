@@ -178,21 +178,24 @@ function BentoColumn({
   duration: string;
   reverse?: boolean;
 }) {
+  // Ensure sufficient item count in each column for tall viewport heights
+  const displayItems = items.length < 5 ? [...items, ...items, ...items] : [...items, ...items];
+
   return (
     <div className="relative h-full w-full bento-marquee-group">
       <div
-        className={`h-max flex flex-col gap-2 ${reverse ? 'bento-marquee-reverse' : 'bento-marquee'}`}
+        className={`h-max flex flex-col gap-2.5 sm:gap-3 md:gap-4 ${reverse ? 'bento-marquee-reverse' : 'bento-marquee'}`}
         style={{ animationDuration: duration }}
       >
         {/* Set 1 */}
-        <div className="flex flex-col gap-2 flex-shrink-0">
-          {items.map((item, idx) => (
+        <div className="flex flex-col gap-2.5 sm:gap-3 md:gap-4 flex-shrink-0">
+          {displayItems.map((item, idx) => (
             <BentoCard key={item.id + '-a-' + idx} item={item} />
           ))}
         </div>
         {/* Set 2 — duplicate for seamless loop */}
-        <div className="flex flex-col gap-2 flex-shrink-0">
-          {items.map((item, idx) => (
+        <div className="flex flex-col gap-2.5 sm:gap-3 md:gap-4 flex-shrink-0">
+          {displayItems.map((item, idx) => (
             <BentoCard key={item.id + '-b-' + idx} item={item} />
           ))}
         </div>
@@ -290,8 +293,8 @@ export default function MasonryGrid({ cmsTransformations = [] }: MasonryGridProp
     <div ref={containerRef}>
       <style>{`
         .bento-fade-edges {
-          mask-image: linear-gradient(to bottom, transparent, black 4%, black 96%, transparent);
-          -webkit-mask-image: linear-gradient(to bottom, transparent, black 4%, black 96%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, black 1.5%, black 98.5%, transparent);
+          -webkit-mask-image: linear-gradient(to bottom, transparent, black 1.5%, black 98.5%, transparent);
         }
         .bento-marquee {
           animation: bentoScrollVert linear infinite;
@@ -305,22 +308,22 @@ export default function MasonryGrid({ cmsTransformations = [] }: MasonryGridProp
         }
         @keyframes bentoScrollVert {
           0% { transform: translateY(0); }
-          100% { transform: translateY(calc(-50% - 4px)); }
+          100% { transform: translateY(calc(-50% - 6px)); }
         }
         @keyframes bentoScrollVertRev {
-          0% { transform: translateY(calc(-50% - 4px)); }
+          0% { transform: translateY(calc(-50% - 6px)); }
           100% { transform: translateY(0); }
         }
       `}</style>
 
-      <div className="py-12 md:py-16 bento-container">
+      <div className="pt-0 pb-0 bento-container">
         <div className="w-full px-3 sm:px-6 lg:px-10 max-w-[1920px] mx-auto">
-          <div className="h-[88vh] min-h-[640px] overflow-hidden bento-fade-edges grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3 md:gap-4">
-            <div className="h-full"><BentoColumn items={col1} duration="42s" /></div>
-            <div className="h-full"><BentoColumn items={col2} duration="52s" reverse /></div>
-            <div className="h-full hidden sm:block"><BentoColumn items={col3} duration="46s" /></div>
-            <div className="h-full hidden md:block"><BentoColumn items={col4} duration="56s" reverse /></div>
-            <div className="h-full hidden lg:block"><BentoColumn items={col5} duration="48s" /></div>
+          <div className="h-[135vh] min-h-[1000px] md:h-[145vh] md:min-h-[1150px] lg:h-[155vh] lg:min-h-[1300px] overflow-hidden bento-fade-edges grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-3 md:gap-4">
+            <div className="h-full"><BentoColumn items={col1} duration="48s" /></div>
+            <div className="h-full"><BentoColumn items={col2} duration="58s" reverse /></div>
+            <div className="h-full hidden sm:block"><BentoColumn items={col3} duration="52s" /></div>
+            <div className="h-full hidden md:block"><BentoColumn items={col4} duration="62s" reverse /></div>
+            <div className="h-full hidden lg:block"><BentoColumn items={col5} duration="54s" /></div>
           </div>
 
           {data.length === 0 && (

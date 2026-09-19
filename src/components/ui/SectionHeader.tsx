@@ -56,7 +56,7 @@ export default function SectionHeader({
         "flex gap-4",
         isCentered
           ? "flex-col items-center text-center"
-          : "flex-col md:flex-row md:items-end md:justify-between",
+          : "flex-col xl:flex-row xl:items-end xl:justify-between",
         className
       )}
     >
@@ -100,7 +100,7 @@ export default function SectionHeader({
 
       {/* Optional action — flush right on desktop */}
       {action && !isCentered && (
-        <div className="hidden md:block flex-shrink-0">{action}</div>
+        <div className="hidden xl:block flex-shrink-0">{action}</div>
       )}
     </div>
   );

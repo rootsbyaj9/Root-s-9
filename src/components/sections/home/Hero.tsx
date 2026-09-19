@@ -112,14 +112,14 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
         ref={bgRef}
         className="absolute inset-0 z-0 scale-105 will-change-transform"
       >
-        {/* Mobile: object-[82%_center] shows the right side where ROOT'S reception desk is.
+        {/* Mobile & Tablet: object-[82%_center] shows the right side where ROOT'S reception desk is.
             Desktop: object-center shows the full balanced scene. */}
         <Image
           src={homePageData?.heroBackgroundImageUrl || "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1920&q=80"}
           alt="Root's salon interior"
           fill
           priority
-          className="object-cover object-[82%_center] md:object-center"
+          className="object-cover object-[82%_center] xl:object-center"
           sizes="100vw"
         />
       </div>
@@ -157,8 +157,8 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
           {"Three locations across Hyderabad — Uppal, Tarnaka & Yamjal"}
         </p>
 
-        {/* Equal-height CTAs — hidden on mobile (bottom bar handles them) */}
-        <div className="cta-wrapper hidden sm:flex flex-col sm:flex-row items-center gap-4">
+        {/* Equal-height CTAs — hidden on mobile and tablet (bottom bar handles them) */}
+        <div className="cta-wrapper hidden xl:flex flex-col sm:flex-row items-center gap-4">
           {/* Primary CTA — orange solid */}
           <button
             id="hero-book-now"

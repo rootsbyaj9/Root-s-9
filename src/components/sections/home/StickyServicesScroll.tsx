@@ -194,8 +194,8 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
 
   return (
     <section className="relative bg-parchment border-t border-obsidian/[0.08]">
-      {/* ── MOBILE STICKY TOP IMAGE (lg:hidden) ────────────────────────── */}
-      <div className="lg:hidden sticky top-16 z-0 h-[42vh] max-h-[420px] bg-linen overflow-hidden">
+      {/* ── MOBILE STICKY TOP IMAGE (xl:hidden) ────────────────────────── */}
+      <div className="xl:hidden sticky top-16 z-0 h-[42vh] max-h-[420px] bg-linen overflow-hidden">
         {SERVICES.map((service) => (
           <img
             key={service.id}
@@ -213,18 +213,18 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
       </div>
 
       {/* ── MAIN CONTENT CONTAINER ─────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 transition-colors duration-500">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 xl:px-12 relative z-10 transition-colors duration-500">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 xl:gap-20">
           
           {/* LEFT COLUMN: Section heading + 7 scrolling text blocks */}
-          <div className="flex flex-col lg:gap-24 lg:py-12 -mt-[4vh] lg:mt-0">
+          <div className="flex flex-col xl:gap-24 xl:py-12 -mt-[4vh] xl:mt-0">
             
             {/* Header Block */}
-            <div className="mb-8 lg:mb-0 bg-parchment/95 backdrop-blur-sm lg:bg-transparent p-6 lg:p-0 rounded-2xl shadow-sm lg:shadow-none border border-obsidian/[0.08] lg:border-none">
+            <div className="mb-8 xl:mb-0 bg-parchment/95 backdrop-blur-sm xl:bg-transparent p-6 xl:p-0 rounded-2xl shadow-sm xl:shadow-none border border-obsidian/[0.08] xl:border-none">
               <span className="block text-xs font-bold tracking-[0.2em] uppercase text-roots-orange mb-4">
                 Why Choose Root&apos;s
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-obsidian leading-[1.1]">
+              <h2 className="font-serif text-4xl md:text-5xl xl:text-6xl text-obsidian leading-[1.1]">
                 Defining Beauty <br /> Standards in <br />{" "}
                 <span className="italic text-warm-gray">Hyderabad.</span>
               </h2>
@@ -234,16 +234,16 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
             {SERVICES.map((service) => (
               <div key={service.id} className="relative">
                 {/* Mobile spacer: keeps sticky image visible before card slides up */}
-                <div className="h-[10vh] lg:hidden w-full pointer-events-none" aria-hidden="true" />
+                <div className="h-[10vh] xl:hidden w-full pointer-events-none" aria-hidden="true" />
                 
                 {/* Service Card */}
                 <div
                   id={`service-block-${service.id}`}
                   className={cn(
-                    "transition-all duration-500 py-8 px-6 lg:px-0 bg-parchment rounded-t-3xl lg:rounded-none shadow-[0_-8px_30px_-8px_rgba(23,18,15,0.12)] lg:shadow-none border-t lg:border-t-0 border-obsidian/[0.08]",
+                    "transition-all duration-500 py-8 px-6 xl:px-0 bg-parchment rounded-t-3xl xl:rounded-none shadow-[0_-8px_30px_-8px_rgba(23,18,15,0.12)] xl:shadow-none border-t xl:border-t-0 border-obsidian/[0.08]",
                     activeId === service.id
                       ? "opacity-100"
-                      : "lg:opacity-30 lg:blur-[1px]"
+                      : "xl:opacity-30 xl:blur-[1px]"
                   )}
                 >
                   <h3 className="font-serif text-3xl md:text-4xl text-obsidian mb-6">
@@ -257,11 +257,11 @@ export default function StickyServicesScroll({ cmsImages }: Props) {
             ))}
 
             {/* Mobile bottom buffer */}
-            <div className="h-[8vh] lg:hidden" />
+            <div className="h-[8vh] xl:hidden" />
           </div>
 
-          {/* RIGHT COLUMN: DESKTOP STICKY IMAGE (hidden lg:block) ───────── */}
-          <div className="hidden lg:block relative h-[calc(100vh-120px)] sticky top-20 rounded-3xl overflow-hidden bg-linen shadow-2xl border border-obsidian/[0.08]">
+          {/* RIGHT COLUMN: DESKTOP STICKY IMAGE (hidden xl:block) ───────── */}
+          <div className="hidden xl:block relative h-[calc(100vh-120px)] sticky top-20 rounded-3xl overflow-hidden bg-linen shadow-2xl border border-obsidian/[0.08]">
             {SERVICES.map((service) => (
               <img
                 key={service.id}

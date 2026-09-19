@@ -274,8 +274,8 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
           }
         />
 
-        {/* ── Mobile: Bento Grid ── */}
-        <div className="md:hidden panels-container grid grid-cols-2 gap-3">
+        {/* ── Mobile & Tablet: Bento Grid (all devices < 1280px) ── */}
+        <div className="xl:hidden panels-container grid grid-cols-2 gap-3">
           {mergedServices.map((service) => (
             <Link
               key={service.id}
@@ -289,7 +289,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
                   alt={service.title}
                   fill
                   loading="lazy"
-                  sizes="(max-width: 768px) 45vw, 33vw"
+                  sizes="(max-width: 1280px) 50vw, 33vw"
                   className="object-cover"
                   style={{ objectPosition: service.objectPosition }}
                 />
@@ -298,21 +298,21 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
               </div>
 
                 {/* Content: F-Pattern — name top-left, action at bottom */}
-              <div className="absolute inset-0 p-4 flex flex-col justify-between z-10">
+              <div className="absolute inset-0 p-3 sm:p-4 flex flex-col justify-between z-10">
                 {/* Top: Number + Name */}
                 <div>
                   <span className="font-sans text-[10px] uppercase tracking-widest block"
                     style={{ color: "rgba(255,253,249,0.45)" }}>
                     {service.number}
                   </span>
-                  <h3 className="font-serif text-xl mt-1" style={{ color: "#fffdf9" }}>
+                  <h3 className="font-serif text-lg sm:text-xl mt-1 leading-tight" style={{ color: "#fffdf9" }}>
                     {service.title}
                   </h3>
                 </div>
 
                 {/* Bottom: DISCOVER link */}
                 <div className="flex items-end justify-between">
-                  <p className="font-sans text-[11px] leading-snug max-w-[65%]"
+                  <p className="font-sans text-[10px] sm:text-[11px] leading-snug max-w-[65%]"
                     style={{ color: "rgba(255,253,249,0.65)" }}>
                     {service.tagline}
                   </p>
@@ -327,8 +327,8 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
           ))}
         </div>
 
-        {/* ── Desktop: Accordion ── */}
-        <div className="panels-container hidden md:flex gap-3 h-[600px] w-full">
+        {/* ── Desktop: Accordion (>= 1280px) ── */}
+        <div className="panels-container hidden xl:flex gap-3 h-[600px] w-full">
           {mergedServices.map((service) => {
             const isActive = activeId === service.id;
 

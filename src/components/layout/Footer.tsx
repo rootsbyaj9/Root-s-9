@@ -75,10 +75,10 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
       <div className="container mx-auto px-6 md:px-16 relative z-10">
 
         {/* ── 4-column grid ────────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-12 mb-16">
 
           {/* Brand — spans 2 columns on desktop */}
-          <div className="sm:col-span-2">
+          <div className="sm:col-span-2 xl:col-span-2">
             {/* Full brand logo — light variant for dark background */}
             <div className="mb-5">
               <img
@@ -170,9 +170,9 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
         </div>
 
         {/* ── Bottom bar ───────────────────────────────────────────────────── */}
-        <div className="border-t border-parchment/10 pt-8 mt-2 flex flex-col md:grid md:grid-cols-3 items-center gap-4 text-xs font-sans text-parchment/60">
+        <div className="border-t border-parchment/10 pt-8 mt-2 flex flex-col xl:grid xl:grid-cols-3 items-center gap-4 text-xs font-sans text-parchment/60">
           {/* Left: Copyright */}
-          <p className="text-center md:text-left">
+          <p className="text-center xl:text-left">
             © {currentYear} Root&apos;s Family Salon. All rights reserved.
           </p>
 
@@ -186,7 +186,7 @@ export default function Footer({ settings }: { settings: SiteSettings | null }) 
           </div>
 
           {/* Right: Balance spacer */}
-          <div className="hidden md:block" />
+          <div className="hidden xl:block" />
         </div>
       </div>
     </footer>

@@ -254,7 +254,7 @@ export default function Navbar({ settings }: { settings: any }) {
           <div className="flex items-center px-5 md:px-7 h-[64px] gap-4 md:gap-6">
 
           {/* ── Desktop links ─────────────────────────────────────────────── */}
-          <div className="hidden lg:flex items-center gap-5 xl:gap-7 h-full">
+          <div className="hidden xl:flex items-center gap-5 xl:gap-7 h-full">
             {PRIMARY_LINKS.map((link) => {
               const isActive = pathname === link.href || (link.href === "/" && pathname === "/");
 
@@ -382,7 +382,7 @@ export default function Navbar({ settings }: { settings: any }) {
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen || mobileServicesOpen}
             aria-controls="mobile-menu"
-            className="lg:hidden flex flex-col gap-[5px] w-6 py-1 hover:opacity-70 transition-opacity focus-visible:outline-roots-orange z-50"
+            className="xl:hidden flex flex-col gap-[5px] w-6 py-1 hover:opacity-70 transition-opacity focus-visible:outline-roots-orange z-50"
           >
             <span
               className={cn(
@@ -414,7 +414,7 @@ export default function Navbar({ settings }: { settings: any }) {
         <div
           ref={menuRef}
           className={cn(
-            "lg:hidden fixed inset-0 bg-parchment flex flex-col items-center justify-start overflow-y-auto transition-opacity duration-300",
+            "xl:hidden fixed inset-0 bg-parchment flex flex-col items-center justify-start overflow-y-auto transition-opacity duration-300",
             menuOpen
               ? "opacity-100 pointer-events-auto z-[9998]"
               : "opacity-0 pointer-events-none z-[-1]"

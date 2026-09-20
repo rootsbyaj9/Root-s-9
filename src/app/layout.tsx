@@ -63,7 +63,10 @@ const outfit = Outfit({
 });
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://root-s-9.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://root-s-9.vercel.app");
 
 export const metadata = {
   title: "Root's — Hyderabad's premium family salon",

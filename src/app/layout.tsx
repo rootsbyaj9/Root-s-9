@@ -80,14 +80,22 @@ export const metadata = {
     description:
       "Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services in Uppal, Tarnaka, and Yamjal.",
     locale: "en_IN",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Root's — Hyderabad's premium family salon" }],
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Root's — Hyderabad's premium family salon",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Root's — Hyderabad's premium family salon",
     description:
       "Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services in Hyderabad.",
-    images: ["/og-image.jpg"],
+    images: ["/opengraph-image.png"],
   },
   icons: {
     icon: "/favicon.svg",

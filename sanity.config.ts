@@ -3,6 +3,7 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { projectId, dataset } from "./sanity/env";
 import { serviceCategory } from "./sanity/schemas/serviceCategory";
+import { bookingService } from "./sanity/schemas/bookingService";
 import { post } from "./sanity/schemas/post";
 import { location } from "./sanity/schemas/location";
 import { siteSettings } from "./sanity/schemas/siteSettings";
@@ -22,6 +23,7 @@ export default defineConfig({
       homePage,
       aboutPage,
       serviceCategory,
+      bookingService,
       location,
       transformation,
       review,
@@ -67,6 +69,16 @@ export default defineConfig({
                 S.documentTypeList("serviceCategory")
                   .title("Service Menus (Women, Men, Bridal, Tattoo)")
                   .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
+              ),
+
+            // ── 3b. BOOKING SERVICES ──────────────────────────────────────
+            S.listItem()
+              .title("📅 3b. Booking Services")
+              .icon(() => "📅")
+              .child(
+                S.documentTypeList("bookingService")
+                  .title("Bookable Services (/book flow — no prices)")
+                  .defaultOrdering([{ field: "categorySlug", direction: "asc" }, { field: "displayOrder", direction: "asc" }])
               ),
 
             // ── 4. BRANCH LOCATIONS ───────────────────────────────────────

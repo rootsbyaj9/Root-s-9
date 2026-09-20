@@ -72,14 +72,20 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Yamjal']
   // ── Global event listener for opening the modal ────────────────────────────
   const openModal = useCallback((e?: Event) => {
     const customEvent = e as CustomEvent;
-    if (customEvent?.detail?.tab) {
-      setActiveTab(customEvent.detail.tab);
+    const tab = customEvent?.detail?.tab;
+    const branchSlug = customEvent?.detail?.branch;
+
+    // "Book Appointment" → redirect to /book page (new multi-step flow)
+    if (!tab || tab === 'booking') {
+      const url = branchSlug ? `/book?branch=${branchSlug}` : '/book';
+      window.location.href = url;
+      return;
     }
-    // Allow pre-selecting a branch (e.g. from the locations page)
-    if (customEvent?.detail?.branch) {
-      const b = customEvent.detail.branch;
-      setBookingForm((prev) => ({ ...prev, branch: b }));
-      setCallbackForm((prev) => ({ ...prev, branch: b }));
+
+    // "Request Callback" → open modal as before
+    setActiveTab(tab);
+    if (branchSlug) {
+      setCallbackForm((prev) => ({ ...prev, branch: branchSlug }));
     }
     setStatus('idle');
     setErrorMessage('');
@@ -90,6 +96,7 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Yamjal']
     window.addEventListener('open-booking-modal', openModal);
     return () => window.removeEventListener('open-booking-modal', openModal);
   }, [openModal]);
+
 
   // ── Lock body scroll & Pause Lenis without scroll jump ───────────────────────
   useEffect(() => {
@@ -321,7 +328,6 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Yamjal']
                 required
                 value={bookingForm.name}
                 onChange={(v) => setBookingForm({ ...bookingForm, name: v })}
-                placeholder="e.g. Priya Sharma"
               />
               <FormField
                 label="Phone Number"
@@ -329,7 +335,6 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Yamjal']
                 type="tel"
                 value={bookingForm.phone}
                 onChange={(v) => setBookingForm({ ...bookingForm, phone: v })}
-                placeholder="e.g. 9876543210"
                 pattern="[0-9]{10}"
                 title="Please enter a 10-digit phone number"
               />
@@ -374,7 +379,6 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Yamjal']
                 required
                 value={callbackForm.name}
                 onChange={(v) => setCallbackForm({ ...callbackForm, name: v })}
-                placeholder="e.g. Priya Sharma"
               />
               <FormField
                 label="Phone Number"
@@ -382,7 +386,6 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Yamjal']
                 type="tel"
                 value={callbackForm.phone}
                 onChange={(v) => setCallbackForm({ ...callbackForm, phone: v })}
-                placeholder="e.g. 9876543210"
                 pattern="[0-9]{10}"
                 title="Please enter a 10-digit phone number"
               />
@@ -390,13 +393,11 @@ export default function BookingModal({ branches = ['Uppal', 'Tarnaka', 'Yamjal']
                 label="Preferred Time to Call"
                 value={callbackForm.preferredTime}
                 onChange={(v) => setCallbackForm({ ...callbackForm, preferredTime: v })}
-                placeholder="e.g. After 6 PM, Morning"
               />
               <TextAreaField
                 label="Purpose / Note"
                 value={callbackForm.note}
                 onChange={(v) => setCallbackForm({ ...callbackForm, note: v })}
-                placeholder="e.g. Want to inquire about bridal packages"
               />
               <BranchSelector
                 branches={branches}

@@ -241,3 +241,26 @@ export const getPostBySlugQuery = groq`
     readTime
   }
 `
+
+/**
+ * Booking services — no price field.
+ * Used by /api/booking-services and /book flow.
+ * Falls back to src/fixtures/booking-services.ts when CMS has no documents.
+ */
+export const getBookingServicesQuery = groq`
+  *[_type == "bookingService" && active != false] | order(categorySlug asc, displayOrder asc) {
+    "serviceId": serviceId.current,
+    name,
+    category,
+    categorySlug,
+    audience,
+    description,
+    durationMinutes,
+    isAddOn,
+    canCombine,
+    active,
+    branchIds,
+    displayOrder
+  }
+`
+

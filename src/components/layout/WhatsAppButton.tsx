@@ -18,8 +18,8 @@ import type { SiteSettings } from "@/types/sanity";
 export default function WhatsAppButton({ settings }: { settings: SiteSettings | null }) {
   const pathname = usePathname();
 
-  // Never render inside Sanity Studio
-  if (pathname?.startsWith("/studio")) return null;
+  // Never render inside Sanity Studio or on booking flow
+  if (pathname?.startsWith("/studio") || pathname?.startsWith("/book")) return null;
 
   const WHATSAPP_NUMBER = settings?.contactWhatsApp || "919700744357";
 

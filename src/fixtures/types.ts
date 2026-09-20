@@ -70,6 +70,7 @@ export interface BranchRecord {
   accessNotes?: string;
   servicesAvailable: string[];
   isSignature?: boolean;
+  isNew?: boolean;
 }
 
 export interface ServiceCategoryRecord {
@@ -97,6 +98,58 @@ export interface ServiceRecord {
   branches: string[];
   preparation?: string[];
   aftercare?: string[];
+}
+
+/** Enriched service record for the multi-step booking flow */
+export interface BookingServiceRecord {
+  serviceId: string;
+  name: string;
+  category: string;           // e.g. "Hair Services"
+  categorySlug: string;       // e.g. "hair-services"
+  audience: 'women' | 'men' | 'unisex' | 'bridal';
+  description: string;
+  durationMinutes: number;
+  isAddOn: boolean;
+  canCombine: boolean;
+  active: boolean;
+  branchIds: string[];        // which branches offer it
+}
+
+/** Booking status lifecycle */
+export type BookingStatus =
+  | 'draft'
+  | 'pending_confirmation'
+  | 'confirmed'
+  | 'rejected'
+  | 'canceled'
+  | 'rescheduled';
+
+/** A booking record (stored in Google Sheets + returned from API) */
+export interface BookingRecord {
+  bookingId: string;
+  status: BookingStatus;
+  branchId: string;
+  branchName: string;
+  customerName: string;
+  customerPhone: string;
+  customerEmail?: string;
+  customerNotes?: string;
+  startAt: string;            // ISO 8601 with +05:30
+  endAt: string;              // ISO 8601 with +05:30
+  timezone: 'Asia/Kolkata';
+  serviceSnapshot: ServiceSnapshot[];
+  totalDurationMinutes: number;
+  calendarEventId?: string;
+  calendarSyncStatus: 'synced' | 'failed' | 'pending';
+  customerCalendarUrl?: string;
+  idempotencyKey: string;
+  createdAt: string;
+}
+
+export interface ServiceSnapshot {
+  serviceId: string;
+  name: string;
+  durationMinutes: number;
 }
 
 export interface TransformationRecord {

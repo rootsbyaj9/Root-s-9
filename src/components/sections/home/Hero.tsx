@@ -160,13 +160,13 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
         {/* Equal-height CTAs — hidden on mobile and tablet (bottom bar handles them) */}
         <div className="cta-wrapper hidden xl:flex flex-col sm:flex-row items-center gap-4">
           {/* Primary CTA — orange solid */}
-          <button
+          <a
             id="hero-book-now"
-            onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
+            href="/book"
             className="btn-primary"
           >
             Book Now
-          </button>
+          </a>
 
           {/* Secondary CTA — ivory outline */}
           <a

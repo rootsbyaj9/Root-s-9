@@ -1,4 +1,5 @@
 export { serviceCategory } from "./serviceCategory";
+export { bookingService } from "./bookingService";
 export { post } from "./post";
 export { location } from "./location";
 export { siteSettings } from "./siteSettings";

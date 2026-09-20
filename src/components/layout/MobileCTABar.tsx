@@ -12,9 +12,11 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { SiteSettings } from '@/types/sanity';
 
 export default function MobileCTABar({ settings }: { settings?: SiteSettings | null }) {
+  const pathname = usePathname();
   const WHATSAPP_NUMBER = settings?.contactWhatsApp || '919700744357';
   const [visible, setVisible] = useState(true);
 
@@ -32,23 +34,27 @@ export default function MobileCTABar({ settings }: { settings?: SiteSettings | n
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Hide the global bottom CTA bar entirely on the booking page
+  if (pathname?.startsWith('/book')) {
+    return null;
+  }
+
   return (
     <div
       className={`xl:hidden fixed bottom-0 left-0 right-0 z-[9990] bg-parchment/95 backdrop-blur-md border-t border-obsidian/[0.08] px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] flex gap-3 transition-transform duration-300 ${
         visible ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
-      <button
-        onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
+      <Link
+        href="/book"
         className="flex-1 min-h-[44px] flex items-center justify-center gap-2 bg-roots-orange text-parchment font-[family-name:var(--font-ui)] text-[11px] font-semibold uppercase tracking-[0.08em] py-2.5 px-3 rounded-md transition-transform active:scale-[0.97]"
       >
         {/* Calendar icon */}
         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="4" width="18" height="18" rx="2" />
-          <path d="M16 2v4M8 2v4M3 10h18" />
+          <rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" />
         </svg>
         Book Now
-      </button>
+      </Link>
       <Link
         href="/services"
         className="flex-1 min-h-[44px] flex items-center justify-center border border-obsidian/20 text-obsidian font-[family-name:var(--font-ui)] text-[11px] font-semibold uppercase tracking-[0.08em] py-2.5 px-3 rounded-md transition-colors active:bg-obsidian/5"

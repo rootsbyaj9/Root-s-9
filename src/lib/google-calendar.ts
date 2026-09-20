@@ -1,189 +1,255 @@
-import { google } from "googleapis";
+import { google } from 'googleapis';
+import { BRANCHES_FIXTURE } from '@/fixtures/locations';
+import type { ServiceSnapshot } from '@/fixtures/types';
+
+const BRANCH_ADDRESSES: Record<string, string> = {
+  uppal:   "#10-25/7, Taj Mahal Colony, Peerzadiguda Road, opp. Global Indian International School, Uppal, Hyderabad 500039",
+  tarnaka: "#12-5-16/4, Vijayapuri Colony, opp. St Ann's School, Chenna Reddy Lane, Tarnaka, Secunderabad 500017",
+  yamjal:  "Yamjal, Hyderabad, Telangana 501510",
+};
+
+function getCredentials() {
+  const keyJson = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  if (!keyJson) throw new Error('Missing GOOGLE_SERVICE_ACCOUNT_KEY');
+  const cred = JSON.parse(keyJson);
+  if (cred.private_key) cred.private_key = cred.private_key.replace(/\\n/g, '\n');
+  return cred;
+}
 
 /**
  * Write a row to a Google Sheets worksheet.
- * Auto-creates the tab if it doesn't exist yet (e.g. when a new branch is added via CMS).
- * Used by booking and callback API routes.
+ * Auto-creates the tab if it doesn't exist yet.
  */
 export async function appendToSheet(
   worksheetRange: string,
   values: string[]
 ): Promise<void> {
-  const keyJson = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
-  if (!keyJson) throw new Error("Missing GOOGLE_SERVICE_ACCOUNT_KEY");
-
-  const credentials = JSON.parse(keyJson);
-  // Vercel env vars mangle \n in private keys — restore real newlines
-  if (credentials.private_key) {
-    credentials.private_key = credentials.private_key.replace(/\\n/g, "\n");
-  }
-
-  const auth = new google.auth.GoogleAuth({
+  const credentials  = getCredentials();
+  const auth         = new google.auth.GoogleAuth({
     credentials,
-    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
   });
-
-  const sheets = google.sheets({ version: "v4", auth });
-
+  const sheets = google.sheets({ version: 'v4', auth });
   const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID?.trim();
-  if (!spreadsheetId) throw new Error("Missing GOOGLE_SHEETS_SPREADSHEET_ID");
+  if (!spreadsheetId) throw new Error('Missing GOOGLE_SHEETS_SPREADSHEET_ID');
 
-  // Extract tab name from range (e.g. "'Bookings - Uppal'!A:F" → "Bookings - Uppal")
-  const tabName = worksheetRange.replace(/^'|'!.*$|!.*$/g, "");
-
-  // Auto-create the tab if it doesn't exist
+  const tabName = worksheetRange.replace(/^'|'!.*$|!.*$/g, '');
   await ensureTabExists(sheets, spreadsheetId, tabName);
 
   await sheets.spreadsheets.values.append({
     spreadsheetId,
     range: worksheetRange,
-    valueInputOption: "USER_ENTERED",
+    valueInputOption: 'USER_ENTERED',
     requestBody: { values: [values] },
   });
 }
 
-/**
- * Ensure a sheet tab exists. If not, create it with a header row.
- */
 async function ensureTabExists(
   sheets: ReturnType<typeof google.sheets>,
   spreadsheetId: string,
   tabName: string
 ): Promise<void> {
-  // Get existing tab names
   const meta = await sheets.spreadsheets.get({
     spreadsheetId,
-    fields: "sheets.properties.title",
+    fields: 'sheets.properties.title',
   });
+  const existing = meta.data.sheets?.map(s => s.properties?.title) || [];
+  if (existing.includes(tabName)) return;
 
-  const existingTabs = meta.data.sheets?.map((s) => s.properties?.title) || [];
-
-  if (existingTabs.includes(tabName)) return; // Already exists
-
-  // Create the tab
   await sheets.spreadsheets.batchUpdate({
     spreadsheetId,
-    requestBody: {
-      requests: [{ addSheet: { properties: { title: tabName } } }],
-    },
+    requestBody: { requests: [{ addSheet: { properties: { title: tabName } } }] },
   });
 
-  // Add a header row based on the tab type
-  const isBooking = tabName.startsWith("Bookings");
+  const isBooking = tabName.startsWith('Bookings');
   const headers = isBooking
-    ? ["Name", "Phone", "Service", "Preferred Date", "Preferred Time", "Submitted At"]
-    : ["Name", "Phone", "Preferred Time", "Purpose / Note", "Submitted At"];
+    ? ['Booking ID', 'Name', 'Phone', 'Email', 'Services', 'Duration (mins)', 'Date', 'Start Time', 'End Time', 'Branch', 'Notes', 'Status', 'Calendar Event ID', 'Idempotency Key', 'Submitted At']
+    : ['Name', 'Phone', 'Preferred Time', 'Purpose / Note', 'Branch', 'Submitted At'];
 
   await sheets.spreadsheets.values.update({
     spreadsheetId,
     range: `'${tabName}'!A1`,
-    valueInputOption: "USER_ENTERED",
+    valueInputOption: 'USER_ENTERED',
     requestBody: { values: [headers] },
   });
 }
 
-/**
- * Create a Google Calendar event for a salon booking.
- */
-export async function createCalendarEvent({
-  name,
-  phone,
-  service,
-  date,
-  time,
-  branch,
-  calendarIdOverride,
-}: {
+// ── Calendar ──────────────────────────────────────────────────────────────────
+
+interface CreateEventParams {
+  bookingId: string;
   name: string;
   phone: string;
-  service: string;
-  date: string;
-  time: string;
-  branch: string;
+  email?: string;
+  services: ServiceSnapshot[];
+  startAt: string;   // ISO 8601 +05:30
+  endAt: string;     // ISO 8601 +05:30
+  branchSlug: string;
+  notes?: string;
   calendarIdOverride?: string;
-}): Promise<string | null> {
-  const keyJson = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
-  if (!keyJson) throw new Error("Missing GOOGLE_SERVICE_ACCOUNT_KEY");
+}
+
+interface CreateEventResult {
+  eventId: string | null;
+  customerCalendarUrl: string;
+}
+
+/**
+ * Create a Google Calendar event for a Roots booking.
+ * Returns the event ID (for storage) and a no-login customer calendar URL.
+ */
+export async function createCalendarEvent(params: CreateEventParams): Promise<CreateEventResult> {
+  const { bookingId, name, phone, email, services, startAt, endAt, branchSlug, notes, calendarIdOverride } = params;
 
   const calendarId = (calendarIdOverride || process.env.GOOGLE_CALENDAR_ID)?.trim();
-  if (!calendarId) throw new Error("Missing GOOGLE_CALENDAR_ID");
+  if (!calendarId) throw new Error('Missing GOOGLE_CALENDAR_ID');
 
-  const credentials = JSON.parse(keyJson);
-  // Vercel env vars mangle \n in private keys — restore real newlines
-  if (credentials.private_key) {
-    credentials.private_key = credentials.private_key.replace(/\\n/g, "\n");
-  }
-
+  const credentials = getCredentials();
   const auth = new google.auth.GoogleAuth({
     credentials,
-    scopes: ["https://www.googleapis.com/auth/calendar"],
+    scopes: ['https://www.googleapis.com/auth/calendar'],
   });
+  const calendar = google.calendar({ version: 'v3', auth });
 
-  const calendar = google.calendar({ version: "v3", auth });
+  const location    = BRANCH_ADDRESSES[branchSlug] ?? "Root's The Family Salon, Hyderabad";
+  const serviceNames = services.map(s => s.name).join(', ');
+  const primaryService = services[0]?.name ?? 'Appointment';
 
-  // parseDateTime now returns an ISO string with +05:30 offset
-  const { startDateTime, endDateTime } = parseDateTime(date, time);
+  const description = [
+    `Booking Ref: ${bookingId}`,
+    `Customer: ${name}`,
+    `Phone: ${phone}`,
+    email ? `Email: ${email}` : null,
+    `Services: ${serviceNames}`,
+    `Branch: ${branchSlug.charAt(0).toUpperCase() + branchSlug.slice(1)}`,
+    notes ? `Notes: ${notes}` : null,
+    '',
+    "Root's The Family Salon — +91 97007 44357",
+  ].filter(Boolean).join('\n');
 
   const event = await calendar.events.insert({
     calendarId,
+    sendUpdates: 'none',
     requestBody: {
-      summary: `${service} — ${name}`,
-      description: `Booking from Root's Salon website\n\nName: ${name}\nPhone: ${phone}\nService: ${service}\nBranch: ${branch}\nPreferred time: ${time}`,
-      start: {
-        dateTime: startDateTime,
-        timeZone: "Asia/Kolkata",
-      },
-      end: {
-        dateTime: endDateTime,
-        timeZone: "Asia/Kolkata",
-      },
-      location: branch === "Tarnaka"
-        ? "Root's Family Salon, Tarnaka, Hyderabad"
-        : "Root's Family Salon, Uppal, Hyderabad",
+      summary:     `Roots booking — ${name}`,
+      description,
+      location,
+      start: { dateTime: startAt, timeZone: 'Asia/Kolkata' },
+      end:   { dateTime: endAt,   timeZone: 'Asia/Kolkata' },
       reminders: {
         useDefault: false,
         overrides: [
-          { method: "popup", minutes: 24 * 60 }, // 1 day before (for you to call)
-          { method: "popup", minutes: 30 },      // 30 mins before (standard)
+          { method: 'popup', minutes: 24 * 60 },
+          { method: 'popup', minutes: 30 },
         ],
       },
     },
   });
 
-  return event.data.id || null;
+  // Build the no-login "Add to my Google Calendar" URL (Option A)
+  const customerCalendarUrl = buildCustomerCalendarUrl({
+    title: `Roots appointment — ${primaryService}`,
+    startAt,
+    endAt,
+    location,
+    description: [
+      `Booking ref: ${bookingId}`,
+      `Services: ${serviceNames}`,
+      "Root's The Family Salon — +91 97007 44357",
+    ].join('\n'),
+  });
+
+  return { eventId: event.data.id || null, customerCalendarUrl };
 }
 
-function parseDateTime(dateStr: string, timeStr: string): { startDateTime: string, endDateTime: string } {
-  let hours = 10;
-  let minutes = 0;
+export function buildCustomerCalendarUrl({
+  title,
+  startAt,
+  endAt,
+  location,
+  description,
+}: {
+  title: string;
+  startAt: string;
+  endAt: string;
+  location: string;
+  description: string;
+}): string {
+  // Google Calendar uses UTC in the gcal URL: YYYYMMDDTHHmmssZ
+  const toGcalDate = (iso: string) => {
+    const d = new Date(iso);
+    return d.toISOString().replace(/[-:]/g, '').replace('.000', '');
+  };
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text:   title,
+    dates:  `${toGcalDate(startAt)}/${toGcalDate(endAt)}`,
+    location,
+    details: description,
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
 
-  const timeMatch = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
-  if (timeMatch) {
-    hours = parseInt(timeMatch[1]);
-    minutes = parseInt(timeMatch[2]);
-    const period = timeMatch[3]?.toUpperCase();
+/** Build a .ics download URL (data URI) for non-Google calendars */
+export function buildIcsContent(params: {
+  bookingId: string;
+  title: string;
+  startAt: string;
+  endAt: string;
+  location: string;
+  description: string;
+}): string {
+  const toIcsDate = (iso: string) => new Date(iso).toISOString().replace(/[-:]/g, '').replace('.000', '');
+  return [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Roots Family Salon//Booking//EN',
+    'BEGIN:VEVENT',
+    `UID:${params.bookingId}@roots-salon.com`,
+    `DTSTAMP:${toIcsDate(new Date().toISOString())}`,
+    `DTSTART:${toIcsDate(params.startAt)}`,
+    `DTEND:${toIcsDate(params.endAt)}`,
+    `SUMMARY:${params.title}`,
+    `LOCATION:${params.location}`,
+    `DESCRIPTION:${params.description.replace(/\n/g, '\\n')}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n');
+}
 
-    if (period === "PM" && hours < 12) hours += 12;
-    if (period === "AM" && hours === 12) hours = 0;
+// Legacy single-service interface — keeps existing BookingModal callback tab working
+export async function createCalendarEventLegacy({
+  name, phone, service, date, time, branch, calendarIdOverride,
+}: {
+  name: string; phone: string; service: string;
+  date: string; time: string; branch: string;
+  calendarIdOverride?: string;
+}): Promise<string | null> {
+  const { startDateTime, endDateTime } = parseLegacyDateTime(date, time);
+  const branchSlug = branch.toLowerCase();
+  const snapshot   = [{ serviceId: 'legacy', name: service, durationMinutes: 60 }];
+  const result = await createCalendarEvent({
+    bookingId: `LEGACY-${Date.now()}`,
+    name, phone, services: snapshot,
+    startAt: startDateTime, endAt: endDateTime,
+    branchSlug, calendarIdOverride,
+  });
+  return result.eventId;
+}
+
+function parseLegacyDateTime(dateStr: string, timeStr: string) {
+  let h = 10, m = 0;
+  const match = timeStr.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+  if (match) {
+    h = parseInt(match[1]);
+    m = parseInt(match[2]);
+    const p = match[3]?.toUpperCase();
+    if (p === 'PM' && h < 12) h += 12;
+    if (p === 'AM' && h === 12) h = 0;
   }
-
-  // Ensure 2-digit padding
-  const pad = (n: number) => String(n).padStart(2, "0");
-
-  const startDateTime = `${dateStr}T${pad(hours)}:${pad(minutes)}:00+05:30`;
-  
-  // Calculate end time (+1 hour)
-  let endHours = hours + 1;
-  let endDateStr = dateStr;
-  
-  // Basic overflow handling for end time (if booking is at 11:30 PM, it ends at 00:30 AM next day)
-  if (endHours >= 24) {
-    endHours -= 24;
-    // We don't strictly need perfect day-rollover math for a 1-hour salon booking since they aren't open at midnight,
-    // but Calendar will handle it if we just pass a valid time. For simplicity, we just roll over the hours.
-  }
-
-  const endDateTime = `${endDateStr}T${pad(endHours)}:${pad(minutes)}:00+05:30`;
-
-  return { startDateTime, endDateTime };
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return {
+    startDateTime: `${dateStr}T${pad(h)}:${pad(m)}:00+05:30`,
+    endDateTime:   `${dateStr}T${pad(h + 1)}:${pad(m)}:00+05:30`,
+  };
 }

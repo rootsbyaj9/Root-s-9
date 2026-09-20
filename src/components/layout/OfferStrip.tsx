@@ -27,12 +27,12 @@ export default function OfferStrip({ onDismiss, settings }: OfferStripProps) {
     <div key={i} className="flex items-center gap-6 shrink-0 pr-6">
       <Star className="w-3 h-3 fill-current text-parchment/80" />
       <span>{getText()}</span>
-      <button
-        onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
+      <a
+        href="/book"
         className="underline underline-offset-2 font-bold hover:text-parchment transition-colors"
       >
         BOOK NOW →
-      </button>
+      </a>
     </div>
   ));
 

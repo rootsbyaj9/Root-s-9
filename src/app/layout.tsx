@@ -66,18 +66,25 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://root-s-9.vercel.app";
 
 export const metadata = {
-  title: "Root's The Family Salon | Premium Salon in Hyderabad",
+  title: "Root's — Hyderabad's premium family salon",
   description:
-    "Root's Family Salon — premium hair, skin, bridal, and tattoo services in Hyderabad. Real transformations. Expert stylists. Book via WhatsApp.",
+    "Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services in Uppal, Tarnaka, and Yamjal.",
   metadataBase: new URL(BASE_URL),
   openGraph: {
     type: "website",
     siteName: "Root's The Family Salon",
+    title: "Root's — Hyderabad's premium family salon",
+    description:
+      "Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services in Uppal, Tarnaka, and Yamjal.",
     locale: "en_IN",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Root's — Hyderabad's premium family salon" }],
   },
   twitter: {
     card: "summary_large_image",
+    title: "Root's — Hyderabad's premium family salon",
+    description:
+      "Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services in Hyderabad.",
+    images: ["/og-image.jpg"],
   },
   icons: {
     icon: "/favicon.svg",

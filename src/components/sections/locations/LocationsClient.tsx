@@ -208,8 +208,8 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
 
                   {/* Buttons */}
                   <div className="flex flex-wrap gap-4 mt-auto">
-                    <button
-                      onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking', branch: getShortName(branch) } }))}
+                    <a
+                      href={`/book?branch=${(branch as any).slug || (branch as any).shortName?.toLowerCase() || ''}`}
                       className="btn-primary flex items-center justify-center gap-2 text-xs w-full sm:w-auto"
                     >
                       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -217,7 +217,7 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
                         <path d="M16 2v4M8 2v4M3 10h18" />
                       </svg>
                       Book Appointment
-                    </button>
+                    </a>
                     {mapUrl && (
                       <a
                         href={mapUrl}

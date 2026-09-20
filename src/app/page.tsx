@@ -27,13 +27,13 @@ import { client } from "@/sanity/client";
 import { getHomePageQuery, getServiceCategoriesQuery, getLocationsQuery } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
-  title: "Root's Family Salon Hyderabad | Hair, Skin, Bridal & Tattoo",
+  title: "Root's — Hyderabad's premium family salon",
   description:
-    "Walk in. Walk out different. Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services at Uppal and Tarnaka. Book your appointment today.",
+    "Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services at Uppal, Tarnaka, and Yamjal. Book your appointment today.",
   openGraph: {
-    title: "Root's Family Salon Hyderabad | Hair, Skin, Bridal & Tattoo",
+    title: "Root's — Hyderabad's premium family salon",
     description:
-      "Walk in. Walk out different. Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services at Uppal and Tarnaka.",
+      "Root's is Hyderabad's premium family salon — expert hair, skin, bridal and tattoo services at Uppal, Tarnaka, and Yamjal.",
     type: "website",
   },
 };

@@ -34,12 +34,12 @@ export default function CTASection({
         <p className="font-sans text-parchment/70 text-base md:text-lg leading-relaxed mb-10 max-w-xl">
           {resolvedSubtext}
         </p>
-        <button
-          onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
+        <a
+          href="/book"
           className="btn-primary"
         >
           {resolvedCtaLabel}
-        </button>
+        </a>
       </div>
     </section>
   );

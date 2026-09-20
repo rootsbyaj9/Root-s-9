@@ -15,12 +15,12 @@ export default function ServicesCTA() {
           No waiting, no forms.
         </p>
 
-        <button
-          onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
+        <a
+          href="/book"
           className="inline-block bg-roots-orange text-parchment font-sans text-[12px] uppercase tracking-[0.08em] px-[40px] py-[16px] rounded-md transition-colors hover:bg-roots-orange-dark mt-10"
         >
           Book Appointment
-        </button>
+        </a>
       </div>
     </section>
   );

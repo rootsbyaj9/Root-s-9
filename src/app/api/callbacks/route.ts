@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createCalendarEvent } from "@/lib/google-calendar";
+import { createCalendarEventLegacy } from "@/lib/google-calendar";
 import { client } from "@/sanity/client";
 import { groq } from "next-sanity";
 
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     const branchQuery = groq`*[_type == "location" && shortName == $branch][0]{ googleCalendarId }`;
     const branchDoc = await client?.fetch(branchQuery, { branch: branchName }).catch(() => null);
 
-    await createCalendarEvent({
+    await createCalendarEventLegacy({
       name,
       phone,
       service: `Callback Request - ${note || "No note"}`,

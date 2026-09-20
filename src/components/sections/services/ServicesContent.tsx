@@ -115,11 +115,8 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
         )}
 
         {/* CTA */}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            window.dispatchEvent(new CustomEvent("open-booking-modal"));
-          }}
+        <a
+          href="/book"
           className="inline-flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.08em] text-roots-orange font-medium mt-5 transition-colors hover:text-roots-orange-dark group/link text-left"
         >
           Book Now
@@ -136,7 +133,7 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
               d="M17 8l4 4m0 0l-4 4m4-4H3"
             />
           </svg>
-        </button>
+        </a>
       </div>
     </div>
   );

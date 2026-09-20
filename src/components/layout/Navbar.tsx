@@ -368,12 +368,12 @@ export default function Navbar({ settings }: { settings: any }) {
             ))}
 
             {/* Book CTA */}
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } }))}
+            <Link
+              href="/book"
               className="btn-primary !py-2.5 !px-5 !text-[10px]"
             >
               Book Now
-            </button>
+            </Link>
           </div>
 
           {/* ── Mobile hamburger ──────────────────────────────────────────── */}
@@ -462,16 +462,14 @@ export default function Navbar({ settings }: { settings: any }) {
               );
             })}
 
-            <button
-              onClick={() => {
-                setMenuOpen(false);
-                setTimeout(() => window.dispatchEvent(new CustomEvent('open-booking-modal', { detail: { tab: 'booking' } })), 300);
-              }}
+            <Link
+              href="/book"
+              onClick={() => setMenuOpen(false)}
               className="mobile-nav-link btn-primary mt-4"
               tabIndex={menuOpen ? 0 : -1}
             >
               Book Appointment
-            </button>
+            </Link>
           </div>
         </div>,
         document.body

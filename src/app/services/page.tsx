@@ -30,12 +30,12 @@ export default async function ServicesPage() {
   return (
     <>
       {/* Desktop: full hero. Mobile & Tablet: hidden — tabs show first instead */}
-      <div className="hidden xl:block">
+      <div className="hidden lg:block">
         <ServicesHero />
       </div>
 
       {/* Mobile & Tablet compact header — gives context without burying the menu */}
-      <div className="xl:hidden bg-parchment pt-[100px] pb-6 px-6 border-b border-obsidian/10">
+      <div className="lg:hidden bg-parchment pt-[100px] pb-6 px-6 border-b border-obsidian/10">
         <span className="font-sans text-[11px] uppercase tracking-[0.15em] text-roots-orange block mb-2">
           MENU
         </span>

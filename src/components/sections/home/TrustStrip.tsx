@@ -115,12 +115,12 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
     <section
       ref={sectionRef}
       data-theme="dark"
-      className="bg-obsidian relative z-20 py-12 sm:py-16 xl:py-24"
+      className="bg-obsidian relative z-20 py-12 sm:py-16 lg:py-24"
       aria-label="Trust statistics"
     >
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        {/* Grid of seamless stats — 2x2 on all mobile and tablet devices (< 1280px), 4x1 on desktop (>= 1280px) */}
-        <div className="relative z-10 grid grid-cols-2 xl:grid-cols-4 w-full">
+        {/* Grid of seamless stats — 2x2 on mobile (< 1024px), 4x1 on desktop (>= 1024px) */}
+        <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 w-full">
           {STATS.map((baseStat, index) => {
             const displayValue = homePageData ? (
               baseStat.id === "years" && homePageData.statYears ? `${homePageData.statYears}+` :
@@ -131,33 +131,33 @@ export default function TrustStrip({ homePageData = {} as SanityHomePageData, ac
             ) : baseStat.display;
 
             // Border logic:
-            // Mobile & Tablet (2x2): item 0 has R+B, item 1 has B, item 2 has R, item 3 has nothing.
+            // Mobile (2x2): item 0 has R+B, item 1 has B, item 2 has R, item 3 has nothing.
             // Desktop (4x1): items 0,1,2 have R, item 3 has nothing.
             const borderClasses = 
-              index === 0 ? "border-white/5 border-r border-b xl:border-b-0" :
-              index === 1 ? "border-white/5 border-b xl:border-b-0 xl:border-r" :
+              index === 0 ? "border-white/5 border-r border-b lg:border-b-0" :
+              index === 1 ? "border-white/5 border-b lg:border-b-0 lg:border-r" :
               index === 2 ? "border-white/5 border-r" :
               "";
 
             return (
               <div
                 key={baseStat.id}
-                className={`trust-stat flex flex-col items-center text-center p-4 sm:p-6 xl:p-8 transition-opacity duration-300 h-full justify-center will-change-transform ${borderClasses}`}
+                className={`trust-stat flex flex-col items-center text-center p-4 sm:p-6 lg:p-8 transition-opacity duration-300 h-full justify-center will-change-transform ${borderClasses}`}
               >
                 {/* Orange Accent Line */}
-                <div className="w-8 h-[2px] bg-roots-orange mb-4 sm:mb-5 xl:mb-6 opacity-80" />
+                <div className="w-8 h-[2px] bg-roots-orange mb-4 sm:mb-5 lg:mb-6 opacity-80" />
 
                 {/* Numeral */}
                 <span
                   id={`stat-${baseStat.id}`}
-                  className="trust-stat-num block font-serif text-3xl sm:text-4xl xl:text-5xl text-parchment mb-3 sm:mb-4 tabular-nums leading-none"
+                  className="trust-stat-num block font-serif text-3xl sm:text-4xl lg:text-5xl text-parchment mb-3 sm:mb-4 tabular-nums leading-none"
                   aria-label={displayValue}
                 >
                   {displayValue}
                 </span>
 
                 {/* Label */}
-                <span className="font-sans text-[9px] sm:text-[10px] xl:text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] text-white/50 font-medium">
+                <span className="font-sans text-[9px] sm:text-[10px] lg:text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] text-white/50 font-medium">
                   {baseStat.label}
                 </span>
               </div>

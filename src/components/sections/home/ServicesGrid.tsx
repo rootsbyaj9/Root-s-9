@@ -156,7 +156,7 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
         bridal: "center 18%",
         hair: "center 28%",
         skin: "center 32%",
-        tattoo: "center 50%",
+        tattoo: "center 38%",
         nails: "center 50%",
         piercing: "center 40%",
         "hair-extensions": "center 30%",
@@ -185,12 +185,10 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
           } catch {
             // fallback if builder fails
           }
-          if (rawImg.crop) {
-            // User explicitly cropped the image in Sanity Studio:
-            // CDN serves the cropped rectangle; center alignment preserves exact framing.
-            fallbackPosition = "center";
-          } else if (rawImg.hotspot?.x !== undefined && rawImg.hotspot?.y !== undefined) {
+          if (rawImg.hotspot?.x !== undefined && rawImg.hotspot?.y !== undefined) {
             fallbackPosition = `${rawImg.hotspot.x * 100}% ${rawImg.hotspot.y * 100}%`;
+          } else if (rawImg.crop) {
+            fallbackPosition = DEFAULT_FOCALS[base.id] || "center";
           }
         }
 
@@ -274,8 +272,8 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
           }
         />
 
-        {/* ── Mobile & Tablet: Bento Grid (all devices < 1280px) ── */}
-        <div className="xl:hidden panels-container grid grid-cols-2 gap-3">
+        {/* ── Mobile & Tablet: Bento Grid (all devices < 1024px) ── */}
+        <div className="lg:hidden panels-container grid grid-cols-2 gap-3">
           {mergedServices.map((service) => (
             <Link
               key={service.id}
@@ -327,8 +325,8 @@ export default function ServicesGrid({ cmsServices = [], cmsImages = {} }: Servi
           ))}
         </div>
 
-        {/* ── Desktop: Accordion (>= 1280px) ── */}
-        <div className="panels-container hidden xl:flex gap-3 h-[600px] w-full">
+        {/* ── Desktop: Accordion (>= 1024px) ── */}
+        <div className="panels-container hidden lg:flex gap-3 h-[540px] xl:h-[600px] w-full">
           {mergedServices.map((service) => {
             const isActive = activeId === service.id;
 

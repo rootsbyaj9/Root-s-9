@@ -225,7 +225,7 @@ export default function Navbar({ settings }: { settings: any }) {
             height="135"
             className={cn(
               "h-auto object-contain drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] transition-all duration-300 group-hover:opacity-85",
-              !isTop ? "w-44 sm:w-52 md:w-64" : "w-52 md:w-72",
+              !isTop ? "w-44 sm:w-52 lg:w-56 xl:w-64" : "w-48 sm:w-52 lg:w-60 xl:w-72",
               isLight ? "opacity-0 absolute" : "opacity-100 relative"
             )}
           />
@@ -237,7 +237,7 @@ export default function Navbar({ settings }: { settings: any }) {
             height="135"
             className={cn(
               "h-auto object-contain drop-shadow-[0_1px_6px_rgba(0,0,0,0.25)] transition-all duration-300 group-hover:opacity-85",
-              !isTop ? "w-44 sm:w-52 md:w-64" : "w-52 md:w-72",
+              !isTop ? "w-44 sm:w-52 lg:w-56 xl:w-64" : "w-48 sm:w-52 lg:w-60 xl:w-72",
               isLight ? "opacity-100 relative" : "opacity-0 absolute"
             )}
           />
@@ -251,10 +251,10 @@ export default function Navbar({ settings }: { settings: any }) {
           )}
           aria-label="Main navigation"
         >
-          <div className="flex items-center px-5 md:px-7 h-[64px] gap-4 md:gap-6">
+          <div className="flex items-center px-4 xl:px-7 h-[64px] gap-3 md:gap-6">
 
           {/* ── Desktop links ─────────────────────────────────────────────── */}
-          <div className="hidden xl:flex items-center gap-5 xl:gap-7 h-full">
+          <div className="hidden lg:flex items-center gap-3.5 xl:gap-7 h-full">
             {PRIMARY_LINKS.map((link) => {
               const isActive = pathname === link.href || (link.href === "/" && pathname === "/");
 
@@ -270,7 +270,7 @@ export default function Navbar({ settings }: { settings: any }) {
                     <Link
                       href={link.href}
                       className={cn(
-                        "font-serif text-[15px] capitalize font-medium transition-colors duration-200 relative flex items-center justify-center gap-1",
+                        "font-serif text-[13.5px] xl:text-[15px] capitalize font-medium transition-colors duration-200 relative flex items-center justify-center gap-1",
                         (isActive || desktopServicesOpen)
                           ? "text-roots-orange"
                           : "text-obsidian hover:text-roots-orange"
@@ -319,7 +319,7 @@ export default function Navbar({ settings }: { settings: any }) {
                   href={link.href}
                   onClick={() => handleNavClick(link.href)}
                   className={cn(
-                    "font-serif text-[15px] capitalize font-medium transition-colors duration-200 relative group",
+                    "font-serif text-[13.5px] xl:text-[15px] capitalize font-medium transition-colors duration-200 relative group",
                     isActive
                       ? "text-roots-orange"
                       : "text-obsidian hover:text-roots-orange"
@@ -351,7 +351,7 @@ export default function Navbar({ settings }: { settings: any }) {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "font-serif text-[15px] capitalize font-medium transition-colors duration-200 relative group",
+                  "font-serif text-[13.5px] xl:text-[15px] capitalize font-medium transition-colors duration-200 relative group",
                   pathname === link.href
                     ? "text-roots-orange"
                     : "text-obsidian hover:text-roots-orange"
@@ -370,7 +370,7 @@ export default function Navbar({ settings }: { settings: any }) {
             {/* Book CTA */}
             <Link
               href="/book"
-              className="btn-primary !py-2.5 !px-5 !text-[10px]"
+              className="btn-primary !py-2 !px-3.5 xl:!py-2.5 xl:!px-5 !text-[9.5px] xl:!text-[10px] whitespace-nowrap"
             >
               Book Now
             </Link>
@@ -382,7 +382,7 @@ export default function Navbar({ settings }: { settings: any }) {
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen || mobileServicesOpen}
             aria-controls="mobile-menu"
-            className="xl:hidden flex flex-col gap-[5px] w-6 py-1 hover:opacity-70 transition-opacity focus-visible:outline-roots-orange z-50"
+            className="lg:hidden flex flex-col gap-[5px] w-6 py-1 hover:opacity-70 transition-opacity focus-visible:outline-roots-orange z-50"
           >
             <span
               className={cn(
@@ -414,7 +414,7 @@ export default function Navbar({ settings }: { settings: any }) {
         <div
           ref={menuRef}
           className={cn(
-            "xl:hidden fixed inset-0 bg-parchment flex flex-col items-center justify-start overflow-y-auto transition-opacity duration-300",
+            "lg:hidden fixed inset-0 bg-parchment flex flex-col items-center justify-start overflow-y-auto transition-opacity duration-300",
             menuOpen
               ? "opacity-100 pointer-events-auto z-[9998]"
               : "opacity-0 pointer-events-none z-[-1]"

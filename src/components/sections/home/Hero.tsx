@@ -119,7 +119,7 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
           alt="Root's salon interior"
           fill
           priority
-          className="object-cover object-[82%_center] xl:object-center"
+          className="object-cover object-[82%_center] lg:object-center"
           sizes="100vw"
         />
       </div>
@@ -158,7 +158,7 @@ export default function Hero({ homePageData = {} as SanityHomePageData }: HeroPr
         </p>
 
         {/* Equal-height CTAs — hidden on mobile and tablet (bottom bar handles them) */}
-        <div className="cta-wrapper hidden xl:flex flex-col sm:flex-row items-center gap-4">
+        <div className="cta-wrapper hidden lg:flex flex-col sm:flex-row items-center gap-4">
           {/* Primary CTA — orange solid */}
           <a
             id="hero-book-now"

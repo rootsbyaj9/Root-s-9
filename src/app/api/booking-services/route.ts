@@ -34,10 +34,17 @@ export async function GET(request: Request) {
     // CMS unavailable — use fixture
   }
 
-  // ── Fallback to fixture ───────────────────────────────────────────────────
-  if (services.length === 0) {
-    services = BOOKING_SERVICES.filter(s => s.active);
+  // ── Merge: Fixture catalog + CMS overrides/additions ─────────────────────
+  const map = new Map<string, BookingServiceRecord>();
+  for (const s of BOOKING_SERVICES) {
+    if (s.active !== false) map.set(s.serviceId, s);
   }
+  for (const c of services) {
+    if (c.serviceId) {
+      map.set(c.serviceId, { ...(map.get(c.serviceId) ?? {}), ...c });
+    }
+  }
+  services = Array.from(map.values()).filter(s => s.active !== false);
 
   // ── Filter ────────────────────────────────────────────────────────────────
   if (branchId) {

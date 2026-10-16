@@ -97,8 +97,22 @@ async function handleNewBooking(body: Record<string, unknown>) {
     return NextResponse.json({ success: false, error: 'Invalid branch.' }, { status: 400 });
   }
 
-  // ── Validate services ──────────────────────────────────────────────────────
-  const selectedServices = serviceIds.map(id => BOOKING_SERVICES.find(s => s.serviceId === id)).filter(Boolean);
+  // ── Validate services (fixtures + dynamic Sanity CMS booking services) ────
+  let allAvailableServices = BOOKING_SERVICES;
+  try {
+    const q = groq`*[_type == "bookingService" && active != false]{ "serviceId": serviceId.current, name, durationMinutes, branchIds }`;
+    const cmsDocs = await client?.fetch<{ serviceId: string; name: string; durationMinutes: number; branchIds?: string[] }[]>(q);
+    if (cmsDocs && cmsDocs.length > 0) {
+      const map = new Map<string, { serviceId: string; name: string; durationMinutes: number; branchIds?: string[] }>();
+      for (const s of BOOKING_SERVICES) map.set(s.serviceId, s);
+      for (const c of cmsDocs) {
+        if (c.serviceId) map.set(c.serviceId, { ...(map.get(c.serviceId) ?? {}), ...c });
+      }
+      allAvailableServices = Array.from(map.values()) as typeof BOOKING_SERVICES;
+    }
+  } catch { /* fallback to static fixture */ }
+
+  const selectedServices = serviceIds.map(id => allAvailableServices.find(s => s.serviceId === id)).filter(Boolean);
   if (selectedServices.length !== serviceIds.length) {
     return NextResponse.json({ success: false, error: 'One or more services are invalid.' }, { status: 400 });
   }

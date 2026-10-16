@@ -2,7 +2,8 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import BookingFlow from '@/components/booking/BookingFlow';
 import { client } from '@/sanity/client';
-import { getLocationsQuery } from '@/sanity/lib/queries';
+import { getLocationsQuery, getBookingServicesQuery } from '@/sanity/lib/queries';
+import type { BookingServiceRecord } from '@/fixtures/types';
 
 export const revalidate = 0; // never cache — booking page must always be fresh
 
@@ -14,10 +15,14 @@ export const metadata: Metadata = {
 };
 
 export default async function BookPage() {
-  const cmsLocations = await client?.fetch(getLocationsQuery).catch(() => null) ?? [];
+  const [cmsLocations, cmsServices] = await Promise.all([
+    (client ? client.fetch(getLocationsQuery).catch(() => []) : Promise.resolve([])) as Promise<any[]>,
+    (client ? client.fetch<BookingServiceRecord[]>(getBookingServicesQuery).catch(() => []) : Promise.resolve([])) as Promise<BookingServiceRecord[]>,
+  ]);
+
   return (
     <Suspense fallback={<BookingPageSkeleton />}>
-      <BookingFlow cmsLocations={cmsLocations} />
+      <BookingFlow cmsLocations={cmsLocations ?? []} cmsServices={cmsServices ?? []} />
     </Suspense>
   );
 }

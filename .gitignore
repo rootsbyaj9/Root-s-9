@@ -72,3 +72,4 @@ AGENTS.md
 scratch-*
 # Added by code-review-graph
 .code-review-graph/
+.agents/

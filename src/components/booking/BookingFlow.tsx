@@ -42,9 +42,10 @@ interface SuccessData {
 
 interface BookingFlowProps {
   cmsLocations?: SanityLocation[];
+  cmsServices?: BookingServiceRecord[];
 }
 
-export default function BookingFlow({ cmsLocations = [] }: BookingFlowProps) {
+export default function BookingFlow({ cmsLocations = [], cmsServices = [] }: BookingFlowProps) {
   const searchParams = useSearchParams();
 
   // Derive branches directly from Sanity CMS locations (fallback to fixture)
@@ -97,6 +98,34 @@ export default function BookingFlow({ cmsLocations = [] }: BookingFlowProps) {
       });
   }, [cmsLocations]);
 
+  // Merge Sanity CMS booking services with base fixture catalog
+  const catalogServices: BookingServiceRecord[] = useMemo(() => {
+    if (!cmsServices || cmsServices.length === 0) {
+      return BOOKING_SERVICES;
+    }
+
+    const map = new Map<string, BookingServiceRecord>();
+    // Start with all offline fixtures
+    for (const s of BOOKING_SERVICES) {
+      map.set(s.serviceId, s);
+    }
+    // Sanity CMS services take precedence or append new ones
+    for (const cms of cmsServices) {
+      if (!cms.serviceId) continue;
+      const existing = map.get(cms.serviceId);
+      map.set(cms.serviceId, {
+        ...(existing ?? {}),
+        ...cms,
+        active: cms.active !== false,
+        branchIds: (cms.branchIds && cms.branchIds.length > 0)
+          ? cms.branchIds
+          : (existing?.branchIds ?? ['uppal', 'tarnaka', 'yamjal']),
+      });
+    }
+
+    return Array.from(map.values());
+  }, [cmsServices]);
+
   const [step, setStep]         = useState<BookingStep>('branch');
   const [branch, setBranch]     = useState<BranchRecord | null>(null);
   const [services, setServices] = useState<BookingServiceRecord[]>([]);
@@ -119,7 +148,7 @@ export default function BookingFlow({ cmsLocations = [] }: BookingFlowProps) {
       }
       if (draft.serviceIds?.length) {
         const svcs = draft.serviceIds
-          .map(id => BOOKING_SERVICES.find(s => s.serviceId === id))
+          .map(id => catalogServices.find(s => s.serviceId === id))
           .filter((s): s is BookingServiceRecord => !!s);
         setServices(svcs);
       }
@@ -127,7 +156,7 @@ export default function BookingFlow({ cmsLocations = [] }: BookingFlowProps) {
       if (draft.time)      setTime(draft.time);
       if (draft.timeLabel) setTimeLabel(draft.timeLabel);
     } catch { /* ignore */ }
-  }, [branches]);
+  }, [branches, catalogServices]);
 
   // ── Preselect from URL params ──────────────────────────────────────────────
   useEffect(() => {
@@ -138,11 +167,11 @@ export default function BookingFlow({ cmsLocations = [] }: BookingFlowProps) {
       if (b) setBranch(b);
     }
     if (serviceParam && services.length === 0) {
-      const svc = BOOKING_SERVICES.find(s => s.serviceId === serviceParam);
+      const svc = catalogServices.find(s => s.serviceId === serviceParam);
       if (svc) setServices([svc]);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [branches]);
+  }, [branches, catalogServices]);
 
   // ── Persist draft ──────────────────────────────────────────────────────────
   const saveDraft = useCallback((patch: Partial<DraftState>) => {
@@ -252,6 +281,7 @@ export default function BookingFlow({ cmsLocations = [] }: BookingFlowProps) {
             )}
             {step === 'services' && branch && (
               <StepServices
+                services={catalogServices}
                 branch={branch}
                 selected={services}
                 onToggle={handleToggleService}

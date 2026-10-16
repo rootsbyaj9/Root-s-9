@@ -301,6 +301,40 @@ async function seedSanity() {
     ],
   });
 
+  // ── 7. BOOKING SERVICES ────────────────────────────────────────────────────
+  console.log("Seeding booking services...");
+  try {
+    const { BOOKING_SERVICES } = await import("../src/fixtures/booking-services.ts");
+    const existingBookingDocs = await client.fetch('*[_type == "bookingService"]{ _id, name, "serviceId": serviceId.current }');
+    const existingNames = new Set(existingBookingDocs.map(d => d.name?.toLowerCase().trim()));
+    const existingIds = new Set(existingBookingDocs.map(d => d.serviceId?.toLowerCase().trim()));
+
+    for (let i = 0; i < BOOKING_SERVICES.length; i++) {
+      const s = BOOKING_SERVICES[i];
+      if (existingNames.has(s.name.toLowerCase().trim()) || existingIds.has(s.serviceId.toLowerCase().trim())) {
+        continue;
+      }
+      await client.createIfNotExists({
+        _id: `booking-service-${s.serviceId}`,
+        _type: 'bookingService',
+        serviceId: { _type: 'slug', current: s.serviceId },
+        name: s.name,
+        category: s.category,
+        categorySlug: s.categorySlug,
+        description: s.description,
+        audience: s.audience,
+        durationMinutes: s.durationMinutes,
+        isAddOn: s.isAddOn,
+        canCombine: s.canCombine,
+        active: s.active,
+        displayOrder: (i + 1) * 5,
+        branchIds: s.branchIds,
+      });
+    }
+  } catch (err) {
+    console.warn("Booking services seeding skipped:", err.message);
+  }
+
   console.log("✅ Sanity CMS pre-seeding completed successfully!");
 }
 

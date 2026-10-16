@@ -13,6 +13,7 @@ const AUDIENCES = ['All', 'Women', 'Men', 'Unisex', 'Bridal'] as const;
 type AudienceFilter = typeof AUDIENCES[number];
 
 interface Props {
+  services?: BookingServiceRecord[];
   branch: BranchRecord;
   selected: BookingServiceRecord[];
   onToggle: (service: BookingServiceRecord) => void;
@@ -20,34 +21,54 @@ interface Props {
   onBack: () => void;
 }
 
-export default function StepServices({ branch, selected, onToggle, onContinue, onBack }: Props) {
+export default function StepServices({
+  services = BOOKING_SERVICES,
+  branch,
+  selected,
+  onToggle,
+  onContinue,
+  onBack,
+}: Props) {
   const [query, setQuery]       = useState('');
   const [category, setCategory] = useState('All');
   const [audience, setAudience] = useState<AudienceFilter>('All');
 
   const branchServices = useMemo(() => {
-    return BOOKING_SERVICES.filter(s => {
-      if (!s.active) return false;
-      if (s.branchIds.includes(branch.slug)) return true;
+    return services.filter(s => {
+      if (s.active === false) return false;
+      if (s.branchIds && s.branchIds.includes(branch.slug)) return true;
       const isKnownFixture = ['uppal', 'tarnaka', 'yamjal'].includes(branch.slug);
       return !isKnownFixture;
     });
-  }, [branch.slug]);
+  }, [services, branch.slug]);
 
   const filtered = useMemo(() => {
     let list = branchServices;
-    if (category !== 'All') list = list.filter(s => s.category === category);
-    if (audience !== 'All') list = list.filter(s => s.audience === audience.toLowerCase());
+    if (category !== 'All') {
+      list = list.filter(s => s.category === category || s.categorySlug === category);
+    }
+    if (audience !== 'All') {
+      list = list.filter(s => s.audience === audience.toLowerCase());
+    }
     if (query.trim()) {
       const q = query.toLowerCase();
-      list = list.filter(s => s.name.toLowerCase().includes(q) || s.description.toLowerCase().includes(q));
+      list = list.filter(s =>
+        s.name?.toLowerCase().includes(q) || s.description?.toLowerCase().includes(q)
+      );
     }
     return list;
   }, [branchServices, category, audience, query]);
 
-  const categories = ['All', ...BOOKING_CATEGORIES.filter(c =>
-    branchServices.some(s => s.category === c)
-  )];
+  const categories = useMemo(() => {
+    // Preserve order of known categories first, then append any CMS-defined categories
+    const found = new Set<string>();
+    for (const s of branchServices) {
+      if (s.category) found.add(s.category);
+    }
+    const knownOrdered = BOOKING_CATEGORIES.filter(c => found.has(c));
+    const extra = Array.from(found).filter(c => !BOOKING_CATEGORIES.includes(c));
+    return ['All', ...knownOrdered, ...extra];
+  }, [branchServices]);
 
   return (
     <div className="flex flex-col gap-6 pb-28 sm:pb-32">

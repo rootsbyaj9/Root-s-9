@@ -62,6 +62,117 @@ const CATEGORY_DEFAULT_FOCAL: Record<string, string> = {
   "mens-skin": "center 30%",
 };
 
+function getCategoryBookingUrl(cat: ServiceCategory) {
+  let audience = 'all';
+  let group = '';
+  let category = '';
+
+  const title = (cat.title || '').trim();
+  const titleLower = title.toLowerCase();
+  const slug = (cat.slug || '').toLowerCase();
+  const gender = (cat.gender || '').toLowerCase();
+  const displayTabs = (cat.displayTabs || []).map(t => t.toLowerCase());
+
+  // 1. Kids cards: any card mentioning "kid" (in slug or title) routes directly to Kids
+  if (slug.includes('kid') || titleLower.includes('kid')) {
+    audience = 'kids';
+    category = 'Kids Haircuts';
+  }
+  // 2. Women's cards: check explicit womens gender or tab, or women in title
+  else if (
+    gender === 'womens' ||
+    (displayTabs.includes('womens') && !displayTabs.includes('mens')) ||
+    /\bwomen('s)?\b/i.test(title)
+  ) {
+    audience = 'women';
+    if (slug.includes('piercing') || titleLower.includes('piercing')) {
+      category = 'Piercing';
+    } else if (slug.includes('pedicure') || slug.includes('manicure') || titleLower.includes('pedicure') || titleLower.includes('manicure')) {
+      category = 'Pedicure / Manicure';
+    } else if (slug.includes('refinement') || titleLower.includes('refinement')) {
+      group = 'refinement';
+    } else if (slug.includes('hair') || titleLower.includes('hair')) {
+      group = 'hair';
+    } else if (slug.includes('skin') || titleLower.includes('skin')) {
+      group = 'skin';
+    }
+  }
+  // 3. Men's cards: check gender === 'mens', displayTabs containing 'mens', or men in title/slug (word boundary)
+  else if (
+    gender === 'mens' ||
+    displayTabs.includes('mens') ||
+    /\bmen('s)?\b/i.test(title) ||
+    slug.startsWith('men-') ||
+    slug.startsWith('mens-')
+  ) {
+    audience = 'men';
+    if (slug.includes('piercing') || titleLower.includes('piercing')) {
+      category = "Men's Ear Piercing";
+    } else if (slug.includes('pedicure') || titleLower.includes('pedicure')) {
+      category = "Men's Pedicure";
+    } else if (slug.includes('manicure') || titleLower.includes('manicure')) {
+      category = "Men's Manicure";
+    } else if (slug.includes('weaving') || titleLower.includes('weaving')) {
+      category = 'Hair Weaving';
+    } else if (slug.includes('tattoo') || titleLower.includes('tattoo')) {
+      category = 'Tattoo';
+    } else if (slug.includes('hair') || slug.includes('grooming') || slug.includes('styling') || titleLower.includes('hair')) {
+      group = 'hair';
+    } else if (slug.includes('skin') || slug.includes('facial') || titleLower.includes('skin') || titleLower.includes('facial')) {
+      group = 'skin';
+    }
+  }
+  // 4. Bridal cards
+  else if (
+    gender === 'bridal' ||
+    displayTabs.includes('bridal') ||
+    slug.includes('bridal') ||
+    titleLower.includes('bridal') ||
+    slug.includes('makeup') ||
+    titleLower.includes('makeup') ||
+    slug.includes('makeover') ||
+    titleLower.includes('makeover')
+  ) {
+    audience = 'bridal';
+    if (
+      slug.includes('party-makeup') ||
+      slug.includes('reception') ||
+      slug.includes('trial') ||
+      titleLower.includes('party') ||
+      titleLower.includes('reception') ||
+      titleLower.includes('trial')
+    ) {
+      category = "Makeup's";
+    } else {
+      group = 'bridal';
+    }
+  }
+  // 5. Speciality tabs
+  else if (gender === 'tattoo' || displayTabs.includes('tattoo') || slug.includes('tattoo') || titleLower.includes('tattoo')) {
+    audience = 'all';
+    category = 'Tattoo';
+  } else if (gender === 'nails' || displayTabs.includes('nails') || slug.includes('nail') || titleLower.includes('nail')) {
+    audience = 'women';
+    category = 'Nail Art';
+  } else if (gender === 'piercing' || displayTabs.includes('piercing') || slug.includes('piercing') || titleLower.includes('piercing')) {
+    audience = 'women';
+    category = 'Piercing';
+  } else if (gender === 'hair-extensions' || displayTabs.includes('hair-extensions') || slug.includes('extension') || titleLower.includes('extension')) {
+    audience = 'women';
+    category = 'Hair Extensions';
+  } else if (gender === 'hair-weaving' || displayTabs.includes('hair-weaving') || slug.includes('weaving') || titleLower.includes('weaving')) {
+    audience = 'unisex';
+    category = 'Hair Weaving';
+  }
+
+  const params = new URLSearchParams();
+  if (audience && audience !== 'all') params.set('audience', audience);
+  if (group) params.set('group', group);
+  if (category) params.set('category', category);
+  const qs = params.toString();
+  return qs ? `/book?${qs}` : '/book';
+}
+
 function CategoryCard({ cat }: { cat: ServiceCategory }) {
   const icon = CATEGORY_ICONS[cat.slug] || <Star className="w-12 h-12 text-roots-orange" strokeWidth={1.5} />;
   const objectPosition = cat.imageHotspot
@@ -116,7 +227,7 @@ function CategoryCard({ cat }: { cat: ServiceCategory }) {
 
         {/* CTA */}
         <a
-          href="/book"
+          href={getCategoryBookingUrl(cat)}
           className="inline-flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.08em] text-roots-orange font-medium mt-5 transition-colors hover:text-roots-orange-dark group/link text-left"
         >
           Book Now

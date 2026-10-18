@@ -72,6 +72,7 @@ const categories = [
       { _key: "wh-16", name: "Smoothening S/M/L",                      price: "₹4500/5000/6500 onwards" },
       { _key: "wh-17", name: "Rebonding S/M/L",                        price: "₹4500/5000/6500 onwards" },
       { _key: "wh-18", name: "Keratin S/M/L",                          price: "₹5500/6500/8000 onwards" },
+      { _key: "wh-18b", name: "Hair Botox Treatment",                  price: "₹4500 onwards" },
       // HAIR SPA
       { _key: "wh-19", name: "Dry Hair Spa",                           price: "₹1000 onwards" },
       { _key: "wh-20", name: "Smooth Straight Hair Spa",               price: "₹1400 onwards" },
@@ -100,6 +101,8 @@ const categories = [
       { _key: "ws-4",  name: "Under Arms (Normal / Chocolate / Rica)",   price: "₹100 / ₹150 / ₹250" },
       { _key: "ws-5",  name: "Full Face (Normal / Chocolate)",           price: "₹100 / ₹200" },
       { _key: "ws-6",  name: "Upper Lip (Normal / Chocolate)",           price: "₹50 / ₹70" },
+      { _key: "ws-6a", name: "Peel Wax – Cheeks / Full Face",          price: "₹350 / ₹650" },
+      { _key: "ws-6b", name: "Peel Upper Lip Wax",                    price: "₹100" },
       { _key: "ws-7",  name: "Chin (Normal / Chocolate)",                price: "₹40 / ₹50" },
       { _key: "ws-8",  name: "Full Body Waxing (Normal / Choc / Rica)",  price: "₹1000 / ₹1500 / ₹2200 onwards" },
       // D-TAN
@@ -121,13 +124,6 @@ const categories = [
       { _key: "ws-23", name: "Skin Tightening",                         price: "₹1800" },
       { _key: "ws-24", name: "Shahnaz Diamond",                         price: "₹2200" },
       { _key: "ws-25", name: "Shahnaz Gold",                            price: "₹2400" },
-      // CHERYL'S COSMECEUTICALS
-      { _key: "ws-26", name: "Glovite Facial",                          price: "₹2800" },
-      { _key: "ws-27", name: "Oxy Blast Facial",                        price: "₹2100" },
-      { _key: "ws-28", name: "Tan Clear Facial",                        price: "₹2300" },
-      { _key: "ws-29", name: "Sensi Glow Facial",                       price: "₹2800" },
-      { _key: "ws-30", name: "Clari Glow Facial",                       price: "₹3000" },
-      { _key: "ws-31", name: "O2C2 Facial",                             price: "₹4000" },
       // O3+ FACIALS
       { _key: "ws-32", name: "O3+ D Tan Clean Up",                      price: "₹1000" },
       { _key: "ws-33", name: "O3+ Pore & Purifying Cleanup",            price: "₹1100" },
@@ -196,6 +192,7 @@ const categories = [
     title: "Bridal Makeover",
     slug: { _type: "slug", current: "bridal-studio" },
     gender: "bridal",
+    displayTabs: ["womens", "bridal"],
     displayOrder: 1,
     items: [
       // MAKEUP — HD
@@ -223,6 +220,20 @@ const categories = [
   // ══════════════════════════════════════════════════════════════════
   //  MEN'S MENU
   // ══════════════════════════════════════════════════════════════════
+
+  {
+    _id: "serviceCategory-kids",
+    _type: "serviceCategory",
+    title: "Kids Haircuts & Styling",
+    slug: { _type: "slug", current: "kids-haircuts" },
+    gender: "both",
+    displayTabs: ["womens", "mens"],
+    displayOrder: 4,
+    items: [
+      { _key: "kd-1", name: "Kid Cut (Girls & Boys)", price: "₹350" },
+      { _key: "kd-2", name: "Kid Little Champs Haircut & Styling", price: "₹400" },
+    ],
+  },
 
   {
     _id: "serviceCategory-mens-hair",
@@ -258,6 +269,7 @@ const categories = [
       // HAIR STRAIGHTENING
       { _key: "mh-20", name: "Hair Smoothening",                      price: "₹1,500 onwards" },
       { _key: "mh-21", name: "Hair Keratin",                          price: "₹3,000 onwards" },
+      { _key: "mh-22", name: "Men's Hair Botox",                      price: "₹2,500 onwards" },
     ],
   },
 
@@ -300,8 +312,8 @@ const categories = [
       { _key: "ms-23", name: "Diamond Facial",                        price: "₹1,800" },
       { _key: "ms-24", name: "Skin Whitening",                        price: "₹1,700" },
       { _key: "ms-25", name: "Anti Ageing Facial",                    price: "₹1,800" },
-      { _key: "ms-26", name: "Cheryl's Oxy Blast",                    price: "₹3,000" },
-      { _key: "ms-27", name: "Cheryl's D-Tan Facial",                 price: "₹3,000" },
+      
+      
       { _key: "ms-28", name: "O3+ Facial",                            price: "₹3,500" },
       // MEN'S MAKEUP
       { _key: "ms-29", name: "Party Makeup",                          price: "₹3,500" },
@@ -320,6 +332,7 @@ const categories = [
     title: "Tattoo Artistry",
     slug: { _type: "slug", current: "tattoo-artistry" },
     gender: "tattoo",
+    displayTabs: ["womens", "mens", "tattoo"],
     displayOrder: 1,
     items: [
       { _key: "ta-1", name: "Fine-Line Tattoo (Small)",    price: "₹500 onwards" },

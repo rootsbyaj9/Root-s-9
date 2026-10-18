@@ -287,6 +287,9 @@ export default function BookingFlow({ cmsLocations = [], cmsServices = [] }: Boo
                 onToggle={handleToggleService}
                 onContinue={() => setStep('datetime')}
                 onBack={() => setStep('branch')}
+                initialAudience={searchParams.get('audience') || undefined}
+                initialCategory={searchParams.get('category') || undefined}
+                initialGroup={searchParams.get('group') || undefined}
               />
             )}
             {step === 'datetime' && branch && (

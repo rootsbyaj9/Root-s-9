@@ -106,7 +106,7 @@ export interface BookingServiceRecord {
   name: string;
   category: string;           // e.g. "Hair Services"
   categorySlug: string;       // e.g. "hair-services"
-  audience: 'women' | 'men' | 'unisex' | 'bridal';
+  audience: 'women' | 'men' | 'unisex' | 'bridal' | 'kids';
   description: string;
   durationMinutes: number;
   isAddOn: boolean;

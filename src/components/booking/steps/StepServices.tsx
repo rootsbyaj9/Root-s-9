@@ -4,13 +4,65 @@
  * StepServices.tsx — Step 2: What would you like to book?
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { BOOKING_SERVICES, BOOKING_CATEGORIES } from '@/fixtures/booking-services';
 import type { BookingServiceRecord } from '@/fixtures/types';
 import type { BranchRecord } from '@/fixtures/types';
 
-const AUDIENCES = ['All', 'Women', 'Men', 'Unisex', 'Bridal'] as const;
+const AUDIENCES = ['All', 'Women', 'Men', 'Bridal', 'Kids', 'Unisex'] as const;
 type AudienceFilter = typeof AUDIENCES[number];
+
+const GROUPS: Record<string, { label: string; categories: string[] }> = {
+  hair: {
+    label: 'Hair Services',
+    categories: [
+      'Hair Cut',
+      'Hair Colouring',
+      'Highlights',
+      'Hair Smoothening',
+      'Hair Spa',
+      'Hair Treatment',
+      "Men's Hair Cuts",
+      "Men's Oil Head Massage",
+      "Men's Hair Colouring",
+      "Men's Hair Spa",
+      "Men's Hair Straightening",
+    ],
+  },
+  skin: {
+    label: 'Skin Rituals',
+    categories: [
+      'Facials',
+      'O3+ Facials & Peels',
+      'D Tan',
+      'Body Relaxing Massage',
+      'Pedicure / Manicure',
+      'Waxing',
+      "Men's Clean Up",
+      "Men's Facials",
+      "Men's D.Tan",
+      "Men's Manicure",
+      "Men's Pedicure",
+      "Men's Add-On Mask",
+    ],
+  },
+  refinement: {
+    label: 'Refinement',
+    categories: [
+      'Threading',
+      'Waxing',
+    ],
+  },
+  bridal: {
+    label: 'Bridal Makeover',
+    categories: [
+      'Bridal Package',
+      "Makeup's",
+      'Saree Draping',
+      'Hair Styles',
+    ],
+  },
+};
 
 interface Props {
   services?: BookingServiceRecord[];
@@ -19,6 +71,9 @@ interface Props {
   onToggle: (service: BookingServiceRecord) => void;
   onContinue: () => void;
   onBack: () => void;
+  initialAudience?: string;
+  initialCategory?: string;
+  initialGroup?: string;
 }
 
 export default function StepServices({
@@ -28,10 +83,33 @@ export default function StepServices({
   onToggle,
   onContinue,
   onBack,
+  initialAudience,
+  initialCategory,
+  initialGroup,
 }: Props) {
-  const [query, setQuery]       = useState('');
-  const [category, setCategory] = useState('All');
-  const [audience, setAudience] = useState<AudienceFilter>('All');
+  const [query, setQuery] = useState('');
+  const [group, setGroup] = useState<string | null>(() => initialGroup || null);
+  const [audience, setAudience] = useState<AudienceFilter>(() => {
+    if (initialAudience) {
+      const match = AUDIENCES.find(a => a.toLowerCase() === initialAudience.toLowerCase());
+      if (match) return match;
+    }
+    return 'All';
+  });
+  const [category, setCategory] = useState<string>(() => {
+    if (!initialCategory) return 'All';
+    const initLower = initialCategory.toLowerCase();
+    const audLower = (initialAudience || '').toLowerCase();
+    if (audLower === 'men') {
+      if (initLower.includes('piercing')) return "Men's Ear Piercing";
+      if (initLower === 'pedicure') return "Men's Pedicure";
+      if (initLower === 'manicure') return "Men's Manicure";
+    } else if (audLower === 'women') {
+      if (initLower.includes('piercing')) return 'Piercing';
+      if (initLower === 'pedicure' || initLower === 'manicure') return 'Pedicure / Manicure';
+    }
+    return initialCategory;
+  });
 
   const branchServices = useMemo(() => {
     return services.filter(s => {
@@ -42,13 +120,97 @@ export default function StepServices({
     });
   }, [services, branch.slug]);
 
-  const filtered = useMemo(() => {
-    let list = branchServices;
-    if (category !== 'All') {
-      list = list.filter(s => s.category === category || s.categorySlug === category);
+  // Dynamic filter per audience
+  const audienceServices = useMemo(() => {
+    if (audience === 'All') return branchServices;
+
+    if (audience === 'Women') {
+      return branchServices.filter(s =>
+        s.audience === 'women' ||
+        s.audience === 'bridal' ||
+        s.category === 'Bridal Package' ||
+        s.category === "Makeup's" ||
+        s.category === 'Saree Draping' ||
+        s.category === 'Hair Styles' ||
+        s.serviceId.startsWith('w-br') ||
+        s.serviceId.startsWith('w-mk') ||
+        s.serviceId.startsWith('w-sd') ||
+        s.serviceId.startsWith('w-hs') ||
+        (s.audience === 'unisex' && (s.category === 'Tattoo' || s.category === 'Piercing'))
+      );
     }
-    if (audience !== 'All') {
-      list = list.filter(s => s.audience === audience.toLowerCase());
+
+    if (audience === 'Men') {
+      return branchServices.filter(s =>
+        s.audience === 'men' ||
+        (s.audience === 'unisex' && (s.category === 'Tattoo' || s.category === 'Hair Weaving'))
+      );
+    }
+
+    if (audience === 'Bridal') {
+      return branchServices.filter(s =>
+        s.audience === 'bridal' ||
+        s.category === 'Bridal Package' ||
+        s.category === "Makeup's" ||
+        s.category === 'Saree Draping' ||
+        s.category === 'Hair Styles' ||
+        s.serviceId.startsWith('w-br') ||
+        s.serviceId.startsWith('w-mk') ||
+        s.serviceId.startsWith('w-sd') ||
+        s.serviceId.startsWith('w-hs')
+      );
+    }
+
+    if (audience === 'Kids') {
+      return branchServices.filter(s =>
+        s.audience === 'kids' ||
+        s.category === 'Kids Haircuts' ||
+        s.serviceId.includes('kid')
+      );
+    }
+
+    if (audience === 'Unisex') {
+      return branchServices.filter(s => s.audience === 'unisex');
+    }
+
+    return branchServices;
+  }, [branchServices, audience]);
+
+  // Category pills derived directly from audience-filtered services (scoped by group if present)
+  const categories = useMemo(() => {
+    const found = new Set<string>();
+    for (const s of audienceServices) {
+      if (s.category) {
+        if (!group || (GROUPS[group] && GROUPS[group].categories.includes(s.category))) {
+          found.add(s.category);
+        }
+      }
+    }
+    const knownOrdered = BOOKING_CATEGORIES.filter(c => found.has(c));
+    const extra = Array.from(found).filter(c => !BOOKING_CATEGORIES.includes(c));
+    return ['All', ...knownOrdered, ...extra];
+  }, [audienceServices, group]);
+
+  const handleAudienceChange = (newAudience: AudienceFilter) => {
+    setAudience(newAudience);
+    setGroup(null);
+    setCategory('All');
+  };
+
+  const filtered = useMemo(() => {
+    let list = audienceServices;
+    if (group && GROUPS[group]) {
+      list = list.filter(s => GROUPS[group].categories.includes(s.category));
+    }
+    if (category !== 'All') {
+      const target = category.toLowerCase();
+      list = list.filter(s =>
+        s.category?.toLowerCase() === target ||
+        s.categorySlug?.toLowerCase() === target ||
+        (target === 'piercing' && s.category?.toLowerCase().includes('piercing')) ||
+        (target === 'pedicure' && s.category?.toLowerCase().includes('pedicure')) ||
+        (target === 'manicure' && s.category?.toLowerCase().includes('manicure'))
+      );
     }
     if (query.trim()) {
       const q = query.toLowerCase();
@@ -57,18 +219,32 @@ export default function StepServices({
       );
     }
     return list;
-  }, [branchServices, category, audience, query]);
+  }, [audienceServices, group, category, query]);
 
-  const categories = useMemo(() => {
-    // Preserve order of known categories first, then append any CMS-defined categories
-    const found = new Set<string>();
-    for (const s of branchServices) {
-      if (s.category) found.add(s.category);
+  const categoryScrollRef = useRef<HTMLDivElement>(null);
+  const activeCategoryRef = useRef<HTMLButtonElement>(null);
+  const audienceScrollRef = useRef<HTMLDivElement>(null);
+  const activeAudienceRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (activeCategoryRef.current) {
+      activeCategoryRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
     }
-    const knownOrdered = BOOKING_CATEGORIES.filter(c => found.has(c));
-    const extra = Array.from(found).filter(c => !BOOKING_CATEGORIES.includes(c));
-    return ['All', ...knownOrdered, ...extra];
-  }, [branchServices]);
+  }, [category, categories]);
+
+  useEffect(() => {
+    if (activeAudienceRef.current) {
+      activeAudienceRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [audience]);
 
   return (
     <div className="flex flex-col gap-6 pb-28 sm:pb-32">
@@ -118,38 +294,63 @@ export default function StepServices({
       </div>
 
       {/* Audience filter */}
-      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
-        {AUDIENCES.map(a => (
-          <button
-            key={a}
-            onClick={() => setAudience(a)}
-            className="shrink-0 px-3.5 py-1.5 rounded-full font-sans text-xs font-semibold uppercase tracking-wide transition-all"
-            style={{
-              backgroundColor: audience === a ? 'var(--root-orange)' : 'rgba(23,18,15,0.07)',
-              color: audience === a ? '#fffdf9' : 'var(--root-muted)',
-            }}
-          >
-            {a}
-          </button>
-        ))}
+      <div
+        ref={audienceScrollRef}
+        className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide scroll-smooth"
+      >
+        {AUDIENCES.map(a => {
+          const isActive = audience === a;
+          return (
+            <button
+              key={a}
+              ref={isActive ? activeAudienceRef : null}
+              onClick={() => handleAudienceChange(a)}
+              className="shrink-0 px-3.5 py-1.5 rounded-full font-sans text-xs font-semibold uppercase tracking-wide transition-all"
+              style={{
+                backgroundColor: isActive ? 'var(--root-orange)' : 'rgba(23,18,15,0.07)',
+                color: isActive ? '#fffdf9' : 'var(--root-muted)',
+              }}
+            >
+              {a}
+            </button>
+          );
+        })}
       </div>
 
       {/* Category filter */}
-      <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
-        {categories.map(cat => (
+      <div
+        ref={categoryScrollRef}
+        className="flex gap-2 items-center overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide scroll-smooth"
+      >
+        {categories.map(cat => {
+          const isActive = category === cat || category.toLowerCase() === cat.toLowerCase();
+          return (
+            <button
+              key={cat}
+              ref={isActive ? activeCategoryRef : null}
+              onClick={() => setCategory(cat)}
+              className="shrink-0 px-3 py-1.5 rounded-lg font-sans text-[11px] font-medium transition-all"
+              style={{
+                backgroundColor: isActive ? 'var(--root-ink)' : 'rgba(23,18,15,0.06)',
+                color: isActive ? '#fffdf9' : 'var(--root-ink)',
+                border: isActive ? 'none' : '1px solid rgba(23,18,15,0.10)',
+              }}
+            >
+              {cat}
+            </button>
+          );
+        })}
+        {group && (
           <button
-            key={cat}
-            onClick={() => setCategory(cat)}
-            className="shrink-0 px-3 py-1.5 rounded-lg font-sans text-[11px] font-medium transition-all"
-            style={{
-              backgroundColor: category === cat ? 'var(--root-ink)' : 'rgba(23,18,15,0.06)',
-              color: category === cat ? '#fffdf9' : 'var(--root-ink)',
-              border: category === cat ? 'none' : '1px solid rgba(23,18,15,0.10)',
+            onClick={() => {
+              setGroup(null);
+              setCategory('All');
             }}
+            className="shrink-0 px-3 py-1.5 rounded-lg font-sans text-[11px] font-semibold text-roots-orange border border-roots-orange/30 hover:bg-roots-orange/10 transition-colors"
           >
-            {cat}
+            + All Categories
           </button>
-        ))}
+        )}
       </div>
 
       {/* Service cards */}

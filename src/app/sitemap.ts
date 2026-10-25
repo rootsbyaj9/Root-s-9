@@ -1,10 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://root-s-9.vercel.app");
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.rootssalons.in";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

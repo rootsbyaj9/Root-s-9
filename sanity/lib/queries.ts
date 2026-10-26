@@ -129,6 +129,7 @@ export const getLocationsQuery = groq`
     _id,
     name,
     shortName,
+    "slug": coalesce(slug.current, lower(shortName)),
     address,
     phone,
     whatsappNumber,

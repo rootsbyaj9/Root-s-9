@@ -100,14 +100,22 @@ export const metadata = {
   },
 };
 
-// ── JSON-LD: Two HairSalon branches ───────────────────────────────────────────
+// ── JSON-LD: HairSalon branches with geo coordinates & areaServed ───────────────
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "HairSalon",
+    "@id": `${BASE_URL}/locations/uppal#salon`,
     "name": "Root's The Family Salon - Uppal",
     "image": `${BASE_URL}/logo-nobg1.svg`,
     "telephone": "+919700744357",
+    "url": `${BASE_URL}/locations/uppal`,
+    "hasMap": "https://maps.app.goo.gl/ocq8uts9jYaCp3bu8",
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 17.397388,
+      "longitude": 78.5885877,
+    },
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "#10-25/7, Taj Mahal Colony, Peerzadiguda Road, opp. Global Indian International School",
@@ -116,6 +124,15 @@ const jsonLd = [
       "postalCode": "500039",
       "addressCountry": "IN",
     },
+    "areaServed": [
+      "Uppal",
+      "Peerzadiguda",
+      "Boduppal",
+      "Medipally",
+      "Habsiguda",
+      "Nacharam",
+      "Hyderabad",
+    ],
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [
@@ -136,14 +153,21 @@ const jsonLd = [
       "ratingValue": "4.8",
       "reviewCount": "1600",
     },
-    "url": `${BASE_URL}/locations`,
   },
   {
     "@context": "https://schema.org",
     "@type": "HairSalon",
+    "@id": `${BASE_URL}/locations/tarnaka#salon`,
     "name": "Root's The Family Salon - Tarnaka",
     "image": `${BASE_URL}/logo-nobg1.svg`,
     "telephone": "+919700744357",
+    "url": `${BASE_URL}/locations/tarnaka`,
+    "hasMap": "https://maps.app.goo.gl/HtxnUPQ9b9a4f5Qv7",
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 17.4304751,
+      "longitude": 78.5329607,
+    },
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "#12-5-16/4, Vijayapuri Colony, opp. St Ann's School, Chenna Reddy Lane, Tarnaka South Lallaguda",
@@ -152,6 +176,14 @@ const jsonLd = [
       "postalCode": "500017",
       "addressCountry": "IN",
     },
+    "areaServed": [
+      "Tarnaka",
+      "South Lallaguda",
+      "Secunderabad",
+      "Osmania University",
+      "Moula Ali",
+      "Malkajgiri",
+    ],
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [
@@ -172,21 +204,36 @@ const jsonLd = [
       "ratingValue": "4.9",
       "reviewCount": "275",
     },
-    "url": `${BASE_URL}/locations`,
   },
   {
     "@context": "https://schema.org",
     "@type": "HairSalon",
+    "@id": `${BASE_URL}/locations/yamjal#salon`,
     "name": "Root's The Family Salon - Yamjal",
     "image": `${BASE_URL}/logo-nobg1.svg`,
     "telephone": "+919700744357",
+    "url": `${BASE_URL}/locations/yamjal`,
+    "hasMap": "https://maps.google.com/?q=Root%27s+Family+Salon+Yamjal+Hyderabad",
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 17.5451,
+      "longitude": 78.5447,
+    },
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Yamjal",
-      "addressLocality": "Hyderabad",
+      "streetAddress": "Plot No 42, Sagar Ring Road, Near RTO Office",
+      "addressLocality": "Yamjal",
       "addressRegion": "Telangana",
+      "postalCode": "500079",
       "addressCountry": "IN",
     },
+    "areaServed": [
+      "Yamjal",
+      "Medchal",
+      "Kompally",
+      "Alwal",
+      "Hyderabad",
+    ],
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [
@@ -202,7 +249,6 @@ const jsonLd = [
       "closes": "21:00",
     },
     "priceRange": "₹₹",
-    "url": `${BASE_URL}/locations`,
   },
 ];
 

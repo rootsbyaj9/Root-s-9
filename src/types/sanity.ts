@@ -129,6 +129,7 @@ export interface SanityLocation {
   _id: string;
   name: string;
   shortName?: string;
+  slug?: string;
   address: string;
   phone: string;
   whatsappNumber?: string;

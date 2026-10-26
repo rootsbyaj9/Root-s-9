@@ -12,6 +12,7 @@ const BRANCHES = [
   {
     _id: 'branch-1',
     shortName: 'Uppal',
+    slug: 'uppal',
     name: "Root's The Family Salon — Uppal",
     address: '#10-25/7, Taj Mahal Colony, Peerzadiguda Road, opp. Global Indian International School, Uppal, Hyderabad 500039',
     hours: 'Mon–Sun: 10 AM – 9 PM',
@@ -23,6 +24,7 @@ const BRANCHES = [
   {
     _id: 'branch-2',
     shortName: 'Tarnaka',
+    slug: 'tarnaka',
     name: "Root's The Family Salon — Tarnaka",
     address: "#12-5-16/4, Vijayapuri Colony, opp. St Ann's School, Chenna Reddy Lane, Tarnaka South Lallaguda, Secunderabad 500017",
     hours: 'Mon–Sun: 10 AM – 9 PM',
@@ -34,8 +36,9 @@ const BRANCHES = [
   {
     _id: 'branch-3',
     shortName: 'Yamjal',
+    slug: 'yamjal',
     name: "Root's The Family Salon — Yamjal",
-    address: 'Yamjal, Hyderabad, Telangana',
+    address: 'Plot No 42, Sagar Ring Road, Near RTO Office, Yamjal, Hyderabad 500079',
     hours: 'Mon–Sun: 10 AM – 9 PM',
     phone: '+919700744357',
     googleMapsUrl: 'https://maps.google.com/?q=Root%27s+Family+Salon+Yamjal+Hyderabad',
@@ -207,7 +210,7 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
                   </div>
 
                   {/* Buttons */}
-                  <div className="flex flex-wrap gap-4 mt-auto">
+                  <div className="flex flex-wrap items-center gap-4 mt-auto">
                     <a
                       href={`/book?branch=${(branch as any).slug || (branch as any).shortName?.toLowerCase() || ''}`}
                       className="btn-primary flex items-center justify-center gap-2 text-xs w-full sm:w-auto"
@@ -228,6 +231,12 @@ export default function LocationsClient({ locationsData = [] }: { locationsData?
                         Open in Maps
                       </a>
                     )}
+                    <a
+                      href={`/locations/${(branch as any).slug || (branch as any).shortName?.toLowerCase() || ''}`}
+                      className="text-xs font-sans text-roots-orange font-medium hover:underline flex items-center gap-1 w-full sm:w-auto py-1"
+                    >
+                      Branch Guide &amp; Directions &rarr;
+                    </a>
                   </div>
                 </div>
 

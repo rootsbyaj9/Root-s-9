@@ -28,6 +28,14 @@ export const location = defineType({
       description: 'e.g. "Uppal" or "Tarnaka"',
     }),
     defineField({
+      name: "slug",
+      title: "URL Slug",
+      type: "slug",
+      group: "contact",
+      options: { source: "shortName", maxLength: 96 },
+      description: 'Used for the web page address: rootssalons.in/locations/[slug]. Click "Generate" to create from short name.',
+    }),
+    defineField({
       name: "address",
       title: "Full Street Address",
       type: "text",

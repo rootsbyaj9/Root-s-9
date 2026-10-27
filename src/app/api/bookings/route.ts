@@ -58,6 +58,12 @@ async function handleNewBooking(body: Record<string, unknown>) {
     return NextResponse.json({ success: false, error: 'Missing required fields.' }, { status: 400 });
   }
 
+  // ── Prevent past booking (5-min tolerance for form submission) ───────────────
+  const startTimeMs = new Date(startAt).getTime();
+  if (isNaN(startTimeMs) || startTimeMs < Date.now() - 5 * 60 * 1000) {
+    return NextResponse.json({ success: false, error: 'Cannot book appointments in the past. Please select an upcoming slot.' }, { status: 400 });
+  }
+
   // ── Validate branch (fixtures + dynamic Sanity CMS locations) ───────────
   let branch = BRANCHES_FIXTURE.find(b => b.slug === branchId || b._id === branchId);
   if (!branch) {

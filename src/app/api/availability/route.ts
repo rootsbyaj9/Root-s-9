@@ -23,6 +23,19 @@ export async function GET(request: Request) {
   const START_MINS = 8 * 60;  // 8:00 AM (480 mins)
   const END_MINS   = 22 * 60; // 10:00 PM (1320 mins)
 
+  // Calculate current IST date and time
+  const now = new Date();
+  const todayIST = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Kolkata',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  }).formatToParts(now);
+  const nowHour = parseInt(parts.find(p => p.type === 'hour')?.value || '0', 10);
+  const nowMin  = parseInt(parts.find(p => p.type === 'minute')?.value || '0', 10);
+  const nowTotalMins = nowHour * 60 + nowMin;
+
   // Generate 30-min slots from 8:00 AM to 10:00 PM
   const slots: { time: string; label: string; available: boolean }[] = [];
 
@@ -37,7 +50,9 @@ export async function GET(request: Request) {
     const displayH = h === 0 ? 12 : h > 12 ? h - 12 : h;
     const label = `${displayH}:${pad(m)} ${period}`;
 
-    slots.push({ time: time24, label, available: true });
+    const isPast = (date < todayIST) || (date === todayIST && currentMins <= nowTotalMins);
+
+    slots.push({ time: time24, label, available: !isPast });
   }
 
   return NextResponse.json({

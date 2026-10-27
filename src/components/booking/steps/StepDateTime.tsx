@@ -41,11 +41,27 @@ const MONTH_NAMES = [
 
 const WEEKDAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-// Fallback generator for 8:00 AM to 10:00 PM slots
-function generateSlots8To10(): Slot[] {
+function currentMinsIST(): number {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Kolkata',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false,
+  }).formatToParts(new Date());
+  const h = parseInt(parts.find(p => p.type === 'hour')?.value || '0', 10);
+  const m = parseInt(parts.find(p => p.type === 'minute')?.value || '0', 10);
+  return h * 60 + m;
+}
+
+// Fallback generator for 8:00 AM to 10:00 PM slots with past-slot protection
+function generateSlots8To10(selectedDate?: string): Slot[] {
   const slots: Slot[] = [];
   const start = 8 * 60;  // 8:00 AM
   const end   = 22 * 60; // 10:00 PM
+  const todayStr = todayIST();
+  const nowMins = currentMinsIST();
+  const isToday = !selectedDate || selectedDate === todayStr;
+  const isPastDate = selectedDate ? selectedDate < todayStr : false;
 
   for (let mins = start; mins <= end; mins += 30) {
     const h = Math.floor(mins / 60);
@@ -53,10 +69,12 @@ function generateSlots8To10(): Slot[] {
     const pad = (n: number) => String(n).padStart(2, '0');
     const period = h < 12 ? 'AM' : 'PM';
     const displayH = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    const isPast = isPastDate || (isToday && mins <= nowMins);
+
     slots.push({
       time: `${pad(h)}:${pad(m)}`,
       label: `${displayH}:${pad(m)} ${period}`,
-      available: true,
+      available: !isPast,
     });
   }
   return slots;
@@ -75,7 +93,7 @@ export default function StepDateTime({
   const [date, setDate] = useState(selectedDate || todayStr);
   const [time, setTime] = useState(selectedTime || '');
   const [timeLabel, setTimeLabel] = useState('');
-  const [slots, setSlots] = useState<Slot[]>(generateSlots8To10());
+  const [slots, setSlots] = useState<Slot[]>(() => generateSlots8To10(selectedDate || todayStr));
   const [loading, setLoading] = useState(false);
 
   // Month navigation state
@@ -101,10 +119,10 @@ export default function StepDateTime({
       if (Array.isArray(data.slots) && data.slots.length > 0) {
         setSlots(data.slots);
       } else {
-        setSlots(generateSlots8To10());
+        setSlots(generateSlots8To10(d));
       }
     } catch {
-      setSlots(generateSlots8To10());
+      setSlots(generateSlots8To10(d));
     } finally {
       setLoading(false);
     }
@@ -113,6 +131,17 @@ export default function StepDateTime({
   useEffect(() => {
     fetchSlots(date);
   }, [date, fetchSlots]);
+
+  // Clear selected time if it becomes unavailable
+  useEffect(() => {
+    if (time) {
+      const currentSlot = slots.find(s => s.time === time);
+      if (currentSlot && !currentSlot.available) {
+        setTime('');
+        setTimeLabel('');
+      }
+    }
+  }, [slots, time]);
 
   // Calendar calculations
   const firstDayOfWeek = new Date(viewYear, viewMonth, 1).getDay();
@@ -164,6 +193,7 @@ export default function StepDateTime({
   };
 
   const handleSlotSelect = (slot: Slot) => {
+    if (!slot.available) return;
     setTime(slot.time);
     setTimeLabel(slot.label);
     onSelect(date, slot.time, slot.label);
@@ -312,15 +342,19 @@ export default function StepDateTime({
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2">
                 {slots.map(slot => {
                   const isSelected = slot.time === time;
+                  const isUnavailable = !slot.available;
                   return (
                     <button
                       key={slot.time}
                       type="button"
-                      onClick={() => handleSlotSelect(slot)}
-                      className={`py-2.5 px-3 rounded-xl font-sans text-xs sm:text-sm font-medium transition-all text-center cursor-pointer border ${
-                        isSelected
-                          ? 'bg-roots-orange text-white font-semibold border-roots-orange shadow-sm'
-                          : 'bg-[#f7f3ee] text-obsidian border-obsidian/[0.10] hover:border-roots-orange hover:bg-roots-orange/10 hover:text-roots-orange'
+                      disabled={isUnavailable}
+                      onClick={() => !isUnavailable && handleSlotSelect(slot)}
+                      className={`py-2.5 px-3 rounded-xl font-sans text-xs sm:text-sm font-medium transition-all text-center border ${
+                        isUnavailable
+                          ? 'opacity-35 cursor-not-allowed bg-obsidian/[0.04] text-obsidian/35 border-obsidian/[0.06] line-through'
+                          : isSelected
+                            ? 'bg-roots-orange text-white font-semibold border-roots-orange shadow-sm cursor-pointer'
+                            : 'bg-[#f7f3ee] text-obsidian border-obsidian/[0.10] hover:border-roots-orange hover:bg-roots-orange/10 hover:text-roots-orange cursor-pointer'
                       }`}
                     >
                       {slot.label}
@@ -328,6 +362,12 @@ export default function StepDateTime({
                   );
                 })}
               </div>
+
+              {slots.length > 0 && slots.every(s => !s.available) && (
+                <div className="rounded-xl p-3 text-xs font-sans text-obsidian/75 bg-obsidian/[0.05] border border-obsidian/10 mt-2">
+                  All appointment slots for today have passed. Please select an upcoming date from the calendar.
+                </div>
+              )}
             </div>
           )}
 
